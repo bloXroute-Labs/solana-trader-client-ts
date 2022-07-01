@@ -26,16 +26,15 @@ async function callOrderbookStreamGRPC() {
     // stream response
     try {
         var req = await g.getOrderbookStream({ "market": "SOLUSDC", "limit": 5 });
-        (async function () {
-            let count = 0
-            for await (const ob of req) {
-                console.info(JSON.stringify(ob))
-                count++
-                if (count == 5) {
-                    break
-                }
+        
+        let count = 0
+        for await (const ob of req) {
+            console.info(JSON.stringify(ob))
+            count++
+            if (count == 5) {
+                break
             }
-        })();
+        }
 
     } catch (error) {
         console.error("Failed to retrieve the orderbook for market SOL/USDC", error)
