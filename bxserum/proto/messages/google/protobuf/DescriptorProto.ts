@@ -1,0 +1,261 @@
+import {
+  Type as FieldDescriptorProto,
+  encodeJson as encodeJson_1,
+  decodeJson as decodeJson_1,
+  encodeBinary as encodeBinary_1,
+  decodeBinary as decodeBinary_1,
+} from "./FieldDescriptorProto.js";
+import {
+  Type as DescriptorProto_1,
+  encodeJson as encodeJson_2,
+  decodeJson as decodeJson_2,
+  encodeBinary as encodeBinary_2,
+  decodeBinary as decodeBinary_2,
+} from "./DescriptorProto.js";
+import {
+  Type as EnumDescriptorProto,
+  encodeJson as encodeJson_3,
+  decodeJson as decodeJson_3,
+  encodeBinary as encodeBinary_3,
+  decodeBinary as decodeBinary_3,
+} from "./EnumDescriptorProto.js";
+import {
+  Type as ExtensionRange,
+  encodeJson as encodeJson_4,
+  decodeJson as decodeJson_4,
+  encodeBinary as encodeBinary_4,
+  decodeBinary as decodeBinary_4,
+} from "./(DescriptorProto)/ExtensionRange.js";
+import {
+  Type as MessageOptions,
+  encodeJson as encodeJson_5,
+  decodeJson as decodeJson_5,
+  encodeBinary as encodeBinary_5,
+  decodeBinary as decodeBinary_5,
+} from "./MessageOptions.js";
+import {
+  Type as OneofDescriptorProto,
+  encodeJson as encodeJson_6,
+  decodeJson as decodeJson_6,
+  encodeBinary as encodeBinary_6,
+  decodeBinary as decodeBinary_6,
+} from "./OneofDescriptorProto.js";
+import {
+  Type as ReservedRange,
+  encodeJson as encodeJson_7,
+  decodeJson as decodeJson_7,
+  encodeBinary as encodeBinary_7,
+  decodeBinary as decodeBinary_7,
+} from "./(DescriptorProto)/ReservedRange.js";
+import {
+  tsValueToJsonValueFns,
+  jsonValueToTsValueFns,
+} from "../../../runtime/json/scalar.js";
+import {
+  WireMessage,
+  WireType,
+} from "../../../runtime/wire/index.js";
+import {
+  default as serialize,
+} from "../../../runtime/wire/serialize.js";
+import {
+  tsValueToWireValueFns,
+  wireValueToTsValueFns,
+} from "../../../runtime/wire/scalar.js";
+import {
+  default as deserialize,
+} from "../../../runtime/wire/deserialize.js";
+
+export declare namespace $.google.protobuf {
+  export interface DescriptorProto {
+    name?: string;
+    field: FieldDescriptorProto[];
+    nestedType: DescriptorProto_1[];
+    enumType: EnumDescriptorProto[];
+    extensionRange: ExtensionRange[];
+    extension: FieldDescriptorProto[];
+    options?: MessageOptions;
+    oneofDecl: OneofDescriptorProto[];
+    reservedRange: ReservedRange[];
+    reservedName: string[];
+  }
+}
+export type Type = $.google.protobuf.DescriptorProto;
+
+export function getDefaultValue(): $.google.protobuf.DescriptorProto {
+  return {
+    name: "",
+    field: [],
+    nestedType: [],
+    enumType: [],
+    extensionRange: [],
+    extension: [],
+    options: undefined,
+    oneofDecl: [],
+    reservedRange: [],
+    reservedName: [],
+  };
+}
+
+export function createValue(partialValue: Partial<$.google.protobuf.DescriptorProto>): $.google.protobuf.DescriptorProto {
+  return {
+    ...getDefaultValue(),
+    ...partialValue,
+  };
+}
+
+export function encodeJson(value: $.google.protobuf.DescriptorProto): unknown {
+  const result: any = {};
+  if (value.name !== undefined) result.name = tsValueToJsonValueFns.string(value.name);
+  result.field = value.field.map(value => encodeJson_1(value));
+  result.nestedType = value.nestedType.map(value => encodeJson_2(value));
+  result.enumType = value.enumType.map(value => encodeJson_3(value));
+  result.extensionRange = value.extensionRange.map(value => encodeJson_4(value));
+  result.extension = value.extension.map(value => encodeJson_1(value));
+  if (value.options !== undefined) result.options = encodeJson_5(value.options);
+  result.oneofDecl = value.oneofDecl.map(value => encodeJson_6(value));
+  result.reservedRange = value.reservedRange.map(value => encodeJson_7(value));
+  result.reservedName = value.reservedName.map(value => tsValueToJsonValueFns.string(value));
+  return result;
+}
+
+export function decodeJson(value: any): $.google.protobuf.DescriptorProto {
+  const result = getDefaultValue();
+  if (value.name !== undefined) result.name = jsonValueToTsValueFns.string(value.name);
+  result.field = value.field?.map((value: any) => decodeJson_1(value)) ?? [];
+  result.nestedType = value.nestedType?.map((value: any) => decodeJson_2(value)) ?? [];
+  result.enumType = value.enumType?.map((value: any) => decodeJson_3(value)) ?? [];
+  result.extensionRange = value.extensionRange?.map((value: any) => decodeJson_4(value)) ?? [];
+  result.extension = value.extension?.map((value: any) => decodeJson_1(value)) ?? [];
+  if (value.options !== undefined) result.options = decodeJson_5(value.options);
+  result.oneofDecl = value.oneofDecl?.map((value: any) => decodeJson_6(value)) ?? [];
+  result.reservedRange = value.reservedRange?.map((value: any) => decodeJson_7(value)) ?? [];
+  result.reservedName = value.reservedName?.map((value: any) => jsonValueToTsValueFns.string(value)) ?? [];
+  return result;
+}
+
+export function encodeBinary(value: $.google.protobuf.DescriptorProto): Uint8Array {
+  const result: WireMessage = [];
+  if (value.name !== undefined) {
+    const tsValue = value.name;
+    result.push(
+      [1, tsValueToWireValueFns.string(tsValue)],
+    );
+  }
+  for (const tsValue of value.field) {
+    result.push(
+      [2, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
+    );
+  }
+  for (const tsValue of value.nestedType) {
+    result.push(
+      [3, { type: WireType.LengthDelimited as const, value: encodeBinary_2(tsValue) }],
+    );
+  }
+  for (const tsValue of value.enumType) {
+    result.push(
+      [4, { type: WireType.LengthDelimited as const, value: encodeBinary_3(tsValue) }],
+    );
+  }
+  for (const tsValue of value.extensionRange) {
+    result.push(
+      [5, { type: WireType.LengthDelimited as const, value: encodeBinary_4(tsValue) }],
+    );
+  }
+  for (const tsValue of value.extension) {
+    result.push(
+      [6, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
+    );
+  }
+  if (value.options !== undefined) {
+    const tsValue = value.options;
+    result.push(
+      [7, { type: WireType.LengthDelimited as const, value: encodeBinary_5(tsValue) }],
+    );
+  }
+  for (const tsValue of value.oneofDecl) {
+    result.push(
+      [8, { type: WireType.LengthDelimited as const, value: encodeBinary_6(tsValue) }],
+    );
+  }
+  for (const tsValue of value.reservedRange) {
+    result.push(
+      [9, { type: WireType.LengthDelimited as const, value: encodeBinary_7(tsValue) }],
+    );
+  }
+  for (const tsValue of value.reservedName) {
+    result.push(
+      [10, tsValueToWireValueFns.string(tsValue)],
+    );
+  }
+  return serialize(result);
+}
+
+export function decodeBinary(binary: Uint8Array): $.google.protobuf.DescriptorProto {
+  const result = getDefaultValue();
+  const wireMessage = deserialize(binary);
+  const wireFields = new Map(wireMessage);
+  field: {
+    const wireValue = wireFields.get(1);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.name = value;
+  }
+  collection: {
+    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 2).map(([, wireValue]) => wireValue);
+    const value = wireValues.map((wireValue) => wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined).filter(x => x !== undefined);
+    if (!value.length) break collection;
+    result.field = value as any;
+  }
+  collection: {
+    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 3).map(([, wireValue]) => wireValue);
+    const value = wireValues.map((wireValue) => wireValue.type === WireType.LengthDelimited ? decodeBinary_2(wireValue.value) : undefined).filter(x => x !== undefined);
+    if (!value.length) break collection;
+    result.nestedType = value as any;
+  }
+  collection: {
+    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 4).map(([, wireValue]) => wireValue);
+    const value = wireValues.map((wireValue) => wireValue.type === WireType.LengthDelimited ? decodeBinary_3(wireValue.value) : undefined).filter(x => x !== undefined);
+    if (!value.length) break collection;
+    result.enumType = value as any;
+  }
+  collection: {
+    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 5).map(([, wireValue]) => wireValue);
+    const value = wireValues.map((wireValue) => wireValue.type === WireType.LengthDelimited ? decodeBinary_4(wireValue.value) : undefined).filter(x => x !== undefined);
+    if (!value.length) break collection;
+    result.extensionRange = value as any;
+  }
+  collection: {
+    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 6).map(([, wireValue]) => wireValue);
+    const value = wireValues.map((wireValue) => wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined).filter(x => x !== undefined);
+    if (!value.length) break collection;
+    result.extension = value as any;
+  }
+  field: {
+    const wireValue = wireFields.get(7);
+    if (wireValue === undefined) break field;
+    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_5(wireValue.value) : undefined;
+    if (value === undefined) break field;
+    result.options = value;
+  }
+  collection: {
+    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 8).map(([, wireValue]) => wireValue);
+    const value = wireValues.map((wireValue) => wireValue.type === WireType.LengthDelimited ? decodeBinary_6(wireValue.value) : undefined).filter(x => x !== undefined);
+    if (!value.length) break collection;
+    result.oneofDecl = value as any;
+  }
+  collection: {
+    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 9).map(([, wireValue]) => wireValue);
+    const value = wireValues.map((wireValue) => wireValue.type === WireType.LengthDelimited ? decodeBinary_7(wireValue.value) : undefined).filter(x => x !== undefined);
+    if (!value.length) break collection;
+    result.reservedRange = value as any;
+  }
+  collection: {
+    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 10).map(([, wireValue]) => wireValue);
+    const value = wireValues.map((wireValue) => wireValueToTsValueFns.string(wireValue)).filter(x => x !== undefined);
+    if (!value.length) break collection;
+    result.reservedName = value as any;
+  }
+  return result;
+}
