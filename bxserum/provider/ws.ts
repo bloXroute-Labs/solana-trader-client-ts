@@ -37,8 +37,7 @@ export class WsProvider extends BaseProvider {
         return JSON.stringify({            
                 jsonrpc: "2.0", 
                 id: 1,
-                Method: method,
-                ID: 1,
+                method: method,
                 params: params            
         }) 
     }
