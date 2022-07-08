@@ -1,8 +1,10 @@
-import { FilterOrderbookRequest, GetAccountBalanceRequest, GetAccountBalanceResponse, GetKlineRequest, GetKlineResponse, GetMarketDepthStreamResponse, GetMarketsRequest, GetMarketsResponse, GetOpenOrdersRequest, GetOpenOrdersResponse, GetOrderBookRequest, GetOrderbookResponse, GetOrderbooksStreamResponse, GetOrderByIDRequest, GetOrderByIDResponse, GetOrdersRequest, GetOrdersResponse, GetServerTimeRequest, GetServerTimeResponse, GetTickersRequest, GetTickersResponse, GetTickersStreamResponse, GetTradesRequest, GetTradesResponse, GetTradesStreamResponse, GetUnsettledRequest, GetUnsettledResponse, PostCancelAllRequest, PostCancelAllResponse, PostCancelByClientOrderIDRequest, PostCancelOrderRequest, PostCancelOrderResponse, PostOrderRequest, PostOrderResponse, PostSettleRequest, PostSettleResponse, PostSubmitRequest, PostSubmitResponse } from "../proto/messages/api/index.js";
+import { GetFilteredOrderbooksRequest, GetAccountBalanceRequest, GetAccountBalanceResponse, GetKlineRequest, GetKlineResponse, GetMarketDepthStreamResponse, GetMarketsRequest, GetMarketsResponse, GetOpenOrdersRequest, GetOpenOrdersResponse, GetOrderBookRequest, GetOrderbookResponse, GetOrderbooksStreamResponse, GetOrderByIDRequest, GetOrderByIDResponse, GetOrdersRequest, GetOrdersResponse, GetServerTimeRequest, GetServerTimeResponse, GetTickersRequest, GetTickersResponse, GetTickersStreamResponse, GetTradesRequest, GetTradesResponse, GetTradesStreamResponse, GetUnsettledRequest, GetUnsettledResponse, PostCancelAllRequest, PostCancelAllResponse, PostCancelByClientOrderIDRequest, PostCancelOrderRequest, PostCancelOrderResponse, PostOrderRequest, PostOrderResponse, PostSettleRequest, PostSettleResponse, PostSubmitRequest, PostSubmitResponse, GetOrderStatusStreamRequest, GetOrderStatusStreamResponse } from "../proto/messages/api/index.js";
 import { Api } from "../proto/services/api/index.js";
 
 
 export abstract class BaseProvider implements Api {
+    abstract close():void;
+
     getMarkets(request: GetMarketsRequest): Promise<GetMarketsResponse>{
         throw new Error("Not implemented")
     };
@@ -22,11 +24,9 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     };
 
-
     getServerTime(request: GetServerTimeRequest): Promise<GetServerTimeResponse>{
         throw new Error("Not implemented")
     };
-
 
     getAccountBalance(request: GetAccountBalanceRequest): Promise<GetAccountBalanceResponse>{
         throw new Error("Not implemented")
@@ -74,9 +74,9 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     };
 
-    filterOrderbooksStream(request: FilterOrderbookRequest): Promise<AsyncGenerator<GetOrderbooksStreamResponse>>{
+    getFilteredOrderbooksStream(request: GetFilteredOrderbooksRequest): Promise<AsyncGenerator<GetOrderbooksStreamResponse>>{
         throw new Error("Not implemented")
-    };
+    }
 
     getTickersStream(request: GetTickersRequest): Promise<AsyncGenerator<GetTickersStreamResponse>>{
         throw new Error("Not implemented")
@@ -90,5 +90,13 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     };
 
-    abstract close():void;
+    getOrderStatusStream(request: GetOrderStatusStreamRequest): Promise<AsyncGenerator<GetOrderStatusStreamResponse>>{
+        throw new Error("Not implemented")
+    }
+    
+    // async submitOrder(request: PostOrderRequest, skipPreFlight: boolean = false): Promise<PostSubmitResponse>{
+    //     let tx = await this.postOrder(request)
+
+    //     return this.postSubmit({ transaction:tx.transaction, skipPreFlight})
+    // }
 }

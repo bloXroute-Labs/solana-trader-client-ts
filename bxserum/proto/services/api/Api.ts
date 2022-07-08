@@ -208,11 +208,11 @@ import {
   encodeJson as encodeJson_33,
 } from "../../messages/api/GetOrderbooksStreamResponse.js";
 import {
-  Type as FilterOrderbookRequest,
+  Type as GetFilteredOrderbooksRequest,
   encodeBinary as encodeBinary_34,
   decodeBinary as decodeBinary_34,
   encodeJson as encodeJson_34,
-} from "../../messages/api/FilterOrderbookRequest.js";
+} from "../../messages/api/GetFilteredOrderbooksRequest.js";
 import {
   Type as GetTickersStreamResponse,
   encodeBinary as encodeBinary_35,
@@ -231,6 +231,18 @@ import {
   decodeBinary as decodeBinary_37,
   encodeJson as encodeJson_37,
 } from "../../messages/api/GetTradesStreamResponse.js";
+import {
+  Type as GetOrderStatusStreamRequest,
+  encodeBinary as encodeBinary_38,
+  decodeBinary as decodeBinary_38,
+  encodeJson as encodeJson_38,
+} from "../../messages/api/GetOrderStatusStreamRequest.js";
+import {
+  Type as GetOrderStatusStreamResponse,
+  encodeBinary as encodeBinary_39,
+  decodeBinary as decodeBinary_39,
+  encodeJson as encodeJson_39,
+} from "../../messages/api/GetOrderStatusStreamResponse.js";
 import {
   fromSingle,
   first,
@@ -259,10 +271,11 @@ export interface Service<TReqArgs extends any[] = [], TResArgs extends any[] = [
   getOrderByID(request: GetOrderByIDRequest, ...args: TReqArgs): RpcReturnType<Promise<GetOrderByIDResponse>, TResArgs>;
   getUnsettled(request: GetUnsettledRequest, ...args: TReqArgs): RpcReturnType<Promise<GetUnsettledResponse>, TResArgs>;
   getOrderbooksStream(request: GetOrderBookRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetOrderbooksStreamResponse>, TResArgs>;
-  filterOrderbooksStream(request: FilterOrderbookRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetOrderbooksStreamResponse>, TResArgs>;
+  getFilteredOrderbooksStream(request: GetFilteredOrderbooksRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetOrderbooksStreamResponse>, TResArgs>;
   getTickersStream(request: GetTickersRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetTickersStreamResponse>, TResArgs>;
   getMarketDepthStream(request: GetMarketsRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetMarketDepthStreamResponse>, TResArgs>;
   getTradesStream(request: GetTradesRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetTradesStreamResponse>, TResArgs>;
+  getOrderStatusStream(request: GetOrderStatusStreamRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetOrderStatusStreamResponse>, TResArgs>;
 }
 
 export type MethodDescriptors = typeof methodDescriptors;
@@ -555,15 +568,15 @@ export const methodDescriptors = {
       serializeJson: (value: GetOrderbooksStreamResponse) => JSON.stringify(encodeJson_33(value)),
     },
   },
-  filterOrderbooksStream: {
-    methodName: "FilterOrderbooksStream",
+  getFilteredOrderbooksStream: {
+    methodName: "GetFilteredOrderbooksStream",
     service: { serviceName: "api.Api" },
     requestStream: false,
     responseStream: true,
     requestType: {
       serializeBinary: encodeBinary_34,
       deserializeBinary: decodeBinary_34,
-      serializeJson: (value: FilterOrderbookRequest) => JSON.stringify(encodeJson_34(value)),
+      serializeJson: (value: GetFilteredOrderbooksRequest) => JSON.stringify(encodeJson_34(value)),
     },
     responseType: {
       serializeBinary: encodeBinary_33,
@@ -619,6 +632,22 @@ export const methodDescriptors = {
       serializeJson: (value: GetTradesStreamResponse) => JSON.stringify(encodeJson_37(value)),
     },
   },
+  getOrderStatusStream: {
+    methodName: "GetOrderStatusStream",
+    service: { serviceName: "api.Api" },
+    requestStream: false,
+    responseStream: true,
+    requestType: {
+      serializeBinary: encodeBinary_38,
+      deserializeBinary: decodeBinary_38,
+      serializeJson: (value: GetOrderStatusStreamRequest) => JSON.stringify(encodeJson_38(value)),
+    },
+    responseType: {
+      serializeBinary: encodeBinary_39,
+      deserializeBinary: decodeBinary_39,
+      serializeJson: (value: GetOrderStatusStreamResponse) => JSON.stringify(encodeJson_39(value)),
+    },
+  },
 } as const;
 
 export class RpcError<TTrailer = any> extends Error {
@@ -663,7 +692,7 @@ export function createServiceClient<TMetadata, THeader, TTrailer>(
         const headerPromise = rpcMethodResult[1];
         const trailerPromise = rpcMethodResult[2];
         const [header, response] = await Promise.all([
-          headerPromise,
+          getHeaderBeforeTrailer(headerPromise, trailerPromise),
           responseStream ? resAsyncGenerator : first(resAsyncGenerator),
         ]);
         return responseOnly ? response : [response, header, trailerPromise];

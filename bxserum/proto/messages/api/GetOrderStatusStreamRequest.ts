@@ -17,54 +17,71 @@ import {
 } from "../../runtime/wire/deserialize.js";
 
 export declare namespace $.api {
-  export interface GetAccountBalanceRequest {
+  export interface GetOrderStatusStreamRequest {
+    market: string;
     ownerAddress: string;
   }
 }
-export type Type = $.api.GetAccountBalanceRequest;
+export type Type = $.api.GetOrderStatusStreamRequest;
 
-export function getDefaultValue(): $.api.GetAccountBalanceRequest {
+export function getDefaultValue(): $.api.GetOrderStatusStreamRequest {
   return {
+    market: "",
     ownerAddress: "",
   };
 }
 
-export function createValue(partialValue: Partial<$.api.GetAccountBalanceRequest>): $.api.GetAccountBalanceRequest {
+export function createValue(partialValue: Partial<$.api.GetOrderStatusStreamRequest>): $.api.GetOrderStatusStreamRequest {
   return {
     ...getDefaultValue(),
     ...partialValue,
   };
 }
 
-export function encodeJson(value: $.api.GetAccountBalanceRequest): unknown {
+export function encodeJson(value: $.api.GetOrderStatusStreamRequest): unknown {
   const result: any = {};
+  if (value.market !== undefined) result.market = tsValueToJsonValueFns.string(value.market);
   if (value.ownerAddress !== undefined) result.ownerAddress = tsValueToJsonValueFns.string(value.ownerAddress);
   return result;
 }
 
-export function decodeJson(value: any): $.api.GetAccountBalanceRequest {
+export function decodeJson(value: any): $.api.GetOrderStatusStreamRequest {
   const result = getDefaultValue();
+  if (value.market !== undefined) result.market = jsonValueToTsValueFns.string(value.market);
   if (value.ownerAddress !== undefined) result.ownerAddress = jsonValueToTsValueFns.string(value.ownerAddress);
   return result;
 }
 
-export function encodeBinary(value: $.api.GetAccountBalanceRequest): Uint8Array {
+export function encodeBinary(value: $.api.GetOrderStatusStreamRequest): Uint8Array {
   const result: WireMessage = [];
+  if (value.market !== undefined) {
+    const tsValue = value.market;
+    result.push(
+      [1, tsValueToWireValueFns.string(tsValue)],
+    );
+  }
   if (value.ownerAddress !== undefined) {
     const tsValue = value.ownerAddress;
     result.push(
-      [1, tsValueToWireValueFns.string(tsValue)],
+      [2, tsValueToWireValueFns.string(tsValue)],
     );
   }
   return serialize(result);
 }
 
-export function decodeBinary(binary: Uint8Array): $.api.GetAccountBalanceRequest {
+export function decodeBinary(binary: Uint8Array): $.api.GetOrderStatusStreamRequest {
   const result = getDefaultValue();
   const wireMessage = deserialize(binary);
   const wireFields = new Map(wireMessage);
   field: {
     const wireValue = wireFields.get(1);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.market = value;
+  }
+  field: {
+    const wireValue = wireFields.get(2);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;

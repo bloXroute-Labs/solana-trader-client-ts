@@ -30,6 +30,8 @@ export declare namespace $.api {
     side: Side;
     size: number;
     price: number;
+    orderID: string;
+    isMaker: boolean;
   }
 }
 export type Type = $.api.Trade;
@@ -39,6 +41,8 @@ export function getDefaultValue(): $.api.Trade {
     side: "S_UNKNOWN",
     size: 0,
     price: 0,
+    orderID: "",
+    isMaker: false,
   };
 }
 
@@ -54,6 +58,8 @@ export function encodeJson(value: $.api.Trade): unknown {
   if (value.side !== undefined) result.side = tsValueToJsonValueFns.enum(value.side);
   if (value.size !== undefined) result.size = tsValueToJsonValueFns.double(value.size);
   if (value.price !== undefined) result.price = tsValueToJsonValueFns.double(value.price);
+  if (value.orderID !== undefined) result.orderID = tsValueToJsonValueFns.string(value.orderID);
+  if (value.isMaker !== undefined) result.isMaker = tsValueToJsonValueFns.bool(value.isMaker);
   return result;
 }
 
@@ -62,6 +68,8 @@ export function decodeJson(value: any): $.api.Trade {
   if (value.side !== undefined) result.side = jsonValueToTsValueFns.enum(value.side) as Side;
   if (value.size !== undefined) result.size = jsonValueToTsValueFns.double(value.size);
   if (value.price !== undefined) result.price = jsonValueToTsValueFns.double(value.price);
+  if (value.orderID !== undefined) result.orderID = jsonValueToTsValueFns.string(value.orderID);
+  if (value.isMaker !== undefined) result.isMaker = jsonValueToTsValueFns.bool(value.isMaker);
   return result;
 }
 
@@ -83,6 +91,18 @@ export function encodeBinary(value: $.api.Trade): Uint8Array {
     const tsValue = value.price;
     result.push(
       [3, tsValueToWireValueFns.double(tsValue)],
+    );
+  }
+  if (value.orderID !== undefined) {
+    const tsValue = value.orderID;
+    result.push(
+      [4, tsValueToWireValueFns.string(tsValue)],
+    );
+  }
+  if (value.isMaker !== undefined) {
+    const tsValue = value.isMaker;
+    result.push(
+      [5, tsValueToWireValueFns.bool(tsValue)],
     );
   }
   return serialize(result);
@@ -112,6 +132,20 @@ export function decodeBinary(binary: Uint8Array): $.api.Trade {
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
     result.price = value;
+  }
+  field: {
+    const wireValue = wireFields.get(4);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.orderID = value;
+  }
+  field: {
+    const wireValue = wireFields.get(5);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.bool(wireValue);
+    if (value === undefined) break field;
+    result.isMaker = value;
   }
   return result;
 }
