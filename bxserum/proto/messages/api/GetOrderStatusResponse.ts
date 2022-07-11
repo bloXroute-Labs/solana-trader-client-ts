@@ -1,7 +1,12 @@
 import {
-  Type as OrderStatus,
+  Type as Side,
   name2num,
   num2name,
+} from "./Side.js";
+import {
+  Type as OrderStatus,
+  name2num as name2num_1,
+  num2name as num2name_1,
 } from "./OrderStatus.js";
 import {
   tsValueToJsonValueFns,
@@ -31,6 +36,9 @@ export declare namespace $.api {
     openOrderAddress: string;
     orderID: string;
     clientOrderID: string;
+    quantityReleased: number;
+    price: number;
+    side: Side;
     orderStatus: OrderStatus;
   }
 }
@@ -42,6 +50,9 @@ export function getDefaultValue(): $.api.GetOrderStatusResponse {
     openOrderAddress: "",
     orderID: "",
     clientOrderID: "0",
+    quantityReleased: 0,
+    price: 0,
+    side: "S_UNKNOWN",
     orderStatus: "OS_UNKNOWN",
   };
 }
@@ -59,6 +70,9 @@ export function encodeJson(value: $.api.GetOrderStatusResponse): unknown {
   if (value.openOrderAddress !== undefined) result.openOrderAddress = tsValueToJsonValueFns.string(value.openOrderAddress);
   if (value.orderID !== undefined) result.orderID = tsValueToJsonValueFns.string(value.orderID);
   if (value.clientOrderID !== undefined) result.clientOrderID = tsValueToJsonValueFns.uint64(value.clientOrderID);
+  if (value.quantityReleased !== undefined) result.quantityReleased = tsValueToJsonValueFns.float(value.quantityReleased);
+  if (value.price !== undefined) result.price = tsValueToJsonValueFns.float(value.price);
+  if (value.side !== undefined) result.side = tsValueToJsonValueFns.enum(value.side);
   if (value.orderStatus !== undefined) result.orderStatus = tsValueToJsonValueFns.enum(value.orderStatus);
   return result;
 }
@@ -69,6 +83,9 @@ export function decodeJson(value: any): $.api.GetOrderStatusResponse {
   if (value.openOrderAddress !== undefined) result.openOrderAddress = jsonValueToTsValueFns.string(value.openOrderAddress);
   if (value.orderID !== undefined) result.orderID = jsonValueToTsValueFns.string(value.orderID);
   if (value.clientOrderID !== undefined) result.clientOrderID = jsonValueToTsValueFns.uint64(value.clientOrderID);
+  if (value.quantityReleased !== undefined) result.quantityReleased = jsonValueToTsValueFns.float(value.quantityReleased);
+  if (value.price !== undefined) result.price = jsonValueToTsValueFns.float(value.price);
+  if (value.side !== undefined) result.side = jsonValueToTsValueFns.enum(value.side) as Side;
   if (value.orderStatus !== undefined) result.orderStatus = jsonValueToTsValueFns.enum(value.orderStatus) as OrderStatus;
   return result;
 }
@@ -99,10 +116,28 @@ export function encodeBinary(value: $.api.GetOrderStatusResponse): Uint8Array {
       [4, tsValueToWireValueFns.uint64(tsValue)],
     );
   }
+  if (value.quantityReleased !== undefined) {
+    const tsValue = value.quantityReleased;
+    result.push(
+      [5, tsValueToWireValueFns.float(tsValue)],
+    );
+  }
+  if (value.price !== undefined) {
+    const tsValue = value.price;
+    result.push(
+      [6, tsValueToWireValueFns.float(tsValue)],
+    );
+  }
+  if (value.side !== undefined) {
+    const tsValue = value.side;
+    result.push(
+      [7, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
+    );
+  }
   if (value.orderStatus !== undefined) {
     const tsValue = value.orderStatus;
     result.push(
-      [5, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
+      [8, { type: WireType.Varint as const, value: new Long(name2num_1[tsValue as keyof typeof name2num_1]) }],
     );
   }
   return serialize(result);
@@ -143,7 +178,28 @@ export function decodeBinary(binary: Uint8Array): $.api.GetOrderStatusResponse {
   field: {
     const wireValue = wireFields.get(5);
     if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.float(wireValue);
+    if (value === undefined) break field;
+    result.quantityReleased = value;
+  }
+  field: {
+    const wireValue = wireFields.get(6);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.float(wireValue);
+    if (value === undefined) break field;
+    result.price = value;
+  }
+  field: {
+    const wireValue = wireFields.get(7);
+    if (wireValue === undefined) break field;
     const value = wireValue.type === WireType.Varint ? num2name[wireValue.value[0] as keyof typeof num2name] : undefined;
+    if (value === undefined) break field;
+    result.side = value;
+  }
+  field: {
+    const wireValue = wireFields.get(8);
+    if (wireValue === undefined) break field;
+    const value = wireValue.type === WireType.Varint ? num2name_1[wireValue.value[0] as keyof typeof num2name_1] : undefined;
     if (value === undefined) break field;
     result.orderStatus = value;
   }

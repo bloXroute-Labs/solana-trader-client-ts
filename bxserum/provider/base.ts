@@ -1,5 +1,6 @@
 import { GetFilteredOrderbooksRequest, GetAccountBalanceRequest, GetAccountBalanceResponse, GetKlineRequest, GetKlineResponse, GetMarketDepthStreamResponse, GetMarketsRequest, GetMarketsResponse, GetOpenOrdersRequest, GetOpenOrdersResponse, GetOrderBookRequest, GetOrderbookResponse, GetOrderbooksStreamResponse, GetOrderByIDRequest, GetOrderByIDResponse, GetOrdersRequest, GetOrdersResponse, GetServerTimeRequest, GetServerTimeResponse, GetTickersRequest, GetTickersResponse, GetTickersStreamResponse, GetTradesRequest, GetTradesResponse, GetTradesStreamResponse, GetUnsettledRequest, GetUnsettledResponse, PostCancelAllRequest, PostCancelAllResponse, PostCancelByClientOrderIDRequest, PostCancelOrderRequest, PostCancelOrderResponse, PostOrderRequest, PostOrderResponse, PostSettleRequest, PostSettleResponse, PostSubmitRequest, PostSubmitResponse, GetOrderStatusStreamRequest, GetOrderStatusStreamResponse } from "../proto/messages/api/index.js";
 import { Api } from "../proto/services/api/index.js";
+import { signTx, SubmitTransactionResponse } from "../../utils/transaction.js";
 
 
 export abstract class BaseProvider implements Api {
@@ -94,9 +95,36 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
     
-    // async submitOrder(request: PostOrderRequest, skipPreFlight: boolean = false): Promise<PostSubmitResponse>{
-    //     let tx = await this.postOrder(request)
+    async submitOrder(request: PostOrderRequest, skipPreFlight: boolean = false): Promise<SubmitTransactionResponse>{
+        let res = await this.postOrder(request)
 
-    //     return this.postSubmit({ transaction:tx.transaction, skipPreFlight})
-    // }
+        const tx = signTx(res.transaction)
+
+        const postSubmitRez = await this.postSubmit({ transaction: tx.serialize().toString("base64"), skipPreFlight });
+        return { signature: postSubmitRez.signature,  openOrdersAccount: res.openOrdersAddress}
+    }
+
+    async submitCancelOrder(request: PostCancelOrderRequest, skipPreFlight: boolean = false): Promise<PostSubmitResponse>{
+        let res = await this.postCancelOrder(request)
+
+        const tx = signTx(res.transaction)
+
+        return this.postSubmit({ transaction:tx.serialize().toString("base64"), skipPreFlight})
+    }
+
+    async submitCancelOrderByClientOrderID(request: PostCancelByClientOrderIDRequest, skipPreFlight: boolean = true): Promise<PostSubmitResponse>{
+        let res = await this.postCancelByClientOrderID(request)
+
+        const tx = signTx(res.transaction)
+
+        return this.postSubmit({ transaction:tx.serialize().toString("base64"), skipPreFlight})
+    }
+
+    async submitSettle(request: PostSettleRequest, skipPreFlight: boolean = true): Promise<PostSubmitResponse>{
+        let res = await this.postSettle(request)
+
+        const tx = signTx(res.transaction)
+
+        return this.postSubmit({ transaction:tx.serialize().toString("base64"), skipPreFlight})
+    }
 }

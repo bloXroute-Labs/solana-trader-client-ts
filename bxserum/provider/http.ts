@@ -70,10 +70,59 @@ export class HttpProvider extends BaseProvider {
         })
     };
 
-    postBalance(request: GetAccountBalanceRequest): Promise<GetAccountBalanceResponse>{
-        const path = `${this.baseUrl}/trade/postOrder`
-        return fetch(path).then(resp => {
-            return resp.json() as any as GetAccountBalanceResponse
+    postOrder(request: PostOrderRequest): Promise<PostOrderResponse> {
+        const path = `${this.baseUrl}/trade/place`        
+        return fetch(path, {            
+            method: 'POST',
+            body: JSON.stringify(request),
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then(resp => {
+            return resp.json() as any as PostOrderResponse
+        })
+    };
+
+    postSubmit(request: PostSubmitRequest): Promise<PostSubmitResponse> {
+        const path = `${this.baseUrl}/trade/submit`
+        return fetch(path, {
+            method: 'POST',
+            body: JSON.stringify(request),
+            headers: { 'Content-Type': 'application/json' }
+        }).then(resp => {
+            return resp.json() as any as PostSubmitResponse
+        })
+    }
+
+    postCancelOrder(request: PostCancelOrderRequest): Promise<PostCancelOrderResponse> {
+        const path = `${this.baseUrl}/trade/cancel`
+        return fetch(path, {
+            method: 'POST',
+            body: JSON.stringify(request),
+            headers: { 'Content-Type': 'application/json' }
+        }).then(resp => {
+            return resp.json() as any as PostCancelOrderResponse
+        })
+    };
+
+    postCancelByClientOrderID(request: PostCancelByClientOrderIDRequest): Promise<PostCancelOrderResponse> {
+        const path = `${this.baseUrl}/trade/cancelbyid`
+        return fetch(path, {
+            method: 'POST',
+            body: JSON.stringify(request),
+            headers: { 'Content-Type': 'application/json' }
+        }).then(resp => {
+            return resp.json() as any as PostCancelOrderResponse
+        })
+    };
+
+    postSettle(request: PostSettleRequest): Promise<PostSettleResponse> {
+        const path = `${this.baseUrl}/trade/settle`
+        return fetch(path, {
+            method: 'POST',
+            body: JSON.stringify(request),
+            headers: { 'Content-Type': 'application/json' }
+        }).then(resp => {
+            return resp.json() as any as PostSettleResponse
         })
     };
 }
