@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PROTOBUF_PATH=/Users/dumitrucantemir/Workspace/serum-api-deployment/serum-api/proto
+PROTOBUF_PATH=../serum-api/proto
 
 pb gen ts --entry-path $PROTOBUF_PATH --out-dir=bxserum/proto $PROTOBUF_PATH/api.proto --ext-in-import=".js"
 

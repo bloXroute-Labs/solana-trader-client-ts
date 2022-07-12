@@ -12,8 +12,7 @@ $ npm i
 
 ## Usage
 
-This library supports HTTP, websockets, and GRPC interfaces. You can use it with
-a context manager or handle open/closing yourself.
+This library supports HTTP, websockets, and GRPC interfaces. You can handle open/closing yourself.
 
 For any methods involving transaction creation you will need to provide your 
 Solana private key. You can provide this via the .env file - variable 

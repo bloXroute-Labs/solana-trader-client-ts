@@ -14,7 +14,7 @@
     "type": "git",
     "url": "git+https://github.com/bloXroute-Labs/serum-client-ts.git"
   },
-  "author": "bloxRoute",
+  "author": "bloXroute",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/bloXroute-Labs/serum-client-ts/issues"

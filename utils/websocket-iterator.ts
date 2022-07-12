@@ -3,7 +3,10 @@ import WebSocket from "ws"
 
 
 export async function* websocketData<TData>(websocket: WebSocket): AsyncGenerator<any, any, unknown> {
-	for await (const { data } of websocketEvents(websocket)) yield data
+	for await (const { data } of websocketEvents(websocket)) {
+		const { result } = JSON.parse(data.toString())
+		yield result
+	}
 }
 
 export function websocketEvents(websocket: WebSocket): AsyncGenerator<WebSocket.MessageEvent>

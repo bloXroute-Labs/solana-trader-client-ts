@@ -138,33 +138,53 @@ async function doStreams(provider: BaseProvider) {
 async function doLifecycle(provider: BaseProvider) {
     try {
         const mktAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"
-        await callSubmitOrder(provider)
-        console.info(" ")
-        console.info(" ")
 
-        let req = await provider.getOrderStatusStream({ market: mktAddress, ownerAddress: testOrder.ownerAddress })
-        for await (const ob of req) {
-            if (ob.orderInfo && ob.orderInfo.clientOrderID == testOrder.clientOrderID && ob.orderInfo.orderStatus == "OS_OPEN") {
-                console.info(`order went to orderbook ('${ob.orderInfo.orderStatus}') successfully`)
-            } else {
-                console.error(`order failed to get into orderbook`)
+        await Promise.all([new Promise(async (resolve, reject) => {
+            let req = await provider.getOrderStatusStream({ market: mktAddress, ownerAddress: testOrder.ownerAddress })
+            for await (const ob of req) {
+                if (ob.orderInfo && ob.orderInfo.clientOrderID == testOrder.clientOrderID && ob.orderInfo.orderStatus == "OS_OPEN") {
+                    console.info(`order went to orderbook ('${ob.orderInfo.orderStatus}') successfully`)
+                    return resolve(null)
+                } else {
+                    console.error(`order failed to get into orderbook`)
+                    return reject(new Error("order failed to get into orderbook"))
+                }
             }
-            break;
-        }
-
-        await callSubmitCancelByClientOrderID(provider)
-        console.info(" ")
-        console.info(" ")
-
-        req = await provider.getOrderStatusStream({ market: mktAddress, ownerAddress: testOrder.ownerAddress })
-        for await (const ob of req) {
-            if (ob.orderInfo && ob.orderInfo.clientOrderID == testOrder.clientOrderID && ob.orderInfo.orderStatus == "OS_CANCELLED") {
-                console.info(`order canceled ('${ob.orderInfo.orderStatus}') successfully`)
-            } else {
-                console.error(`order failed to cancel`)
+        }), new Promise(async (resolve, reject) => {
+            try {
+                await delay(5000)
+                await callSubmitOrder(provider)
+                console.info(" ")
+                console.info(" ")
+                return resolve(null)
+            } catch (err) {
+                return reject(err)
             }
-            break;
-        }
+        })])
+
+
+        await Promise.all([new Promise(async (resolve, reject) => {
+            let req = await provider.getOrderStatusStream({ market: mktAddress, ownerAddress: testOrder.ownerAddress })
+            for await (const ob of req) {
+                if (ob.orderInfo && ob.orderInfo.clientOrderID == testOrder.clientOrderID && ob.orderInfo.orderStatus == "OS_CANCELLED") {
+                    console.info(`order canceled ('${ob.orderInfo.orderStatus}') successfully`)
+                    return resolve(null)
+                } else {
+                    console.error(`order failed to cancel`)
+                    return reject(new Error("order failed to cancel"))
+                }                
+            }
+        }), new Promise(async (resolve, reject) => {
+            try {
+                await delay(5000)
+                await callSubmitCancelByClientOrderID(provider)
+                console.info(" ")
+                console.info(" ")
+                return resolve(null)
+            } catch (err) {
+                return reject(err)
+            }
+        })])
 
         await callSettleFunds(provider)
         console.info(" ")
