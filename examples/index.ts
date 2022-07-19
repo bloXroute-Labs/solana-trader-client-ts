@@ -178,7 +178,7 @@ async function doLifecycle(provider: BaseProvider) {
                 } else {
                     console.error(`order failed to cancel`)
                     return reject(new Error("order failed to cancel"))
-                }                
+                }
             }
         }), new Promise(async (resolve, reject) => {
             try {
@@ -477,22 +477,17 @@ async function callCancelAll(provider: BaseProvider) {
             ownerAddress: testOrder.ownerAddress,
             openOrderAddress: testOrder.openOrdersAddress,
         }
-        let cancelAllResponse = await provider.postCancelAll(cancelAllRequest)
+        let submitCancelAllResponses = await provider.submitCancelAll(cancelAllRequest)
 
-        // checking all orders cancelled
         let signatures: string[] = []
-        for (let tx of cancelAllResponse.transactions) {
-            let signedTx = signTx(tx)
-            let postSubmitRequest: PostSubmitRequest = {
-                transaction: signedTx.serialize().toString("base64"), skipPreFlight: true
-            }
-            let submitResponse = await provider.postSubmit(postSubmitRequest)
-            signatures.push(submitResponse.signature)
+        for (let cancelAllResponse of submitCancelAllResponses) {
+            signatures.push(cancelAllResponse.signature)
         }
 
         console.info(`Cancelling all orders, response signatures(s): ${signatures.join(", ")}`)
         console.info(`\nWaiting ${crank_timeout_s}s for cancel order(s) to be cranked`)
 
+        // checking all orders cancelled
         await delay(crank_timeout_s * 1000)
         openOrdersResponse = await provider.getOpenOrders(openOrdersRequest)
 

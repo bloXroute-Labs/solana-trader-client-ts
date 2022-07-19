@@ -120,7 +120,7 @@ export abstract class BaseProvider implements Api {
         return this.postSubmit({ transaction:tx.serialize().toString("base64"), skipPreFlight})
     }
 
-    async submitCancelAll(request: PostCancelAllRequest, skipPreFlight: boolean = true): Promise<Promise<PostSubmitResponse>[]>{
+    async submitCancelAll(request: PostCancelAllRequest, skipPreFlight: boolean = true): Promise<Awaited<PostSubmitResponse>[]> {
         let res = await this.postCancelAll(request)
         let responses: Promise<PostSubmitResponse>[] = []
 
@@ -130,7 +130,7 @@ export abstract class BaseProvider implements Api {
             responses.push(postSubmitRez)// TODo we need to use promise.catchall in test
         }
 
-        return responses
+        return Promise.all(responses)
     }
 
     async submitSettle(request: PostSettleRequest, skipPreFlight: boolean = true): Promise<PostSubmitResponse>{
