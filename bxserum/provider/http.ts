@@ -115,6 +115,17 @@ export class HttpProvider extends BaseProvider {
         })
     };
 
+    postCancelAll(request: PostCancelAllRequest): Promise<PostCancelAllResponse> {
+        const path = `${this.baseUrl}/trade/cancelall`
+        return fetch(path, {
+            method: 'POST',
+            body: JSON.stringify(request),
+            headers: { 'Content-Type': 'application/json' }
+        }).then(resp => {
+            return resp.json() as any as PostCancelAllResponse
+        })
+    }
+
     postSettle(request: PostSettleRequest): Promise<PostSettleResponse> {
         const path = `${this.baseUrl}/trade/settle`
         return fetch(path, {
