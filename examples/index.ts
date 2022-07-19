@@ -4,9 +4,8 @@ import { GrpcProvider } from "../bxserum/provider/grpc.js"
 import { BaseProvider } from "../bxserum/provider/base.js"
 import { HttpProvider } from "../bxserum/provider/http.js"
 import { WsProvider } from "../bxserum/provider/ws.js"
-import { PostOrderRequest } from "../bxserum/proto/messages/api/index.js";
+import {GetOpenOrdersRequest, PostOrderRequest, PostSubmitRequest, PostCancelAllRequest, GetOpenOrdersResponse} from "../bxserum/proto/messages/api/index.js";
 import config from "../utils/config.js";
-
 
 
 const testOrder: PostOrderRequest = {
@@ -21,6 +20,8 @@ const testOrder: PostOrderRequest = {
     clientOrderID: "",
 }
 
+const crank_timeout_s = 60
+
 function delay(milliseconds: number) {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
@@ -31,9 +32,9 @@ function getRandom() {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-await http()
+//await http()
 await grpc()
-await ws()
+//await ws()
 
 
 async function http() {
@@ -44,22 +45,26 @@ async function http() {
 
 async function grpc() {
     const provider = new GrpcProvider()
-    console.info(" ----  GRPC Requests  ----")
-    await doRequests(provider)
-    console.info(" ----  GRPC Streams  ----")
-    await doStreams(provider)
-    console.info(" ----  GRPC Lifecycle  ----")
-    await doLifecycle(provider)
+    // console.info(" ----  GRPC Requests  ----")
+    // await doRequests(provider)
+    // console.info(" ----  GRPC Streams  ----")
+    // await doStreams(provider)
+    console.info(" ----  GRPC Cancel All  ----")
+    await doCancelAll(provider)
+    // console.info(" ----  GRPC Lifecycle  ----")
+    // await doLifecycle(provider)
 }
 
 async function ws() {
     const provider = new WsProvider()
-    console.info(" ----  WS Requests  ----")
-    await doRequests(provider)
-    console.info(" ----  WS Streams  ----")
-    await doStreams(provider)
-    console.info(" ----  WS Lifecycle  ----")
-    await doLifecycle(provider)
+    // console.info(" ----  WS Requests  ----")
+    // await doRequests(provider)
+    // console.info(" ----  WS Streams  ----")
+    // await doStreams(provider)
+    console.info(" ----  WS Cancel All  ----")
+    await doCancelAll(provider)
+    // console.info(" ----  WS Lifecycle  ----")
+    // await doLifecycle(provider)
 }
 
 async function doRequests(provider: BaseProvider) {
@@ -189,6 +194,14 @@ async function doLifecycle(provider: BaseProvider) {
         await callSettleFunds(provider)
         console.info(" ")
         console.info(" ")
+    } finally {
+        provider.close()
+    }
+}
+
+async function doCancelAll(provider: BaseProvider) {
+    try {
+
     } finally {
         provider.close()
     }
@@ -378,7 +391,7 @@ async function callGetFilteredOrderbookStream(provider: BaseProvider) {
 //POST requests
 async function callSubmitOrder(provider: BaseProvider) {
     try {
-        console.info("Generating and submiting a New Order transaction")
+        console.info("Generating and submitting a New Order transaction")
         const clientOrderID = getRandom()
         testOrder.clientOrderID = clientOrderID.toLocaleString('fullwide', { useGrouping: false })
         const req = await provider.submitOrder(testOrder)
@@ -391,7 +404,7 @@ async function callSubmitOrder(provider: BaseProvider) {
 
 async function callSubmitCancelByClientOrderID(provider: BaseProvider) {
     try {
-        console.info("Generating and submiting a Cancel by Cient Order ID transaction")
+        console.info("Generating and submitting a Cancel by Client Order ID transaction")
         const req = await provider.submitCancelOrderByClientOrderID({
             marketAddress: "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT",
             ownerAddress: testOrder.ownerAddress,
@@ -400,7 +413,7 @@ async function callSubmitCancelByClientOrderID(provider: BaseProvider) {
         })
         console.info(req)
     } catch (error) {
-        console.error("Failed to generating and/or submit a Cancel by Cient Order ID transaction", error)
+        console.error("Failed to generating and/or submit a Cancel by Client Order ID transaction", error)
         return ""
     }
 }
@@ -420,4 +433,81 @@ async function callSettleFunds(provider: BaseProvider) {
         console.error("Failed to generating and/or submit a Settle transaction", error)
         return ""
     }
-}    
+}
+
+async function callCancelAll(provider: BaseProvider) {
+    try {
+        console.info("Generating and placing two orders")
+        let clientOrderID1 = getRandom().toLocaleString(`fullwide`, {useGrouping: false})
+        let clientOrderID2 = getRandom().toLocaleString(`fullwide`, {useGrouping: false})
+
+        // placing orders
+        testOrder.clientOrderID = clientOrderID1
+        let resp = await provider.submitOrder(testOrder)
+        console.info(`order 1 placed ${resp}`)
+
+        testOrder.clientOrderID = clientOrderID2
+        resp = await provider.submitOrder(testOrder)
+        console.info(`order 2 placed ${resp}`)
+
+        console.info(`waiting ${crank_timeout_s}s for place orders to be cranked`)
+
+        // checking orders placed
+        let openOrdersRequest: GetOpenOrdersRequest = {
+            market: testOrder.market,
+            limit: 0,
+            address: testOrder.ownerAddress,
+        }
+
+        await delay(crank_timeout_s * 1000)
+        let openOrdersResponse: GetOpenOrdersResponse = await provider.getOpenOrders(openOrdersRequest)
+
+        let found1 = false
+        let found2 = false
+        for (let order of openOrdersResponse.orders) {
+            if (order.clientOrderID === clientOrderID1) {
+                found1 = true
+            } else if (order.clientOrderID === clientOrderID2) {
+                found2 = true
+            }
+        }
+
+        if (!found1 || !found2) {
+            console.error("one/both orders not found in orderbook")
+            return ""
+        }
+        console.info("2 orders placed successfully")
+
+        // cancelling orders
+        let cancelAllRequest: PostCancelAllRequest = {
+            market: testOrder.market,
+            ownerAddress: testOrder.ownerAddress,
+            openOrderAddress: testOrder.openOrdersAddress,
+        }
+        let cancelAllResponse = await provider.postCancelAll(cancelAllRequest)
+
+        // checking all orders cancelled
+        let signatures: string[] = []
+        for (let tx of cancelAllResponse.transactions) {
+            let postSubmitRequest: PostSubmitRequest = {
+                transaction: tx, skipPreFlight: true
+            }
+            let submitResponse = await provider.postSubmit(postSubmitRequest)
+            signatures.push(submitResponse.signature)
+        }
+
+        console.info(`cancelling all orders, response signatures(s): ${signatures.join(", ")}`)
+        console.info(`\nwaiting ${crank_timeout_s}s for cancel order(s) to be cranked`)
+
+        await delay(crank_timeout_s * 1000)
+        openOrdersResponse = await provider.getOpenOrders(openOrdersRequest)
+
+        if (openOrdersResponse.orders.length !== 0) {
+            console.error(`${openOrdersResponse.orders.length} orders not cancelled`)
+            return ""
+        }
+        console.info("orders in orderbook cancelled")
+    } catch (error) {
+        console.error(error)
+    }
+}
