@@ -50,7 +50,7 @@ async function grpc() {
     // console.info(" ----  GRPC Streams  ----")
     // await doStreams(provider)
     console.info(" ----  GRPC Cancel All  ----")
-    await doCancelAll(provider)
+    await callCancelAll(provider)
     // console.info(" ----  GRPC Lifecycle  ----")
     // await doLifecycle(provider)
 }
@@ -62,7 +62,7 @@ async function ws() {
     // console.info(" ----  WS Streams  ----")
     // await doStreams(provider)
     console.info(" ----  WS Cancel All  ----")
-    await doCancelAll(provider)
+    await callCancelAll(provider)
     // console.info(" ----  WS Lifecycle  ----")
     // await doLifecycle(provider)
 }
@@ -194,14 +194,6 @@ async function doLifecycle(provider: BaseProvider) {
         await callSettleFunds(provider)
         console.info(" ")
         console.info(" ")
-    } finally {
-        provider.close()
-    }
-}
-
-async function doCancelAll(provider: BaseProvider) {
-    try {
-
     } finally {
         provider.close()
     }
