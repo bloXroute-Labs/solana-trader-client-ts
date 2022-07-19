@@ -6,6 +6,7 @@ import { HttpProvider } from "../bxserum/provider/http.js"
 import { WsProvider } from "../bxserum/provider/ws.js"
 import {GetOpenOrdersRequest, PostOrderRequest, PostSubmitRequest, PostCancelAllRequest, GetOpenOrdersResponse} from "../bxserum/proto/messages/api/index.js";
 import config from "../utils/config.js";
+import { signTx } from "../utils/transaction.js";
 
 
 const testOrder: PostOrderRequest = {
@@ -16,7 +17,7 @@ const testOrder: PostOrderRequest = {
     type: ["OT_LIMIT"],
     amount: 0.1,
     price: 200,
-    openOrdersAddress: "58P7qwKiWZAR5HAeDjDjBGSnYBGbcR1t7SSBntnGJah5",
+    openOrdersAddress: "4zeos6Mg48sXGVE3XhdSeff72aLrSXayyzAM81QRegGz", // TODO change back
     clientOrderID: "",
 }
 
@@ -44,7 +45,7 @@ async function http() {
 }
 
 async function grpc() {
-    const provider = new GrpcProvider()
+    const provider = new GrpcProvider("44.204.118.132:1810") // TODO change back
     // console.info(" ----  GRPC Requests  ----")
     // await doRequests(provider)
     // console.info(" ----  GRPC Streams  ----")
@@ -436,20 +437,20 @@ async function callCancelAll(provider: BaseProvider) {
         // placing orders
         testOrder.clientOrderID = clientOrderID1
         let resp = await provider.submitOrder(testOrder)
-        console.info(`order 1 placed ${resp}`)
+        console.info(`Order 1 placed ${resp.signature}`)
 
         testOrder.clientOrderID = clientOrderID2
         resp = await provider.submitOrder(testOrder)
-        console.info(`order 2 placed ${resp}`)
+        console.info(`Order 2 placed ${resp.signature}`)
 
-        console.info(`waiting ${crank_timeout_s}s for place orders to be cranked`)
+        console.info(`\nWaiting ${crank_timeout_s}s for place orders to be cranked`)
 
         // checking orders placed
-        let openOrdersRequest: GetOpenOrdersRequest = {
-            market: testOrder.market,
-            limit: 0,
-            address: testOrder.ownerAddress,
-        }
+         let openOrdersRequest: GetOpenOrdersRequest = {
+             market: testOrder.market,
+             limit: 0,
+             address: testOrder.ownerAddress,
+         }
 
         await delay(crank_timeout_s * 1000)
         let openOrdersResponse: GetOpenOrdersResponse = await provider.getOpenOrders(openOrdersRequest)
@@ -465,10 +466,10 @@ async function callCancelAll(provider: BaseProvider) {
         }
 
         if (!found1 || !found2) {
-            console.error("one/both orders not found in orderbook")
+            console.error("One/both orders not found in orderbook")
             return ""
         }
-        console.info("2 orders placed successfully")
+        console.info("Both orders placed successfully\n")
 
         // cancelling orders
         let cancelAllRequest: PostCancelAllRequest = {
@@ -481,15 +482,16 @@ async function callCancelAll(provider: BaseProvider) {
         // checking all orders cancelled
         let signatures: string[] = []
         for (let tx of cancelAllResponse.transactions) {
+            let signedTx = signTx(tx)
             let postSubmitRequest: PostSubmitRequest = {
-                transaction: tx, skipPreFlight: true
+                transaction: signedTx.serialize().toString("base64"), skipPreFlight: true
             }
             let submitResponse = await provider.postSubmit(postSubmitRequest)
             signatures.push(submitResponse.signature)
         }
 
-        console.info(`cancelling all orders, response signatures(s): ${signatures.join(", ")}`)
-        console.info(`\nwaiting ${crank_timeout_s}s for cancel order(s) to be cranked`)
+        console.info(`Cancelling all orders, response signatures(s): ${signatures.join(", ")}`)
+        console.info(`\nWaiting ${crank_timeout_s}s for cancel order(s) to be cranked`)
 
         await delay(crank_timeout_s * 1000)
         openOrdersResponse = await provider.getOpenOrders(openOrdersRequest)
@@ -498,7 +500,7 @@ async function callCancelAll(provider: BaseProvider) {
             console.error(`${openOrdersResponse.orders.length} orders not cancelled`)
             return ""
         }
-        console.info("orders in orderbook cancelled")
+        console.info("Orders in orderbook cancelled")
     } catch (error) {
         console.error(error)
     }

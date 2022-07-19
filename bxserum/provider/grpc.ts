@@ -92,7 +92,7 @@ export class GrpcProvider extends BaseProvider {
     }
 
     postCancelAll(request: PostCancelAllRequest): Promise<PostCancelAllResponse> {
-        return super.postCancelAll(request);
+        return this.client.postCancelAll(request);
     }
 
     postSettle(request: PostSettleRequest): Promise<PostSettleResponse> {
