@@ -4,9 +4,8 @@ import { GrpcProvider } from "../bxserum/provider/grpc.js"
 import { BaseProvider } from "../bxserum/provider/base.js"
 import { HttpProvider } from "../bxserum/provider/http.js"
 import { WsProvider } from "../bxserum/provider/ws.js"
-import {GetOpenOrdersRequest, PostOrderRequest, PostSubmitRequest, PostCancelAllRequest, GetOpenOrdersResponse} from "../bxserum/proto/messages/api/index.js";
+import {GetOpenOrdersRequest, PostOrderRequest, PostCancelAllRequest, GetOpenOrdersResponse} from "../bxserum/proto/messages/api/index.js";
 import config from "../utils/config.js";
-import { signTx } from "../utils/transaction.js";
 
 
 const testOrder: PostOrderRequest = {
@@ -33,39 +32,41 @@ function getRandom() {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-//await http()
+await http()
 await grpc()
-//await ws()
+await ws()
 
 
 async function http() {
-    const provider = new HttpProvider()
+    const provider = new HttpProvider("http://44.204.118.132:1809")
     console.info(" ----  HTTP Requests  ----")
     await doRequests(provider)
+    console.info(" ----  HTTP Cancel All  ----")
+    await callCancelAll(provider)
 }
 
 async function grpc() {
     const provider = new GrpcProvider("44.204.118.132:1810") // TODO change back
-    // console.info(" ----  GRPC Requests  ----")
-    // await doRequests(provider)
-    // console.info(" ----  GRPC Streams  ----")
-    // await doStreams(provider)
+    console.info(" ----  GRPC Requests  ----")
+    await doRequests(provider)
+    console.info(" ----  GRPC Streams  ----")
+    await doStreams(provider)
     console.info(" ----  GRPC Cancel All  ----")
     await callCancelAll(provider)
-    // console.info(" ----  GRPC Lifecycle  ----")
-    // await doLifecycle(provider)
+    console.info(" ----  GRPC Lifecycle  ----")
+    await doLifecycle(provider)
 }
 
 async function ws() {
-    const provider = new WsProvider()
-    // console.info(" ----  WS Requests  ----")
-    // await doRequests(provider)
-    // console.info(" ----  WS Streams  ----")
-    // await doStreams(provider)
+    const provider = new WsProvider("ws://44.204.118.132:1809/ws")
+    console.info(" ----  WS Requests  ----")
+    await doRequests(provider)
+    console.info(" ----  WS Streams  ----")
+    await doStreams(provider)
     console.info(" ----  WS Cancel All  ----")
     await callCancelAll(provider)
-    // console.info(" ----  WS Lifecycle  ----")
-    // await doLifecycle(provider)
+    console.info(" ----  WS Lifecycle  ----")
+    await doLifecycle(provider)
 }
 
 async function doRequests(provider: BaseProvider) {
