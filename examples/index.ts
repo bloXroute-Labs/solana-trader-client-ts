@@ -43,6 +43,7 @@ async function http() {
     await doRequests(provider)
     console.info(" ----  HTTP Cancel All  ----")
     await callCancelAll(provider)
+    console.info(" ")
 }
 
 async function grpc() {
@@ -55,6 +56,7 @@ async function grpc() {
     await callCancelAll(provider)
     console.info(" ----  GRPC Lifecycle  ----")
     await doLifecycle(provider)
+    console.info(" ")
 }
 
 async function ws() {
@@ -67,6 +69,7 @@ async function ws() {
     await callCancelAll(provider)
     console.info(" ----  WS Lifecycle  ----")
     await doLifecycle(provider)
+    console.info(" ")
 }
 
 async function doRequests(provider: BaseProvider) {
@@ -497,6 +500,7 @@ async function callCancelAll(provider: BaseProvider) {
             return ""
         }
         console.info("Orders in orderbook cancelled")
+        console.info(" ")
     } catch (error) {
         console.error(error)
     }
