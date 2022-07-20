@@ -98,26 +98,26 @@ export abstract class BaseProvider implements Api {
     async submitOrder(request: PostOrderRequest, skipPreFlight: boolean = false): Promise<SubmitTransactionResponse>{
         let res = await this.postOrder(request)
 
-        const tx = signTx(res.transaction)
+        const signedTx = signTx(res.transaction)
 
-        const postSubmitRez = await this.postSubmit({ transaction: tx.serialize().toString("base64"), skipPreFlight });
+        const postSubmitRez = await this.postSubmit({ transaction: signedTx.serialize().toString("base64"), skipPreFlight });
         return { signature: postSubmitRez.signature,  openOrdersAccount: res.openOrdersAddress}
     }
 
     async submitCancelOrder(request: PostCancelOrderRequest, skipPreFlight: boolean = false): Promise<PostSubmitResponse>{
         let res = await this.postCancelOrder(request)
 
-        const tx = signTx(res.transaction)
+        const signedTx = signTx(res.transaction)
 
-        return this.postSubmit({ transaction:tx.serialize().toString("base64"), skipPreFlight})
+        return this.postSubmit({ transaction:signedTx.serialize().toString("base64"), skipPreFlight})
     }
 
     async submitCancelOrderByClientOrderID(request: PostCancelByClientOrderIDRequest, skipPreFlight: boolean = true): Promise<PostSubmitResponse>{
         let res = await this.postCancelByClientOrderID(request)
 
-        const tx = signTx(res.transaction)
+        const signedTx = signTx(res.transaction)
 
-        return this.postSubmit({ transaction:tx.serialize().toString("base64"), skipPreFlight})
+        return this.postSubmit({ transaction:signedTx.serialize().toString("base64"), skipPreFlight})
     }
 
     async submitCancelAll(request: PostCancelAllRequest, skipPreFlight: boolean = true): Promise<Awaited<PostSubmitResponse>[]> {
@@ -127,7 +127,7 @@ export abstract class BaseProvider implements Api {
         for (let tx of res.transactions) {
             let signedTx = signTx(tx)
             let postSubmitRez = this.postSubmit({ transaction:signedTx.serialize().toString("base64"), skipPreFlight})
-            responses.push(postSubmitRez)// TODo we need to use promise.catchall in test
+            responses.push(postSubmitRez)
         }
 
         return Promise.all(responses)
@@ -136,8 +136,8 @@ export abstract class BaseProvider implements Api {
     async submitSettle(request: PostSettleRequest, skipPreFlight: boolean = true): Promise<PostSubmitResponse>{
         let res = await this.postSettle(request)
 
-        const tx = signTx(res.transaction)
+        const signedTx = signTx(res.transaction)
 
-        return this.postSubmit({ transaction:tx.serialize().toString("base64"), skipPreFlight})
+        return this.postSubmit({ transaction:signedTx.serialize().toString("base64"), skipPreFlight})
     }
 }
