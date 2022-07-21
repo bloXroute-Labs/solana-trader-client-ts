@@ -116,7 +116,6 @@ async function doRequests(provider: BaseProvider) {
 }
 
 async function doStreams(provider: BaseProvider) {
-
     await callGetOrderbookStream(provider)
     console.info(" ")
     console.info(" ")
