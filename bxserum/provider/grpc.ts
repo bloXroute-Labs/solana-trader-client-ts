@@ -1,6 +1,6 @@
 import { MAINNET_API_GRPC_HOST, MAINNET_API_GRPC_PORT } from "../../utils/constants.js";
 import { createGrpcJsClient, CreateGrpcClientImplConfig, createGrpcClientImpl } from "@pbkit/grpc-client"
-import { GetAccountBalanceRequest, GetAccountBalanceResponse, GetFilteredOrderbooksRequest, GetMarketsRequest, GetMarketsResponse, GetOpenOrdersRequest, GetOpenOrdersResponse, GetOrderBookRequest, GetOrderbookResponse, GetOrderbooksStreamResponse, GetOrderStatusStreamRequest, GetOrderStatusStreamResponse, GetServerTimeRequest, GetServerTimeResponse, GetTickersRequest, GetTickersResponse, GetTickersStreamResponse, GetTradesRequest, GetTradesResponse, GetTradesStreamResponse, GetUnsettledRequest, GetUnsettledResponse, PostCancelByClientOrderIDRequest, PostCancelOrderRequest, PostCancelOrderResponse, PostOrderRequest, PostOrderResponse, PostSettleRequest, PostSettleResponse, PostSubmitRequest, PostSubmitResponse } from "../proto/messages/api/index.js";
+import { GetAccountBalanceRequest, GetAccountBalanceResponse, GetMarketsRequest, GetMarketsResponse, GetOpenOrdersRequest, GetOpenOrdersResponse, GetOrderbookRequest, GetOrderbookResponse, GetOrderbooksRequest, GetOrderbooksStreamResponse, GetOrderStatusStreamRequest, GetOrderStatusStreamResponse, GetServerTimeRequest, GetServerTimeResponse, GetTickersRequest, GetTickersResponse, GetTickersStreamResponse, GetTradesRequest, GetTradesResponse, GetTradesStreamResponse, GetUnsettledRequest, GetUnsettledResponse, PostCancelByClientOrderIDRequest, PostCancelOrderRequest, PostCancelOrderResponse, PostOrderRequest, PostOrderResponse, PostSettleRequest, PostSettleResponse, PostSubmitRequest, PostSubmitResponse } from "../proto/messages/api/index.js";
 import { createServiceClient, Service } from "../proto/services/api/Api.js";
 import { BaseProvider } from "./base.js";
 import { Client } from "@grpc/grpc-js";
@@ -21,7 +21,7 @@ export class GrpcProvider extends BaseProvider {
     }
 
     //Unary requests
-    getOrderbook = (request: GetOrderBookRequest): Promise<GetOrderbookResponse> => {
+    getOrderbook = (request: GetOrderbookRequest): Promise<GetOrderbookResponse> => {
         return this.client.getOrderbook(request)
     }
 
@@ -54,7 +54,7 @@ export class GrpcProvider extends BaseProvider {
     };
 
     //stream requests
-    getOrderbooksStream = (request: GetOrderBookRequest): Promise<AsyncGenerator< GetOrderbooksStreamResponse>> => {
+    getOrderbooksStream = (request: GetOrderbooksRequest): Promise<AsyncGenerator< GetOrderbooksStreamResponse>> => {
         return this.client.getOrderbooksStream(request)
     }
 
@@ -64,11 +64,7 @@ export class GrpcProvider extends BaseProvider {
 
     getTradesStream(request: GetTradesRequest): Promise<AsyncGenerator<GetTradesStreamResponse>>{
         return this.client.getTradesStream(request)
-    };
-
-    getFilteredOrderbooksStream(request: GetFilteredOrderbooksRequest): Promise<AsyncGenerator<GetOrderbooksStreamResponse>>{
-        return this.client.getFilteredOrderbooksStream(request)
-    };
+    };    
 
     getOrderStatusStream(request: GetOrderStatusStreamRequest): Promise<AsyncGenerator<GetOrderStatusStreamResponse>>{
         return this.client.getOrderStatusStream(request)

@@ -17,42 +17,42 @@ import {
 } from "../../runtime/wire/deserialize.js";
 
 export declare namespace $.api {
-  export interface GetOrderBookRequest {
+  export interface GetOrderbookRequest {
     market: string;
     limit: number;
   }
 }
-export type Type = $.api.GetOrderBookRequest;
+export type Type = $.api.GetOrderbookRequest;
 
-export function getDefaultValue(): $.api.GetOrderBookRequest {
+export function getDefaultValue(): $.api.GetOrderbookRequest {
   return {
     market: "",
     limit: 0,
   };
 }
 
-export function createValue(partialValue: Partial<$.api.GetOrderBookRequest>): $.api.GetOrderBookRequest {
+export function createValue(partialValue: Partial<$.api.GetOrderbookRequest>): $.api.GetOrderbookRequest {
   return {
     ...getDefaultValue(),
     ...partialValue,
   };
 }
 
-export function encodeJson(value: $.api.GetOrderBookRequest): unknown {
+export function encodeJson(value: $.api.GetOrderbookRequest): unknown {
   const result: any = {};
   if (value.market !== undefined) result.market = tsValueToJsonValueFns.string(value.market);
   if (value.limit !== undefined) result.limit = tsValueToJsonValueFns.uint32(value.limit);
   return result;
 }
 
-export function decodeJson(value: any): $.api.GetOrderBookRequest {
+export function decodeJson(value: any): $.api.GetOrderbookRequest {
   const result = getDefaultValue();
   if (value.market !== undefined) result.market = jsonValueToTsValueFns.string(value.market);
   if (value.limit !== undefined) result.limit = jsonValueToTsValueFns.uint32(value.limit);
   return result;
 }
 
-export function encodeBinary(value: $.api.GetOrderBookRequest): Uint8Array {
+export function encodeBinary(value: $.api.GetOrderbookRequest): Uint8Array {
   const result: WireMessage = [];
   if (value.market !== undefined) {
     const tsValue = value.market;
@@ -69,7 +69,7 @@ export function encodeBinary(value: $.api.GetOrderBookRequest): Uint8Array {
   return serialize(result);
 }
 
-export function decodeBinary(binary: Uint8Array): $.api.GetOrderBookRequest {
+export function decodeBinary(binary: Uint8Array): $.api.GetOrderbookRequest {
   const result = getDefaultValue();
   const wireMessage = deserialize(binary);
   const wireFields = new Map(wireMessage);

@@ -40,11 +40,11 @@ import {
   encodeJson as encodeJson_5,
 } from "../../messages/api/GetKlineResponse.js";
 import {
-  Type as GetOrderBookRequest,
+  Type as GetOrderbookRequest,
   encodeBinary as encodeBinary_6,
   decodeBinary as decodeBinary_6,
   encodeJson as encodeJson_6,
-} from "../../messages/api/GetOrderBookRequest.js";
+} from "../../messages/api/GetOrderbookRequest.js";
 import {
   Type as GetOrderbookResponse,
   encodeBinary as encodeBinary_7,
@@ -202,17 +202,17 @@ import {
   encodeJson as encodeJson_32,
 } from "../../messages/api/GetUnsettledResponse.js";
 import {
-  Type as GetOrderbooksStreamResponse,
+  Type as GetOrderbooksRequest,
   encodeBinary as encodeBinary_33,
   decodeBinary as decodeBinary_33,
   encodeJson as encodeJson_33,
-} from "../../messages/api/GetOrderbooksStreamResponse.js";
+} from "../../messages/api/GetOrderbooksRequest.js";
 import {
-  Type as GetFilteredOrderbooksRequest,
+  Type as GetOrderbooksStreamResponse,
   encodeBinary as encodeBinary_34,
   decodeBinary as decodeBinary_34,
   encodeJson as encodeJson_34,
-} from "../../messages/api/GetFilteredOrderbooksRequest.js";
+} from "../../messages/api/GetOrderbooksStreamResponse.js";
 import {
   Type as GetTickersStreamResponse,
   encodeBinary as encodeBinary_35,
@@ -256,7 +256,7 @@ export interface Service<TReqArgs extends any[] = [], TResArgs extends any[] = [
   getMarkets(request: GetMarketsRequest, ...args: TReqArgs): RpcReturnType<Promise<GetMarketsResponse>, TResArgs>;
   getTickers(request: GetTickersRequest, ...args: TReqArgs): RpcReturnType<Promise<GetTickersResponse>, TResArgs>;
   getKline(request: GetKlineRequest, ...args: TReqArgs): RpcReturnType<Promise<GetKlineResponse>, TResArgs>;
-  getOrderbook(request: GetOrderBookRequest, ...args: TReqArgs): RpcReturnType<Promise<GetOrderbookResponse>, TResArgs>;
+  getOrderbook(request: GetOrderbookRequest, ...args: TReqArgs): RpcReturnType<Promise<GetOrderbookResponse>, TResArgs>;
   getTrades(request: GetTradesRequest, ...args: TReqArgs): RpcReturnType<Promise<GetTradesResponse>, TResArgs>;
   getServerTime(request: GetServerTimeRequest, ...args: TReqArgs): RpcReturnType<Promise<GetServerTimeResponse>, TResArgs>;
   getAccountBalance(request: GetAccountBalanceRequest, ...args: TReqArgs): RpcReturnType<Promise<GetAccountBalanceResponse>, TResArgs>;
@@ -270,8 +270,7 @@ export interface Service<TReqArgs extends any[] = [], TResArgs extends any[] = [
   getOpenOrders(request: GetOpenOrdersRequest, ...args: TReqArgs): RpcReturnType<Promise<GetOpenOrdersResponse>, TResArgs>;
   getOrderByID(request: GetOrderByIDRequest, ...args: TReqArgs): RpcReturnType<Promise<GetOrderByIDResponse>, TResArgs>;
   getUnsettled(request: GetUnsettledRequest, ...args: TReqArgs): RpcReturnType<Promise<GetUnsettledResponse>, TResArgs>;
-  getOrderbooksStream(request: GetOrderBookRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetOrderbooksStreamResponse>, TResArgs>;
-  getFilteredOrderbooksStream(request: GetFilteredOrderbooksRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetOrderbooksStreamResponse>, TResArgs>;
+  getOrderbooksStream(request: GetOrderbooksRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetOrderbooksStreamResponse>, TResArgs>;
   getTickersStream(request: GetTickersRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetTickersStreamResponse>, TResArgs>;
   getMarketDepthStream(request: GetMarketsRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetMarketDepthStreamResponse>, TResArgs>;
   getTradesStream(request: GetTradesRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetTradesStreamResponse>, TResArgs>;
@@ -336,7 +335,7 @@ export const methodDescriptors = {
     requestType: {
       serializeBinary: encodeBinary_6,
       deserializeBinary: decodeBinary_6,
-      serializeJson: (value: GetOrderBookRequest) => JSON.stringify(encodeJson_6(value)),
+      serializeJson: (value: GetOrderbookRequest) => JSON.stringify(encodeJson_6(value)),
     },
     responseType: {
       serializeBinary: encodeBinary_7,
@@ -558,30 +557,14 @@ export const methodDescriptors = {
     requestStream: false,
     responseStream: true,
     requestType: {
-      serializeBinary: encodeBinary_6,
-      deserializeBinary: decodeBinary_6,
-      serializeJson: (value: GetOrderBookRequest) => JSON.stringify(encodeJson_6(value)),
-    },
-    responseType: {
       serializeBinary: encodeBinary_33,
       deserializeBinary: decodeBinary_33,
-      serializeJson: (value: GetOrderbooksStreamResponse) => JSON.stringify(encodeJson_33(value)),
+      serializeJson: (value: GetOrderbooksRequest) => JSON.stringify(encodeJson_33(value)),
     },
-  },
-  getFilteredOrderbooksStream: {
-    methodName: "GetFilteredOrderbooksStream",
-    service: { serviceName: "api.Api" },
-    requestStream: false,
-    responseStream: true,
-    requestType: {
+    responseType: {
       serializeBinary: encodeBinary_34,
       deserializeBinary: decodeBinary_34,
-      serializeJson: (value: GetFilteredOrderbooksRequest) => JSON.stringify(encodeJson_34(value)),
-    },
-    responseType: {
-      serializeBinary: encodeBinary_33,
-      deserializeBinary: decodeBinary_33,
-      serializeJson: (value: GetOrderbooksStreamResponse) => JSON.stringify(encodeJson_33(value)),
+      serializeJson: (value: GetOrderbooksStreamResponse) => JSON.stringify(encodeJson_34(value)),
     },
   },
   getTickersStream: {
