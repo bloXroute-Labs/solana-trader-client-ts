@@ -1,9 +1,10 @@
-import { GetFilteredOrderbooksRequest, GetAccountBalanceRequest, GetAccountBalanceResponse, GetKlineRequest, GetKlineResponse, GetMarketDepthStreamResponse, GetMarketsRequest, GetMarketsResponse, GetOpenOrdersRequest, GetOpenOrdersResponse, GetOrderBookRequest, GetOrderbookResponse, GetOrderbooksStreamResponse, GetOrderByIDRequest, GetOrderByIDResponse, GetOrdersRequest, GetOrdersResponse, GetServerTimeRequest, GetServerTimeResponse, GetTickersRequest, GetTickersResponse, GetTickersStreamResponse, GetTradesRequest, GetTradesResponse, GetTradesStreamResponse, GetUnsettledRequest, GetUnsettledResponse, PostCancelAllRequest, PostCancelAllResponse, PostCancelByClientOrderIDRequest, PostCancelOrderRequest, PostCancelOrderResponse, PostOrderRequest, PostOrderResponse, PostSettleRequest, PostSettleResponse, PostSubmitRequest, PostSubmitResponse, GetOrderStatusStreamRequest, GetOrderStatusStreamResponse } from "../proto/messages/api/index.js";
+import { GetAccountBalanceRequest, GetAccountBalanceResponse, GetKlineRequest, GetKlineResponse, GetMarketDepthStreamResponse, GetMarketsRequest, GetMarketsResponse, GetOpenOrdersRequest, GetOpenOrdersResponse, GetOrderbookResponse, GetOrderbooksStreamResponse, GetOrderByIDRequest, GetOrderByIDResponse, GetOrdersRequest, GetOrdersResponse, GetServerTimeRequest, GetServerTimeResponse, GetTickersRequest, GetTickersResponse, GetTickersStreamResponse, GetTradesRequest, GetTradesResponse, GetTradesStreamResponse, GetUnsettledRequest, GetUnsettledResponse, PostCancelAllRequest, PostCancelAllResponse, PostCancelByClientOrderIDRequest, PostCancelOrderRequest, PostCancelOrderResponse, PostOrderRequest, PostOrderResponse, PostSettleRequest, PostSettleResponse, PostSubmitRequest, PostSubmitResponse, GetOrderStatusStreamRequest, GetOrderStatusStreamResponse, GetOrderbooksRequest, GetOrderbookRequest } from "../proto/messages/api/index.js";
 import { Api } from "../proto/services/api/index.js";
 import { signTx, SubmitTransactionResponse } from "../../utils/transaction.js";
+import { RpcReturnType } from "../proto/runtime/rpc.js";
 
 
-export abstract class BaseProvider implements Api {
+export abstract class BaseProvider implements Api {    
     abstract close():void;
 
     getMarkets(request: GetMarketsRequest): Promise<GetMarketsResponse>{
@@ -17,7 +18,7 @@ export abstract class BaseProvider implements Api {
     getKline(request: GetKlineRequest): Promise<GetKlineResponse>{
         throw new Error("Not implemented")
     };
-    getOrderbook(request: GetOrderBookRequest): Promise<GetOrderbookResponse>{
+    getOrderbook(request: GetOrderbookRequest): Promise<GetOrderbookResponse>{
         throw new Error("Not implemented")
     };
 
@@ -71,13 +72,9 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     };
 
-    getOrderbooksStream(request: GetOrderBookRequest): Promise<AsyncGenerator<GetOrderbooksStreamResponse>>{
+    getOrderbooksStream(request: GetOrderbooksRequest): Promise<AsyncGenerator<GetOrderbooksStreamResponse>>{
         throw new Error("Not implemented")
-    };
-
-    getFilteredOrderbooksStream(request: GetFilteredOrderbooksRequest): Promise<AsyncGenerator<GetOrderbooksStreamResponse>>{
-        throw new Error("Not implemented")
-    }
+    };    
 
     getTickersStream(request: GetTickersRequest): Promise<AsyncGenerator<GetTickersStreamResponse>>{
         throw new Error("Not implemented")

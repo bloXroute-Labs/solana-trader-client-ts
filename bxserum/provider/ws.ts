@@ -1,10 +1,10 @@
 import { MAINNET_API_WS } from "../../utils/constants.js";
 import { websocketData } from "../../utils/websocket-iterator.js"
 import WebSocket from "ws"
-import { GetAccountBalanceRequest, GetAccountBalanceResponse, GetFilteredOrderbooksRequest, GetMarketsRequest, GetMarketsResponse, GetOpenOrdersRequest, GetOpenOrdersResponse, GetOrderBookRequest, GetOrderbookResponse, GetOrderbooksStreamResponse, GetOrderStatusStreamRequest, GetOrderStatusStreamResponse, GetServerTimeRequest, GetServerTimeResponse, GetTickersRequest, GetTickersResponse, GetTickersStreamResponse, GetTradesRequest, GetTradesResponse, GetTradesStreamResponse, GetUnsettledRequest, GetUnsettledResponse, PostCancelByClientOrderIDRequest, PostCancelOrderRequest, PostCancelOrderResponse, PostOrderRequest, PostOrderResponse, PostSettleRequest, PostSettleResponse, PostSubmitRequest, PostSubmitResponse } from "../proto/messages/api/index.js";
+import { GetAccountBalanceRequest, GetAccountBalanceResponse, GetMarketsRequest, GetMarketsResponse, GetOpenOrdersRequest, GetOpenOrdersResponse, GetOrderbookRequest, GetOrderbookResponse, GetOrderbooksRequest, GetOrderbooksStreamResponse, GetOrderStatusStreamRequest, GetOrderStatusStreamResponse, GetServerTimeRequest, GetServerTimeResponse, GetTickersRequest, GetTickersResponse, GetTickersStreamResponse, GetTradesRequest, GetTradesResponse, GetTradesStreamResponse, GetUnsettledRequest, GetUnsettledResponse, PostCancelByClientOrderIDRequest, PostCancelOrderRequest, PostCancelOrderResponse, PostOrderRequest, PostOrderResponse, PostSettleRequest, PostSettleResponse, PostSubmitRequest, PostSubmitResponse } from "../proto/messages/api/index.js";
 import { BaseProvider } from "./base.js";
 
-
+let requestId = 0
 export class WsProvider extends BaseProvider {
     private socket!: WebSocket;
     private address: string = ""
@@ -19,7 +19,7 @@ export class WsProvider extends BaseProvider {
         this.socket.close()
     }
 
-    getOrderbook = (request: GetOrderBookRequest): Promise<GetOrderbookResponse> => {
+    getOrderbook = (request: GetOrderbookRequest): Promise<GetOrderbookResponse> => {
         return this.wsSocketCall("GetOrderbook", request)
     }
 
@@ -52,7 +52,7 @@ export class WsProvider extends BaseProvider {
     };
 
     //stream requests
-    getOrderbooksStream = (request: GetOrderBookRequest): Promise<AsyncGenerator<GetOrderbooksStreamResponse>> => {
+    getOrderbooksStream = (request: GetOrderbooksRequest): Promise<AsyncGenerator<GetOrderbooksStreamResponse>> => {
         return this.wsSocketStreamCall("GetOrderbooksStream", request)
     }
 
@@ -62,10 +62,6 @@ export class WsProvider extends BaseProvider {
 
     getTradesStream(request: GetTradesRequest): Promise<AsyncGenerator<GetTradesStreamResponse>> {
         return this.wsSocketStreamCall("GetTradesStream", request)
-    };
-
-    getFilteredOrderbooksStream(request: GetFilteredOrderbooksRequest): Promise<AsyncGenerator<GetOrderbooksStreamResponse>> {
-        return this.wsSocketStreamCall("GetFilteredOrderbooksStream", request)
     };
 
     getOrderStatusStream(request: GetOrderStatusStreamRequest): Promise<AsyncGenerator<GetOrderStatusStreamResponse>> {
@@ -105,14 +101,15 @@ export class WsProvider extends BaseProvider {
         return this.socket
     }
 
-    private wsRequest = (method: string, params: any): string => {
-        return JSON.stringify({
+    private wsRequest = (method: string, params: any): {req:string, id:any } => {
+        const id = ++requestId;
+        return {req: JSON.stringify({
             jsonrpc: "2.0",
-            id: 1,
+            id: id,
             method: method,
             params: params
-        })
-    }
+        }), id}
+    }    
 
     private wsSocketCall(method: string, request: any): Promise<any> {
         return new Promise((resolve, reject) => {
@@ -122,17 +119,20 @@ export class WsProvider extends BaseProvider {
                 reject(new Error("WS provider is closed"))
                 return
             }
-
+            const wsRequest = this.wsRequest(method, request);
             if (ws.readyState == WebSocket.OPEN) {
-                ws.send(this.wsRequest(method, request));
+                
+                ws.send(wsRequest.req);
             } else {
                 ws.onopen = () => {
-                    ws.send(this.wsRequest(method, request));
+                    ws.send(wsRequest.req);
                 }
             }
             ws.onmessage = (msg: any) => {
                 const { id, result } = JSON.parse((msg as MessageEvent).data)
-                resolve(result);
+                if(id == wsRequest.id){
+                    resolve(result);
+                }                
             };
 
             ws.onerror = (err: any) => {
@@ -151,12 +151,14 @@ export class WsProvider extends BaseProvider {
             }
 
             if (ws.readyState == WebSocket.OPEN) {
-                ws.send(this.wsRequest(method, request));
-                resolve(websocketData(ws));
+                const req = this.wsRequest("subscribe", [method, request]);
+                ws.send(req.req);
+                resolve(websocketData(ws, req.id));
             } else {
                 ws.onopen = () => {
-                    ws.send(this.wsRequest(method, request));
-                    resolve(websocketData(ws));
+                    const req = this.wsRequest("subscribe", [method, request]);
+                    ws.send(req.req);
+                    resolve(websocketData(ws, req.id));
                 };
             }
 
