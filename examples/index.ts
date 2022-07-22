@@ -479,7 +479,7 @@ async function callCancelAll(provider: BaseProvider) {
         let cancelAllRequest: PostCancelAllRequest = {
             market: testOrder.market,
             ownerAddress: testOrder.ownerAddress,
-            openOrderAddress: testOrder.openOrdersAddress,
+            openOrdersAddresses: [testOrder.openOrdersAddress],
         }
         let submitCancelAllResponses = await provider.submitCancelAll(cancelAllRequest)
 
