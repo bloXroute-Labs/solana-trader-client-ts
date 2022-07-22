@@ -4,8 +4,9 @@ import { GrpcProvider } from "../bxserum/provider/grpc.js"
 import { BaseProvider } from "../bxserum/provider/base.js"
 import { HttpProvider } from "../bxserum/provider/http.js"
 import { WsProvider } from "../bxserum/provider/ws.js"
-import {GetOpenOrdersRequest, PostOrderRequest, PostCancelAllRequest, GetOpenOrdersResponse} from "../bxserum/proto/messages/api/index.js";
+import {GetOpenOrdersRequest, GetOpenOrdersResponse, PostOrderRequest, PostCancelAllRequest} from "../bxserum/proto/messages/api/index.js";
 import config from "../utils/config.js";
+
 
 
 const testOrder: PostOrderRequest = {
@@ -41,6 +42,8 @@ async function http() {
     const provider = new HttpProvider("http://44.204.118.132:1809")
     console.info(" ----  HTTP Requests  ----")
     await doRequests(provider)
+    console.info(" ----  HTTP Lifecycle  ----")
+    await doHttpLifecycle(provider)
     console.info(" ----  HTTP Cancel All  ----")
     await callCancelAll(provider)
     console.info(" ")
@@ -124,25 +127,17 @@ async function doRequests(provider: BaseProvider) {
 }
 
 async function doStreams(provider: BaseProvider) {
-    try {
-        await callGetOrderbookStream(provider)
-        console.info(" ")
-        console.info(" ")
+    await callGetOrderbookStream(provider)
+    console.info(" ")
+    console.info(" ")
 
-        await callGetTickersStream(provider)
-        console.info(" ")
-        console.info(" ")
+    await callGetTickersStream(provider)
+    console.info(" ")
+    console.info(" ")
 
-        await callGetTradesStream(provider)
-        console.info(" ")
-        console.info(" ")
-
-        await callGetFilteredOrderbookStream(provider)
-        console.info(" ")
-        console.info(" ")
-    } finally {
-        provider.close()
-    }
+    await callGetTradesStream(provider)
+    console.info(" ")
+    console.info(" ")
 }
 
 async function doLifecycle(provider: BaseProvider) {
@@ -204,6 +199,42 @@ async function doLifecycle(provider: BaseProvider) {
     }
 }
 
+async function doHttpLifecycle(provider: BaseProvider) {
+    try {
+        const mktAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"
+
+        await callSubmitOrder(provider)
+        console.info(" ")
+        console.info(" ")
+
+        await delay(60000)
+
+        let orders = await callGetOpenOrders(provider)
+        if (!orders || orders.length == 0) {
+            console.error(`order failed to get into orderbook`)
+            return
+        }
+
+        await callSubmitCancelByClientOrderID(provider)
+        console.info(" ")
+        console.info(" ")
+
+        await delay(60000)
+
+        orders = await callGetOpenOrders(provider)
+        if (!orders || orders.length > 0) {
+            console.error(`order failed to cancel`)
+            return
+        }
+
+        await callSettleFunds(provider)
+        console.info(" ")
+        console.info(" ")
+    } finally {
+        provider.close()
+    }
+}
+
 //unary requests
 async function callGetOrderbook(provider: BaseProvider) {
     try {
@@ -221,7 +252,7 @@ async function callGetOrderbook(provider: BaseProvider) {
 
 async function callGetMarkets(provider: BaseProvider) {
     try {
-        console.info("Retrieving orderbook all supported markets")
+        console.info("Retrieving all supported markets")
         const req = await provider.getMarkets({})
         console.info(req)
 
@@ -235,7 +266,7 @@ async function callGetOpenOrders(provider: BaseProvider) {
         console.info("Retrieving all open orders in SOLUSDC market")
         const req = await provider.getOpenOrders({ "market": "SOLUSDC", "address": "F75gCEckFAyeeCWA9FQMkmLCmke7ehvBnZeVZ3QgvJR7", "limit": 0 })
         console.info(req)
-
+        return req.orders
     } catch (error) {
         console.error("Failed to retrieve open orders", error)
     }
@@ -298,7 +329,7 @@ async function callGetServerTime(provider: BaseProvider) {
 async function callGetOrderbookStream(provider: BaseProvider) {
     try {
         console.info("Subscribing for orderbook updates of SOLUSDC market")
-        let req = await provider.getOrderbooksStream({ "market": "SOLUSDC", "limit": 5 });
+        let req = await provider.getOrderbooksStream({ "markets": ["SOLUSDC"], "limit": 5 });
 
         let count = 0
         for await (const ob of req) {
@@ -312,7 +343,7 @@ async function callGetOrderbookStream(provider: BaseProvider) {
         console.info(" ")
 
         console.info("Subscribing for orderbook updates of SOLUSDC market")
-        req = await provider.getOrderbooksStream({ "market": "SOL-USDC", "limit": 5 });
+        req = await provider.getOrderbooksStream({ "markets": ["SOL-USDC"], "limit": 5 });
 
         count = 0
         for await (const ob of req) {
@@ -363,25 +394,6 @@ async function callGetTradesStream(provider: BaseProvider) {
 
     } catch (error) {
         console.error("Failed to retrieve trade for market SOL/USDC", error)
-    }
-}
-
-async function callGetFilteredOrderbookStream(provider: BaseProvider) {
-    try {
-        console.info("Subscribing for orderbook updates of SOLUSDC market")
-        let req = await provider.getFilteredOrderbooksStream({ "markets": ["SOLUSDC, SOLUSDT"], "limit": 5 });
-
-        let count = 0
-        for await (const ob of req) {
-            console.info(ob)
-            count++
-            if (count == 5) {
-                break
-            }
-        }
-
-    } catch (error) {
-        console.error("Failed to retrieve orderbook updates for markets SOL/USDC and SOL/USDT", error)
     }
 }
 
