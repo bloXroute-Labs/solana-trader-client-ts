@@ -269,7 +269,7 @@ async function callGetMarkets(provider: BaseProvider) {
 async function callGetOpenOrders(provider: BaseProvider) {
     try {
         console.info("Retrieving all open orders in SOLUSDC market")
-        const req = await provider.getOpenOrders({ "market": "SOLUSDC", "address": "F75gCEckFAyeeCWA9FQMkmLCmke7ehvBnZeVZ3QgvJR7", "limit": 0 })
+        const req = await provider.getOpenOrders({ "market": "SOLUSDC", "address": ownerAddress, "limit": 0 })
         console.info(req)
         return req.orders
     } catch (error) {
@@ -280,7 +280,7 @@ async function callGetOpenOrders(provider: BaseProvider) {
 async function callGetUnsettled(provider: BaseProvider) {
     try {
         console.info("Retrieving unsettled funds in SOLUSDC market")
-        const req = await provider.getUnsettled({ "market": "SOLUSDC", "owner": "F75gCEckFAyeeCWA9FQMkmLCmke7ehvBnZeVZ3QgvJR7" })
+        const req = await provider.getUnsettled({ "market": "SOLUSDC", "owner": ownerAddress })
         console.info(req)
 
     } catch (error) {
@@ -291,7 +291,7 @@ async function callGetUnsettled(provider: BaseProvider) {
 async function callGetAccountBalance(provider: BaseProvider) {
     try {
         console.info("Retrieving token balances")
-        const req = await provider.getAccountBalance({ "ownerAddress": "F75gCEckFAyeeCWA9FQMkmLCmke7ehvBnZeVZ3QgvJR7" })
+        const req = await provider.getAccountBalance({ "ownerAddress": ownerAddress })
         console.info(req)
 
     } catch (error) {
