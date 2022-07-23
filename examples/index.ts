@@ -9,15 +9,22 @@ import config from "../utils/config.js";
 
 
 
+const marketAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT";
+const ownerAddress = config.WalletPublicKey
+const payerAddress = config.WalletPublicKey
+const openOrdersAddress = "4zeos6Mg48sXGVE3XhdSeff72aLrSXayyzAM81QRegGz"
+const baseTokenWallet = config.WalletPublicKey
+const quoteTokenWallet = "4raJjCwLLqw8TciQXYruDEF4YhDkGwoEnwnAdwJSjcgv"
+
 const testOrder: PostOrderRequest = {
-    ownerAddress: config.WalletPublicKey,
-    payerAddress: config.WalletPublicKey,
+    ownerAddress: ownerAddress,
+    payerAddress: payerAddress,
     market: "SOLUSDC",
     side: "S_ASK",
     type: ["OT_LIMIT"],
     amount: 0.1,
     price: 200,
-    openOrdersAddress: "4zeos6Mg48sXGVE3XhdSeff72aLrSXayyzAM81QRegGz", // TODO change back
+    openOrdersAddress: openOrdersAddress,
     clientOrderID: "",
 }
 
@@ -142,7 +149,7 @@ async function doStreams(provider: BaseProvider) {
 
 async function doLifecycle(provider: BaseProvider) {
     try {
-        const mktAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"
+        const mktAddress = marketAddress
 
         await Promise.all([new Promise(async (resolve, reject) => {
             let req = await provider.getOrderStatusStream({ market: mktAddress, ownerAddress: testOrder.ownerAddress })
@@ -169,7 +176,7 @@ async function doLifecycle(provider: BaseProvider) {
 
 
         await Promise.all([new Promise(async (resolve, reject) => {
-            let req = await provider.getOrderStatusStream({ market: mktAddress, ownerAddress: testOrder.ownerAddress })
+            let req = await provider.getOrderStatusStream({ market: mktAddress, ownerAddress: ownerAddress })
             for await (const ob of req) {
                 if (ob.orderInfo && ob.orderInfo.clientOrderID == testOrder.clientOrderID && ob.orderInfo.orderStatus == "OS_CANCELLED") {
                     console.info(`order canceled ('${ob.orderInfo.orderStatus}') successfully`)
@@ -201,8 +208,6 @@ async function doLifecycle(provider: BaseProvider) {
 
 async function doHttpLifecycle(provider: BaseProvider) {
     try {
-        const mktAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"
-
         await callSubmitOrder(provider)
         console.info(" ")
         console.info(" ")
@@ -415,9 +420,9 @@ async function callSubmitCancelByClientOrderID(provider: BaseProvider) {
     try {
         console.info("Generating and submitting a Cancel by Client Order ID transaction")
         const req = await provider.submitCancelOrderByClientOrderID({
-            marketAddress: "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT",
-            ownerAddress: testOrder.ownerAddress,
-            openOrdersAddress: testOrder.openOrdersAddress,
+            marketAddress: marketAddress,
+            ownerAddress: ownerAddress,
+            openOrdersAddress: openOrdersAddress,
             clientOrderID: testOrder.clientOrderID
         })
         console.info(req)
@@ -431,11 +436,11 @@ async function callSettleFunds(provider: BaseProvider) {
     try {
         console.info("Generating and submiting a Settle transaction")
         const req = await provider.submitSettle({
-            market: testOrder.market,
-            openOrdersAddress: testOrder.openOrdersAddress,
-            baseTokenWallet: testOrder.ownerAddress,
-            quoteTokenWallet: "4raJjCwLLqw8TciQXYruDEF4YhDkGwoEnwnAdwJSjcgv",
-            ownerAddress: testOrder.ownerAddress
+            market: marketAddress,
+            openOrdersAddress: openOrdersAddress,
+            baseTokenWallet: baseTokenWallet,
+            quoteTokenWallet: quoteTokenWallet,
+            ownerAddress: ownerAddress
         })
         console.info(req)
     } catch (error) {
@@ -463,9 +468,9 @@ async function callCancelAll(provider: BaseProvider) {
 
         // checking orders placed
          let openOrdersRequest: GetOpenOrdersRequest = {
-             market: testOrder.market,
+             market: marketAddress,
              limit: 0,
-             address: testOrder.ownerAddress,
+             address: ownerAddress,
          }
 
         await delay(crank_timeout_s * 1000)
@@ -489,9 +494,9 @@ async function callCancelAll(provider: BaseProvider) {
 
         // cancelling orders
         let cancelAllRequest: PostCancelAllRequest = {
-            market: testOrder.market,
-            ownerAddress: testOrder.ownerAddress,
-            openOrdersAddresses: [testOrder.openOrdersAddress],
+            market: marketAddress,
+            ownerAddress: ownerAddress,
+            openOrdersAddresses: [openOrdersAddress],
         }
         let submitCancelAllResponses = await provider.submitCancelAll(cancelAllRequest)
 
@@ -512,6 +517,10 @@ async function callCancelAll(provider: BaseProvider) {
             return ""
         }
         console.info("Orders in orderbook cancelled")
+        console.info(" ")
+
+        await callSettleFunds(provider)
+        console.info(" ")
         console.info(" ")
     } catch (error) {
         console.error(error)
