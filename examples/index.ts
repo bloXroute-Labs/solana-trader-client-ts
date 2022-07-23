@@ -46,7 +46,7 @@ await ws()
 
 
 async function http() {
-    const provider = new HttpProvider("http://44.204.118.132:1809")
+    const provider = new HttpProvider()
     console.info(" ----  HTTP Requests  ----")
     await doRequests(provider)
     console.info(" ----  HTTP Lifecycle  ----")
@@ -57,7 +57,7 @@ async function http() {
 }
 
 async function grpc() {
-    const provider = new GrpcProvider("44.204.118.132:1810") // TODO change back
+    const provider = new GrpcProvider()
     console.info(" ----  GRPC Requests  ----")
     await doRequests(provider)
     console.info(" ----  GRPC Streams  ----")
@@ -70,7 +70,7 @@ async function grpc() {
 }
 
 async function ws() {
-    const provider = new WsProvider("ws://44.204.118.132:1809/ws")
+    const provider = new WsProvider()
     console.info(" ----  WS Requests  ----")
     await doRequests(provider)
     console.info(" ----  WS Streams  ----")
@@ -164,7 +164,7 @@ async function doLifecycle(provider: BaseProvider) {
             }
         }), new Promise(async (resolve, reject) => {
             try {
-                await delay(5000)
+                await delay(10000)
                 await callSubmitOrder(provider)
                 console.info(" ")
                 console.info(" ")
@@ -188,7 +188,7 @@ async function doLifecycle(provider: BaseProvider) {
             }
         }), new Promise(async (resolve, reject) => {
             try {
-                await delay(5000)
+                await delay(10000)
                 await callSubmitCancelByClientOrderID(provider)
                 console.info(" ")
                 console.info(" ")
