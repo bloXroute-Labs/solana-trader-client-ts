@@ -1,4 +1,4 @@
-import { GetAccountBalanceRequest, GetAccountBalanceResponse, GetKlineRequest, GetKlineResponse, GetMarketDepthStreamResponse, GetMarketsRequest, GetMarketsResponse, GetOpenOrdersRequest, GetOpenOrdersResponse, GetOrderbookResponse, GetOrderbooksStreamResponse, GetOrderByIDRequest, GetOrderByIDResponse, GetOrdersRequest, GetOrdersResponse, GetServerTimeRequest, GetServerTimeResponse, GetTickersRequest, GetTickersResponse, GetTickersStreamResponse, GetTradesRequest, GetTradesResponse, GetTradesStreamResponse, GetUnsettledRequest, GetUnsettledResponse, PostCancelAllRequest, PostCancelAllResponse, PostCancelByClientOrderIDRequest, PostCancelOrderRequest, PostCancelOrderResponse, PostOrderRequest, PostOrderResponse, PostSettleRequest, PostSettleResponse, PostSubmitRequest, PostSubmitResponse, GetOrderStatusStreamRequest, GetOrderStatusStreamResponse, GetOrderbooksRequest, GetOrderbookRequest } from "../proto/messages/api/index.js";
+import { GetAccountBalanceRequest, GetAccountBalanceResponse, GetKlineRequest, GetKlineResponse, GetMarketDepthStreamResponse, GetMarketsRequest, GetMarketsResponse, GetOpenOrdersRequest, GetOpenOrdersResponse, GetOrderbookResponse, GetOrderbooksStreamResponse, GetOrderByIDRequest, GetOrderByIDResponse, GetOrdersRequest, GetOrdersResponse, GetServerTimeRequest, GetServerTimeResponse, GetTickersRequest, GetTickersResponse, GetTickersStreamResponse, GetTradesRequest, GetTradesResponse, GetTradesStreamResponse, GetUnsettledRequest, GetUnsettledResponse, PostCancelAllRequest, PostCancelAllResponse, PostCancelByClientOrderIDRequest, PostCancelOrderRequest, PostCancelOrderResponse, PostOrderRequest, PostOrderResponse, PostSettleRequest, PostSettleResponse, PostSubmitRequest, PostSubmitResponse, GetOrderStatusStreamRequest, GetOrderStatusStreamResponse, GetOrderbooksRequest, GetOrderbookRequest, PostReplaceOrderRequest } from "../proto/messages/api/index.js";
 import { Api } from "../proto/services/api/index.js";
 import { signTx, SubmitTransactionResponse } from "../../utils/transaction.js";
 import { RpcReturnType } from "../proto/runtime/rpc.js";
@@ -57,6 +57,14 @@ export abstract class BaseProvider implements Api {
     postSettle(request: PostSettleRequest): Promise<PostSettleResponse>{
         throw new Error("Not implemented")
     };
+
+    postReplaceByClientOrderID(request: PostOrderRequest): Promise<PostOrderResponse>{
+        throw new Error("Not implemented")
+    }
+  
+    postReplaceOrder(request: PostReplaceOrderRequest): Promise<PostOrderResponse>{
+        throw new Error("Not implemented")
+    }
 
     getOrders(request: GetOrdersRequest): Promise<GetOrdersResponse>{
         throw new Error("Not implemented")
@@ -119,6 +127,22 @@ export abstract class BaseProvider implements Api {
 
     async submitSettle(request: PostSettleRequest, skipPreFlight: boolean = true): Promise<PostSubmitResponse>{
         let res = await this.postSettle(request)
+
+        const tx = signTx(res.transaction)
+
+        return this.postSubmit({ transaction:tx.serialize().toString("base64"), skipPreFlight})
+    }
+
+    async submitReplaceByClientOrderID(request: PostOrderRequest, skipPreFlight: boolean = true): Promise<PostSubmitResponse>{
+        let res = await this.postReplaceByClientOrderID(request)
+
+        const tx = signTx(res.transaction)
+
+        return this.postSubmit({ transaction:tx.serialize().toString("base64"), skipPreFlight})
+    }
+  
+    async submitReplaceOrder(request: PostReplaceOrderRequest, skipPreFlight: boolean = true): Promise<PostSubmitResponse>{
+        let res = await this.postReplaceOrder(request)
 
         const tx = signTx(res.transaction)
 

@@ -1,6 +1,6 @@
 import { MAINNET_API_GRPC_HOST, MAINNET_API_GRPC_PORT } from "../../utils/constants.js";
 import { createGrpcJsClient, CreateGrpcClientImplConfig, createGrpcClientImpl } from "@pbkit/grpc-client"
-import { GetAccountBalanceRequest, GetAccountBalanceResponse, GetMarketsRequest, GetMarketsResponse, GetOpenOrdersRequest, GetOpenOrdersResponse, GetOrderbookRequest, GetOrderbookResponse, GetOrderbooksRequest, GetOrderbooksStreamResponse, GetOrderStatusStreamRequest, GetOrderStatusStreamResponse, GetServerTimeRequest, GetServerTimeResponse, GetTickersRequest, GetTickersResponse, GetTickersStreamResponse, GetTradesRequest, GetTradesResponse, GetTradesStreamResponse, GetUnsettledRequest, GetUnsettledResponse, PostCancelByClientOrderIDRequest, PostCancelOrderRequest, PostCancelOrderResponse, PostOrderRequest, PostOrderResponse, PostSettleRequest, PostSettleResponse, PostSubmitRequest, PostSubmitResponse } from "../proto/messages/api/index.js";
+import { GetAccountBalanceRequest, GetAccountBalanceResponse, GetMarketsRequest, GetMarketsResponse, GetOpenOrdersRequest, GetOpenOrdersResponse, GetOrderbookRequest, GetOrderbookResponse, GetOrderbooksRequest, GetOrderbooksStreamResponse, GetOrderStatusStreamRequest, GetOrderStatusStreamResponse, GetServerTimeRequest, GetServerTimeResponse, GetTickersRequest, GetTickersResponse, GetTickersStreamResponse, GetTradesRequest, GetTradesResponse, GetTradesStreamResponse, GetUnsettledRequest, GetUnsettledResponse, PostCancelByClientOrderIDRequest, PostCancelOrderRequest, PostCancelOrderResponse, PostOrderRequest, PostOrderResponse, PostReplaceOrderRequest, PostSettleRequest, PostSettleResponse, PostSubmitRequest, PostSubmitResponse } from "../proto/messages/api/index.js";
 import { createServiceClient, Service } from "../proto/services/api/Api.js";
 import { BaseProvider } from "./base.js";
 import { Client } from "@grpc/grpc-js";
@@ -86,7 +86,16 @@ export class GrpcProvider extends BaseProvider {
     postCancelByClientOrderID(request: PostCancelByClientOrderIDRequest): Promise<PostCancelOrderResponse> {
         return this.client.postCancelByClientOrderID(request)
     }
+
     postSettle(request: PostSettleRequest): Promise<PostSettleResponse> {
         return this.client.postSettle(request)
-    }    
+    }
+    
+    postReplaceByClientOrderID(request: PostOrderRequest): Promise<PostOrderResponse>{
+        return this.client.postReplaceByClientOrderID(request)
+    }
+  
+    postReplaceOrder(request: PostReplaceOrderRequest): Promise<PostOrderResponse>{
+        return this.client.postReplaceOrder(request)
+    }
 }

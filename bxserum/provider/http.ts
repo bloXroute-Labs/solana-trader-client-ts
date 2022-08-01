@@ -1,6 +1,6 @@
 import { MAINNET_API_HTTP } from "../../utils/constants.js";
 import fetch from "node-fetch"
-import { GetAccountBalanceRequest, GetAccountBalanceResponse, GetMarketsRequest, GetMarketsResponse, GetOpenOrdersRequest, GetOpenOrdersResponse, GetOrderbookRequest, GetOrderbookResponse, GetOrderbooksStreamResponse, GetOrderByIDRequest, GetOrderByIDResponse, GetOrdersRequest, GetOrdersResponse, GetServerTimeRequest, GetServerTimeResponse, GetTickersRequest, GetTickersResponse, GetTickersStreamResponse, GetTradesRequest, GetTradesResponse, GetTradesStreamResponse, GetUnsettledRequest, GetUnsettledResponse, PostCancelAllRequest, PostCancelAllResponse, PostCancelByClientOrderIDRequest, PostCancelOrderRequest, PostCancelOrderResponse, PostOrderRequest, PostOrderResponse, PostSettleRequest, PostSettleResponse, PostSubmitRequest, PostSubmitResponse } from "../proto/messages/api/index.js";
+import { GetAccountBalanceRequest, GetAccountBalanceResponse, GetMarketsRequest, GetMarketsResponse, GetOpenOrdersRequest, GetOpenOrdersResponse, GetOrderbookRequest, GetOrderbookResponse, GetOrderbooksStreamResponse, GetOrderByIDRequest, GetOrderByIDResponse, GetOrdersRequest, GetOrdersResponse, GetServerTimeRequest, GetServerTimeResponse, GetTickersRequest, GetTickersResponse, GetTickersStreamResponse, GetTradesRequest, GetTradesResponse, GetTradesStreamResponse, GetUnsettledRequest, GetUnsettledResponse, PostCancelAllRequest, PostCancelAllResponse, PostCancelByClientOrderIDRequest, PostCancelOrderRequest, PostCancelOrderResponse, PostOrderRequest, PostOrderResponse, PostReplaceOrderRequest, PostSettleRequest, PostSettleResponse, PostSubmitRequest, PostSubmitResponse } from "../proto/messages/api/index.js";
 import { BaseProvider } from "./base.js";
 
 export class HttpProvider extends BaseProvider {
@@ -125,4 +125,26 @@ export class HttpProvider extends BaseProvider {
             return resp.json() as any as PostSettleResponse
         })
     };
+
+    postReplaceByClientOrderID(request: PostOrderRequest): Promise<PostOrderResponse>{
+        const path = `${this.baseUrl}/trade/replacebyclientid`
+        return fetch(path, {
+            method: 'POST',
+            body: JSON.stringify(request),
+            headers: { 'Content-Type': 'application/json' }
+        }).then(resp => {
+            return resp.json() as any as PostOrderResponse
+        })
+    }
+  
+    postReplaceOrder(request: PostReplaceOrderRequest): Promise<PostOrderResponse>{
+        const path = `${this.baseUrl}/trade/replace`
+        return fetch(path, {
+            method: 'POST',
+            body: JSON.stringify(request),
+            headers: { 'Content-Type': 'application/json' }
+        }).then(resp => {
+            return resp.json() as any as PostOrderResponse
+        })
+    }
 }

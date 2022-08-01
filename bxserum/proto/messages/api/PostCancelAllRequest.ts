@@ -20,7 +20,7 @@ export declare namespace $.api {
   export interface PostCancelAllRequest {
     market: string;
     ownerAddress: string;
-    openOrderAddress: string;
+    openOrdersAddresses: string[];
   }
 }
 export type Type = $.api.PostCancelAllRequest;
@@ -29,7 +29,7 @@ export function getDefaultValue(): $.api.PostCancelAllRequest {
   return {
     market: "",
     ownerAddress: "",
-    openOrderAddress: "",
+    openOrdersAddresses: [],
   };
 }
 
@@ -44,7 +44,7 @@ export function encodeJson(value: $.api.PostCancelAllRequest): unknown {
   const result: any = {};
   if (value.market !== undefined) result.market = tsValueToJsonValueFns.string(value.market);
   if (value.ownerAddress !== undefined) result.ownerAddress = tsValueToJsonValueFns.string(value.ownerAddress);
-  if (value.openOrderAddress !== undefined) result.openOrderAddress = tsValueToJsonValueFns.string(value.openOrderAddress);
+  result.openOrdersAddresses = value.openOrdersAddresses.map(value => tsValueToJsonValueFns.string(value));
   return result;
 }
 
@@ -52,7 +52,7 @@ export function decodeJson(value: any): $.api.PostCancelAllRequest {
   const result = getDefaultValue();
   if (value.market !== undefined) result.market = jsonValueToTsValueFns.string(value.market);
   if (value.ownerAddress !== undefined) result.ownerAddress = jsonValueToTsValueFns.string(value.ownerAddress);
-  if (value.openOrderAddress !== undefined) result.openOrderAddress = jsonValueToTsValueFns.string(value.openOrderAddress);
+  result.openOrdersAddresses = value.openOrdersAddresses?.map((value: any) => jsonValueToTsValueFns.string(value)) ?? [];
   return result;
 }
 
@@ -70,8 +70,7 @@ export function encodeBinary(value: $.api.PostCancelAllRequest): Uint8Array {
       [2, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.openOrderAddress !== undefined) {
-    const tsValue = value.openOrderAddress;
+  for (const tsValue of value.openOrdersAddresses) {
     result.push(
       [3, tsValueToWireValueFns.string(tsValue)],
     );
@@ -97,12 +96,11 @@ export function decodeBinary(binary: Uint8Array): $.api.PostCancelAllRequest {
     if (value === undefined) break field;
     result.ownerAddress = value;
   }
-  field: {
-    const wireValue = wireFields.get(3);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.string(wireValue);
-    if (value === undefined) break field;
-    result.openOrderAddress = value;
+  collection: {
+    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 3).map(([, wireValue]) => wireValue);
+    const value = wireValues.map((wireValue) => wireValueToTsValueFns.string(wireValue)).filter(x => x !== undefined);
+    if (!value.length) break collection;
+    result.openOrdersAddresses = value as any;
   }
   return result;
 }

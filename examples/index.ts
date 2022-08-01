@@ -6,6 +6,7 @@ import { HttpProvider } from "../bxserum/provider/http.js"
 import { WsProvider } from "../bxserum/provider/ws.js"
 import { PostOrderRequest } from "../bxserum/proto/messages/api/index.js";
 import config from "../utils/config.js";
+import { TESTNET_API_GRPC_HOST, TESTNET_API_GRPC_PORT } from "../utils/constants.js";
 
 
 
@@ -31,10 +32,11 @@ function getRandom() {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-await http()
-await grpc()
-await ws()
-
+async function run(){
+    await http()
+    await grpc()
+    await ws()
+}
 
 async function http() {
     const provider = new HttpProvider()
@@ -148,6 +150,41 @@ async function doLifecycle(provider: BaseProvider) {
             try {
                 await delay(5000)
                 await callSubmitOrder(provider)
+                console.info(" ")
+                console.info(" ")
+                return resolve(null)
+            } catch (err) {
+                return reject(err)
+            }
+        })])
+
+        await Promise.all([new Promise(async (resolve, reject) => {
+            const req = await provider.getOrderStatusStream({ market: mktAddress, ownerAddress: testOrder.ownerAddress })
+            const clientOrderID = testOrder.clientOrderID
+            let oldCanceled = false
+            let newOpened = false
+            for await (const ob of req) {
+                if (ob.orderInfo && ob.orderInfo.clientOrderID == clientOrderID && ob.orderInfo.orderStatus == "OS_CANCELLED") {
+                    oldCanceled = true
+                    console.info(`order canceled ('${ob.orderInfo.orderStatus}') successfully`)
+                    if(oldCanceled && newOpened){
+                        return resolve(null)
+                    }
+                } else if (ob.orderInfo && ob.orderInfo.clientOrderID == testOrder.clientOrderID && ob.orderInfo.orderStatus == "OS_OPEN") {
+                    newOpened = true
+                    console.info(`order went to orderbook ('${ob.orderInfo.orderStatus}') successfully`)
+                    if(oldCanceled && newOpened){
+                        return resolve(null)
+                    }
+                } else {
+                    console.error(`order failed to cancel`)
+                    return reject(new Error("order failed to cancel"))
+                }
+            }
+        }), new Promise(async (resolve, reject) => {
+            try {
+                await delay(5000)
+                await callReplaceByClientOrderID(provider)
                 console.info(" ")
                 console.info(" ")
                 return resolve(null)
@@ -395,8 +432,7 @@ async function callSubmitOrder(provider: BaseProvider) {
         const req = await provider.submitOrder(testOrder)
         console.info(req)
     } catch (error) {
-        console.error("Failed to generating and/or submit a New Order transaction", error)
-        return ""
+        console.error("Failed to generating and/or submit a New Order transaction", error)        
     }
 }
 
@@ -411,8 +447,7 @@ async function callSubmitCancelByClientOrderID(provider: BaseProvider) {
         })
         console.info(req)
     } catch (error) {
-        console.error("Failed to generating and/or submit a Cancel by Cient Order ID transaction", error)
-        return ""
+        console.error("Failed to generating and/or submit a Cancel by Cient Order ID transaction", error)        
     }
 }
 
@@ -429,6 +464,36 @@ async function callSettleFunds(provider: BaseProvider) {
         console.info(req)
     } catch (error) {
         console.error("Failed to generating and/or submit a Settle transaction", error)
-        return ""
     }
-}    
+}
+
+async function callReplaceByClientOrderID(provider: BaseProvider) {
+    try {
+        console.info("Generating and submiting a Cancel and Replace by Cient Order ID transaction")
+        const clientOrderID = getRandom()
+        testOrder.clientOrderID = clientOrderID.toLocaleString('fullwide', { useGrouping: false })
+        testOrder.price -= 1
+        
+        const req = await provider.submitReplaceByClientOrderID(testOrder)
+        console.info(req)
+    } catch (error) {
+        console.error("Failed to generating and/or submit a Cancel by Cient Order ID transaction", error)
+    }
+}
+
+async function callReplaceOrder(provider: BaseProvider) {
+    try {
+        console.info("Generating and submiting a Cancel and Replace by Cient Order ID transaction")
+        const clientOrderID = getRandom()
+        testOrder.clientOrderID = clientOrderID.toLocaleString('fullwide', { useGrouping: false })
+        testOrder.price -= 1
+        
+        const req = await provider.submitReplaceOrder({ orderID:"", ...testOrder })
+        console.info(req)
+    } catch (error) {
+        console.error("Failed to generating and/or submit a Cancel by Cient Order ID transaction", error)
+    }
+}
+
+// Run examples
+run()

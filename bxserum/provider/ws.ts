@@ -1,7 +1,7 @@
 import { MAINNET_API_WS } from "../../utils/constants.js";
 import { websocketData } from "../../utils/websocket-iterator.js"
 import WebSocket from "ws"
-import { GetAccountBalanceRequest, GetAccountBalanceResponse, GetMarketsRequest, GetMarketsResponse, GetOpenOrdersRequest, GetOpenOrdersResponse, GetOrderbookRequest, GetOrderbookResponse, GetOrderbooksRequest, GetOrderbooksStreamResponse, GetOrderStatusStreamRequest, GetOrderStatusStreamResponse, GetServerTimeRequest, GetServerTimeResponse, GetTickersRequest, GetTickersResponse, GetTickersStreamResponse, GetTradesRequest, GetTradesResponse, GetTradesStreamResponse, GetUnsettledRequest, GetUnsettledResponse, PostCancelByClientOrderIDRequest, PostCancelOrderRequest, PostCancelOrderResponse, PostOrderRequest, PostOrderResponse, PostSettleRequest, PostSettleResponse, PostSubmitRequest, PostSubmitResponse } from "../proto/messages/api/index.js";
+import { GetAccountBalanceRequest, GetAccountBalanceResponse, GetMarketsRequest, GetMarketsResponse, GetOpenOrdersRequest, GetOpenOrdersResponse, GetOrderbookRequest, GetOrderbookResponse, GetOrderbooksRequest, GetOrderbooksStreamResponse, GetOrderStatusStreamRequest, GetOrderStatusStreamResponse, GetServerTimeRequest, GetServerTimeResponse, GetTickersRequest, GetTickersResponse, GetTickersStreamResponse, GetTradesRequest, GetTradesResponse, GetTradesStreamResponse, GetUnsettledRequest, GetUnsettledResponse, PostCancelByClientOrderIDRequest, PostCancelOrderRequest, PostCancelOrderResponse, PostOrderRequest, PostOrderResponse, PostReplaceOrderRequest, PostSettleRequest, PostSettleResponse, PostSubmitRequest, PostSubmitResponse } from "../proto/messages/api/index.js";
 import { BaseProvider } from "./base.js";
 
 let requestId = 0
@@ -86,6 +86,14 @@ export class WsProvider extends BaseProvider {
     }
     postSettle(request: PostSettleRequest): Promise<PostSettleResponse> {
         return this.wsSocketCall("PostSettle", request)
+    }
+
+    postReplaceByClientOrderID(request: PostOrderRequest): Promise<PostOrderResponse>{
+        return this.wsSocketCall("postReplaceByClientOrderID", request)
+    }
+  
+    postReplaceOrder(request: PostReplaceOrderRequest): Promise<PostOrderResponse>{
+        return this.wsSocketCall("postReplaceOrder", request)
     }
 
     // Private 
