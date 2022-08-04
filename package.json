@@ -10,12 +10,7 @@
   "scripts": {
     "start": "ts-node ./examples/index.ts",
     "lint": "eslint --fix",
-    "format":"prettier --config .prettierrc './**/*.ts' --write"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint && npm run format"
-    }
+    "format": "prettier --config .prettierrc './**/*.ts' --write"
   },
   "repository": {
     "type": "git",
