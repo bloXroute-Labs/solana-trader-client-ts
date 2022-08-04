@@ -8,7 +8,7 @@ import { Client } from "@grpc/grpc-js";
 export class GrpcProvider extends BaseProvider {
     private client:Service
     private grpcClient: Client
-    constructor(address: string = `${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`) {
+    constructor(address = `${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`) {
         super();        
         this.grpcClient = createGrpcJsClient(address)
         const config:CreateGrpcClientImplConfig = { grpcJsClient: this.grpcClient} 

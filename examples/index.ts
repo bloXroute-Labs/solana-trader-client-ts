@@ -136,7 +136,7 @@ async function doLifecycle(provider: BaseProvider) {
         const mktAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"
 
         await Promise.all([new Promise(async (resolve, reject) => {
-            let req = await provider.getOrderStatusStream({ market: mktAddress, ownerAddress: testOrder.ownerAddress })
+            const req = await provider.getOrderStatusStream({ market: mktAddress, ownerAddress: testOrder.ownerAddress })
             for await (const ob of req) {
                 if (ob.orderInfo && ob.orderInfo.clientOrderID == testOrder.clientOrderID && ob.orderInfo.orderStatus == "OS_OPEN") {
                     console.info(`order went to orderbook ('${ob.orderInfo.orderStatus}') successfully`)
@@ -195,7 +195,7 @@ async function doLifecycle(provider: BaseProvider) {
 
 
         await Promise.all([new Promise(async (resolve, reject) => {
-            let req = await provider.getOrderStatusStream({ market: mktAddress, ownerAddress: testOrder.ownerAddress })
+            const req = await provider.getOrderStatusStream({ market: mktAddress, ownerAddress: testOrder.ownerAddress })
             for await (const ob of req) {
                 if (ob.orderInfo && ob.orderInfo.clientOrderID == testOrder.clientOrderID && ob.orderInfo.orderStatus == "OS_CANCELLED") {
                     console.info(`order canceled ('${ob.orderInfo.orderStatus}') successfully`)
@@ -388,7 +388,7 @@ async function callGetOrderbookStream(provider: BaseProvider) {
 async function callGetTickersStream(provider: BaseProvider) {
     try {
         console.info("Subscribing for ticker updates of SOLUSDC market")
-        let req = await provider.getTickersStream({ "market": "SOLUSDC" });
+        const req = await provider.getTickersStream({ "market": "SOLUSDC" });
 
         let count = 0
         for await (const tick of req) {
@@ -407,7 +407,7 @@ async function callGetTickersStream(provider: BaseProvider) {
 async function callGetTradesStream(provider: BaseProvider) {
     try {
         console.info("Subscribing for trade updates of SOLUSDC market")
-        let req = await provider.getTradesStream({ "market": "SOLUSDC", "limit": 5 });
+        const req = await provider.getTradesStream({ "market": "SOLUSDC", "limit": 5 });
 
         let count = 0
         for await (const tr of req) {

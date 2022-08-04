@@ -8,7 +8,9 @@
     "example": "example"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node ./examples/index.ts",
+    "lint": "eslint . --ext .ts --fix"
   },
   "repository": {
     "type": "git",
@@ -26,6 +28,7 @@
     "@solana/web3.js": "^1.47.3",
     "bs58": "^5.0.0",
     "dotenv": "^16.0.1",
+    "eslint-plugin-prettier": "^4.2.1",
     "google-protobuf": "^3.20.1",
     "node-fetch": "^3.2.6",
     "ts-node": "^10.8.1",
@@ -40,6 +43,11 @@
     "@types/node": "^18.0.0",
     "@types/node-fetch": "^2.6.2",
     "@types/ws": "^8.5.3",
+    "@typescript-eslint/eslint-plugin": "^5.32.0",
+    "@typescript-eslint/parser": "^5.32.0",
+    "eslint": "^8.21.0",
+    "eslint-config-prettier": "^8.5.0",
+    "prettier": "^2.7.1",
     "ts-proto": "^1.115.5"
   }
 }

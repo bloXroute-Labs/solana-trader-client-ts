@@ -2,7 +2,7 @@ import thenableReject from 'thenable-reject'
 import WebSocket from "ws"
 
 //const requestToSubscriptions: Map<number, string> = new Map<number, string>();
-export async function* websocketData<TData>(websocket: WebSocket, reqId: number): AsyncGenerator<any, any, unknown> {
+export async function* websocketData<TData>(websocket: WebSocket, reqId: number): AsyncGenerator<TData, any, unknown> {
 	let subscriptionId = ""
 	for await (const { data } of websocketEvents(websocket)) {
 		const { result, id } = JSON.parse(data.toString())
