@@ -8,9 +8,14 @@
     "example": "example"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node ./examples/index.ts",
-    "lint": "eslint . --ext .ts --fix"
+    "lint": "eslint --fix",
+    "format":"prettier --config .prettierrc './**/*.ts' --write"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm run format"
+    }
   },
   "repository": {
     "type": "git",
@@ -28,7 +33,6 @@
     "@solana/web3.js": "^1.47.3",
     "bs58": "^5.0.0",
     "dotenv": "^16.0.1",
-    "eslint-plugin-prettier": "^4.2.1",
     "google-protobuf": "^3.20.1",
     "node-fetch": "^3.2.6",
     "ts-node": "^10.8.1",
@@ -47,6 +51,8 @@
     "@typescript-eslint/parser": "^5.32.0",
     "eslint": "^8.21.0",
     "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.1",
     "prettier": "^2.7.1",
     "ts-proto": "^1.115.5"
   }

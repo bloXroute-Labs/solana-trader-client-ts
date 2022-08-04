@@ -14,6 +14,6 @@ export function signTx(base64EncodedTx: string): Transaction {
 }
 
 export type SubmitTransactionResponse = {
-    signature: string,
+    signature: string
     openOrdersAccount: string
 }
