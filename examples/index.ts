@@ -452,33 +452,33 @@ async function callSettleFunds(provider: BaseProvider) {
 async function callCancelAll(provider: BaseProvider) {
     try {
         console.info("Generating and placing two orders")
-        let clientOrderID1 = getRandom().toLocaleString(`fullwide`, {useGrouping: false})
-        let clientOrderID2 = getRandom().toLocaleString(`fullwide`, {useGrouping: false})
+        const clientOrderID1 = getRandom().toLocaleString(`fullwide`, {useGrouping: false})
+        const clientOrderID2 = getRandom().toLocaleString(`fullwide`, {useGrouping: false})
 
         // placing orders
         testOrder.clientOrderID = clientOrderID1
-        let resp = await provider.submitOrder(testOrder)
-        console.info(`Order 1 placed ${resp.signature}`)
+        const resp1 = await provider.submitOrder(testOrder)
+        console.info(`Order 1 placed ${resp1.signature}`)
 
         testOrder.clientOrderID = clientOrderID2
-        resp = await provider.submitOrder(testOrder)
-        console.info(`Order 2 placed ${resp.signature}`)
+        const resp2 = await provider.submitOrder(testOrder)
+        console.info(`Order 2 placed ${resp2.signature}`)
 
         console.info(`\nWaiting ${crank_timeout_s}s for place orders to be cranked`)
 
         // checking orders placed
-         let openOrdersRequest: GetOpenOrdersRequest = {
+         const openOrdersRequest: GetOpenOrdersRequest = {
              market: marketAddress,
              limit: 0,
              address: ownerAddress,
          }
 
         await delay(crank_timeout_s * 1000)
-        let openOrdersResponse: GetOpenOrdersResponse = await provider.getOpenOrders(openOrdersRequest)
+        const openOrdersResponse1: GetOpenOrdersResponse = await provider.getOpenOrders(openOrdersRequest)
 
         let found1 = false
         let found2 = false
-        for (let order of openOrdersResponse.orders) {
+        for (const order of openOrdersResponse1.orders) {
             if (order.clientOrderID === clientOrderID1) {
                 found1 = true
             } else if (order.clientOrderID === clientOrderID2) {
@@ -493,15 +493,15 @@ async function callCancelAll(provider: BaseProvider) {
         console.info("Both orders placed successfully\n")
 
         // cancelling orders
-        let cancelAllRequest: PostCancelAllRequest = {
+        const cancelAllRequest: PostCancelAllRequest = {
             market: marketAddress,
             ownerAddress: ownerAddress,
             openOrdersAddresses: [openOrdersAddress],
         }
-        let submitCancelAllResponses = await provider.submitCancelAll(cancelAllRequest)
+        const submitCancelAllResponses = await provider.submitCancelAll(cancelAllRequest)
 
         let signatures: string[] = []
-        for (let cancelAllResponse of submitCancelAllResponses) {
+        for (const cancelAllResponse of submitCancelAllResponses) {
             signatures.push(cancelAllResponse.signature)
         }
 
@@ -510,10 +510,10 @@ async function callCancelAll(provider: BaseProvider) {
 
         // checking all orders cancelled
         await delay(crank_timeout_s * 1000)
-        openOrdersResponse = await provider.getOpenOrders(openOrdersRequest)
+        const openOrdersResponse2 = await provider.getOpenOrders(openOrdersRequest)
 
-        if (openOrdersResponse.orders.length !== 0) {
-            console.error(`${openOrdersResponse.orders.length} orders not cancelled`)
+        if (openOrdersResponse2.orders.length !== 0) {
+            console.error(`${openOrdersResponse2.orders.length} orders not cancelled`)
             return ""
         }
         console.info("Orders in orderbook cancelled")
