@@ -1,17 +1,9 @@
 import {
-  Type as Timestamp,
-  encodeJson as encodeJson_1,
-  decodeJson as decodeJson_1,
-  encodeBinary as encodeBinary_1,
-  decodeBinary as decodeBinary_1,
-} from "../google/protobuf/Timestamp.js";
-import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar.js";
 import {
   WireMessage,
-  WireType,
 } from "../../runtime/wire/index.js";
 import {
   default as serialize,
@@ -26,8 +18,8 @@ import {
 
 export declare namespace $.api {
   export interface Candle {
-    startTime?: Timestamp;
-    updateTime?: Timestamp;
+    startTime?: unknown;
+    updateTime?: unknown;
     open: number;
     close: number;
     low: number;
@@ -62,8 +54,8 @@ export function createValue(partialValue: Partial<$.api.Candle>): $.api.Candle {
 
 export function encodeJson(value: $.api.Candle): unknown {
   const result: any = {};
-  if (value.startTime !== undefined) result.startTime = encodeJson_1(value.startTime);
-  if (value.updateTime !== undefined) result.updateTime = encodeJson_1(value.updateTime);
+  if (value.startTime !== undefined) result.startTime = undefined;
+  if (value.updateTime !== undefined) result.updateTime = undefined;
   if (value.open !== undefined) result.open = tsValueToJsonValueFns.double(value.open);
   if (value.close !== undefined) result.close = tsValueToJsonValueFns.double(value.close);
   if (value.low !== undefined) result.low = tsValueToJsonValueFns.double(value.low);
@@ -76,8 +68,8 @@ export function encodeJson(value: $.api.Candle): unknown {
 
 export function decodeJson(value: any): $.api.Candle {
   const result = getDefaultValue();
-  if (value.startTime !== undefined) result.startTime = decodeJson_1(value.startTime);
-  if (value.updateTime !== undefined) result.updateTime = decodeJson_1(value.updateTime);
+  if (value.startTime !== undefined) result.startTime = undefined;
+  if (value.updateTime !== undefined) result.updateTime = undefined;
   if (value.open !== undefined) result.open = jsonValueToTsValueFns.double(value.open);
   if (value.close !== undefined) result.close = jsonValueToTsValueFns.double(value.close);
   if (value.low !== undefined) result.low = jsonValueToTsValueFns.double(value.low);
@@ -93,13 +85,13 @@ export function encodeBinary(value: $.api.Candle): Uint8Array {
   if (value.startTime !== undefined) {
     const tsValue = value.startTime;
     result.push(
-      [1, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
+      [1, undefined],
     );
   }
   if (value.updateTime !== undefined) {
     const tsValue = value.updateTime;
     result.push(
-      [2, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
+      [2, undefined],
     );
   }
   if (value.open !== undefined) {
@@ -151,20 +143,6 @@ export function decodeBinary(binary: Uint8Array): $.api.Candle {
   const result = getDefaultValue();
   const wireMessage = deserialize(binary);
   const wireFields = new Map(wireMessage);
-  field: {
-    const wireValue = wireFields.get(1);
-    if (wireValue === undefined) break field;
-    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined;
-    if (value === undefined) break field;
-    result.startTime = value;
-  }
-  field: {
-    const wireValue = wireFields.get(2);
-    if (wireValue === undefined) break field;
-    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined;
-    if (value === undefined) break field;
-    result.updateTime = value;
-  }
   field: {
     const wireValue = wireFields.get(3);
     if (wireValue === undefined) break field;

@@ -4,18 +4,11 @@ import {
   num2name,
 } from "./(JSONSchema)/JSONSchemaSimpleTypes.js";
 import {
-  Type as Value,
+  Type as FieldConfiguration,
   encodeJson as encodeJson_1,
   decodeJson as decodeJson_1,
   encodeBinary as encodeBinary_1,
   decodeBinary as decodeBinary_1,
-} from "../../../../google/protobuf/Value.js";
-import {
-  Type as FieldConfiguration,
-  encodeJson as encodeJson_2,
-  decodeJson as decodeJson_2,
-  encodeBinary as encodeBinary_2,
-  decodeBinary as decodeBinary_2,
 } from "./(JSONSchema)/FieldConfiguration.js";
 import {
   tsValueToJsonValueFns,
@@ -66,7 +59,7 @@ export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options {
     type: JSONSchemaSimpleTypes[];
     format: string;
     enum: string[];
-    extensions: Map<string, Value>;
+    extensions: Map<string, unknown>;
     fieldConfiguration?: FieldConfiguration;
   }
 }
@@ -136,8 +129,8 @@ export function encodeJson(value: $.grpc.gateway.protoc_gen_openapiv2.options.JS
   result.type = value.type.map(value => tsValueToJsonValueFns.enum(value));
   if (value.format !== undefined) result.format = tsValueToJsonValueFns.string(value.format);
   result.enum = value.enum.map(value => tsValueToJsonValueFns.string(value));
-  if (value.extensions !== undefined) result.extensions = Object.fromEntries([...value.extensions.entries()].map(([key, value]) => [key, encodeJson_1(value)]));
-  if (value.fieldConfiguration !== undefined) result.fieldConfiguration = encodeJson_2(value.fieldConfiguration);
+  if (value.extensions !== undefined) result.extensions = undefined;
+  if (value.fieldConfiguration !== undefined) result.fieldConfiguration = encodeJson_1(value.fieldConfiguration);
   return result;
 }
 
@@ -167,8 +160,8 @@ export function decodeJson(value: any): $.grpc.gateway.protoc_gen_openapiv2.opti
   result.type = value.type?.map((value: any) => jsonValueToTsValueFns.enum(value) as JSONSchemaSimpleTypes) ?? [];
   if (value.format !== undefined) result.format = jsonValueToTsValueFns.string(value.format);
   result.enum = value.enum?.map((value: any) => jsonValueToTsValueFns.string(value)) ?? [];
-  if (value.extensions !== undefined) result.extensions = Object.fromEntries([...value.extensions.entries()].map(([key, value]) => [key, decodeJson_1(value)]));
-  if (value.fieldConfiguration !== undefined) result.fieldConfiguration = decodeJson_2(value.fieldConfiguration);
+  if (value.extensions !== undefined) result.extensions = undefined;
+  if (value.fieldConfiguration !== undefined) result.fieldConfiguration = decodeJson_1(value.fieldConfiguration);
   return result;
 }
 
@@ -318,14 +311,14 @@ export function encodeBinary(value: $.grpc.gateway.protoc_gen_openapiv2.options.
     const fields = value.extensions.entries();
     for (const [key, value] of fields) {
       result.push(
-        [48, { type: WireType.LengthDelimited as const, value: serialize([[1, tsValueToWireValueFns.string(key)], [2, { type: WireType.LengthDelimited as const, value: encodeBinary_1(value) }]]) }],
+        [48, undefined],
       );
     }
   }
   if (value.fieldConfiguration !== undefined) {
     const tsValue = value.fieldConfiguration;
     result.push(
-      [1001, { type: WireType.LengthDelimited as const, value: encodeBinary_2(tsValue) }],
+      [1001, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
     );
   }
   return serialize(result);
@@ -499,16 +492,10 @@ export function decodeBinary(binary: Uint8Array): $.grpc.gateway.protoc_gen_open
     if (!value.length) break collection;
     result.enum = value as any;
   }
-  collection: {
-    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 48).map(([, wireValue]) => wireValue);
-    const value = wireValues.map((wireValue) => (() => { if (wireValue.type !== WireType.LengthDelimited) { return; } const { 0: key, 1: value } = Object.fromEntries(deserialize(wireValue.value)); if (key === undefined || value === undefined) return; return [wireValueToTsValueFns.string(key), value.type === WireType.LengthDelimited ? decodeBinary_1(value.value) : undefined] as const;})()).filter(x => x !== undefined);
-    if (!value.length) break collection;
-    result.extensions = new Map(value as any);
-  }
   field: {
     const wireValue = wireFields.get(1001);
     if (wireValue === undefined) break field;
-    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_2(wireValue.value) : undefined;
+    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined;
     if (value === undefined) break field;
     result.fieldConfiguration = value;
   }

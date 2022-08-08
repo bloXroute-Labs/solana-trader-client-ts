@@ -39,13 +39,6 @@ import {
   decodeBinary as decodeBinary_5,
 } from "./ExternalDocumentation.js";
 import {
-  Type as Value,
-  encodeJson as encodeJson_6,
-  decodeJson as decodeJson_6,
-  encodeBinary as encodeBinary_6,
-  decodeBinary as decodeBinary_6,
-} from "../../../../google/protobuf/Value.js";
-import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
 } from "../../../../../runtime/json/scalar.js";
@@ -81,7 +74,7 @@ export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options {
     securityDefinitions?: SecurityDefinitions;
     security: SecurityRequirement[];
     externalDocs?: ExternalDocumentation;
-    extensions: Map<string, Value>;
+    extensions: Map<string, unknown>;
   }
 }
 export type Type = $.grpc.gateway.protoc_gen_openapiv2.options.Swagger;
@@ -123,7 +116,7 @@ export function encodeJson(value: $.grpc.gateway.protoc_gen_openapiv2.options.Sw
   if (value.securityDefinitions !== undefined) result.securityDefinitions = encodeJson_3(value.securityDefinitions);
   result.security = value.security.map(value => encodeJson_4(value));
   if (value.externalDocs !== undefined) result.externalDocs = encodeJson_5(value.externalDocs);
-  if (value.extensions !== undefined) result.extensions = Object.fromEntries([...value.extensions.entries()].map(([key, value]) => [key, encodeJson_6(value)]));
+  if (value.extensions !== undefined) result.extensions = undefined;
   return result;
 }
 
@@ -140,7 +133,7 @@ export function decodeJson(value: any): $.grpc.gateway.protoc_gen_openapiv2.opti
   if (value.securityDefinitions !== undefined) result.securityDefinitions = decodeJson_3(value.securityDefinitions);
   result.security = value.security?.map((value: any) => decodeJson_4(value)) ?? [];
   if (value.externalDocs !== undefined) result.externalDocs = decodeJson_5(value.externalDocs);
-  if (value.extensions !== undefined) result.extensions = Object.fromEntries([...value.extensions.entries()].map(([key, value]) => [key, decodeJson_6(value)]));
+  if (value.extensions !== undefined) result.extensions = undefined;
   return result;
 }
 
@@ -214,7 +207,7 @@ export function encodeBinary(value: $.grpc.gateway.protoc_gen_openapiv2.options.
     const fields = value.extensions.entries();
     for (const [key, value] of fields) {
       result.push(
-        [15, { type: WireType.LengthDelimited as const, value: serialize([[1, tsValueToWireValueFns.string(key)], [2, { type: WireType.LengthDelimited as const, value: encodeBinary_6(value) }]]) }],
+        [15, undefined],
       );
     }
   }
@@ -273,7 +266,7 @@ export function decodeBinary(binary: Uint8Array): $.grpc.gateway.protoc_gen_open
   }
   collection: {
     const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 10).map(([, wireValue]) => wireValue);
-    const value = wireValues.map((wireValue) => (() => { if (wireValue.type !== WireType.LengthDelimited) { return; } const { 0: key, 1: value } = Object.fromEntries(deserialize(wireValue.value)); if (key === undefined || value === undefined) return; return [wireValueToTsValueFns.string(key), value.type === WireType.LengthDelimited ? decodeBinary_2(value.value) : undefined] as const;})()).filter(x => x !== undefined);
+    const value = wireValues.map((wireValue) => (() => { if (wireValue.type !== WireType.LengthDelimited) { return; } const { 1: key, 2: value } = Object.fromEntries(deserialize(wireValue.value)); if (key === undefined || value === undefined) return; return [wireValueToTsValueFns.string(key), value.type === WireType.LengthDelimited ? decodeBinary_2(value.value) : undefined] as const;})()).filter(x => x !== undefined);
     if (!value.length) break collection;
     result.responses = new Map(value as any);
   }
@@ -296,12 +289,6 @@ export function decodeBinary(binary: Uint8Array): $.grpc.gateway.protoc_gen_open
     const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_5(wireValue.value) : undefined;
     if (value === undefined) break field;
     result.externalDocs = value;
-  }
-  collection: {
-    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 15).map(([, wireValue]) => wireValue);
-    const value = wireValues.map((wireValue) => (() => { if (wireValue.type !== WireType.LengthDelimited) { return; } const { 0: key, 1: value } = Object.fromEntries(deserialize(wireValue.value)); if (key === undefined || value === undefined) return; return [wireValueToTsValueFns.string(key), value.type === WireType.LengthDelimited ? decodeBinary_6(value.value) : undefined] as const;})()).filter(x => x !== undefined);
-    if (!value.length) break collection;
-    result.extensions = new Map(value as any);
   }
   return result;
 }

@@ -14,13 +14,6 @@ import {
   num2name as num2name_2,
 } from "./OrderType.js";
 import {
-  Type as Timestamp,
-  encodeJson as encodeJson_1,
-  decodeJson as decodeJson_1,
-  encodeBinary as encodeBinary_1,
-  decodeBinary as decodeBinary_1,
-} from "../google/protobuf/Timestamp.js";
-import {
   Type as Direction,
   name2num as name2num_3,
   num2name as num2name_3,
@@ -54,7 +47,7 @@ export declare namespace $.api {
     status: OrderStatus;
     side: Side;
     types: OrderType[];
-    from?: Timestamp;
+    from?: unknown;
     limit: number;
     direction: Direction;
     address: string;
@@ -90,7 +83,7 @@ export function encodeJson(value: $.api.GetOrdersRequest): unknown {
   if (value.status !== undefined) result.status = tsValueToJsonValueFns.enum(value.status);
   if (value.side !== undefined) result.side = tsValueToJsonValueFns.enum(value.side);
   result.types = value.types.map(value => tsValueToJsonValueFns.enum(value));
-  if (value.from !== undefined) result.from = encodeJson_1(value.from);
+  if (value.from !== undefined) result.from = undefined;
   if (value.limit !== undefined) result.limit = tsValueToJsonValueFns.uint32(value.limit);
   if (value.direction !== undefined) result.direction = tsValueToJsonValueFns.enum(value.direction);
   if (value.address !== undefined) result.address = tsValueToJsonValueFns.string(value.address);
@@ -104,7 +97,7 @@ export function decodeJson(value: any): $.api.GetOrdersRequest {
   if (value.status !== undefined) result.status = jsonValueToTsValueFns.enum(value.status) as OrderStatus;
   if (value.side !== undefined) result.side = jsonValueToTsValueFns.enum(value.side) as Side;
   result.types = value.types?.map((value: any) => jsonValueToTsValueFns.enum(value) as OrderType) ?? [];
-  if (value.from !== undefined) result.from = decodeJson_1(value.from);
+  if (value.from !== undefined) result.from = undefined;
   if (value.limit !== undefined) result.limit = jsonValueToTsValueFns.uint32(value.limit);
   if (value.direction !== undefined) result.direction = jsonValueToTsValueFns.enum(value.direction) as Direction;
   if (value.address !== undefined) result.address = jsonValueToTsValueFns.string(value.address);
@@ -140,7 +133,7 @@ export function encodeBinary(value: $.api.GetOrdersRequest): Uint8Array {
   if (value.from !== undefined) {
     const tsValue = value.from;
     result.push(
-      [5, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
+      [5, undefined],
     );
   }
   if (value.limit !== undefined) {
@@ -200,13 +193,6 @@ export function decodeBinary(binary: Uint8Array): $.api.GetOrdersRequest {
     const value = Array.from(unpackFns.int32(wireValues)).map(num => num2name_2[num as keyof typeof num2name_2]);
     if (!value.length) break collection;
     result.types = value as any;
-  }
-  field: {
-    const wireValue = wireFields.get(5);
-    if (wireValue === undefined) break field;
-    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined;
-    if (value === undefined) break field;
-    result.from = value;
   }
   field: {
     const wireValue = wireFields.get(6);
