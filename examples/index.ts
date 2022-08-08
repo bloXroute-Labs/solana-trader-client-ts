@@ -468,7 +468,7 @@ async function callSubmitCancelByClientOrderID(provider: BaseProvider) {
 
 async function callSettleFunds(provider: BaseProvider) {
     try {
-        console.info("Generating and submiting a Settle transaction")
+        console.info("Generating and submitting a Settle transaction")
         const req = await provider.submitSettle({
             market: marketAddress,
             openOrdersAddress: openOrdersAddress,
@@ -484,7 +484,7 @@ async function callSettleFunds(provider: BaseProvider) {
 
 async function callReplaceByClientOrderID(provider: BaseProvider) {
     try {
-        console.info("Generating and submiting a Cancel and Replace by Cient Order ID transaction")
+        console.info("Generating and submitting a Cancel and Replace by Cient Order ID transaction")
         const clientOrderID = getRandom()
         testOrder.clientOrderID = clientOrderID.toLocaleString("fullwide", { useGrouping: false })
         testOrder.price -= 1
@@ -492,13 +492,13 @@ async function callReplaceByClientOrderID(provider: BaseProvider) {
         const req = await provider.submitReplaceByClientOrderID(testOrder)
         console.info(req)
     } catch (error) {
-        console.error("Failed to generating and/or submit a Cancel by Cient Order ID transaction", error)
+        console.error("Failed to generating and/or submit a Cancel by Client Order ID transaction", error)
     }
 }
 
 async function callReplaceOrder(provider: BaseProvider) {
     try {
-        console.info("Generating and submiting a Cancel and Replace by Cient Order ID transaction")
+        console.info("Generating and submitting a Cancel and Replace by Client Order ID transaction")
         const clientOrderID = getRandom()
         testOrder.clientOrderID = clientOrderID.toLocaleString("fullwide", { useGrouping: false })
         testOrder.price -= 1
@@ -506,7 +506,7 @@ async function callReplaceOrder(provider: BaseProvider) {
         const req = await provider.submitReplaceOrder({ orderID: "", ...testOrder })
         console.info(req)
     } catch (error) {
-        console.error("Failed to generating and/or submit a Cancel by Cient Order ID transaction", error)
+        console.error("Failed to generating and/or submit a Cancel by Client Order ID transaction", error)
     }
 }
 
@@ -561,7 +561,7 @@ async function callCancelAll(provider: BaseProvider) {
         }
         const submitCancelAllResponses = await provider.submitCancelAll(cancelAllRequest)
 
-        let signatures: string[] = []
+        const signatures: string[] = []
         for (const cancelAllResponse of submitCancelAllResponses) {
             signatures.push(cancelAllResponse.signature)
         }

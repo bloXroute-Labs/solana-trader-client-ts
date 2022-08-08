@@ -167,12 +167,12 @@ export abstract class BaseProvider implements Api {
     }
 
     async submitCancelAll(request: PostCancelAllRequest, skipPreFlight: boolean = true): Promise<Awaited<PostSubmitResponse>[]> {
-        let res = await this.postCancelAll(request)
-        let responses: Promise<PostSubmitResponse>[] = []
+        const res = await this.postCancelAll(request)
+        const responses: Promise<PostSubmitResponse>[] = []
 
-        for (let tx of res.transactions) {
-            let signedTx = signTx(tx)
-            let postSubmitRez = this.postSubmit({ transaction:signedTx.serialize().toString("base64"), skipPreFlight})
+        for (const tx of res.transactions) {
+            const signedTx = signTx(tx)
+            const postSubmitRez = this.postSubmit({ transaction:signedTx.serialize().toString("base64"), skipPreFlight})
             responses.push(postSubmitRez)
         }
 
