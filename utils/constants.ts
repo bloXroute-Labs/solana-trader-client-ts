@@ -1,5 +1,3 @@
-
-
 export const MAINNET_API_HTTP = "https://virginia.solana.dex.blxrbdn.com"
 export const MAINNET_API_WS = "wss://virginia.solana.dex.blxrbdn.com/ws"
 export const MAINNET_API_GRPC_HOST = "virginia.solana.dex.blxrbdn.com"
@@ -12,5 +10,3 @@ export const LOCAL_API_HTTP = "http://127.0.0.1:9000"
 export const LOCAL_API_WS = "ws://127.0.0.1:9000/ws"
 export const LOCAL_API_GRPC_HOST = "127.0.0.1"
 export const LOCAL_API_GRPC_PORT = 9001
-
-

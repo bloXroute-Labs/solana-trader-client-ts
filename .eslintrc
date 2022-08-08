@@ -1,0 +1,18 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint",
+    "prettier"
+  ],
+  "extends": [
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "rules":{
+    "@typescript-eslint/no-namespace": 0,
+    "no-async-promise-executor": 0,
+    "@typescript-eslint/no-unused-vars": 0
+  }
+}
