@@ -8,7 +8,9 @@
     "example": "example"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "ts-node ./examples/index.ts",
+    "lint": "eslint --fix",
+    "format": "prettier --config .prettierrc './**/*.ts' --write"
   },
   "repository": {
     "type": "git",
@@ -40,6 +42,13 @@
     "@types/node": "^18.0.0",
     "@types/node-fetch": "^2.6.2",
     "@types/ws": "^8.5.3",
+    "@typescript-eslint/eslint-plugin": "^5.32.0",
+    "@typescript-eslint/parser": "^5.32.0",
+    "eslint": "^8.21.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.1",
+    "prettier": "^2.7.1",
     "ts-proto": "^1.115.5"
   }
 }

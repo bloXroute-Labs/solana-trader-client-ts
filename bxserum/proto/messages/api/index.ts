@@ -21,6 +21,7 @@ export type { Type as GetAccountBalanceRequest } from "./GetAccountBalanceReques
 export type { Type as GetAccountBalanceResponse } from "./GetAccountBalanceResponse.js";
 export type { Type as TokenBalance } from "./TokenBalance.js";
 export type { Type as PostOrderRequest } from "./PostOrderRequest.js";
+export type { Type as PostReplaceOrderRequest } from "./PostReplaceOrderRequest.js";
 export type { Type as Side } from "./Side.js";
 export type { Type as OrderType } from "./OrderType.js";
 export type { Type as PostOrderResponse } from "./PostOrderResponse.js";
