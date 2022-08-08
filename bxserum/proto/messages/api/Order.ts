@@ -9,13 +9,6 @@ import {
   num2name as num2name_1,
 } from "./OrderType.js";
 import {
-  Type as Timestamp,
-  encodeJson as encodeJson_1,
-  decodeJson as decodeJson_1,
-  encodeBinary as encodeBinary_1,
-  decodeBinary as decodeBinary_1,
-} from "../google/protobuf/Timestamp.js";
-import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar.js";
@@ -46,7 +39,7 @@ export declare namespace $.api {
     types: OrderType[];
     price: number;
     remainingSize: number;
-    createdAt?: Timestamp;
+    createdAt?: unknown;
     clientOrderID: string;
     openOrderAccount: string;
   }
@@ -82,7 +75,7 @@ export function encodeJson(value: $.api.Order): unknown {
   result.types = value.types.map(value => tsValueToJsonValueFns.enum(value));
   if (value.price !== undefined) result.price = tsValueToJsonValueFns.double(value.price);
   if (value.remainingSize !== undefined) result.remainingSize = tsValueToJsonValueFns.double(value.remainingSize);
-  if (value.createdAt !== undefined) result.createdAt = encodeJson_1(value.createdAt);
+  if (value.createdAt !== undefined) result.createdAt = undefined;
   if (value.clientOrderID !== undefined) result.clientOrderID = tsValueToJsonValueFns.string(value.clientOrderID);
   if (value.openOrderAccount !== undefined) result.openOrderAccount = tsValueToJsonValueFns.string(value.openOrderAccount);
   return result;
@@ -96,7 +89,7 @@ export function decodeJson(value: any): $.api.Order {
   result.types = value.types?.map((value: any) => jsonValueToTsValueFns.enum(value) as OrderType) ?? [];
   if (value.price !== undefined) result.price = jsonValueToTsValueFns.double(value.price);
   if (value.remainingSize !== undefined) result.remainingSize = jsonValueToTsValueFns.double(value.remainingSize);
-  if (value.createdAt !== undefined) result.createdAt = decodeJson_1(value.createdAt);
+  if (value.createdAt !== undefined) result.createdAt = undefined;
   if (value.clientOrderID !== undefined) result.clientOrderID = jsonValueToTsValueFns.string(value.clientOrderID);
   if (value.openOrderAccount !== undefined) result.openOrderAccount = jsonValueToTsValueFns.string(value.openOrderAccount);
   return result;
@@ -142,7 +135,7 @@ export function encodeBinary(value: $.api.Order): Uint8Array {
   if (value.createdAt !== undefined) {
     const tsValue = value.createdAt;
     result.push(
-      [7, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
+      [7, undefined],
     );
   }
   if (value.clientOrderID !== undefined) {
@@ -204,13 +197,6 @@ export function decodeBinary(binary: Uint8Array): $.api.Order {
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
     result.remainingSize = value;
-  }
-  field: {
-    const wireValue = wireFields.get(7);
-    if (wireValue === undefined) break field;
-    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined;
-    if (value === undefined) break field;
-    result.createdAt = value;
   }
   field: {
     const wireValue = wireFields.get(8);

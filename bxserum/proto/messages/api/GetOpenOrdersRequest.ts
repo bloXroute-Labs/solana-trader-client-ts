@@ -21,6 +21,7 @@ export declare namespace $.api {
     market: string;
     limit: number;
     address: string;
+    openOrdersAddress: string;
   }
 }
 export type Type = $.api.GetOpenOrdersRequest;
@@ -30,6 +31,7 @@ export function getDefaultValue(): $.api.GetOpenOrdersRequest {
     market: "",
     limit: 0,
     address: "",
+    openOrdersAddress: "",
   };
 }
 
@@ -45,6 +47,7 @@ export function encodeJson(value: $.api.GetOpenOrdersRequest): unknown {
   if (value.market !== undefined) result.market = tsValueToJsonValueFns.string(value.market);
   if (value.limit !== undefined) result.limit = tsValueToJsonValueFns.uint32(value.limit);
   if (value.address !== undefined) result.address = tsValueToJsonValueFns.string(value.address);
+  if (value.openOrdersAddress !== undefined) result.openOrdersAddress = tsValueToJsonValueFns.string(value.openOrdersAddress);
   return result;
 }
 
@@ -53,6 +56,7 @@ export function decodeJson(value: any): $.api.GetOpenOrdersRequest {
   if (value.market !== undefined) result.market = jsonValueToTsValueFns.string(value.market);
   if (value.limit !== undefined) result.limit = jsonValueToTsValueFns.uint32(value.limit);
   if (value.address !== undefined) result.address = jsonValueToTsValueFns.string(value.address);
+  if (value.openOrdersAddress !== undefined) result.openOrdersAddress = jsonValueToTsValueFns.string(value.openOrdersAddress);
   return result;
 }
 
@@ -74,6 +78,12 @@ export function encodeBinary(value: $.api.GetOpenOrdersRequest): Uint8Array {
     const tsValue = value.address;
     result.push(
       [3, tsValueToWireValueFns.string(tsValue)],
+    );
+  }
+  if (value.openOrdersAddress !== undefined) {
+    const tsValue = value.openOrdersAddress;
+    result.push(
+      [4, tsValueToWireValueFns.string(tsValue)],
     );
   }
   return serialize(result);
@@ -103,6 +113,13 @@ export function decodeBinary(binary: Uint8Array): $.api.GetOpenOrdersRequest {
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
     result.address = value;
+  }
+  field: {
+    const wireValue = wireFields.get(4);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.openOrdersAddress = value;
   }
   return result;
 }

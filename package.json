@@ -30,8 +30,9 @@
     "dotenv": "^16.0.1",
     "google-protobuf": "^3.20.1",
     "node-fetch": "^3.2.6",
+    "pb": "^0.4.0",
+    "pbkit": "^0.0.53",
     "ts-node": "^10.8.1",
-    "ts-protoc-gen": "^0.15.0",
     "typescript": "^4.7.4",
     "websocket-iterator": "^1.0.1",
     "ws": "^8.8.0"

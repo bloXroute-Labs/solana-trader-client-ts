@@ -1,17 +1,9 @@
 import {
-  Type as Timestamp,
-  encodeJson as encodeJson_1,
-  decodeJson as decodeJson_1,
-  encodeBinary as encodeBinary_1,
-  decodeBinary as decodeBinary_1,
-} from "../google/protobuf/Timestamp.js";
-import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar.js";
 import {
   WireMessage,
-  WireType,
 } from "../../runtime/wire/index.js";
 import {
   default as serialize,
@@ -27,8 +19,8 @@ import {
 export declare namespace $.api {
   export interface GetKlineRequest {
     market: string;
-    from?: Timestamp;
-    to?: Timestamp;
+    from?: unknown;
+    to?: unknown;
     resolution: string;
     limit: number;
   }
@@ -55,8 +47,8 @@ export function createValue(partialValue: Partial<$.api.GetKlineRequest>): $.api
 export function encodeJson(value: $.api.GetKlineRequest): unknown {
   const result: any = {};
   if (value.market !== undefined) result.market = tsValueToJsonValueFns.string(value.market);
-  if (value.from !== undefined) result.from = encodeJson_1(value.from);
-  if (value.to !== undefined) result.to = encodeJson_1(value.to);
+  if (value.from !== undefined) result.from = undefined;
+  if (value.to !== undefined) result.to = undefined;
   if (value.resolution !== undefined) result.resolution = tsValueToJsonValueFns.string(value.resolution);
   if (value.limit !== undefined) result.limit = tsValueToJsonValueFns.uint32(value.limit);
   return result;
@@ -65,8 +57,8 @@ export function encodeJson(value: $.api.GetKlineRequest): unknown {
 export function decodeJson(value: any): $.api.GetKlineRequest {
   const result = getDefaultValue();
   if (value.market !== undefined) result.market = jsonValueToTsValueFns.string(value.market);
-  if (value.from !== undefined) result.from = decodeJson_1(value.from);
-  if (value.to !== undefined) result.to = decodeJson_1(value.to);
+  if (value.from !== undefined) result.from = undefined;
+  if (value.to !== undefined) result.to = undefined;
   if (value.resolution !== undefined) result.resolution = jsonValueToTsValueFns.string(value.resolution);
   if (value.limit !== undefined) result.limit = jsonValueToTsValueFns.uint32(value.limit);
   return result;
@@ -83,13 +75,13 @@ export function encodeBinary(value: $.api.GetKlineRequest): Uint8Array {
   if (value.from !== undefined) {
     const tsValue = value.from;
     result.push(
-      [2, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
+      [2, undefined],
     );
   }
   if (value.to !== undefined) {
     const tsValue = value.to;
     result.push(
-      [3, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
+      [3, undefined],
     );
   }
   if (value.resolution !== undefined) {
@@ -117,20 +109,6 @@ export function decodeBinary(binary: Uint8Array): $.api.GetKlineRequest {
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
     result.market = value;
-  }
-  field: {
-    const wireValue = wireFields.get(2);
-    if (wireValue === undefined) break field;
-    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined;
-    if (value === undefined) break field;
-    result.from = value;
-  }
-  field: {
-    const wireValue = wireFields.get(3);
-    if (wireValue === undefined) break field;
-    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined;
-    if (value === undefined) break field;
-    result.to = value;
   }
   field: {
     const wireValue = wireFields.get(4);
