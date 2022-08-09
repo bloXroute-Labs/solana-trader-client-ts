@@ -39,3 +39,23 @@ console.info(req)
 
 Refer to the `examples/` for more info.
 
+## Development
+
+Lint:
+
+```
+$ npm run lint
+```
+
+Format:
+
+```
+$ npm run format
+```
+
+Install precommit hooks:
+
+```
+$ npx husky install
+```
+
