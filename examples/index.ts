@@ -531,6 +531,7 @@ async function callCancelAll(provider: BaseProvider) {
             market: marketAddress,
             limit: 0,
             address: ownerAddress,
+            openOrdersAddress: "",
         }
 
         await delay(crank_timeout_s * 1000)
