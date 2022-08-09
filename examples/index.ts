@@ -6,7 +6,6 @@ import { HttpProvider } from "../bxserum/provider/http.js"
 import { WsProvider } from "../bxserum/provider/ws.js"
 import { PostOrderRequest, GetOpenOrdersRequest, GetOpenOrdersResponse, PostCancelAllRequest } from "../bxserum/proto/messages/api/index.js"
 import config from "../utils/config.js"
-import { TESTNET_API_GRPC_HOST, TESTNET_API_GRPC_PORT } from "../utils/constants.js"
 
 const marketAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT";
 const ownerAddress = config.WalletPublicKey
