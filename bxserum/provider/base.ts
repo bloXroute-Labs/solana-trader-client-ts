@@ -171,7 +171,7 @@ export abstract class BaseProvider implements Api {
 
         for (const tx of res.transactions) {
             const signedTx = signTx(tx)
-            const postSubmitRez = this.postSubmit({ transaction:signedTx.serialize().toString("base64"), skipPreFlight})
+            const postSubmitRez = this.postSubmit({ transaction:signedTx.serialize().toString("base64"), skipPreFlight })
             postSubmitResponses.push(postSubmitRez)
         }
 
