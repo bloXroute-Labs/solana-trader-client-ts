@@ -53,7 +53,7 @@ Format:
 $ npm run format
 ```
 
-Install precommit:
+Install precommit hooks:
 
 ```
 $ npx husky install
