@@ -24,6 +24,8 @@ import {
     GetTradesStreamResponse,
     GetUnsettledRequest,
     GetUnsettledResponse,
+    PostCancelAllRequest,
+    PostCancelAllResponse,
     PostCancelByClientOrderIDRequest,
     PostCancelOrderRequest,
     PostCancelOrderResponse,
@@ -117,6 +119,11 @@ export class WsProvider extends BaseProvider {
     postCancelByClientOrderID(request: PostCancelByClientOrderIDRequest): Promise<PostCancelOrderResponse> {
         return this.wsSocketCall("PostCancelByClientOrderID", request)
     }
+
+    postCancelAll(request: PostCancelAllRequest): Promise<PostCancelAllResponse> {
+        return this.wsSocketCall("PostCancelAll", request)
+    }
+
     postSettle(request: PostSettleRequest): Promise<PostSettleResponse> {
         return this.wsSocketCall("PostSettle", request)
     }

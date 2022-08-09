@@ -43,7 +43,6 @@ import {
 } from "../proto/messages/api/index.js"
 import { Api } from "../proto/services/api/index.js"
 import { signTx, SubmitTransactionResponse } from "../../utils/transaction.js"
-import { RpcReturnType } from "../proto/runtime/rpc.js"
 
 export abstract class BaseProvider implements Api {
     abstract close(): void
@@ -144,49 +143,62 @@ export abstract class BaseProvider implements Api {
     async submitOrder(request: PostOrderRequest, skipPreFlight = false): Promise<SubmitTransactionResponse> {
         const res = await this.postOrder(request)
 
-        const tx = signTx(res.transaction)
+        const signedTx = signTx(res.transaction)
 
-        const postSubmitRez = await this.postSubmit({ transaction: tx.serialize().toString("base64"), skipPreFlight })
+        const postSubmitRez = await this.postSubmit({ transaction: signedTx.serialize().toString("base64"), skipPreFlight })
         return { signature: postSubmitRez.signature, openOrdersAccount: res.openOrdersAddress }
     }
 
     async submitCancelOrder(request: PostCancelOrderRequest, skipPreFlight = false): Promise<PostSubmitResponse> {
         const res = await this.postCancelOrder(request)
 
-        const tx = signTx(res.transaction)
+        const signedTx = signTx(res.transaction)
 
-        return this.postSubmit({ transaction: tx.serialize().toString("base64"), skipPreFlight })
+        return this.postSubmit({ transaction: signedTx.serialize().toString("base64"), skipPreFlight })
     }
 
     async submitCancelOrderByClientOrderID(request: PostCancelByClientOrderIDRequest, skipPreFlight = true): Promise<PostSubmitResponse> {
         const res = await this.postCancelByClientOrderID(request)
 
-        const tx = signTx(res.transaction)
+        const signedTx = signTx(res.transaction)
 
-        return this.postSubmit({ transaction: tx.serialize().toString("base64"), skipPreFlight })
+        return this.postSubmit({ transaction: signedTx.serialize().toString("base64"), skipPreFlight })
     }
 
-    async submitSettle(request: PostSettleRequest, skipPreFlight = true): Promise<PostSubmitResponse> {
+    async submitCancelAll(request: PostCancelAllRequest, skipPreFlight = true): Promise<Awaited<PostSubmitResponse>[]> {
+        const res = await this.postCancelAll(request)
+        const postSubmitResponses: Promise<PostSubmitResponse>[] = []
+
+        for (const tx of res.transactions) {
+            const signedTx = signTx(tx)
+            const postSubmitRez = this.postSubmit({ transaction:signedTx.serialize().toString("base64"), skipPreFlight })
+            postSubmitResponses.push(postSubmitRez)
+        }
+
+        return Promise.all(postSubmitResponses)
+    }
+
+    async submitSettle(request: PostSettleRequest, skipPreFlight = true): Promise<PostSubmitResponse>{
         const res = await this.postSettle(request)
 
-        const tx = signTx(res.transaction)
+        const signedTx = signTx(res.transaction)
 
-        return this.postSubmit({ transaction: tx.serialize().toString("base64"), skipPreFlight })
+        return this.postSubmit({ transaction: signedTx.serialize().toString("base64"), skipPreFlight })
     }
 
     async submitReplaceByClientOrderID(request: PostOrderRequest, skipPreFlight = true): Promise<PostSubmitResponse> {
         const res = await this.postReplaceByClientOrderID(request)
 
-        const tx = signTx(res.transaction)
+        const signedTx = signTx(res.transaction)
 
-        return this.postSubmit({ transaction: tx.serialize().toString("base64"), skipPreFlight })
+        return this.postSubmit({ transaction: signedTx.serialize().toString("base64"), skipPreFlight })
     }
 
     async submitReplaceOrder(request: PostReplaceOrderRequest, skipPreFlight = true): Promise<PostSubmitResponse> {
         const res = await this.postReplaceOrder(request)
 
-        const tx = signTx(res.transaction)
+        const signedTx = signTx(res.transaction)
 
-        return this.postSubmit({ transaction: tx.serialize().toString("base64"), skipPreFlight })
+        return this.postSubmit({ transaction: signedTx.serialize().toString("base64"), skipPreFlight })
     }
 }
