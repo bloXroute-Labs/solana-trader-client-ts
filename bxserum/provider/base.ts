@@ -43,7 +43,6 @@ import {
 } from "../proto/messages/api/index.js"
 import { Api } from "../proto/services/api/index.js"
 import { signTx, SubmitTransactionResponse } from "../../utils/transaction.js"
-import { RpcReturnType } from "../proto/runtime/rpc.js"
 
 export abstract class BaseProvider implements Api {
     abstract close(): void
@@ -166,20 +165,20 @@ export abstract class BaseProvider implements Api {
         return this.postSubmit({ transaction: signedTx.serialize().toString("base64"), skipPreFlight })
     }
 
-    async submitCancelAll(request: PostCancelAllRequest, skipPreFlight: boolean = true): Promise<Awaited<PostSubmitResponse>[]> {
+    async submitCancelAll(request: PostCancelAllRequest, skipPreFlight = true): Promise<Awaited<PostSubmitResponse>[]> {
         const res = await this.postCancelAll(request)
-        const responses: Promise<PostSubmitResponse>[] = []
+        const postSubmitResponses: Promise<PostSubmitResponse>[] = []
 
         for (const tx of res.transactions) {
             const signedTx = signTx(tx)
             const postSubmitRez = this.postSubmit({ transaction:signedTx.serialize().toString("base64"), skipPreFlight})
-            responses.push(postSubmitRez)
+            postSubmitResponses.push(postSubmitRez)
         }
 
-        return Promise.all(responses)
+        return Promise.all(postSubmitResponses)
     }
 
-    async submitSettle(request: PostSettleRequest, skipPreFlight: boolean = true): Promise<PostSubmitResponse>{
+    async submitSettle(request: PostSettleRequest, skipPreFlight = true): Promise<PostSubmitResponse>{
         const res = await this.postSettle(request)
 
         const signedTx = signTx(res.transaction)

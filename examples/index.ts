@@ -447,7 +447,7 @@ async function callSubmitOrder(provider: BaseProvider) {
         const req = await provider.submitOrder(testOrder)
         console.info(req)
     } catch (error) {
-        console.error("Failed to generating and/or submit a New Order transaction", error)
+        console.error("Failed to generate and/or submit a New Order transaction", error)
     }
 }
 
@@ -462,7 +462,7 @@ async function callSubmitCancelByClientOrderID(provider: BaseProvider) {
         })
         console.info(req)
     } catch (error) {
-        console.error("Failed to generating and/or submit a Cancel by Client Order ID transaction", error)
+        console.error("Failed to generate and/or submit a Cancel by Client Order ID transaction", error)
     }
 }
 
@@ -478,13 +478,13 @@ async function callSettleFunds(provider: BaseProvider) {
         })
         console.info(req)
     } catch (error) {
-        console.error("Failed to generating and/or submit a Settle transaction", error)
+        console.error("Failed to generate and/or submit a Settle transaction", error)
     }
 }
 
 async function callReplaceByClientOrderID(provider: BaseProvider) {
     try {
-        console.info("Generating and submitting a Cancel and Replace by Cient Order ID transaction")
+        console.info("Generating and submitting a Cancel and Replace by Client Order ID transaction")
         const clientOrderID = getRandom()
         testOrder.clientOrderID = clientOrderID.toLocaleString("fullwide", { useGrouping: false })
         testOrder.price -= 1
@@ -492,7 +492,7 @@ async function callReplaceByClientOrderID(provider: BaseProvider) {
         const req = await provider.submitReplaceByClientOrderID(testOrder)
         console.info(req)
     } catch (error) {
-        console.error("Failed to generating and/or submit a Cancel by Client Order ID transaction", error)
+        console.error("Failed to generate and/or submit a Cancel by Client Order ID transaction", error)
     }
 }
 
@@ -506,7 +506,7 @@ async function callReplaceOrder(provider: BaseProvider) {
         const req = await provider.submitReplaceOrder({ orderID: "", ...testOrder })
         console.info(req)
     } catch (error) {
-        console.error("Failed to generating and/or submit a Cancel by Client Order ID transaction", error)
+        console.error("Failed to generate and/or submit a Cancel by Client Order ID transaction", error)
     }
 }
 
