@@ -295,7 +295,7 @@ async function callGetMarkets(provider: BaseProvider) {
 async function callGetOpenOrders(provider: BaseProvider) {
     try {
         console.info("Retrieving all open orders in SOLUSDC market")
-        const req = await provider.getOpenOrders({ market: "SOLUSDC", address: "F75gCEckFAyeeCWA9FQMkmLCmke7ehvBnZeVZ3QgvJR7", limit: 0 })
+        const req = await provider.getOpenOrders({ market: "SOLUSDC", address: "F75gCEckFAyeeCWA9FQMkmLCmke7ehvBnZeVZ3QgvJR7", limit: 0 , openOrdersAddress: ""})
         console.info(req)
         return req.orders
     } catch (error) {
