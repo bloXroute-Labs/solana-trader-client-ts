@@ -8,6 +8,7 @@ Provides a Typescript SDK for bloXroute's Serum API.
 $ git clone https://github.com/bloXroute-Labs/serum-client-ts.git
 $ cd serum-client-ts
 $ npm i
+$ brew install pbkit/tap/pbkit
 ```
 
 ## Usage
