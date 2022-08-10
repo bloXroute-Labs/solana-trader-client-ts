@@ -11,7 +11,7 @@
     "start": "ts-node ./examples/index.ts",
     "lint": "eslint --fix",
     "format": "prettier --config .prettierrc './**/*.ts' --write",
-    "proto": "pb gen ts --entry-path ./solana-trader-proto/proto --out-dir=./bxserum/proto ./solana-trader-proto/proto/api.proto --ext-in-imoprt='.js'"
+    "proto": "pb gen ts --entry-path ./solana-trader-proto/proto --out-dir=./bxserum/proto ./solana-trader-proto/proto/api.proto --ext-in-import='.js'"
   },
   "repository": {
     "type": "git",
@@ -31,7 +31,6 @@
     "dotenv": "^16.0.1",
     "google-protobuf": "^3.20.1",
     "node-fetch": "^3.2.6",
-    "pb": "^0.4.0",
     "pbkit": "^0.0.53",
     "ts-node": "^10.8.1",
     "typescript": "^4.7.4",
