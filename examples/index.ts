@@ -7,7 +7,7 @@ import { WsProvider } from "../bxserum/provider/ws.js"
 import { PostOrderRequest, GetOpenOrdersRequest, GetOpenOrdersResponse, PostCancelAllRequest } from "../bxserum/proto/messages/api/index.js"
 import config from "../utils/config.js"
 
-const marketAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT";
+const marketAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"
 const ownerAddress = config.WalletPublicKey
 const payerAddress = config.WalletPublicKey
 const openOrdersAddress = "4zeos6Mg48sXGVE3XhdSeff72aLrSXayyzAM81QRegGz"
@@ -512,8 +512,8 @@ async function callReplaceOrder(provider: BaseProvider) {
 async function callCancelAll(provider: BaseProvider) {
     try {
         console.info("Generating and placing two orders")
-        const clientOrderID1 = getRandom().toLocaleString(`fullwide`, {useGrouping: false})
-        const clientOrderID2 = getRandom().toLocaleString(`fullwide`, {useGrouping: false})
+        const clientOrderID1 = getRandom().toLocaleString(`fullwide`, { useGrouping: false })
+        const clientOrderID2 = getRandom().toLocaleString(`fullwide`, { useGrouping: false })
 
         // placing orders
         testOrder.clientOrderID = clientOrderID1
