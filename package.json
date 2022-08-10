@@ -10,7 +10,8 @@
   "scripts": {
     "start": "ts-node ./examples/index.ts",
     "lint": "eslint --fix",
-    "format": "prettier --config .prettierrc './**/*.ts' --write"
+    "format": "prettier --config .prettierrc './**/*.ts' --write",
+    "proto": "pb gen ts --entry-path ./solana-trader-proto/proto --out-dir=./bxserum/proto ./solana-trader-proto/proto/api.proto --ext-in-imoprt='.js'"
   },
   "repository": {
     "type": "git",
