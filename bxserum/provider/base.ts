@@ -171,14 +171,14 @@ export abstract class BaseProvider implements Api {
 
         for (const tx of res.transactions) {
             const signedTx = signTx(tx)
-            const postSubmitRez = this.postSubmit({ transaction:signedTx.serialize().toString("base64"), skipPreFlight })
+            const postSubmitRez = this.postSubmit({ transaction: signedTx.serialize().toString("base64"), skipPreFlight })
             postSubmitResponses.push(postSubmitRez)
         }
 
         return Promise.all(postSubmitResponses)
     }
 
-    async submitSettle(request: PostSettleRequest, skipPreFlight = true): Promise<PostSubmitResponse>{
+    async submitSettle(request: PostSettleRequest, skipPreFlight = true): Promise<PostSubmitResponse> {
         const res = await this.postSettle(request)
 
         const signedTx = signTx(res.transaction)
