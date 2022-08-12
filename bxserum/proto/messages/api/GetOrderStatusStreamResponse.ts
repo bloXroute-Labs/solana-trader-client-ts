@@ -26,7 +26,7 @@ import {
 
 export declare namespace $.api {
   export interface GetOrderStatusStreamResponse {
-    blockHeight: string;
+    slot: string;
     orderInfo?: GetOrderStatusResponse;
   }
 }
@@ -34,7 +34,7 @@ export type Type = $.api.GetOrderStatusStreamResponse;
 
 export function getDefaultValue(): $.api.GetOrderStatusStreamResponse {
   return {
-    blockHeight: "0",
+    slot: "0",
     orderInfo: undefined,
   };
 }
@@ -48,22 +48,22 @@ export function createValue(partialValue: Partial<$.api.GetOrderStatusStreamResp
 
 export function encodeJson(value: $.api.GetOrderStatusStreamResponse): unknown {
   const result: any = {};
-  if (value.blockHeight !== undefined) result.blockHeight = tsValueToJsonValueFns.int64(value.blockHeight);
+  if (value.slot !== undefined) result.slot = tsValueToJsonValueFns.int64(value.slot);
   if (value.orderInfo !== undefined) result.orderInfo = encodeJson_1(value.orderInfo);
   return result;
 }
 
 export function decodeJson(value: any): $.api.GetOrderStatusStreamResponse {
   const result = getDefaultValue();
-  if (value.blockHeight !== undefined) result.blockHeight = jsonValueToTsValueFns.int64(value.blockHeight);
+  if (value.slot !== undefined) result.slot = jsonValueToTsValueFns.int64(value.slot);
   if (value.orderInfo !== undefined) result.orderInfo = decodeJson_1(value.orderInfo);
   return result;
 }
 
 export function encodeBinary(value: $.api.GetOrderStatusStreamResponse): Uint8Array {
   const result: WireMessage = [];
-  if (value.blockHeight !== undefined) {
-    const tsValue = value.blockHeight;
+  if (value.slot !== undefined) {
+    const tsValue = value.slot;
     result.push(
       [1, tsValueToWireValueFns.int64(tsValue)],
     );
@@ -86,7 +86,7 @@ export function decodeBinary(binary: Uint8Array): $.api.GetOrderStatusStreamResp
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.int64(wireValue);
     if (value === undefined) break field;
-    result.blockHeight = value;
+    result.slot = value;
   }
   field: {
     const wireValue = wireFields.get(2);
