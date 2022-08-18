@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "ts-node ./examples/index.ts",
-    "lint": "eslint --fix",
+    "lint": "eslint --fix .",
     "format": "prettier --config .prettierrc './**/*.ts' --write"
   },
   "repository": {
