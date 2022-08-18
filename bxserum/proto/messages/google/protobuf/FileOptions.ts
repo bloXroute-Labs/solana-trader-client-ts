@@ -42,6 +42,7 @@ export declare namespace $.google.protobuf {
     ccGenericServices?: boolean;
     javaGenericServices?: boolean;
     pyGenericServices?: boolean;
+    /** @deprecated */
     javaGenerateEqualsAndHash?: boolean;
     deprecated?: boolean;
     javaStringCheckUtf8?: boolean;

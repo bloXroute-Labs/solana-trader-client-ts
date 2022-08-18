@@ -23,6 +23,8 @@ import {
     GetTradesStreamResponse,
     GetUnsettledRequest,
     GetUnsettledResponse,
+    PostCancelAllRequest,
+    PostCancelAllResponse,
     PostCancelByClientOrderIDRequest,
     PostCancelOrderRequest,
     PostCancelOrderResponse,
@@ -118,6 +120,10 @@ export class GrpcProvider extends BaseProvider {
 
     postCancelByClientOrderID(request: PostCancelByClientOrderIDRequest): Promise<PostCancelOrderResponse> {
         return this.client.postCancelByClientOrderID(request)
+    }
+
+    postCancelAll(request: PostCancelAllRequest): Promise<PostCancelAllResponse> {
+        return this.client.postCancelAll(request)
     }
 
     postSettle(request: PostSettleRequest): Promise<PostSettleResponse> {

@@ -26,7 +26,7 @@ import {
 
 export declare namespace $.api {
   export interface GetTradesStreamResponse {
-    blockHeight: string;
+    slot: string;
     trades?: GetTradesResponse;
   }
 }
@@ -34,7 +34,7 @@ export type Type = $.api.GetTradesStreamResponse;
 
 export function getDefaultValue(): $.api.GetTradesStreamResponse {
   return {
-    blockHeight: "0",
+    slot: "0",
     trades: undefined,
   };
 }
@@ -48,22 +48,22 @@ export function createValue(partialValue: Partial<$.api.GetTradesStreamResponse>
 
 export function encodeJson(value: $.api.GetTradesStreamResponse): unknown {
   const result: any = {};
-  if (value.blockHeight !== undefined) result.blockHeight = tsValueToJsonValueFns.int64(value.blockHeight);
+  if (value.slot !== undefined) result.slot = tsValueToJsonValueFns.int64(value.slot);
   if (value.trades !== undefined) result.trades = encodeJson_1(value.trades);
   return result;
 }
 
 export function decodeJson(value: any): $.api.GetTradesStreamResponse {
   const result = getDefaultValue();
-  if (value.blockHeight !== undefined) result.blockHeight = jsonValueToTsValueFns.int64(value.blockHeight);
+  if (value.slot !== undefined) result.slot = jsonValueToTsValueFns.int64(value.slot);
   if (value.trades !== undefined) result.trades = decodeJson_1(value.trades);
   return result;
 }
 
 export function encodeBinary(value: $.api.GetTradesStreamResponse): Uint8Array {
   const result: WireMessage = [];
-  if (value.blockHeight !== undefined) {
-    const tsValue = value.blockHeight;
+  if (value.slot !== undefined) {
+    const tsValue = value.slot;
     result.push(
       [1, tsValueToWireValueFns.int64(tsValue)],
     );
@@ -86,7 +86,7 @@ export function decodeBinary(binary: Uint8Array): $.api.GetTradesStreamResponse 
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.int64(wireValue);
     if (value === undefined) break field;
-    result.blockHeight = value;
+    result.slot = value;
   }
   field: {
     const wireValue = wireFields.get(2);

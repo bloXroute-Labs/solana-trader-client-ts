@@ -26,7 +26,7 @@ import {
 
 export declare namespace $.api {
   export interface MarketDepthTick {
-    prevBlockHeight: string;
+    prevSlot: string;
     asks: OrderbookItem[];
     bids: OrderbookItem[];
   }
@@ -35,7 +35,7 @@ export type Type = $.api.MarketDepthTick;
 
 export function getDefaultValue(): $.api.MarketDepthTick {
   return {
-    prevBlockHeight: "0",
+    prevSlot: "0",
     asks: [],
     bids: [],
   };
@@ -50,7 +50,7 @@ export function createValue(partialValue: Partial<$.api.MarketDepthTick>): $.api
 
 export function encodeJson(value: $.api.MarketDepthTick): unknown {
   const result: any = {};
-  if (value.prevBlockHeight !== undefined) result.prevBlockHeight = tsValueToJsonValueFns.int64(value.prevBlockHeight);
+  if (value.prevSlot !== undefined) result.prevSlot = tsValueToJsonValueFns.int64(value.prevSlot);
   result.asks = value.asks.map(value => encodeJson_1(value));
   result.bids = value.bids.map(value => encodeJson_1(value));
   return result;
@@ -58,7 +58,7 @@ export function encodeJson(value: $.api.MarketDepthTick): unknown {
 
 export function decodeJson(value: any): $.api.MarketDepthTick {
   const result = getDefaultValue();
-  if (value.prevBlockHeight !== undefined) result.prevBlockHeight = jsonValueToTsValueFns.int64(value.prevBlockHeight);
+  if (value.prevSlot !== undefined) result.prevSlot = jsonValueToTsValueFns.int64(value.prevSlot);
   result.asks = value.asks?.map((value: any) => decodeJson_1(value)) ?? [];
   result.bids = value.bids?.map((value: any) => decodeJson_1(value)) ?? [];
   return result;
@@ -66,8 +66,8 @@ export function decodeJson(value: any): $.api.MarketDepthTick {
 
 export function encodeBinary(value: $.api.MarketDepthTick): Uint8Array {
   const result: WireMessage = [];
-  if (value.prevBlockHeight !== undefined) {
-    const tsValue = value.prevBlockHeight;
+  if (value.prevSlot !== undefined) {
+    const tsValue = value.prevSlot;
     result.push(
       [1, tsValueToWireValueFns.int64(tsValue)],
     );
@@ -94,7 +94,7 @@ export function decodeBinary(binary: Uint8Array): $.api.MarketDepthTick {
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.int64(wireValue);
     if (value === undefined) break field;
-    result.prevBlockHeight = value;
+    result.prevSlot = value;
   }
   collection: {
     const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 2).map(([, wireValue]) => wireValue);

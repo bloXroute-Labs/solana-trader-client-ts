@@ -30,6 +30,10 @@ export declare namespace $.api {
     market: string;
     status: MarketStatus;
     address: string;
+    baseMint: string;
+    quotedMint: string;
+    baseDecimals: string;
+    quoteDecimals: string;
   }
 }
 export type Type = $.api.Market;
@@ -39,6 +43,10 @@ export function getDefaultValue(): $.api.Market {
     market: "",
     status: "MS_UNKNOWN",
     address: "",
+    baseMint: "",
+    quotedMint: "",
+    baseDecimals: "0",
+    quoteDecimals: "0",
   };
 }
 
@@ -54,6 +62,10 @@ export function encodeJson(value: $.api.Market): unknown {
   if (value.market !== undefined) result.market = tsValueToJsonValueFns.string(value.market);
   if (value.status !== undefined) result.status = tsValueToJsonValueFns.enum(value.status);
   if (value.address !== undefined) result.address = tsValueToJsonValueFns.string(value.address);
+  if (value.baseMint !== undefined) result.baseMint = tsValueToJsonValueFns.string(value.baseMint);
+  if (value.quotedMint !== undefined) result.quotedMint = tsValueToJsonValueFns.string(value.quotedMint);
+  if (value.baseDecimals !== undefined) result.baseDecimals = tsValueToJsonValueFns.int64(value.baseDecimals);
+  if (value.quoteDecimals !== undefined) result.quoteDecimals = tsValueToJsonValueFns.int64(value.quoteDecimals);
   return result;
 }
 
@@ -62,6 +74,10 @@ export function decodeJson(value: any): $.api.Market {
   if (value.market !== undefined) result.market = jsonValueToTsValueFns.string(value.market);
   if (value.status !== undefined) result.status = jsonValueToTsValueFns.enum(value.status) as MarketStatus;
   if (value.address !== undefined) result.address = jsonValueToTsValueFns.string(value.address);
+  if (value.baseMint !== undefined) result.baseMint = jsonValueToTsValueFns.string(value.baseMint);
+  if (value.quotedMint !== undefined) result.quotedMint = jsonValueToTsValueFns.string(value.quotedMint);
+  if (value.baseDecimals !== undefined) result.baseDecimals = jsonValueToTsValueFns.int64(value.baseDecimals);
+  if (value.quoteDecimals !== undefined) result.quoteDecimals = jsonValueToTsValueFns.int64(value.quoteDecimals);
   return result;
 }
 
@@ -83,6 +99,30 @@ export function encodeBinary(value: $.api.Market): Uint8Array {
     const tsValue = value.address;
     result.push(
       [3, tsValueToWireValueFns.string(tsValue)],
+    );
+  }
+  if (value.baseMint !== undefined) {
+    const tsValue = value.baseMint;
+    result.push(
+      [4, tsValueToWireValueFns.string(tsValue)],
+    );
+  }
+  if (value.quotedMint !== undefined) {
+    const tsValue = value.quotedMint;
+    result.push(
+      [5, tsValueToWireValueFns.string(tsValue)],
+    );
+  }
+  if (value.baseDecimals !== undefined) {
+    const tsValue = value.baseDecimals;
+    result.push(
+      [6, tsValueToWireValueFns.int64(tsValue)],
+    );
+  }
+  if (value.quoteDecimals !== undefined) {
+    const tsValue = value.quoteDecimals;
+    result.push(
+      [7, tsValueToWireValueFns.int64(tsValue)],
     );
   }
   return serialize(result);
@@ -112,6 +152,34 @@ export function decodeBinary(binary: Uint8Array): $.api.Market {
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
     result.address = value;
+  }
+  field: {
+    const wireValue = wireFields.get(4);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.baseMint = value;
+  }
+  field: {
+    const wireValue = wireFields.get(5);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.quotedMint = value;
+  }
+  field: {
+    const wireValue = wireFields.get(6);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.int64(wireValue);
+    if (value === undefined) break field;
+    result.baseDecimals = value;
+  }
+  field: {
+    const wireValue = wireFields.get(7);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.int64(wireValue);
+    if (value === undefined) break field;
+    result.quoteDecimals = value;
   }
   return result;
 }

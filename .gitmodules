@@ -1,0 +1,3 @@
+[submodule "solana-trader-proto"]
+	path = solana-trader-proto
+	url = git@github.com:bloXroute-Labs/solana-trader-proto.git

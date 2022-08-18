@@ -4,21 +4,29 @@ import { GrpcProvider } from "../bxserum/provider/grpc.js"
 import { BaseProvider } from "../bxserum/provider/base.js"
 import { HttpProvider } from "../bxserum/provider/http.js"
 import { WsProvider } from "../bxserum/provider/ws.js"
-import { PostOrderRequest } from "../bxserum/proto/messages/api/index.js"
+import { PostOrderRequest, GetOpenOrdersRequest, GetOpenOrdersResponse, PostCancelAllRequest } from "../bxserum/proto/messages/api/index.js"
 import config from "../utils/config.js"
-import { TESTNET_API_GRPC_HOST, TESTNET_API_GRPC_PORT } from "../utils/constants.js"
+
+const marketAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"
+const ownerAddress = config.WalletPublicKey
+const payerAddress = config.WalletPublicKey
+const openOrdersAddress = "4zeos6Mg48sXGVE3XhdSeff72aLrSXayyzAM81QRegGz"
+const baseTokenWallet = config.WalletPublicKey
+const quoteTokenWallet = "4raJjCwLLqw8TciQXYruDEF4YhDkGwoEnwnAdwJSjcgv"
 
 const testOrder: PostOrderRequest = {
-    ownerAddress: config.WalletPublicKey,
-    payerAddress: config.WalletPublicKey,
+    ownerAddress: ownerAddress,
+    payerAddress: payerAddress,
     market: "SOLUSDC",
     side: "S_ASK",
     type: ["OT_LIMIT"],
     amount: 0.1,
     price: 200,
-    openOrdersAddress: "58P7qwKiWZAR5HAeDjDjBGSnYBGbcR1t7SSBntnGJah5",
+    openOrdersAddress: openOrdersAddress,
     clientOrderID: "",
 }
+
+const crank_timeout_s = 60
 
 function delay(milliseconds: number) {
     return new Promise((resolve) => setTimeout(resolve, milliseconds))
@@ -42,6 +50,9 @@ async function http() {
     await doRequests(provider)
     console.info(" ----  HTTP Lifecycle  ----")
     await doHttpLifecycle(provider)
+    console.info(" ----  HTTP Cancel All  ----")
+    await callCancelAll(provider)
+    console.info(" ")
 }
 
 async function grpc() {
@@ -50,8 +61,11 @@ async function grpc() {
     await doRequests(provider)
     console.info(" ----  GRPC Streams  ----")
     await doStreams(provider)
+    console.info(" ----  GRPC Cancel All  ----")
+    await callCancelAll(provider)
     console.info(" ----  GRPC Lifecycle  ----")
     await doLifecycle(provider)
+    console.info(" ")
 }
 
 async function ws() {
@@ -60,8 +74,11 @@ async function ws() {
     await doRequests(provider)
     console.info(" ----  WS Streams  ----")
     await doStreams(provider)
+    console.info(" ----  WS Cancel All  ----")
+    await callCancelAll(provider)
     console.info(" ----  WS Lifecycle  ----")
     await doLifecycle(provider)
+    console.info(" ")
 }
 
 async function doRequests(provider: BaseProvider) {
@@ -131,7 +148,7 @@ async function doStreams(provider: BaseProvider) {
 
 async function doLifecycle(provider: BaseProvider) {
     try {
-        const mktAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"
+        const mktAddress = marketAddress
 
         await Promise.all([
             new Promise(async (resolve, reject) => {
@@ -148,7 +165,7 @@ async function doLifecycle(provider: BaseProvider) {
             }),
             new Promise(async (resolve, reject) => {
                 try {
-                    await delay(5000)
+                    await delay(10000)
                     await callSubmitOrder(provider)
                     console.info(" ")
                     console.info(" ")
@@ -212,7 +229,7 @@ async function doLifecycle(provider: BaseProvider) {
             }),
             new Promise(async (resolve, reject) => {
                 try {
-                    await delay(5000)
+                    await delay(10000)
                     await callSubmitCancelByClientOrderID(provider)
                     console.info(" ")
                     console.info(" ")
@@ -233,8 +250,6 @@ async function doLifecycle(provider: BaseProvider) {
 
 async function doHttpLifecycle(provider: BaseProvider) {
     try {
-        const mktAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"
-
         await callSubmitOrder(provider)
         console.info(" ")
         console.info(" ")
@@ -295,7 +310,7 @@ async function callGetMarkets(provider: BaseProvider) {
 async function callGetOpenOrders(provider: BaseProvider) {
     try {
         console.info("Retrieving all open orders in SOLUSDC market")
-        const req = await provider.getOpenOrders({ market: "SOLUSDC", address: "F75gCEckFAyeeCWA9FQMkmLCmke7ehvBnZeVZ3QgvJR7", limit: 0 })
+        const req = await provider.getOpenOrders({ market: "SOLUSDC", address: ownerAddress, limit: 0, openOrdersAddress: "" })
         console.info(req)
         return req.orders
     } catch (error) {
@@ -306,7 +321,7 @@ async function callGetOpenOrders(provider: BaseProvider) {
 async function callGetUnsettled(provider: BaseProvider) {
     try {
         console.info("Retrieving unsettled funds in SOLUSDC market")
-        const req = await provider.getUnsettled({ market: "SOLUSDC", owner: "F75gCEckFAyeeCWA9FQMkmLCmke7ehvBnZeVZ3QgvJR7" })
+        const req = await provider.getUnsettled({ market: "SOLUSDC", owner: ownerAddress })
         console.info(req)
     } catch (error) {
         console.error("Failed to retrieve the unsettled funds", error)
@@ -316,7 +331,7 @@ async function callGetUnsettled(provider: BaseProvider) {
 async function callGetAccountBalance(provider: BaseProvider) {
     try {
         console.info("Retrieving token balances")
-        const req = await provider.getAccountBalance({ ownerAddress: "F75gCEckFAyeeCWA9FQMkmLCmke7ehvBnZeVZ3QgvJR7" })
+        const req = await provider.getAccountBalance({ ownerAddress: ownerAddress })
         console.info(req)
     } catch (error) {
         console.error("Failed to retrieve the unsettled funds", error)
@@ -425,50 +440,50 @@ async function callGetTradesStream(provider: BaseProvider) {
 //POST requests
 async function callSubmitOrder(provider: BaseProvider) {
     try {
-        console.info("Generating and submiting a New Order transaction")
+        console.info("Generating and submitting a New Order transaction")
         const clientOrderID = getRandom()
         testOrder.clientOrderID = clientOrderID.toLocaleString("fullwide", { useGrouping: false })
         const req = await provider.submitOrder(testOrder)
         console.info(req)
     } catch (error) {
-        console.error("Failed to generating and/or submit a New Order transaction", error)
+        console.error("Failed to generate and/or submit a New Order transaction", error)
     }
 }
 
 async function callSubmitCancelByClientOrderID(provider: BaseProvider) {
     try {
-        console.info("Generating and submiting a Cancel by Cient Order ID transaction")
+        console.info("Generating and submitting a Cancel by Client Order ID transaction")
         const req = await provider.submitCancelOrderByClientOrderID({
-            marketAddress: "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT",
-            ownerAddress: testOrder.ownerAddress,
-            openOrdersAddress: testOrder.openOrdersAddress,
+            marketAddress: marketAddress,
+            ownerAddress: ownerAddress,
+            openOrdersAddress: openOrdersAddress,
             clientOrderID: testOrder.clientOrderID,
         })
         console.info(req)
     } catch (error) {
-        console.error("Failed to generating and/or submit a Cancel by Cient Order ID transaction", error)
+        console.error("Failed to generate and/or submit a Cancel by Client Order ID transaction", error)
     }
 }
 
 async function callSettleFunds(provider: BaseProvider) {
     try {
-        console.info("Generating and submiting a Settle transaction")
+        console.info("Generating and submitting a Settle transaction")
         const req = await provider.submitSettle({
-            market: testOrder.market,
-            openOrdersAddress: testOrder.openOrdersAddress,
-            baseTokenWallet: testOrder.ownerAddress,
-            quoteTokenWallet: "4raJjCwLLqw8TciQXYruDEF4YhDkGwoEnwnAdwJSjcgv",
-            ownerAddress: testOrder.ownerAddress,
+            market: marketAddress,
+            openOrdersAddress: openOrdersAddress,
+            baseTokenWallet: baseTokenWallet,
+            quoteTokenWallet: quoteTokenWallet,
+            ownerAddress: ownerAddress,
         })
         console.info(req)
     } catch (error) {
-        console.error("Failed to generating and/or submit a Settle transaction", error)
+        console.error("Failed to generate and/or submit a Settle transaction", error)
     }
 }
 
 async function callReplaceByClientOrderID(provider: BaseProvider) {
     try {
-        console.info("Generating and submiting a Cancel and Replace by Cient Order ID transaction")
+        console.info("Generating and submitting a Cancel and Replace by Client Order ID transaction")
         const clientOrderID = getRandom()
         testOrder.clientOrderID = clientOrderID.toLocaleString("fullwide", { useGrouping: false })
         testOrder.price -= 1
@@ -476,13 +491,13 @@ async function callReplaceByClientOrderID(provider: BaseProvider) {
         const req = await provider.submitReplaceByClientOrderID(testOrder)
         console.info(req)
     } catch (error) {
-        console.error("Failed to generating and/or submit a Cancel by Cient Order ID transaction", error)
+        console.error("Failed to generate and/or submit a Cancel by Client Order ID transaction", error)
     }
 }
 
 async function callReplaceOrder(provider: BaseProvider) {
     try {
-        console.info("Generating and submiting a Cancel and Replace by Cient Order ID transaction")
+        console.info("Generating and submitting a Cancel and Replace by Client Order ID transaction")
         const clientOrderID = getRandom()
         testOrder.clientOrderID = clientOrderID.toLocaleString("fullwide", { useGrouping: false })
         testOrder.price -= 1
@@ -490,7 +505,86 @@ async function callReplaceOrder(provider: BaseProvider) {
         const req = await provider.submitReplaceOrder({ orderID: "", ...testOrder })
         console.info(req)
     } catch (error) {
-        console.error("Failed to generating and/or submit a Cancel by Cient Order ID transaction", error)
+        console.error("Failed to generate and/or submit a Cancel by Client Order ID transaction", error)
+    }
+}
+
+async function callCancelAll(provider: BaseProvider) {
+    try {
+        console.info("Generating and placing two orders")
+        const clientOrderID1 = getRandom().toLocaleString(`fullwide`, { useGrouping: false })
+        const clientOrderID2 = getRandom().toLocaleString(`fullwide`, { useGrouping: false })
+
+        // placing orders
+        testOrder.clientOrderID = clientOrderID1
+        const resp1 = await provider.submitOrder(testOrder)
+        console.info(`Order 1 placed ${resp1.signature}`)
+
+        testOrder.clientOrderID = clientOrderID2
+        const resp2 = await provider.submitOrder(testOrder)
+        console.info(`Order 2 placed ${resp2.signature}`)
+
+        console.info(`\nWaiting ${crank_timeout_s}s for place orders to be cranked`)
+
+        // checking orders placed
+        const openOrdersRequest: GetOpenOrdersRequest = {
+            market: marketAddress,
+            limit: 0,
+            address: ownerAddress,
+            openOrdersAddress: "",
+        }
+
+        await delay(crank_timeout_s * 1000)
+        const openOrdersResponse1: GetOpenOrdersResponse = await provider.getOpenOrders(openOrdersRequest)
+
+        let found1 = false
+        let found2 = false
+        for (const order of openOrdersResponse1.orders) {
+            if (order.clientOrderID === clientOrderID1) {
+                found1 = true
+            } else if (order.clientOrderID === clientOrderID2) {
+                found2 = true
+            }
+        }
+
+        if (!found1 || !found2) {
+            console.error("One/both orders not found in orderbook")
+            return ""
+        }
+        console.info("Both orders placed successfully\n")
+
+        // cancelling orders
+        const cancelAllRequest: PostCancelAllRequest = {
+            market: marketAddress,
+            ownerAddress: ownerAddress,
+            openOrdersAddresses: [openOrdersAddress],
+        }
+        const submitCancelAllResponses = await provider.submitCancelAll(cancelAllRequest)
+
+        const signatures: string[] = []
+        for (const cancelAllResponse of submitCancelAllResponses) {
+            signatures.push(cancelAllResponse.signature)
+        }
+
+        console.info(`Cancelling all orders, response signatures(s): ${signatures.join(", ")}`)
+        console.info(`\nWaiting ${crank_timeout_s}s for cancel order(s) to be cranked`)
+
+        // checking all orders cancelled
+        await delay(crank_timeout_s * 1000)
+        const openOrdersResponse2 = await provider.getOpenOrders(openOrdersRequest)
+
+        if (openOrdersResponse2.orders.length !== 0) {
+            console.error(`${openOrdersResponse2.orders.length} orders not cancelled`)
+            return ""
+        }
+        console.info("Orders in orderbook cancelled")
+        console.info(" ")
+
+        await callSettleFunds(provider)
+        console.info(" ")
+        console.info(" ")
+    } catch (error) {
+        console.error(error)
     }
 }
 

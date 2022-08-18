@@ -86,7 +86,7 @@ export class HttpProvider extends BaseProvider {
     }
 
     getOpenOrders(request: GetOpenOrdersRequest): Promise<GetOpenOrdersResponse> {
-        const path = `${this.baseUrl}/trade/openorders/${request.market}?address=${request.address}&limit=${request.limit}`
+        const path = `${this.baseUrl}/trade/openorders/${request.market}?address=${request.address}&limit=${request.limit}&openOrdersAddress=${request.openOrdersAddress}`
         return fetch(path).then((resp) => {
             return resp.json() as unknown as GetOpenOrdersResponse
         })
@@ -147,6 +147,17 @@ export class HttpProvider extends BaseProvider {
             headers: { "Content-Type": "application/json" },
         }).then((resp) => {
             return resp.json() as unknown as PostCancelOrderResponse
+        })
+    }
+
+    postCancelAll(request: PostCancelAllRequest): Promise<PostCancelAllResponse> {
+        const path = `${this.baseUrl}/trade/cancelall`
+        return fetch(path, {
+            method: "POST",
+            body: JSON.stringify(request),
+            headers: { "Content-Type": "application/json" },
+        }).then((resp) => {
+            return resp.json() as any as PostCancelAllResponse
         })
     }
 
