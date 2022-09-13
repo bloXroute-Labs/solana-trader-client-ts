@@ -1,12 +1,12 @@
-# Serum Typescript Client
+# Solana Trader Typescript Client
 
-Provides a Typescript SDK for bloXroute's Serum API.
+Provides a Typescript SDK for bloXroute's Solana Trader API.
 
 ## Installation
 
 ```
-$ git clone https://github.com/bloXroute-Labs/serum-client-ts.git
-$ cd serum-client-ts
+$ git clone https://github.com/bloXroute-Labs/solana-trader-client-ts.git
+$ cd solana-trader-client-ts
 $ npm i
 $ brew install pbkit/tap/pbkit
 ```
@@ -31,7 +31,7 @@ transaction all at once.
 Sample:
 
 ```typescript
-import { HttpProvider } from "../bxserum/provider/http.js"
+import { HttpProvider } from "../bxsolana/provider/http.js"
 
 const provider = new HttpProvider()
     
@@ -51,8 +51,8 @@ $ brew install pbkit/tap/pbkit
 
 Clone the repo and install dependencies:
 ```
-$ git clone https://github.com/bloXroute-Labs/serum-client-ts.git
-$ cd serum-client-ts
+$ git clone https://github.com/bloXroute-Labs/solana-trader-client-ts.git
+$ cd solana-trader-client-ts
 $ npm i
 ```
 

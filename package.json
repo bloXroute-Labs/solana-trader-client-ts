@@ -1,7 +1,7 @@
 {
-  "name": "serum-client-ts",
-  "version": "1.0.0",
-  "description": "Serum API SDK",
+  "name": "solana-trader-client-ts",
+  "version": "0.0.1",
+  "description": "Solana Trader API SDK",
   "main": "index.ts",
   "type": "module",
   "directories": {
@@ -11,18 +11,18 @@
     "start": "ts-node ./examples/index.ts",
     "lint": "eslint --fix .",
     "format": "prettier --config .prettierrc './**/*.ts' --write",
-    "proto": "pb gen ts --entry-path ./solana-trader-proto/proto --out-dir=./bxserum/proto ./solana-trader-proto/proto/api.proto --ext-in-import='.js'"
+    "proto": "pb gen ts --entry-path ./solana-trader-proto/proto --out-dir=./bxsolana/proto ./solana-trader-proto/proto/api.proto --ext-in-import='.js'"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bloXroute-Labs/serum-client-ts.git"
+    "url": "git+https://github.com/bloXroute-Labs/solana-trader-client-ts.git"
   },
   "author": "bloXroute",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bloXroute-Labs/serum-client-ts/issues"
+    "url": "https://github.com/bloXroute-Labs/solana-trader-client-ts/issues"
   },
-  "homepage": "https://github.com/bloXroute-Labs/serum-client-ts#readme",
+  "homepage": "https://github.com/bloXroute-Labs/solana-trader-client-ts#readme",
   "dependencies": {
     "@grpc/grpc-js": "^1.6.7",
     "@pbkit/grpc-client": "^0.0.1",

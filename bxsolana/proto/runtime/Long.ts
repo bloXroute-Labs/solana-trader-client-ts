@@ -2,7 +2,7 @@ export const UINT16_MAX = 0xFFFF;
 export const UINT32_MAX = 0xFFFFFFFF;
 
 export default class Long extends Uint32Array {
-  constructor(lo: number = 0, hi: number = 0) {
+  constructor(lo = 0, hi = 0) {
     super([lo, hi]);
   }
   toString(signed = true): string {
