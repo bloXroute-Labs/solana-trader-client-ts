@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-import { GrpcProvider } from "../bxserum/provider/grpc.js"
-import { BaseProvider } from "../bxserum/provider/base.js"
-import { HttpProvider } from "../bxserum/provider/http.js"
-import { WsProvider } from "../bxserum/provider/ws.js"
-import { PostOrderRequest, GetOpenOrdersRequest, GetOpenOrdersResponse, PostCancelAllRequest } from "../bxserum/proto/messages/api/index.js"
+import { GrpcProvider } from "../bxsolana/provider/grpc.js"
+import { BaseProvider } from "../bxsolana/provider/base.js"
+import { HttpProvider } from "../bxsolana/provider/http.js"
+import { WsProvider } from "../bxsolana/provider/ws.js"
+import { PostOrderRequest, GetOpenOrdersRequest, GetOpenOrdersResponse, PostCancelAllRequest } from "../bxsolana/proto/messages/api/index.js"
 import config from "../utils/config.js"
 
 const marketAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"

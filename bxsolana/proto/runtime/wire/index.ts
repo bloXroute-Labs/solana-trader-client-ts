@@ -31,8 +31,8 @@ export interface Fixed64 extends FieldBase<WireType.Fixed64> {
 export interface LengthDelimited extends FieldBase<WireType.LengthDelimited> {
   value: Uint8Array;
 }
-export interface StartGroup extends FieldBase<WireType.StartGroup> {}
-export interface EndGroup extends FieldBase<WireType.EndGroup> {}
+export type StartGroup = FieldBase<WireType.StartGroup>
+export type EndGroup = FieldBase<WireType.EndGroup>
 export interface Fixed32 extends FieldBase<WireType.Fixed32> {
   value: number;
 }
