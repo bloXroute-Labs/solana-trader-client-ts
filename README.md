@@ -33,7 +33,10 @@ Sample:
 ```typescript
 import { HttpProvider } from "../bxsolana/provider/http.js"
 
-const provider = new HttpProvider()
+address: "https://virginia.solana.dex.blxrbdn.com"
+authHeader: ".........."
+
+const provider = new HttpProvider(address, authHeader)
     
 let req = await provider.getOrderbook({ "market": "SOLUSDC", "limit": 5 })
 console.info(req)

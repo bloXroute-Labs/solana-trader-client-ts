@@ -6,7 +6,7 @@ import { HttpProvider } from "../bxsolana/provider/http.js"
 import { WsProvider } from "../bxsolana/provider/ws.js"
 import { PostOrderRequest, GetOpenOrdersRequest, GetOpenOrdersResponse, PostCancelAllRequest } from "../bxsolana/proto/messages/api/index.js"
 import config from "../utils/config.js"
-
+import {MAINNET_API_GRPC_HOST, MAINNET_API_GRPC_PORT, MAINNET_API_HTTP, MAINNET_API_WS} from "../utils/constants.js"
 const marketAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"
 const ownerAddress = config.WalletPublicKey
 const payerAddress = config.WalletPublicKey
@@ -45,7 +45,7 @@ async function run() {
 }
 
 async function http() {
-    const provider = new HttpProvider()
+    const provider = new HttpProvider(MAINNET_API_HTTP,"ZDIxYzE0NmItZWYxNi00ZmFmLTg5YWUtMzYwMTk4YzUyZmM4OjEwOWE5MzEzZDc2Yjg3MzczYjdjZDdhNmZkZGE3ZDg5")
     console.info(" ----  HTTP Requests  ----")
     await doRequests(provider)
     console.info(" ----  HTTP Lifecycle  ----")
@@ -56,7 +56,7 @@ async function http() {
 }
 
 async function grpc() {
-    const provider = new GrpcProvider()
+    const provider = new GrpcProvider( `${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`, "ZDIxYzE0NmItZWYxNi00ZmFmLTg5YWUtMzYwMTk4YzUyZmM4OjEwOWE5MzEzZDc2Yjg3MzczYjdjZDdhNmZkZGE3ZDg5")
     console.info(" ----  GRPC Requests  ----")
     await doRequests(provider)
     console.info(" ----  GRPC Streams  ----")
@@ -69,7 +69,7 @@ async function grpc() {
 }
 
 async function ws() {
-    const provider = new WsProvider()
+    const provider = new WsProvider(MAINNET_API_WS, "ZDIxYzE0NmItZWYxNi00ZmFmLTg5YWUtMzYwMTk4YzUyZmM4OjEwOWE5MzEzZDc2Yjg3MzczYjdjZDdhNmZkZGE3ZDg5")
     console.info(" ----  WS Requests  ----")
     await doRequests(provider)
     console.info(" ----  WS Streams  ----")
