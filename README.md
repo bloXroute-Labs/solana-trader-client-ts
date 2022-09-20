@@ -43,6 +43,14 @@ console.info(req)
 
 Refer to the `examples/` for more info. You need to add an .env file in `examples/` with the right properties, to run it.
 
+a proper `.env` file looks like something like this.
+
+```
+AUTH_HEADER="ZDIxYzE0NmItZWYxNi00ZmFmLTg5YWUtMzYwMTk4YzUyZmM4OjEwOWE5MzEzZDc2Yjg3M......................"
+WALLET_SECRET_KEY="3EhZ4Epe6QrcDKQRucdftv6vWXMnpTKDV4mekSPWZEcZnJV4huzesLHwASdVUzo......................"
+WALLET_PUBLIC_KEY="2JJQHAYdogfB1fE1ftcvFcsQAX................."
+```
+
 ## Development
 
 We use `pbkit/pbkit` to generate Typescript files from `.proto` definitions. You'll need to install their kit:
