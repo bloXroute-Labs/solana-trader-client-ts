@@ -6,7 +6,6 @@ import { HttpProvider } from "../bxsolana/provider/http.js"
 import { WsProvider } from "../bxsolana/provider/ws.js"
 import { PostOrderRequest, GetOpenOrdersRequest, GetOpenOrdersResponse, PostCancelAllRequest } from "../bxsolana/proto/messages/api/index.js"
 import config from "../utils/config.js"
-
 const marketAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"
 const ownerAddress = config.WalletPublicKey
 const payerAddress = config.WalletPublicKey

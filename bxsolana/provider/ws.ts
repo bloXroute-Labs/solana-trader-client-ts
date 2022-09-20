@@ -38,6 +38,7 @@ import {
     PostSubmitResponse,
 } from "../proto/messages/api/index.js"
 import { BaseProvider } from "./base.js"
+import config from "../../utils/config.js";
 
 let requestId = 0
 export class WsProvider extends BaseProvider {
@@ -143,8 +144,10 @@ export class WsProvider extends BaseProvider {
         if (this.socket && (this.socket.readyState == WebSocket.OPEN || this.socket.CONNECTING)) {
             return this.socket
         }
-
-        this.socket = new WebSocket(this.address)
+        const headers = {"Authorization" : config.AuthHeader}
+        this.socket = new WebSocket(this.address, {
+            headers: headers
+        })
         return this.socket
     }
 

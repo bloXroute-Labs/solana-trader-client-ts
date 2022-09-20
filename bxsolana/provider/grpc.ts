@@ -1,5 +1,6 @@
 import { MAINNET_API_GRPC_HOST, MAINNET_API_GRPC_PORT } from "../../utils/constants.js"
-import { createGrpcJsClient, CreateGrpcClientImplConfig, createGrpcClientImpl } from "@pbkit/grpc-client"
+import * as grpc from '@grpc/grpc-js'
+import { CreateGrpcClientImplConfig, createGrpcClientImpl } from "@pbkit/grpc-client"
 import {
     GetAccountBalanceRequest,
     GetAccountBalanceResponse,
@@ -39,15 +40,27 @@ import {
 import { createServiceClient, Service } from "../proto/services/api/Api.js"
 import { BaseProvider } from "./base.js"
 import { Client } from "@grpc/grpc-js"
+import {CallMetadataOptions} from "@grpc/grpc-js/src/call-credentials";
+import config from "../../utils/config.js";
 
 export class GrpcProvider extends BaseProvider {
     private client: Service
     private grpcClient: Client
+
     constructor(address = `${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`) {
         super()
-        this.grpcClient = createGrpcJsClient(address)
-        const config: CreateGrpcClientImplConfig = { grpcJsClient: this.grpcClient }
-        const impl = createGrpcClientImpl(config)
+        const metaCallback = (options: CallMetadataOptions,
+                              cb: (err: Error | null, metadata?: grpc.Metadata) => void) => {
+            const meta = new grpc.Metadata();
+            meta.add("Authorization", config.AuthHeader);
+            cb(null, meta);
+        }
+        this.grpcClient = new Client(address, grpc.credentials.combineChannelCredentials(
+            grpc.credentials.createSsl(),
+            grpc.credentials.createFromMetadataGenerator(metaCallback),
+        ))
+        const configGrpc: CreateGrpcClientImplConfig = { grpcJsClient: this.grpcClient }
+        const impl = createGrpcClientImpl(configGrpc)
         this.client = createServiceClient(impl)
     }
 
