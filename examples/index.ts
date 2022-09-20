@@ -27,6 +27,7 @@ const testOrder: PostOrderRequest = {
 }
 
 const crank_timeout_s = 60
+const authHeader = "....."
 
 function delay(milliseconds: number) {
     return new Promise((resolve) => setTimeout(resolve, milliseconds))
@@ -45,7 +46,7 @@ async function run() {
 }
 
 async function http() {
-    const provider = new HttpProvider(MAINNET_API_HTTP,"ZDIxYzE0NmItZWYxNi00ZmFmLTg5YWUtMzYwMTk4YzUyZmM4OjEwOWE5MzEzZDc2Yjg3MzczYjdjZDdhNmZkZGE3ZDg5")
+    const provider = new HttpProvider(MAINNET_API_HTTP, authHeader)
     console.info(" ----  HTTP Requests  ----")
     await doRequests(provider)
     console.info(" ----  HTTP Lifecycle  ----")
@@ -56,7 +57,7 @@ async function http() {
 }
 
 async function grpc() {
-    const provider = new GrpcProvider( `${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`, "ZDIxYzE0NmItZWYxNi00ZmFmLTg5YWUtMzYwMTk4YzUyZmM4OjEwOWE5MzEzZDc2Yjg3MzczYjdjZDdhNmZkZGE3ZDg5")
+    const provider = new GrpcProvider( `${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`, authHeader)
     console.info(" ----  GRPC Requests  ----")
     await doRequests(provider)
     console.info(" ----  GRPC Streams  ----")
@@ -69,7 +70,7 @@ async function grpc() {
 }
 
 async function ws() {
-    const provider = new WsProvider(MAINNET_API_WS, "ZDIxYzE0NmItZWYxNi00ZmFmLTg5YWUtMzYwMTk4YzUyZmM4OjEwOWE5MzEzZDc2Yjg3MzczYjdjZDdhNmZkZGE3ZDg5")
+    const provider = new WsProvider(MAINNET_API_WS, authHeader)
     console.info(" ----  WS Requests  ----")
     await doRequests(provider)
     console.info(" ----  WS Streams  ----")
