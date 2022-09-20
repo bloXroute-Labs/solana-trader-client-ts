@@ -6,7 +6,6 @@ import { HttpProvider } from "../bxsolana/provider/http.js"
 import { WsProvider } from "../bxsolana/provider/ws.js"
 import { PostOrderRequest, GetOpenOrdersRequest, GetOpenOrdersResponse, PostCancelAllRequest } from "../bxsolana/proto/messages/api/index.js"
 import config from "../utils/config.js"
-import {MAINNET_API_GRPC_HOST, MAINNET_API_GRPC_PORT, MAINNET_API_HTTP, MAINNET_API_WS} from "../utils/constants.js"
 const marketAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"
 const ownerAddress = config.WalletPublicKey
 const payerAddress = config.WalletPublicKey
@@ -27,7 +26,6 @@ const testOrder: PostOrderRequest = {
 }
 
 const crank_timeout_s = 60
-const authHeader = "....."
 
 function delay(milliseconds: number) {
     return new Promise((resolve) => setTimeout(resolve, milliseconds))
@@ -46,7 +44,7 @@ async function run() {
 }
 
 async function http() {
-    const provider = new HttpProvider(MAINNET_API_HTTP, authHeader)
+    const provider = new HttpProvider()
     console.info(" ----  HTTP Requests  ----")
     await doRequests(provider)
     console.info(" ----  HTTP Lifecycle  ----")
@@ -57,7 +55,7 @@ async function http() {
 }
 
 async function grpc() {
-    const provider = new GrpcProvider( `${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`, authHeader)
+    const provider = new GrpcProvider()
     console.info(" ----  GRPC Requests  ----")
     await doRequests(provider)
     console.info(" ----  GRPC Streams  ----")
@@ -70,7 +68,7 @@ async function grpc() {
 }
 
 async function ws() {
-    const provider = new WsProvider(MAINNET_API_WS, authHeader)
+    const provider = new WsProvider()
     console.info(" ----  WS Requests  ----")
     await doRequests(provider)
     console.info(" ----  WS Streams  ----")
