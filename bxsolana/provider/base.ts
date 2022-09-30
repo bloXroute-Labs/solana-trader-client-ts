@@ -40,9 +40,24 @@ import {
     GetOrderbooksRequest,
     GetOrderbookRequest,
     PostReplaceOrderRequest,
+    GetPoolsRequest,
+    GetPoolsResponse,
+    GetPoolReservesStreamResponse,
+    GetPriceResponse,
+    GetPriceRequest,
+    GetQuotesRequest,
+    GetQuotesResponse,
+    GetQuotesStreamRequest,
+    GetQuotesStreamResponse,
+    GetRecentBlockHashRequest,
+    GetRecentBlockHashResponse,
+    TradeSwapRequest,
+    TradeSwapResponse,
 } from "../proto/messages/api/index.js"
 import { Api } from "../proto/services/api/index.js"
 import { signTx, SubmitTransactionResponse } from "../../utils/transaction.js"
+import { $ } from "../proto/messages/api/GetPoolReservesStreamRequest"
+import GetPoolReservesStreamRequest = $.api.GetPoolReservesStreamRequest
 
 export abstract class BaseProvider implements Api {
     abstract close(): void
@@ -63,6 +78,10 @@ export abstract class BaseProvider implements Api {
     }
 
     getTrades(request: GetTradesRequest): Promise<GetTradesResponse> {
+        throw new Error("Not implemented")
+    }
+
+    getPools(request: GetPoolsRequest): Promise<GetPoolsResponse> {
         throw new Error("Not implemented")
     }
 
@@ -200,5 +219,33 @@ export abstract class BaseProvider implements Api {
         const signedTx = signTx(res.transaction)
 
         return this.postSubmit({ transaction: signedTx.serialize().toString("base64"), skipPreFlight })
+    }
+
+    getPoolReservesStream(request: GetPoolReservesStreamRequest): Promise<AsyncGenerator<GetPoolReservesStreamResponse>> {
+        throw new Error("Not implemented")
+    }
+
+    getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
+        throw new Error("Not implemented")
+    }
+
+    getQuotes(request: GetQuotesRequest): Promise<GetQuotesResponse> {
+        throw new Error("Not implemented")
+    }
+
+    getQuotesStream(request: GetQuotesStreamRequest): Promise<AsyncGenerator<GetQuotesStreamResponse>> {
+        throw new Error("Not implemented")
+    }
+
+    getRecentBlockHash(request: GetRecentBlockHashRequest): Promise<GetRecentBlockHashResponse> {
+        throw new Error("Not implemented")
+    }
+
+    getRecentBlockHashStream(request: GetRecentBlockHashRequest): Promise<AsyncGenerator<GetRecentBlockHashResponse>> {
+        throw new Error("Not implemented")
+    }
+
+    postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
+        throw new Error("Not implemented")
     }
 }

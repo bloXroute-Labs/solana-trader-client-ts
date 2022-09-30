@@ -24,7 +24,7 @@ import {
 } from "../../runtime/wire/deserialize.js";
 
 export declare namespace $.api {
-  export interface GetMarketsResponse {
+  export type GetMarketsResponse = {
     markets: Map<string, Market>;
   }
 }

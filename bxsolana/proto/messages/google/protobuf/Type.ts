@@ -47,7 +47,7 @@ import {
 } from "../../../runtime/wire/deserialize.js";
 
 export declare namespace $.google.protobuf {
-  export interface Type {
+  export type Type = {
     name: string;
     fields: Field[];
     oneofs: string[];

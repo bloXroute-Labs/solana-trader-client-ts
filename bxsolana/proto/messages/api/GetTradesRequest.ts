@@ -17,7 +17,7 @@ import {
 } from "../../runtime/wire/deserialize.js";
 
 export declare namespace $.api {
-  export interface GetTradesRequest {
+  export type GetTradesRequest = {
     market: string;
     limit: number;
   }

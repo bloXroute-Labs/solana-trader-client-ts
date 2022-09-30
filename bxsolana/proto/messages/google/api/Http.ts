@@ -25,7 +25,7 @@ import {
 } from "../../../runtime/wire/deserialize.js";
 
 export declare namespace $.google.api {
-  export interface Http {
+  export type Http = {
     rules: HttpRule[];
     fullyDecodeReservedExpansion: boolean;
   }

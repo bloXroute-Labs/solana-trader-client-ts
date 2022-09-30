@@ -17,7 +17,7 @@ import {
 } from "../../runtime/wire/deserialize.js";
 
 export declare namespace $.api {
-  export interface GetOrderStatusStreamRequest {
+  export type GetOrderStatusStreamRequest = {
     market: string;
     ownerAddress: string;
   }

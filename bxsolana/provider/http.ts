@@ -9,6 +9,11 @@ import {
     GetOpenOrdersResponse,
     GetOrderbookRequest,
     GetOrderbookResponse,
+    GetPoolsRequest,
+    GetPoolsResponse,
+    GetPriceRequest,
+    GetPriceResponse,
+    GetRecentBlockHashRequest,
     GetServerTimeRequest,
     GetServerTimeResponse,
     GetTickersRequest,
@@ -29,6 +34,9 @@ import {
     PostSettleResponse,
     PostSubmitRequest,
     PostSubmitResponse,
+    TradeSwapRequest,
+    TradeSwapResponse,
+    GetRecentBlockHashResponse,
 } from "../proto/messages/api/index.js"
 import { BaseProvider } from "./base.js"
 import config from "../../utils/config.js";
@@ -102,15 +110,55 @@ export class HttpProvider extends BaseProvider {
         })
     }
 
+    getPools(request: GetPoolsRequest): Promise<GetPoolsResponse> {
+        let path = `${this.baseUrl}/api/v1/market/pools`
+        const args = request.projects.map((v) => `projects=${v}`).join("&")
+        if (args != "") {
+            path += `?${args}`
+        }
+        return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
+            return resp.json() as unknown as GetPoolsResponse
+        })
+    }
+
+    getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
+        let path = `${this.baseUrl}/api/v1/market/price`
+        const args = request.tokens.map((v) => `tokens=${v}`).join("&")
+        if (args != "") {
+            path += `?${args}`
+        }
+        return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
+            return resp.json() as unknown as GetPriceResponse
+        })
+    }
+
+    getRecentBlockHash(request: GetRecentBlockHashRequest): Promise<GetRecentBlockHashResponse> {
+        const path = `${this.baseUrl}/api/v1/system/blockhash`
+        return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
+            return resp.json() as unknown as GetRecentBlockHashResponse
+        })
+    }
+
     postOrder(request: PostOrderRequest): Promise<PostOrderResponse> {
         const path = `${this.baseUrl}/trade/place`
         return fetch(path, {
             method: "POST",
             body: JSON.stringify(request),
-            headers: { "Content-Type": "application/json", 
+            headers: { "Content-Type": "application/json",
                 "Authorization": config.AuthHeader }
         }).then((resp) => {
             return resp.json() as unknown as PostOrderResponse
+        })
+    }
+
+    postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
+        const path = `${this.baseUrl}/trade/place`
+        return fetch(path, {
+            method: "POST",
+            body: JSON.stringify(request),
+            headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
+        }).then((resp) => {
+            return resp.json() as unknown as TradeSwapResponse
         })
     }
 

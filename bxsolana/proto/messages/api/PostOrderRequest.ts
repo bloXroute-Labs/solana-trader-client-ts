@@ -32,7 +32,7 @@ import {
 } from "../../runtime/wire/deserialize.js";
 
 export declare namespace $.api {
-  export interface PostOrderRequest {
+  export type PostOrderRequest = {
     ownerAddress: string;
     payerAddress: string;
     market: string;

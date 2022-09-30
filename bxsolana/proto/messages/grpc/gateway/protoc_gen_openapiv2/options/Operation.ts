@@ -55,7 +55,7 @@ import {
 } from "../../../../../runtime/wire/deserialize.js";
 
 export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options {
-  export interface Operation {
+  export type Operation = {
     tags: string[];
     summary: string;
     description: string;

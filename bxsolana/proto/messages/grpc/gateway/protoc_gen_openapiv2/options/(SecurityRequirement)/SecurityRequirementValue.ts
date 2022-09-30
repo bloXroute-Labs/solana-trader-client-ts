@@ -17,7 +17,7 @@ import {
 } from "../../../../../../runtime/wire/deserialize.js";
 
 export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options.SecurityRequirement {
-  export interface SecurityRequirementValue {
+  export type SecurityRequirementValue = {
     scope: string[];
   }
 }

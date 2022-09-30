@@ -26,12 +26,15 @@ import {
 } from "../../runtime/wire/deserialize.js";
 
 export declare namespace $.api {
-  export interface Trade {
+  export type Trade = {
     side: Side;
     size: number;
-    price: number;
+    fillPrice: number;
     orderID: string;
     isMaker: boolean;
+    address: string;
+    feeOrRebate: number;
+    orderPrice: number;
   }
 }
 export type Type = $.api.Trade;
@@ -40,9 +43,12 @@ export function getDefaultValue(): $.api.Trade {
   return {
     side: "S_UNKNOWN",
     size: 0,
-    price: 0,
+    fillPrice: 0,
     orderID: "",
     isMaker: false,
+    address: "",
+    feeOrRebate: 0,
+    orderPrice: 0,
   };
 }
 
@@ -57,9 +63,12 @@ export function encodeJson(value: $.api.Trade): unknown {
   const result: any = {};
   if (value.side !== undefined) result.side = tsValueToJsonValueFns.enum(value.side);
   if (value.size !== undefined) result.size = tsValueToJsonValueFns.double(value.size);
-  if (value.price !== undefined) result.price = tsValueToJsonValueFns.double(value.price);
+  if (value.fillPrice !== undefined) result.fillPrice = tsValueToJsonValueFns.double(value.fillPrice);
   if (value.orderID !== undefined) result.orderID = tsValueToJsonValueFns.string(value.orderID);
   if (value.isMaker !== undefined) result.isMaker = tsValueToJsonValueFns.bool(value.isMaker);
+  if (value.address !== undefined) result.address = tsValueToJsonValueFns.string(value.address);
+  if (value.feeOrRebate !== undefined) result.feeOrRebate = tsValueToJsonValueFns.double(value.feeOrRebate);
+  if (value.orderPrice !== undefined) result.orderPrice = tsValueToJsonValueFns.double(value.orderPrice);
   return result;
 }
 
@@ -67,9 +76,12 @@ export function decodeJson(value: any): $.api.Trade {
   const result = getDefaultValue();
   if (value.side !== undefined) result.side = jsonValueToTsValueFns.enum(value.side) as Side;
   if (value.size !== undefined) result.size = jsonValueToTsValueFns.double(value.size);
-  if (value.price !== undefined) result.price = jsonValueToTsValueFns.double(value.price);
+  if (value.fillPrice !== undefined) result.fillPrice = jsonValueToTsValueFns.double(value.fillPrice);
   if (value.orderID !== undefined) result.orderID = jsonValueToTsValueFns.string(value.orderID);
   if (value.isMaker !== undefined) result.isMaker = jsonValueToTsValueFns.bool(value.isMaker);
+  if (value.address !== undefined) result.address = jsonValueToTsValueFns.string(value.address);
+  if (value.feeOrRebate !== undefined) result.feeOrRebate = jsonValueToTsValueFns.double(value.feeOrRebate);
+  if (value.orderPrice !== undefined) result.orderPrice = jsonValueToTsValueFns.double(value.orderPrice);
   return result;
 }
 
@@ -87,8 +99,8 @@ export function encodeBinary(value: $.api.Trade): Uint8Array {
       [2, tsValueToWireValueFns.double(tsValue)],
     );
   }
-  if (value.price !== undefined) {
-    const tsValue = value.price;
+  if (value.fillPrice !== undefined) {
+    const tsValue = value.fillPrice;
     result.push(
       [3, tsValueToWireValueFns.double(tsValue)],
     );
@@ -103,6 +115,24 @@ export function encodeBinary(value: $.api.Trade): Uint8Array {
     const tsValue = value.isMaker;
     result.push(
       [5, tsValueToWireValueFns.bool(tsValue)],
+    );
+  }
+  if (value.address !== undefined) {
+    const tsValue = value.address;
+    result.push(
+      [6, tsValueToWireValueFns.string(tsValue)],
+    );
+  }
+  if (value.feeOrRebate !== undefined) {
+    const tsValue = value.feeOrRebate;
+    result.push(
+      [7, tsValueToWireValueFns.double(tsValue)],
+    );
+  }
+  if (value.orderPrice !== undefined) {
+    const tsValue = value.orderPrice;
+    result.push(
+      [8, tsValueToWireValueFns.double(tsValue)],
     );
   }
   return serialize(result);
@@ -131,7 +161,7 @@ export function decodeBinary(binary: Uint8Array): $.api.Trade {
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
-    result.price = value;
+    result.fillPrice = value;
   }
   field: {
     const wireValue = wireFields.get(4);
@@ -146,6 +176,27 @@ export function decodeBinary(binary: Uint8Array): $.api.Trade {
     const value = wireValueToTsValueFns.bool(wireValue);
     if (value === undefined) break field;
     result.isMaker = value;
+  }
+  field: {
+    const wireValue = wireFields.get(6);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.address = value;
+  }
+  field: {
+    const wireValue = wireFields.get(7);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.double(wireValue);
+    if (value === undefined) break field;
+    result.feeOrRebate = value;
+  }
+  field: {
+    const wireValue = wireFields.get(8);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.double(wireValue);
+    if (value === undefined) break field;
+    result.orderPrice = value;
   }
   return result;
 }

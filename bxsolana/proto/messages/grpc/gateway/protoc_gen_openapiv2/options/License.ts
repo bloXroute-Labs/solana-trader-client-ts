@@ -17,7 +17,7 @@ import {
 } from "../../../../../runtime/wire/deserialize.js";
 
 export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options {
-  export interface License {
+  export type License = {
     name: string;
     url: string;
   }

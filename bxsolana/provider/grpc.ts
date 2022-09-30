@@ -36,6 +36,20 @@ import {
     PostSettleResponse,
     PostSubmitRequest,
     PostSubmitResponse,
+    GetPoolsRequest,
+    GetPoolsResponse,
+    GetPriceRequest,
+    GetRecentBlockHashRequest,
+    GetRecentBlockHashResponse,
+    TradeSwapRequest,
+    TradeSwapResponse,
+    GetQuotesStreamRequest,
+    GetQuotesStreamResponse,
+    GetQuotesRequest,
+    GetQuotesResponse,
+    GetPoolReservesStreamRequest,
+    GetPoolReservesStreamResponse,
+    GetPriceResponse,
 } from "../proto/messages/api/index.js"
 import { createServiceClient, Service } from "../proto/services/api/Api.js"
 import { BaseProvider } from "./base.js"
@@ -149,5 +163,33 @@ export class GrpcProvider extends BaseProvider {
 
     postReplaceOrder(request: PostReplaceOrderRequest): Promise<PostOrderResponse> {
         return this.client.postReplaceOrder(request)
+    }
+
+    postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
+        return this.client.postTradeSwap(request)
+    }
+
+    getPools(request: GetPoolsRequest): Promise<GetPoolsResponse> {
+        return this.client.getPools(request)
+    }
+
+    getQuotes(request: GetQuotesRequest): Promise<GetQuotesResponse> {
+        return this.client.getQuotes(request)
+    }
+
+    getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
+        return this.client.getPrice(request)
+    }
+
+    getRecentBlockHashStream(request: GetRecentBlockHashRequest): Promise<AsyncGenerator<GetRecentBlockHashResponse>> {
+        return this.client.getRecentBlockHashStream(request)
+    }
+
+    getQuotesStream(request: GetQuotesStreamRequest): Promise<AsyncGenerator<GetQuotesStreamResponse>> {
+        return this.client.getQuotesStream(request)
+    }
+
+    getPoolReservesStream(request: GetPoolReservesStreamRequest): Promise<AsyncGenerator<GetPoolReservesStreamResponse>> {
+        return this.client.getPoolReservesStream(request)
     }
 }

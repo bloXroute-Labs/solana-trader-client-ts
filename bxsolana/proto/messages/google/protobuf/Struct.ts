@@ -24,7 +24,7 @@ import {
 } from "../../../runtime/wire/deserialize.js";
 
 export declare namespace $.google.protobuf {
-  export interface Struct {
+  export type Struct = {
     fields: Map<string, Value>;
   }
 }

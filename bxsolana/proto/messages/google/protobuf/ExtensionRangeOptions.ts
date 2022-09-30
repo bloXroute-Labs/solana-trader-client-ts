@@ -20,7 +20,7 @@ import {
 } from "../../../runtime/wire/deserialize.js";
 
 export declare namespace $.google.protobuf {
-  export interface ExtensionRangeOptions {
+  export type ExtensionRangeOptions = {
     uninterpretedOption: UninterpretedOption[];
   }
 }
