@@ -52,7 +52,7 @@ import {
     TradeSwapResponse,
 } from "../proto/messages/api/index.js"
 import { BaseProvider } from "./base.js"
-import config from "../../utils/config.js";
+import config from "../../utils/config.js"
 
 let requestId = 0
 export class WsProvider extends BaseProvider {
