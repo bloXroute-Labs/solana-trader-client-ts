@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/bloXroute-Labs/solana-trader-client-ts#readme",
   "dependencies": {
-    "@grpc/grpc-js": "^1.6.7",
+    "@grpc/grpc-js": "^1.7.0",
     "@pbkit/grpc-client": "^0.0.1",
     "@solana/web3.js": "^1.47.3",
     "bs58": "^5.0.0",
