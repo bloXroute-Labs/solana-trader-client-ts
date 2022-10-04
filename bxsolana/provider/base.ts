@@ -53,11 +53,10 @@ import {
     GetRecentBlockHashResponse,
     TradeSwapRequest,
     TradeSwapResponse,
+    GetPoolReservesStreamRequest,
 } from "../proto/messages/api/index.js"
 import { Api } from "../proto/services/api/index.js"
 import { signTx, SubmitTransactionResponse } from "../../utils/transaction.js"
-import { $ } from "../proto/messages/api/GetPoolReservesStreamRequest"
-import GetPoolReservesStreamRequest = $.api.GetPoolReservesStreamRequest
 
 export abstract class BaseProvider implements Api {
     abstract close(): void
