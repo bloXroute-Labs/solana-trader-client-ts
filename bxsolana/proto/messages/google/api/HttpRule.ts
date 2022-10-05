@@ -33,7 +33,7 @@ import {
 } from "../../../runtime/wire/deserialize.js";
 
 export declare namespace $.google.api {
-  export interface HttpRule {
+  export type HttpRule = {
     selector: string;
     body: string;
     additionalBindings: HttpRule_1[];

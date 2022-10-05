@@ -20,7 +20,7 @@ import {
 } from "../../../runtime/wire/deserialize.js";
 
 export declare namespace $.google.protobuf {
-  export interface SourceCodeInfo {
+  export type SourceCodeInfo = {
     location: Location[];
   }
 }

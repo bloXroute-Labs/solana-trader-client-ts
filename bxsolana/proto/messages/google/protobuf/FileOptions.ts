@@ -33,7 +33,7 @@ import {
 } from "../../../runtime/wire/deserialize.js";
 
 export declare namespace $.google.protobuf {
-  export interface FileOptions {
+  export type FileOptions = {
     javaPackage?: string;
     javaOuterClassname?: string;
     optimizeFor?: OptimizeMode;

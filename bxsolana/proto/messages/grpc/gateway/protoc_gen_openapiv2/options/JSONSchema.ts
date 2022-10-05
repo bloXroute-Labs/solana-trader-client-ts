@@ -41,7 +41,7 @@ import {
 } from "../../../../../runtime/wire/deserialize.js";
 
 export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options {
-  export interface JSONSchema {
+  export type JSONSchema = {
     ref: string;
     title: string;
     description: string;

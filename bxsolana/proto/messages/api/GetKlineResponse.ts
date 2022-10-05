@@ -32,7 +32,7 @@ import {
 } from "../../runtime/wire/deserialize.js";
 
 export declare namespace $.api {
-  export interface GetKlineResponse {
+  export type GetKlineResponse = {
     market: string;
     timestamp?: Timestamp;
     candles: Candle[];

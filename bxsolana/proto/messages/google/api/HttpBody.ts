@@ -25,7 +25,7 @@ import {
 } from "../../../runtime/wire/deserialize.js";
 
 export declare namespace $.google.api {
-  export interface HttpBody {
+  export type HttpBody = {
     contentType: string;
     data: Uint8Array;
     extensions: Any[];

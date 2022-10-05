@@ -17,7 +17,7 @@ import {
 } from "../../runtime/wire/deserialize.js";
 
 export declare namespace $.api {
-  export interface Settlement {
+  export type Settlement = {
     symbol: string;
     unsettled: number;
     amount: number;

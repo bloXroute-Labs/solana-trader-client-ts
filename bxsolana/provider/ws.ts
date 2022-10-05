@@ -14,6 +14,18 @@ import {
     GetOrderbooksStreamResponse,
     GetOrderStatusStreamRequest,
     GetOrderStatusStreamResponse,
+    GetPoolReservesStreamRequest,
+    GetPoolReservesStreamResponse,
+    GetPoolsRequest,
+    GetPoolsResponse,
+    GetPriceRequest,
+    GetPriceResponse,
+    GetQuotesRequest,
+    GetQuotesResponse,
+    GetQuotesStreamRequest,
+    GetQuotesStreamResponse,
+    GetRecentBlockHashRequest,
+    GetRecentBlockHashResponse,
     GetServerTimeRequest,
     GetServerTimeResponse,
     GetTickersRequest,
@@ -36,9 +48,11 @@ import {
     PostSettleResponse,
     PostSubmitRequest,
     PostSubmitResponse,
+    TradeSwapRequest,
+    TradeSwapResponse,
 } from "../proto/messages/api/index.js"
 import { BaseProvider } from "./base.js"
-import config from "../../utils/config.js";
+import config from "../../utils/config.js"
 
 let requestId = 0
 export class WsProvider extends BaseProvider {
@@ -137,6 +151,34 @@ export class WsProvider extends BaseProvider {
         return this.wsSocketCall("postReplaceOrder", request)
     }
 
+    postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
+        return this.wsSocketCall("PostTradeSwap", request)
+    }
+
+    getPools(request: GetPoolsRequest): Promise<GetPoolsResponse> {
+        return this.wsSocketCall("GetPools", request)
+    }
+
+    getQuotes(request: GetQuotesRequest): Promise<GetQuotesResponse> {
+        return this.wsSocketCall("GetQuotes", request)
+    }
+
+    getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
+        return this.wsSocketCall("GetPrice", request)
+    }
+
+    getRecentBlockHashStream(request: GetRecentBlockHashRequest): Promise<AsyncGenerator<GetRecentBlockHashResponse>> {
+        return this.wsSocketStreamCall("GetRecentBlockHashStream", request)
+    }
+
+    getQuotesStream(request: GetQuotesStreamRequest): Promise<AsyncGenerator<GetQuotesStreamResponse>> {
+        return this.wsSocketStreamCall("GetQuotesStream", request)
+    }
+
+    getPoolReservesStream(request: GetPoolReservesStreamRequest): Promise<AsyncGenerator<GetPoolReservesStreamResponse>> {
+        return this.wsSocketStreamCall("GetPoolReservesStream", request)
+    }
+
     // Private
     private get Socket(): WebSocket | null {
         if (this.isClosed) return null
@@ -144,9 +186,9 @@ export class WsProvider extends BaseProvider {
         if (this.socket && (this.socket.readyState == WebSocket.OPEN || this.socket.CONNECTING)) {
             return this.socket
         }
-        const headers = {"Authorization" : config.AuthHeader}
+        const headers = { Authorization: config.AuthHeader }
         this.socket = new WebSocket(this.address, {
-            headers: headers
+            headers: headers,
         })
         return this.socket
     }

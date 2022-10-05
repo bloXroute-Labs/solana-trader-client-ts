@@ -17,7 +17,7 @@ import {
 } from "../../../../runtime/wire/deserialize.js";
 
 export declare namespace $.google.protobuf.EnumDescriptorProto {
-  export interface EnumReservedRange {
+  export type EnumReservedRange = {
     start?: number;
     end?: number;
   }

@@ -38,7 +38,7 @@ import {
 } from "../../../runtime/wire/deserialize.js";
 
 export declare namespace $.google.protobuf {
-  export interface FieldDescriptorProto {
+  export type FieldDescriptorProto = {
     name?: string;
     extendee?: string;
     number?: number;
