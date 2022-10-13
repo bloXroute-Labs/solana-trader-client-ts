@@ -96,7 +96,7 @@ export class HttpProvider extends BaseProvider {
     }
 
     getUnsettled(request: GetUnsettledRequest): Promise<GetUnsettledResponse> {
-        const path = `${this.baseUrl}/trade/unsettled/${request.market}?owner=${request.owner}`
+        const path = `${this.baseUrl}/trade/unsettled/${request.market}?ownerAddress=${request.owner}`
         return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
             return resp.json() as unknown as GetUnsettledResponse
         })

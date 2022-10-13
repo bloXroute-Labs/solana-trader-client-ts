@@ -25,7 +25,7 @@ const testOrder: PostOrderRequest = {
     clientOrderID: "",
 }
 
-const crank_timeout_s = 60
+const crankTimeoutS = 60
 
 function delay(milliseconds: number) {
     return new Promise((resolve) => setTimeout(resolve, milliseconds))
@@ -524,7 +524,7 @@ async function callCancelAll(provider: BaseProvider) {
         const resp2 = await provider.submitOrder(testOrder)
         console.info(`Order 2 placed ${resp2.signature}`)
 
-        console.info(`\nWaiting ${crank_timeout_s}s for place orders to be cranked`)
+        console.info(`\nWaiting ${crankTimeoutS}s for place orders to be cranked`)
 
         // checking orders placed
         const openOrdersRequest: GetOpenOrdersRequest = {
@@ -534,7 +534,7 @@ async function callCancelAll(provider: BaseProvider) {
             openOrdersAddress: "",
         }
 
-        await delay(crank_timeout_s * 1000)
+        await delay(crankTimeoutS * 1000)
         const openOrdersResponse1: GetOpenOrdersResponse = await provider.getOpenOrders(openOrdersRequest)
 
         let found1 = false
@@ -567,10 +567,10 @@ async function callCancelAll(provider: BaseProvider) {
         }
 
         console.info(`Cancelling all orders, response signatures(s): ${signatures.join(", ")}`)
-        console.info(`\nWaiting ${crank_timeout_s}s for cancel order(s) to be cranked`)
+        console.info(`\nWaiting ${crankTimeoutS}s for cancel order(s) to be cranked`)
 
         // checking all orders cancelled
-        await delay(crank_timeout_s * 1000)
+        await delay(crankTimeoutS * 1000)
         const openOrdersResponse2 = await provider.getOpenOrders(openOrdersRequest)
 
         if (openOrdersResponse2.orders.length !== 0) {
