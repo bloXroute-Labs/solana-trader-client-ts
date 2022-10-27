@@ -1,6 +1,7 @@
-import { MAINNET_API_WS } from "../../utils/constants.js"
+import { LOCAL_API_WS } from "../../utils/constants.js"
 import { websocketData } from "../../utils/websocket-iterator.js"
-import WebSocket from "ws"
+import WebSocket, {Event} from "ws"
+
 import {
     GetAccountBalanceRequest,
     GetAccountBalanceResponse,
@@ -53,14 +54,21 @@ import {
 } from "../proto/messages/api/index.js"
 import { BaseProvider } from "./base.js"
 import config from "../../utils/config.js"
+import {RpcWsConnection} from "../ws/rpcclient";
 
 let requestId = 0
+
 export class WsProvider extends BaseProvider {
+    private wsConnection: RpcWsConnection
+
     private socket!: WebSocket
     private address = ""
     private isClosed = false
-    constructor(address: string = MAINNET_API_WS) {
+
+    constructor(address: string = LOCAL_API_WS) {
         super()
+        this.wsConnection = new RpcWsConnection(address)
+        this.wsConnection.connect()
         this.address = address
     }
 
@@ -69,8 +77,8 @@ export class WsProvider extends BaseProvider {
         this.socket.close()
     }
 
-    getOrderbook = (request: GetOrderbookRequest): Promise<GetOrderbookResponse> => {
-        return this.wsSocketCall("GetOrderbook", request)
+    async getOrderbook(request: GetOrderbookRequest): Promise<GetOrderbookResponse> {
+        return await this.wsConnection.call("GetOrderbook", request)
     }
 
     getMarkets = (request: GetMarketsRequest): Promise<GetMarketsResponse> => {
@@ -193,8 +201,8 @@ export class WsProvider extends BaseProvider {
         return this.socket
     }
 
-    private wsRequest = (method: string, params: unknown): { req: string; id: number } => {
-        const id = ++requestId
+    private formWSRequest = (method: string, params: unknown): { req: string; id: number } => {
+        const id = ++requestId // iterating the request id by 1 makes it so that we have a unique request ID for each request
         return {
             req: JSON.stringify({
                 jsonrpc: "2.0",
@@ -214,9 +222,10 @@ export class WsProvider extends BaseProvider {
                 reject(new Error("WS provider is closed"))
                 return
             }
-            const wsRequest = this.wsRequest(method, request)
+            const wsRequest = this.formWSRequest(method, request)
             if (ws.readyState == WebSocket.OPEN) {
                 ws.send(wsRequest.req)
+                console.info(wsRequest.req)
             } else {
                 ws.onopen = () => {
                     ws.send(wsRequest.req)
@@ -225,6 +234,8 @@ export class WsProvider extends BaseProvider {
             ws.onmessage = (msg: unknown) => {
                 const { id, result } = JSON.parse((msg as MessageEvent).data)
                 if (id == wsRequest.id) {
+                    console.info("received ws response")
+                    console.info(wsRequest)
                     resolve(result)
                 }
             }
@@ -245,15 +256,26 @@ export class WsProvider extends BaseProvider {
             }
 
             if (ws.readyState == WebSocket.OPEN) {
-                const req = this.wsRequest("subscribe", [method, request])
+                const req = this.formWSRequest("subscribe", [method, request])
+                console.info("stream request")
                 ws.send(req.req)
                 resolve(websocketData(ws, req.id))
             } else {
                 ws.onopen = () => {
-                    const req = this.wsRequest("subscribe", [method, request])
+                    console.info("stream request")
+                    const req = this.formWSRequest("subscribe", [method, request])
                     ws.send(req.req)
+                    // we need to implement a streaming subscription HERE
                     resolve(websocketData(ws, req.id))
                 }
+            }
+
+            ws.onmessage = (msg: unknown) => {
+                const { id, result } = JSON.parse((msg as MessageEvent).data)
+
+                console.info("received ws response")
+                console.info()
+
             }
 
             ws.onerror = (err: unknown) => {
