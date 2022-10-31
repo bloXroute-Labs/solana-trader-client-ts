@@ -1,6 +1,6 @@
 import { LOCAL_API_WS } from "../../utils/constants.js"
 import { websocketData } from "../../utils/websocket-iterator.js"
-import WebSocket, {Event} from "ws"
+import WebSocket, { Event } from "ws"
 
 import {
     GetAccountBalanceRequest,
@@ -54,7 +54,7 @@ import {
 } from "../proto/messages/api/index.js"
 import { BaseProvider } from "./base.js"
 import config from "../../utils/config.js"
-import {RpcWsConnection} from "../ws/rpcclient";
+import { RpcWsConnection } from "./rpcclient.js"
 
 let requestId = 0
 
@@ -68,8 +68,11 @@ export class WsProvider extends BaseProvider {
     constructor(address: string = LOCAL_API_WS) {
         super()
         this.wsConnection = new RpcWsConnection(address)
-        this.wsConnection.connect()
         this.address = address
+    }
+
+    async connect() {
+        await this.wsConnection.connect()
     }
 
     close = () => {
@@ -110,20 +113,24 @@ export class WsProvider extends BaseProvider {
     }
 
     //stream requests
-    getOrderbooksStream = (request: GetOrderbooksRequest): Promise<AsyncGenerator<GetOrderbooksStreamResponse>> => {
-        return this.wsSocketStreamCall("GetOrderbooksStream", request)
+    getOrderbooksStream = async (request: GetOrderbooksRequest): Promise<AsyncGenerator<GetOrderbooksStreamResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe("GetOrderbooksStream", request)
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
-    getTickersStream(request: GetTickersRequest): Promise<AsyncGenerator<GetTickersStreamResponse>> {
-        return this.wsSocketStreamCall("GetTickersStream", request)
+    getTickersStream = async (request: GetTickersRequest): Promise<AsyncGenerator<GetTickersStreamResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe("GetTickersStream", request)
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
-    getTradesStream(request: GetTradesRequest): Promise<AsyncGenerator<GetTradesStreamResponse>> {
-        return this.wsSocketStreamCall("GetTradesStream", request)
+    getTradesStream = async (request: GetTradesRequest): Promise<AsyncGenerator<GetTradesStreamResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe("GetTradesStream", request)
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
-    getOrderStatusStream(request: GetOrderStatusStreamRequest): Promise<AsyncGenerator<GetOrderStatusStreamResponse>> {
-        return this.wsSocketStreamCall("GetOrderStatusStream", request)
+    getOrderStatusStream = async (request: GetOrderStatusStreamRequest): Promise<AsyncGenerator<GetOrderStatusStreamResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe("GetOrderStatusStream", request)
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
     //POST requests
@@ -216,33 +223,15 @@ export class WsProvider extends BaseProvider {
 
     private wsSocketCall<TData>(method: string, request: unknown): Promise<TData> {
         return new Promise((resolve, reject) => {
-            const ws = this.Socket
+            const ws = this.wsConnection
 
             if (ws === null) {
                 reject(new Error("WS provider is closed"))
                 return
             }
-            const wsRequest = this.formWSRequest(method, request)
-            if (ws.readyState == WebSocket.OPEN) {
-                ws.send(wsRequest.req)
-                console.info(wsRequest.req)
-            } else {
-                ws.onopen = () => {
-                    ws.send(wsRequest.req)
-                }
-            }
-            ws.onmessage = (msg: unknown) => {
-                const { id, result } = JSON.parse((msg as MessageEvent).data)
-                if (id == wsRequest.id) {
-                    console.info("received ws response")
-                    console.info(wsRequest)
-                    resolve(result)
-                }
-            }
 
-            ws.onerror = (err: unknown) => {
-                reject(err)
-            }
+            ws.call(method, request)
+
         })
     }
 
@@ -275,7 +264,6 @@ export class WsProvider extends BaseProvider {
 
                 console.info("received ws response")
                 console.info()
-
             }
 
             ws.onerror = (err: unknown) => {

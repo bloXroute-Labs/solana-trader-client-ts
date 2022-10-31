@@ -1,14 +1,19 @@
 import thenableReject from "thenable-reject"
+import { EventEmitter } from "eventemitter3"
 import WebSocket from "ws"
+import { BaseProvider } from "../bxsolana/provider/base"
+import { LOCAL_API_WS } from "./constants"
 
-//const requestToSubscriptions: Map<number, string> = new Map<number, string>();
-export async function* websocketData<TData>(websocket: WebSocket, reqId: number): AsyncGenerator<TData, any, unknown> {
+const requestToSubscriptions: Map<number, string> = new Map<number, string>()
+export async function* websocketData<TData>(websocket: WebSocket, reqId: number): AsyncGenerator<TData> {
     let subscriptionId = ""
     for await (const { data } of websocketEvents(websocket)) {
-        const { result, id } = JSON.parse(data.toString())
+        const { subscription, id } = JSON.parse(data.toString())
         if (id) {
+            // this block gets hit if we see a response to the
             if (id == reqId) {
-                subscriptionId = result
+                subscriptionId = subscription
+                requestToSubscriptions.set(id, subscriptionId)
                 continue
             }
         } else {
@@ -40,6 +45,7 @@ export function websocketEvents(websocket: WebSocket, { emitOpen = false } = {})
         if (resolvers.length > 0) {
             ;(resolvers.shift() as typeof resolvers[0])(data)
         } else {
+            // add check for request id
             values.push(data)
         }
     }

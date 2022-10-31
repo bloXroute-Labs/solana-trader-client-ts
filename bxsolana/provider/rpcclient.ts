@@ -1,10 +1,10 @@
-import config from "../../utils/config"
+import config from "../../utils/config.js"
 import WebSocket from "ws"
 
 type Resolver = (result: any) => void
 type SubscriptionResolver = {
-    update: Resolver,
-    read: AsyncGenerator<unknown, void, unknown>,
+    update: Resolver
+    read: AsyncGenerator<unknown, void, unknown>
     cancel: (err: Error) => void
 }
 
@@ -20,21 +20,27 @@ export class RpcWsConnection {
         this.address = address
     }
 
-    connect() {
+    async connect() {
         const headers = { Authorization: config.AuthHeader }
         const socket = new WebSocket(this.address, {
             headers,
         })
 
+        let connectResolver: (val: undefined) => void
+        const connected = new Promise<undefined>(resolve => {
+            connectResolver = resolve
+        })
+
         socket.onopen = () => {
             this.socket = socket
+            connectResolver(undefined)
         }
 
         socket.onmessage = (msg: unknown) => {
             const { id, result, method, params } = JSON.parse((msg as MessageEvent<string>).data)
 
             if (method === "subscribe") {
-                const {subscription, result} = params
+                const { subscription, result } = params
                 const subscriptionResolver = this.subscriptionMap.get(subscription)
                 if (subscriptionResolver) {
                     subscriptionResolver.update(result)
@@ -54,6 +60,8 @@ export class RpcWsConnection {
         socket.onerror = () => {
             this.socket = undefined
         }
+
+        await connected
     }
 
     // close() {
@@ -75,7 +83,7 @@ export class RpcWsConnection {
         return await callback
     }
 
-    _formWSRequest<T>(methodName: string, methodParams: T): {id: number, req: string} {
+    _formWSRequest<T>(methodName: string, methodParams: T): { id: number; req: string } {
         const id = ++this.requestId // iterating the request id by 1 makes it so that we have a unique request ID for each request
         return {
             req: JSON.stringify({
@@ -95,7 +103,8 @@ export class RpcWsConnection {
         const update = (value: unknown) => {
             queue.push(value)
         }
-        const read = async function*() {
+
+        const read = (async function* () {
             while (queue) {
                 const value = queue.pop()
                 if (value instanceof Error) {
@@ -103,9 +112,9 @@ export class RpcWsConnection {
                 }
                 yield value
             }
-        }()
+        })()
 
-        const cancel = function(err: Error) {
+        const cancel = function (err: Error) {
             queue.push(err)
         }
 
@@ -120,20 +129,24 @@ export class RpcWsConnection {
 
     async unsubscribe(subscriptionId: string): Promise<boolean> {
         return await this.call("unsubscribe", subscriptionId)
+
+        const resolver = this.subscriptionMap.delete(subscriptionId)
+        return resolver
     }
 
-    async* subscribeToNotifications<T>(subscriptionID: string): AsyncGenerator<T> {
+    async *subscribeToNotifications<T>(subscriptionID: string): AsyncGenerator<T> {
         const resolver = this.subscriptionMap.get(subscriptionID)
 
         if (!resolver) {
             throw new Error("subscription does not exist for id")
         }
         const read = resolver.read
-        return read
 
         for await (const item of read) {
             yield item as T
         }
+
+        return read
     }
 }
 
