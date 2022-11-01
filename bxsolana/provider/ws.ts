@@ -82,32 +82,32 @@ export class WsProvider extends BaseProvider {
         return await this.wsConnection.call("GetOrderbook", request)
     }
 
-    getMarkets = (request: GetMarketsRequest): Promise<GetMarketsResponse> => {
-        return this.wsSocketRequest("GetMarkets", request)
+    async getMarkets(request: GetMarketsRequest): Promise<GetMarketsResponse> {
+        return await this.wsConnection.call("GetMarkets", request)
     }
 
-    getTickers(request: GetTickersRequest): Promise<GetTickersResponse> {
-        return this.wsSocketRequest("GetTickers", request)
+    async getTickers(request: GetTickersRequest): Promise<GetTickersResponse> {
+        return await this.wsConnection.call("GetTickers", request)
     }
 
-    getTrades(request: GetTradesRequest): Promise<GetTradesResponse> {
-        return this.wsSocketRequest("GetTrades", request)
+    async getTrades(request: GetTradesRequest): Promise<GetTradesResponse> {
+        return await this.wsConnection.call("GetTrades", request)
     }
 
-    getServerTime(request: GetServerTimeRequest): Promise<GetServerTimeResponse> {
-        return this.wsSocketRequest("GetServerTime", request)
+    async getServerTime(request: GetServerTimeRequest): Promise<GetServerTimeResponse> {
+        return await this.wsConnection.call("GetServerTime", request)
     }
 
-    getOpenOrders(request: GetOpenOrdersRequest): Promise<GetOpenOrdersResponse> {
-        return this.wsSocketRequest("GetOpenOrders", request)
+    async getOpenOrders(request: GetOpenOrdersRequest): Promise<GetOpenOrdersResponse> {
+        return await this.wsConnection.call("GetOpenOrders", request)
     }
 
-    getUnsettled(request: GetUnsettledRequest): Promise<GetUnsettledResponse> {
-        return this.wsSocketRequest("GetUnsettled", request)
+    async getUnsettled(request: GetUnsettledRequest): Promise<GetUnsettledResponse> {
+        return await this.wsConnection.call("GetUnsettled", request)
     }
 
-    getAccountBalance(request: GetAccountBalanceRequest): Promise<GetAccountBalanceResponse> {
-        return this.wsSocketRequest("GetAccountBalance", request)
+    async getAccountBalance(request: GetAccountBalanceRequest): Promise<GetAccountBalanceResponse> {
+        return await this.wsConnection.call("GetAccountBalance", request)
     }
 
     //stream requests
@@ -115,10 +115,10 @@ export class WsProvider extends BaseProvider {
         const subscriptionId = await this.wsConnection.subscribe("GetOrderbooksStream", request)
 
         function delay(ms: number) {
-            return new Promise( resolve => setTimeout(resolve, ms) );
+            return new Promise((resolve) => setTimeout(resolve, ms))
         }
 
-        await delay(2000);
+        await delay(10000)
 
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
@@ -126,10 +126,10 @@ export class WsProvider extends BaseProvider {
     getTickersStream = async (request: GetTickersRequest): Promise<AsyncGenerator<GetTickersStreamResponse>> => {
         const subscriptionId = await this.wsConnection.subscribe("GetTickersStream", request)
         function delay(ms: number) {
-            return new Promise( resolve => setTimeout(resolve, ms) );
+            return new Promise((resolve) => setTimeout(resolve, ms))
         }
 
-        await delay(2000);
+        await delay(10000)
 
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
@@ -137,10 +137,10 @@ export class WsProvider extends BaseProvider {
     getTradesStream = async (request: GetTradesRequest): Promise<AsyncGenerator<GetTradesStreamResponse>> => {
         const subscriptionId = await this.wsConnection.subscribe("GetTradesStream", request)
         function delay(ms: number) {
-            return new Promise( resolve => setTimeout(resolve, ms) );
+            return new Promise((resolve) => setTimeout(resolve, ms))
         }
 
-        await delay(2000);
+        await delay(10000)
 
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
@@ -148,94 +148,92 @@ export class WsProvider extends BaseProvider {
     getOrderStatusStream = async (request: GetOrderStatusStreamRequest): Promise<AsyncGenerator<GetOrderStatusStreamResponse>> => {
         const subscriptionId = await this.wsConnection.subscribe("GetOrderStatusStream", request)
         function delay(ms: number) {
-            return new Promise( resolve => setTimeout(resolve, ms) );
+            return new Promise((resolve) => setTimeout(resolve, ms))
         }
 
-        await delay(2000);
+        await delay(2000)
 
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
     //POST requests
-    postOrder(request: PostOrderRequest): Promise<PostOrderResponse> {
-        return this.wsSocketRequest("PostOrder", request)
+    async postOrder(request: PostOrderRequest): Promise<PostOrderResponse> {
+        return this.wsConnection.call("PostOrder", request)
     }
 
-    postSubmit(request: PostSubmitRequest): Promise<PostSubmitResponse> {
-        return this.wsSocketRequest("PostSubmit", request)
+    async postSubmit(request: PostSubmitRequest): Promise<PostSubmitResponse> {
+        return this.wsConnection.call("PostSubmit", request)
     }
 
-    postCancelOrder(request: PostCancelOrderRequest): Promise<PostCancelOrderResponse> {
-        return this.wsSocketRequest("PostCancelOrder", request)
+    async postCancelOrder(request: PostCancelOrderRequest): Promise<PostCancelOrderResponse> {
+        return this.wsConnection.call("PostCancelOrder", request)
     }
 
-    postCancelByClientOrderID(request: PostCancelByClientOrderIDRequest): Promise<PostCancelOrderResponse> {
-        return this.wsSocketRequest("PostCancelByClientOrderID", request)
+    async postCancelByClientOrderID(request: PostCancelByClientOrderIDRequest): Promise<PostCancelOrderResponse> {
+        return this.wsConnection.call("PostCancelByClientOrderID", request)
     }
 
-    postCancelAll(request: PostCancelAllRequest): Promise<PostCancelAllResponse> {
-        return this.wsSocketRequest("PostCancelAll", request)
+    async postCancelAll(request: PostCancelAllRequest): Promise<PostCancelAllResponse> {
+        return this.wsConnection.call("PostCancelAll", request)
     }
 
-    postSettle(request: PostSettleRequest): Promise<PostSettleResponse> {
-        return this.wsSocketRequest("PostSettle", request)
+    async postSettle(request: PostSettleRequest): Promise<PostSettleResponse> {
+        return this.wsConnection.call("PostSettle", request)
     }
 
-    postReplaceByClientOrderID(request: PostOrderRequest): Promise<PostOrderResponse> {
-        return this.wsSocketRequest("postReplaceByClientOrderID", request)
+    async postReplaceByClientOrderID(request: PostOrderRequest): Promise<PostOrderResponse> {
+        return this.wsConnection.call("postReplaceByClientOrderID", request)
     }
 
-    postReplaceOrder(request: PostReplaceOrderRequest): Promise<PostOrderResponse> {
-        return this.wsSocketRequest("postReplaceOrder", request)
+    async postReplaceOrder(request: PostReplaceOrderRequest): Promise<PostOrderResponse> {
+        return this.wsConnection.call("postReplaceOrder", request)
     }
 
-    postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
-        return this.wsSocketRequest("PostTradeSwap", request)
+    async postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
+        return this.wsConnection.call("PostTradeSwap", request)
     }
 
-    getPools(request: GetPoolsRequest): Promise<GetPoolsResponse> {
-        return this.wsSocketRequest("GetPools", request)
+    async getPools(request: GetPoolsRequest): Promise<GetPoolsResponse> {
+        return this.wsConnection.call("GetPools", request)
     }
 
-    getQuotes(request: GetQuotesRequest): Promise<GetQuotesResponse> {
-        return this.wsSocketRequest("GetQuotes", request)
+    async getQuotes(request: GetQuotesRequest): Promise<GetQuotesResponse> {
+        return this.wsConnection.call("GetQuotes", request)
     }
 
-    getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
-        return this.wsSocketRequest("GetPrice", request)
+    async getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
+        return this.wsConnection.call("GetPrice", request)
     }
 
     getRecentBlockHashStream = async (request: GetRecentBlockHashRequest): Promise<AsyncGenerator<GetRecentBlockHashResponse>> => {
         const subscriptionId = await this.wsConnection.subscribe("GetOrderStatusStream", request)
         function delay(ms: number) {
-            return new Promise( resolve => setTimeout(resolve, ms) );
+            return new Promise((resolve) => setTimeout(resolve, ms))
         }
 
-        await delay(2000);
+        await delay(2000)
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
     getQuotesStream = async (request: GetQuotesStreamRequest): Promise<AsyncGenerator<GetQuotesStreamResponse>> => {
         const subscriptionId = await this.wsConnection.subscribe("GetOrderStatusStream", request)
         function delay(ms: number) {
-            return new Promise( resolve => setTimeout(resolve, ms) );
+            return new Promise((resolve) => setTimeout(resolve, ms))
         }
 
-        await delay(2000);
+        await delay(2000)
         return this.wsConnection.subscribeToNotifications(subscriptionId)
-
     }
 
-    getPoolReservesStream = async(request: GetPoolReservesStreamRequest): Promise<AsyncGenerator<GetPoolReservesStreamResponse>> => {
+    getPoolReservesStream = async (request: GetPoolReservesStreamRequest): Promise<AsyncGenerator<GetPoolReservesStreamResponse>> => {
         const subscriptionId = await this.wsConnection.subscribe("GetOrderStatusStream", request)
         function delay(ms: number) {
-            return new Promise( resolve => setTimeout(resolve, ms) );
+            return new Promise((resolve) => setTimeout(resolve, ms))
         }
 
-        await delay(2000);
+        await delay(2000)
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
-
 
     private wsSocketRequest<TData>(method: string, request: unknown): Promise<TData> {
         return new Promise((resolve, reject) => {
@@ -249,6 +247,4 @@ export class WsProvider extends BaseProvider {
             ws.call(method, request)
         })
     }
-
-
 }

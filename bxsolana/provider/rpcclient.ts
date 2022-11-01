@@ -1,5 +1,6 @@
 import config from "../../utils/config.js"
 import WebSocket from "ws"
+import {AsyncBlockingQueue} from "./blockingqueue.js"
 
 type Resolver = (result: any) => void
 type SubscriptionResolver = {
@@ -15,9 +16,11 @@ export class RpcWsConnection {
     private requestId = 1
     private requestMap: Map<number, Resolver> = new Map()
     private subscriptionMap: Map<string, SubscriptionResolver> = new Map()
+    queue: AsyncBlockingQueue<any> = new AsyncBlockingQueue<any>()
 
     constructor(address: string) {
         this.address = address
+
     }
 
     async connect() {
@@ -27,7 +30,7 @@ export class RpcWsConnection {
         })
 
         let connectResolver: (val: undefined) => void
-        const connected = new Promise<undefined>(resolve => {
+        const connected = new Promise<undefined>((resolve) => {
             connectResolver = resolve
         })
 
@@ -45,14 +48,13 @@ export class RpcWsConnection {
                 if (subscriptionResolver) {
                     subscriptionResolver.update(result)
                 }
-            } else {
+            } else if (!method) {
                 const resolver = this.requestMap.get(id)
                 if (resolver) {
                     resolver(result)
                     this.requestMap.delete(id)
                 }
             }
-
             // {"id":1,"result":"c3e01025-a476-4753-a043-d0b61274f76a","jsonrpc":"2.0"}
             // {"method":"subscribe","params":{"subscription":"2baa5fae-c307-43f8-a3ec-cdc00020c5fa","result":{"slot":"157774868","orderbook":{"market":"SOL/USDC","marketAddress":"9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT","bids":[{"price":30.759,"size":953.3},{"price":30.783,"size":291.8},{"price":30.792,"size":84.5},{"price":30.798000000000002,"size":757.4},{"price":30.8,"size":993.5},{"price":30.801,"size":675},{"price":30.829,"size":42.2},{"price":30.848,"size":21.1},{"price":30.857,"size":10.5},{"price":30.858,"size":225}],"asks":[{"price":30.903,"size":0.1},{"price":30.937,"size":1435.7},{"price":30.94,"size":93.3},{"price":30.947,"size":0.1},{"price":30.963,"size":339.4},{"price":30.974,"size":280.2},{"price":31.008,"size":530.2},{"price":31.019,"size":10.5},{"price":31.028,"size":21},{"price":31.042,"size":1.5}]}}},"jsonrpc":"2.0"}
         }
@@ -99,39 +101,39 @@ export class RpcWsConnection {
     async subscribe<T>(streamName: string, streamParams: T): Promise<string> {
         const subscriptionId = (await this.call("subscribe", [streamName, streamParams])) as string
 
-        const queue: unknown[] = []
+        const queue = new AsyncBlockingQueue<unknown>()
         const update = (value: unknown) => {
-            queue.push(value)
+            queue.enqueue(value)
         }
 
-        const read = (async function* () {
-            while (queue) {
-                const value = queue.pop()
+        const read = (async function* (this: any) {
+            while (!(queue.isBlocked())) {{
+                const value = queue.dequeue()
                 if (value instanceof Error) {
                     throw value
                 }
                 yield value
             }
+        }
         })()
 
-        const cancel = function (err: Error) {
-            queue.push(err)
+        const cancel = function (this: any, err: Error) {
+            this.queue.enqueue(err)
         }
 
         this.subscriptionMap.set(subscriptionId, {
             cancel,
-            update,
             read,
+            update,
         })
 
         return Promise.resolve(subscriptionId)
     }
 
     async unsubscribe(subscriptionId: string): Promise<boolean> {
-        return await this.call("unsubscribe", subscriptionId)
+        await this.call("unsubscribe", subscriptionId)
 
-        const resolver = this.subscriptionMap.delete(subscriptionId)
-        return resolver
+        return this.subscriptionMap.delete(subscriptionId)
     }
 
     async *subscribeToNotifications<T>(subscriptionID: string): AsyncGenerator<T> {
@@ -140,25 +142,12 @@ export class RpcWsConnection {
         if (!resolver) {
             throw new Error("subscription does not exist for id")
         }
+
         const read = resolver.read
 
         for await (const item of read) {
             yield item as T
         }
-
         return read
     }
 }
-
-/**
- * ws = new WsRpcConnection()
- *
- * subscription_id = await ws.subscribe("GetOrderbooksStream", {})
- * for await (notification of ws.notifications(subscription_id)) {
- *
- * }
- *subscription_id = await ws.subscribe("GetOrderbooksStream", {})
- * for await (await ws.subscribe("GetOrderbooksStream", {})) {
- *
- * }
- */
