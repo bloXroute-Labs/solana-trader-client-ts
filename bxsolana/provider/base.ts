@@ -268,7 +268,6 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-
     postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
         throw new Error("Not implemented")
     }

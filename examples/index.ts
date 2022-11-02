@@ -75,11 +75,11 @@ async function ws() {
     await doRequests(provider)
     console.info(" ----  WS Streams  ----")
     await doStreams(provider)
-    // console.info(" ----  WS Cancel All  ----")
-    // await callCancelAll(provider)
-    // console.info(" ----  WS Lifecycle  ----")
-    // await doLifecycle(provider)
-    // console.info(" ")
+    console.info(" ----  WS Cancel All  ----")
+    await callCancelAll(provider)
+    console.info(" ----  WS Lifecycle  ----")
+    await doLifecycle(provider)
+    console.info(" ")
 }
 
 async function doRequests(provider: BaseProvider) {
@@ -87,50 +87,50 @@ async function doRequests(provider: BaseProvider) {
     console.info(" ")
     console.info(" ")
 
-    // await callGetMarkets(provider)
-    //
-    // console.info(" ")
-    // console.info(" ")
-    //
-    // await callGetOpenOrders(provider)
-    // console.info(" ")
-    // console.info(" ")
-    //
-    // await callGetUnsettled(provider)
-    // console.info(" ")
-    // console.info(" ")
-    //
-    // await callGetAccountBalance(provider)
-    // console.info(" ")
-    // console.info(" ")
-    //
-    // await callGetTrades(provider)
-    // console.info(" ")
-    // console.info(" ")
-    //
-    // await callGetTickers(provider)
-    // console.info(" ")
-    // console.info(" ")
-    //
-    // await callGetServerTime(provider)
-    // console.info(" ")
-    // console.info(" ")
-    //
-    // await callSubmitOrder(provider)
-    // console.info(" ")
-    // console.info(" ")
-    //
-    // await delay(60000)
-    //
-    // await callSubmitCancelByClientOrderID(provider)
-    // console.info(" ")
-    // console.info(" ")
-    //
-    // await delay(60000)
-    //
-    // await callSettleFunds(provider)
-    // console.info(" ")
-    // console.info(" ")
+    await callGetMarkets(provider)
+
+    console.info(" ")
+    console.info(" ")
+
+    await callGetOpenOrders(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetUnsettled(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetAccountBalance(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetTrades(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetTickers(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetServerTime(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callSubmitOrder(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await delay(60000)
+
+    await callSubmitCancelByClientOrderID(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await delay(60000)
+
+    await callSettleFunds(provider)
+    console.info(" ")
+    console.info(" ")
 }
 
 async function doStreams(provider: BaseProvider) {
@@ -141,10 +141,13 @@ async function doStreams(provider: BaseProvider) {
     await callGetTickersStream(provider)
     console.info(" ")
     console.info(" ")
-    //
-    // await callGetTradesStream(provider)
-    // console.info(" ")
-    // console.info(" ")
+
+    await callGetTradesStream(provider)
+    console.info(" ")
+    console.info(" ")
+
+    console.info("cancelling streams")
+    await cancelStreams(provider)
 }
 
 async function doLifecycle(provider: BaseProvider) {
@@ -369,6 +372,14 @@ async function callGetServerTime(provider: BaseProvider) {
     }
 }
 
+async function cancelStreams(provider: BaseProvider) {
+    let closed: boolean
+
+    closed = await provider.cancelGetTradesStream()
+    closed = await provider.cancelGetOrderbooksStream()
+    closed = await provider.cancelGetTickersStream()
+}
+
 //streaming requests
 async function callGetOrderbookStream(provider: BaseProvider) {
     try {
@@ -379,20 +390,12 @@ async function callGetOrderbookStream(provider: BaseProvider) {
         for await (const ob of req) {
             console.info(ob)
             count++
-            if (count == 50) {
-                break
-            }
-        }
-        console.info(" ")
-        console.info(" ")
-
-        for await (const ob of req) {
-            console.info(ob)
-            count++
             if (count == 5) {
                 break
             }
         }
+        console.info(" ")
+        console.info(" ")
 
         console.info("Subscribing for orderbook updates of SOLUSDC market")
         req = await provider.getOrderbooksStream({ markets: ["SOL-USDC"], limit: 5 })
@@ -437,7 +440,7 @@ async function callGetTradesStream(provider: BaseProvider) {
         for await (const tr of req) {
             console.info(tr)
             count++
-            if (count == 5) {
+            if (count == 1) {
                 break
             }
         }
