@@ -158,6 +158,18 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
+    cancelGetTradesStream = async (): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetTickersStream = async (): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetOrderbooksStream = async (): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
     async submitOrder(request: PostOrderRequest, skipPreFlight = false): Promise<SubmitTransactionResponse> {
         const res = await this.postOrder(request)
 
@@ -224,6 +236,10 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
+    cancelGetPoolReservesStream = async (): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
     getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
         throw new Error("Not implemented")
     }
@@ -236,6 +252,10 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
+    cancelGetQuotesStream = async (): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
     getRecentBlockHash(request: GetRecentBlockHashRequest): Promise<GetRecentBlockHashResponse> {
         throw new Error("Not implemented")
     }
@@ -243,6 +263,11 @@ export abstract class BaseProvider implements Api {
     getRecentBlockHashStream(request: GetRecentBlockHashRequest): Promise<AsyncGenerator<GetRecentBlockHashResponse>> {
         throw new Error("Not implemented")
     }
+
+    cancelGetRecentBlockHashStream = async (): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
 
     postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
         throw new Error("Not implemented")

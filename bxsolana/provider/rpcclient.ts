@@ -1,6 +1,6 @@
 import config from "../../utils/config.js"
 import WebSocket from "ws"
-import {AsyncBlockingQueue} from "./blockingqueue.js"
+import { AsyncBlockingQueue } from "../../utils/blockingqueue.js"
 
 type Resolver = (result: any) => void
 type SubscriptionResolver = {
@@ -20,7 +20,6 @@ export class RpcWsConnection {
 
     constructor(address: string) {
         this.address = address
-
     }
 
     async connect() {
@@ -107,14 +106,15 @@ export class RpcWsConnection {
         }
 
         const read = (async function* (this: any) {
-            while (!(queue.isBlocked())) {{
-                const value = queue.dequeue()
-                if (value instanceof Error) {
-                    throw value
+            while (!queue.isBlocked()) {
+                {
+                    const value = queue.dequeue()
+                    if (value instanceof Error) {
+                        throw value
+                    }
+                    yield value
                 }
-                yield value
             }
-        }
         })()
 
         const cancel = function (this: any, err: Error) {
