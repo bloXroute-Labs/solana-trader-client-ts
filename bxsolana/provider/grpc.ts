@@ -1,4 +1,4 @@
-import { LOCAL_API_GRPC_HOST, LOCAL_API_GRPC_PORT, MAINNET_API_GRPC_HOST, MAINNET_API_GRPC_PORT } from "../../utils/constants.js"
+import {MAINNET_API_GRPC_HOST, MAINNET_API_GRPC_PORT } from "../../utils/constants.js"
 import * as grpc from "@grpc/grpc-js"
 import { CreateGrpcClientImplConfig, createGrpcClientImpl } from "@pbkit/grpc-client"
 import {
@@ -61,7 +61,7 @@ export class GrpcProvider extends BaseProvider {
     private client: Service
     private grpcClient: Client
 
-    constructor(address = `${LOCAL_API_GRPC_HOST}:${LOCAL_API_GRPC_PORT}`) {
+    constructor(address = `${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`) {
         super()
         const metaCallback = (options: CallMetadataOptions, cb: (err: Error | null, metadata?: grpc.Metadata) => void) => {
             const meta = new grpc.Metadata()
@@ -195,6 +195,4 @@ export class GrpcProvider extends BaseProvider {
     cancelGetTradesStream = async (): Promise<boolean> => {
         throw new Error("Not implemented")
     }
-
-
 }
