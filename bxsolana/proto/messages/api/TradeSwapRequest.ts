@@ -28,7 +28,7 @@ import {
 export declare namespace $.api {
   export type TradeSwapRequest = {
     project: Project;
-    owner: string;
+    ownerAddress: string;
     inToken: string;
     outToken: string;
     inAmount: number;
@@ -40,7 +40,7 @@ export type Type = $.api.TradeSwapRequest;
 export function getDefaultValue(): $.api.TradeSwapRequest {
   return {
     project: "P_UNKNOWN",
-    owner: "",
+    ownerAddress: "",
     inToken: "",
     outToken: "",
     inAmount: 0,
@@ -58,7 +58,7 @@ export function createValue(partialValue: Partial<$.api.TradeSwapRequest>): $.ap
 export function encodeJson(value: $.api.TradeSwapRequest): unknown {
   const result: any = {};
   if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
-  if (value.owner !== undefined) result.owner = tsValueToJsonValueFns.string(value.owner);
+  if (value.ownerAddress !== undefined) result.ownerAddress = tsValueToJsonValueFns.string(value.ownerAddress);
   if (value.inToken !== undefined) result.inToken = tsValueToJsonValueFns.string(value.inToken);
   if (value.outToken !== undefined) result.outToken = tsValueToJsonValueFns.string(value.outToken);
   if (value.inAmount !== undefined) result.inAmount = tsValueToJsonValueFns.double(value.inAmount);
@@ -69,7 +69,7 @@ export function encodeJson(value: $.api.TradeSwapRequest): unknown {
 export function decodeJson(value: any): $.api.TradeSwapRequest {
   const result = getDefaultValue();
   if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
-  if (value.owner !== undefined) result.owner = jsonValueToTsValueFns.string(value.owner);
+  if (value.ownerAddress !== undefined) result.ownerAddress = jsonValueToTsValueFns.string(value.ownerAddress);
   if (value.inToken !== undefined) result.inToken = jsonValueToTsValueFns.string(value.inToken);
   if (value.outToken !== undefined) result.outToken = jsonValueToTsValueFns.string(value.outToken);
   if (value.inAmount !== undefined) result.inAmount = jsonValueToTsValueFns.double(value.inAmount);
@@ -85,8 +85,8 @@ export function encodeBinary(value: $.api.TradeSwapRequest): Uint8Array {
       [1, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
     );
   }
-  if (value.owner !== undefined) {
-    const tsValue = value.owner;
+  if (value.ownerAddress !== undefined) {
+    const tsValue = value.ownerAddress;
     result.push(
       [2, tsValueToWireValueFns.string(tsValue)],
     );
@@ -134,7 +134,7 @@ export function decodeBinary(binary: Uint8Array): $.api.TradeSwapRequest {
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
-    result.owner = value;
+    result.ownerAddress = value;
   }
   field: {
     const wireValue = wireFields.get(3);

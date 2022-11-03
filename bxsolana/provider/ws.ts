@@ -50,6 +50,8 @@ import {
     PostSubmitResponse,
     TradeSwapRequest,
     TradeSwapResponse,
+    GetSwapsStreamRequest,
+    GetSwapsStreamResponse,
 } from "../proto/messages/api/index.js"
 import { BaseProvider } from "./base.js"
 import config from "../../utils/config.js"
@@ -177,6 +179,10 @@ export class WsProvider extends BaseProvider {
 
     getPoolReservesStream(request: GetPoolReservesStreamRequest): Promise<AsyncGenerator<GetPoolReservesStreamResponse>> {
         return this.wsSocketStreamCall("GetPoolReservesStream", request)
+    }
+
+    getSwapsStream(request: GetSwapsStreamRequest): Promise<AsyncGenerator<GetSwapsStreamResponse>> {
+        return this.wsSocketStreamCall("GetSwapsStream", request)
     }
 
     // Private

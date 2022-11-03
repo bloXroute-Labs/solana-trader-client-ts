@@ -54,6 +54,13 @@ import {
     TradeSwapRequest,
     TradeSwapResponse,
     GetPoolReservesStreamRequest,
+    GetSwapsStreamRequest,
+    GetSwapsStreamResponse,
+    GetPricesStreamRequest,
+    RouteTradeSwapRequest,
+    GetPricesStreamResponse,
+    PostSubmitBatchRequest,
+    PostSubmitBatchResponse,
 } from "../proto/messages/api/index.js"
 import { Api } from "../proto/services/api/index.js"
 import { signTx, SubmitTransactionResponse } from "../../utils/transaction.js"
@@ -245,6 +252,22 @@ export abstract class BaseProvider implements Api {
     }
 
     postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
+        throw new Error("Not implemented")
+    }
+
+    getSwapsStream(request: GetSwapsStreamRequest): Promise<AsyncGenerator<GetSwapsStreamResponse>> {
+        throw new Error("Not implemented")
+    }
+
+    getPricesStream(request: GetPricesStreamRequest): Promise<AsyncGenerator<GetPricesStreamResponse>> {
+        throw new Error("Not implemented")
+    }
+
+    postRouteTradeSwap(request: RouteTradeSwapRequest): Promise<TradeSwapResponse> {
+        throw new Error("Not implemented")
+    }
+
+    postSubmitBatch(request: PostSubmitBatchRequest): Promise<PostSubmitBatchResponse> {
         throw new Error("Not implemented")
     }
 }

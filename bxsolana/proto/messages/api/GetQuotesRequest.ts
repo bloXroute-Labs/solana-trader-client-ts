@@ -32,6 +32,7 @@ export declare namespace $.api {
     outToken: string;
     inAmount: number;
     slippage: number;
+    limit: number;
     projects: Project[];
   }
 }
@@ -43,6 +44,7 @@ export function getDefaultValue(): $.api.GetQuotesRequest {
     outToken: "",
     inAmount: 0,
     slippage: 0,
+    limit: 0,
     projects: [],
   };
 }
@@ -60,6 +62,7 @@ export function encodeJson(value: $.api.GetQuotesRequest): unknown {
   if (value.outToken !== undefined) result.outToken = tsValueToJsonValueFns.string(value.outToken);
   if (value.inAmount !== undefined) result.inAmount = tsValueToJsonValueFns.double(value.inAmount);
   if (value.slippage !== undefined) result.slippage = tsValueToJsonValueFns.double(value.slippage);
+  if (value.limit !== undefined) result.limit = tsValueToJsonValueFns.int32(value.limit);
   result.projects = value.projects.map(value => tsValueToJsonValueFns.enum(value));
   return result;
 }
@@ -70,6 +73,7 @@ export function decodeJson(value: any): $.api.GetQuotesRequest {
   if (value.outToken !== undefined) result.outToken = jsonValueToTsValueFns.string(value.outToken);
   if (value.inAmount !== undefined) result.inAmount = jsonValueToTsValueFns.double(value.inAmount);
   if (value.slippage !== undefined) result.slippage = jsonValueToTsValueFns.double(value.slippage);
+  if (value.limit !== undefined) result.limit = jsonValueToTsValueFns.int32(value.limit);
   result.projects = value.projects?.map((value: any) => jsonValueToTsValueFns.enum(value) as Project) ?? [];
   return result;
 }
@@ -100,9 +104,15 @@ export function encodeBinary(value: $.api.GetQuotesRequest): Uint8Array {
       [4, tsValueToWireValueFns.double(tsValue)],
     );
   }
+  if (value.limit !== undefined) {
+    const tsValue = value.limit;
+    result.push(
+      [5, tsValueToWireValueFns.int32(tsValue)],
+    );
+  }
   for (const tsValue of value.projects) {
     result.push(
-      [5, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
+      [6, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
     );
   }
   return serialize(result);
@@ -140,8 +150,15 @@ export function decodeBinary(binary: Uint8Array): $.api.GetQuotesRequest {
     if (value === undefined) break field;
     result.slippage = value;
   }
+  field: {
+    const wireValue = wireFields.get(5);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.int32(wireValue);
+    if (value === undefined) break field;
+    result.limit = value;
+  }
   collection: {
-    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 5).map(([, wireValue]) => wireValue);
+    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 6).map(([, wireValue]) => wireValue);
     const value = Array.from(unpackFns.int32(wireValues)).map(num => num2name[num as keyof typeof num2name]);
     if (!value.length) break collection;
     result.projects = value as any;
