@@ -132,7 +132,7 @@ export class HttpProvider extends BaseProvider {
     }
 
     getRecentBlockHash(request: GetRecentBlockHashRequest): Promise<GetRecentBlockHashResponse> {
-        const path = `${this.baseUrl}/api/v1/system/blockhash`
+        const path = `${this.baseUrl}/system/blockhash`
         return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
             return resp.json() as unknown as GetRecentBlockHashResponse
         })
