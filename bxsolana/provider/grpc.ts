@@ -1,4 +1,4 @@
-import {MAINNET_API_GRPC_HOST, MAINNET_API_GRPC_PORT } from "../../utils/constants.js"
+import { MAINNET_API_GRPC_HOST, MAINNET_API_GRPC_PORT } from "../../utils/constants.js"
 import * as grpc from "@grpc/grpc-js"
 import { CreateGrpcClientImplConfig, createGrpcClientImpl } from "@pbkit/grpc-client"
 import {
@@ -193,6 +193,26 @@ export class GrpcProvider extends BaseProvider {
     }
 
     cancelGetTradesStream = async (): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetQuotesStream = async (): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetTickersStream = async (): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetRecentBlockHashStream = async (): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetOrderbooksStream = async (): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetPoolReservesStream = async (): Promise<boolean> => {
         throw new Error("Not implemented")
     }
 }
