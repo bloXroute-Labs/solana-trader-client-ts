@@ -39,8 +39,8 @@ function getRandom() {
 }
 
 async function run() {
-    // await http()
-    // await grpc()
+    await http()
+    await grpc()
     await ws()
 }
 
