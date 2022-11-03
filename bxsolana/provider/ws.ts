@@ -1,5 +1,4 @@
 import { LOCAL_API_WS } from "../../utils/constants.js"
-import { websocketData } from "../../utils/websocket-iterator.js"
 import WebSocket, { Event } from "ws"
 
 import {
@@ -54,7 +53,7 @@ import {
 } from "../proto/messages/api/index.js"
 import { BaseProvider } from "./base.js"
 import config from "../../utils/config.js"
-import { RpcWsConnection } from "./rpcclient.js"
+import { RpcWsConnection } from "../ws/rpcclient.js"
 
 type Resolver = (result: any) => void
 export class WsProvider extends BaseProvider {
@@ -77,7 +76,7 @@ export class WsProvider extends BaseProvider {
 
     close = () => {
         this.isClosed = true
-        this.socket.close()
+        this.wsConnection.close()
     }
 
     async getOrderbook(request: GetOrderbookRequest): Promise<GetOrderbookResponse> {

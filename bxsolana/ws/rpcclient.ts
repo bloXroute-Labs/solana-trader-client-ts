@@ -52,10 +52,11 @@ export class RpcWsConnection {
                 if (resolver) {
                     resolver(result)
                     this.requestMap.delete(id)
+                } else {
+                    this.close()
+                    throw new Error("received an non streaming message on websocket, closing socket")
                 }
             }
-            // {"id":1,"result":"c3e01025-a476-4753-a043-d0b61274f76a","jsonrpc":"2.0"}
-            // {"method":"subscribe","params":{"subscription":"2baa5fae-c307-43f8-a3ec-cdc00020c5fa","result":{"slot":"157774868","orderbook":{"market":"SOL/USDC","marketAddress":"9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT","bids":[{"price":30.759,"size":953.3},{"price":30.783,"size":291.8},{"price":30.792,"size":84.5},{"price":30.798000000000002,"size":757.4},{"price":30.8,"size":993.5},{"price":30.801,"size":675},{"price":30.829,"size":42.2},{"price":30.848,"size":21.1},{"price":30.857,"size":10.5},{"price":30.858,"size":225}],"asks":[{"price":30.903,"size":0.1},{"price":30.937,"size":1435.7},{"price":30.94,"size":93.3},{"price":30.947,"size":0.1},{"price":30.963,"size":339.4},{"price":30.974,"size":280.2},{"price":31.008,"size":530.2},{"price":31.019,"size":10.5},{"price":31.028,"size":21},{"price":31.042,"size":1.5}]}}},"jsonrpc":"2.0"}
         }
 
         socket.onerror = () => {
@@ -65,14 +66,13 @@ export class RpcWsConnection {
         await connected
     }
 
-    // close() {
-    //
-    // }
+    close() {
+        this.socket?.close()
+    }
 
     async call<T, R>(methodName: string, methodParams: T): Promise<R> {
         if (!this.socket) {
-            // TODO: figure something out
-            return Promise.reject()
+            return Promise.reject(new Error("socket is not connected"))
         }
 
         const { id, req } = this._formWSRequest(methodName, methodParams)
@@ -148,6 +148,5 @@ export class RpcWsConnection {
         for await (const item of read) {
             yield item as T
         }
-        return read
     }
 }
