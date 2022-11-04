@@ -6,7 +6,7 @@ import { HttpProvider } from "../bxsolana/provider/http.js"
 import { WsProvider } from "../bxsolana/provider/ws.js"
 import { PostOrderRequest, GetOpenOrdersRequest, GetOpenOrdersResponse, PostCancelAllRequest } from "../bxsolana/proto/messages/api/index.js"
 import config from "../utils/config.js"
-import { AddMemo, AddMemoToSerializedTxn } from "../utils/memo.js"
+import { addMemo, addMemoToSerializedTxn } from "../utils/memo.js"
 import { Keypair } from "@solana/web3.js"
 const marketAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"
 const ownerAddress = config.WalletPublicKey
@@ -309,7 +309,7 @@ async function submitTxWithMemo(provider: BaseProvider) {
         const recentBlockhash = await provider.getRecentBlockHash({})
         console.info(recentBlockhash.blockHash)
         const keypair = Keypair.fromSecretKey(config.WalletSecretKey)
-        const encodedTxn = AddMemo([],"new memo by dev", recentBlockhash.blockHash, keypair.publicKey, keypair)
+        const encodedTxn = addMemo([],"new memo by dev", recentBlockhash.blockHash, keypair.publicKey, keypair)
         console.info("Submitting tx with one memo")
         let response = await provider.postSubmit({
             transaction: encodedTxn,
@@ -317,7 +317,7 @@ async function submitTxWithMemo(provider: BaseProvider) {
         })
         console.info(response.signature)
 
-        const encodedTxn2 = AddMemoToSerializedTxn(encodedTxn, "new memo by dev2", keypair.publicKey, keypair)
+        const encodedTxn2 = addMemoToSerializedTxn(encodedTxn, "new memo by dev2", keypair.publicKey, keypair)
         console.info("Submitting tx with two memos")
         response = await provider.postSubmit({
             transaction: encodedTxn2,

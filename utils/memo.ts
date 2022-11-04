@@ -1,24 +1,24 @@
 import { Keypair, PublicKey, Transaction, TransactionInstruction } from "@solana/web3.js"
 
-const BxMemoMarkerMsg = "Powered by bloXroute Trader Api"
-const TraderAPIMemoProgram = "HQ2UUt18uJqKaQFJhgV9zaTdQxUZjNrsKFgoEDquBkcx"
+const BX_MEMO_MARKER_MSG = "Powered by bloXroute Trader Api"
+const TRADER_API_MEMO_PROGRAM = "HQ2UUt18uJqKaQFJhgV9zaTdQxUZjNrsKFgoEDquBkcx"
 
-// CreateTraderAPIMemoInstruction generates a transaction instruction that places a memo in the transaction log
+// createTraderAPIMemoInstruction generates a transaction instruction that places a memo in the transaction log
 // Having a memo instruction with signals Trader-API usage is required
-export function CreateTraderAPIMemoInstruction(msg: string): TransactionInstruction {
+export function createTraderAPIMemoInstruction(msg: string): TransactionInstruction {
     if (msg == "") {
-        msg = BxMemoMarkerMsg
+        msg = BX_MEMO_MARKER_MSG
     }
     return new TransactionInstruction({
         keys: [],
-        programId: new PublicKey(TraderAPIMemoProgram),
+        programId: new PublicKey(TRADER_API_MEMO_PROGRAM),
         data: Buffer.from(msg),
     })
 }
 
-export function AddMemo(instructions: TransactionInstruction[], memoContent: string,
+export function addMemo(instructions: TransactionInstruction[], memoContent: string,
     blockhash: string | undefined, owner: PublicKey, signer: Keypair): string {
-    const memo = CreateTraderAPIMemoInstruction(memoContent)
+    const memo = createTraderAPIMemoInstruction(memoContent)
 
     instructions.push(memo)
 
@@ -29,9 +29,9 @@ export function AddMemo(instructions: TransactionInstruction[], memoContent: str
     return Buffer.from(txnBytes).toString('base64')
 }
 
-// AddMemoToSerializedTxn adds memo instruction to a serialized transaction, it's primarily used if the user
+// addMemoToSerializedTxn adds memo instruction to a serialized transaction, it's primarily used if the user
 // doesn't want to interact with Trader-API directly
-export function AddMemoToSerializedTxn(txBase64: string, memoContent: string, owner: PublicKey, signer: Keypair): string {
+export function addMemoToSerializedTxn(txBase64: string, memoContent: string, owner: PublicKey, signer: Keypair): string {
     const solanaTx = Transaction.from(Buffer.from(txBase64, 'base64'))
 
     const instructions = []
@@ -44,7 +44,7 @@ export function AddMemoToSerializedTxn(txBase64: string, memoContent: string, ow
         }))
     }
 
-    return AddMemo(instructions, memoContent, solanaTx.recentBlockhash, owner, signer)
+    return addMemo(instructions, memoContent, solanaTx.recentBlockhash, owner, signer)
 }
 
 export function buildFullySignedTxn(recentBlockHash: string | undefined, owner: PublicKey, instructions: TransactionInstruction[],  signer: Keypair): Uint8Array {
