@@ -110,7 +110,7 @@ export class HttpProvider extends BaseProvider {
     }
 
     getPools(request: GetPoolsRequest): Promise<GetPoolsResponse> {
-        let path = `${this.baseUrl}/api/v1/market/pools`
+        let path = `${this.baseUrl}/market/pools`
         const args = request.projects.map((v) => `projects=${v}`).join("&")
         if (args != "") {
             path += `?${args}`
@@ -121,7 +121,7 @@ export class HttpProvider extends BaseProvider {
     }
 
     getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
-        let path = `${this.baseUrl}/api/v1/market/price`
+        let path = `${this.baseUrl}/market/price`
         const args = request.tokens.map((v) => `tokens=${v}`).join("&")
         if (args != "") {
             path += `?${args}`
@@ -132,7 +132,7 @@ export class HttpProvider extends BaseProvider {
     }
 
     getRecentBlockHash(request: GetRecentBlockHashRequest): Promise<GetRecentBlockHashResponse> {
-        const path = `${this.baseUrl}/api/v1/system/blockhash`
+        const path = `${this.baseUrl}/system/blockhash`
         return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
             return resp.json() as unknown as GetRecentBlockHashResponse
         })

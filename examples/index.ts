@@ -6,6 +6,8 @@ import { HttpProvider } from "../bxsolana/provider/http.js"
 import { WsProvider } from "../bxsolana/provider/ws.js"
 import { PostOrderRequest, GetOpenOrdersRequest, GetOpenOrdersResponse, PostCancelAllRequest } from "../bxsolana/proto/messages/api/index.js"
 import config from "../utils/config.js"
+import { addMemo, addMemoToSerializedTxn } from "../utils/memo.js"
+import { Keypair } from "@solana/web3.js"
 const marketAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"
 const ownerAddress = config.WalletPublicKey
 const payerAddress = config.WalletPublicKey
@@ -128,6 +130,10 @@ async function doRequests(provider: BaseProvider) {
     await delay(60000)
 
     await callSettleFunds(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await submitTxWithMemo(provider)
     console.info(" ")
     console.info(" ")
 }
@@ -292,6 +298,32 @@ async function callGetOrderbook(provider: BaseProvider) {
         console.info("Retrieving orderbook for SOL-USDC market")
         req = await provider.getOrderbook({ market: "SOL-USDC", limit: 5 })
         console.info(req)
+    } catch (error) {
+        console.error("Failed to retrieve the orderbook for market SOL/USDC", error)
+    }
+}
+
+async function submitTxWithMemo(provider: BaseProvider) {
+    try {
+        console.info("Retrieving recent blockHash")
+        const recentBlockhash = await provider.getRecentBlockHash({})
+        console.info(recentBlockhash.blockHash)
+        const keypair = Keypair.fromSecretKey(config.WalletSecretKey)
+        const encodedTxn = addMemo([],"new memo by dev", recentBlockhash.blockHash, keypair.publicKey, keypair)
+        console.info("Submitting tx with one memo")
+        let response = await provider.postSubmit({
+            transaction: encodedTxn,
+            skipPreFlight: true,
+        })
+        console.info(response.signature)
+
+        const encodedTxn2 = addMemoToSerializedTxn(encodedTxn, "new memo by dev2", keypair.publicKey, keypair)
+        console.info("Submitting tx with two memos")
+        response = await provider.postSubmit({
+            transaction: encodedTxn2,
+            skipPreFlight: true,
+        })
+        console.info(response.signature)
     } catch (error) {
         console.error("Failed to retrieve the orderbook for market SOL/USDC", error)
     }
