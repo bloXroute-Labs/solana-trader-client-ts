@@ -89,3 +89,12 @@ Regenerate protobuf definitions:
 $ npm run proto
 ```
 
+## How to Publish a new NPM release
+We use `np` to publish new releases to npm. To make a new release, in the project directory use:
+
+```
+$ np --no-2fa
+```
+
+Follow the menu items to select a version for the release (major, minor, patch). 
+
