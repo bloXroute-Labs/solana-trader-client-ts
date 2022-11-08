@@ -8,6 +8,7 @@
     "example": "example"
   },
   "scripts": {
+    "test": "echo \"No test specified\"",
     "start": "ts-node ./examples/index.ts",
     "lint": "eslint --fix .",
     "format": "prettier --config .prettierrc './**/*.ts' --write",
