@@ -7,6 +7,9 @@
   "directories": {
     "example": "example"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "test": "echo \"No test specified\"",
     "release": "np --no-2fa",
