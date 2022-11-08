@@ -9,6 +9,7 @@
   },
   "scripts": {
     "test": "echo \"No test specified\"",
+    "release": "np --no-2fa",
     "start": "ts-node ./examples/index.ts",
     "lint": "eslint --fix .",
     "format": "prettier --config .prettierrc './**/*.ts' --write",
