@@ -1,4 +1,4 @@
-import { LOCAL_API_WS } from "../../utils/constants.js"
+import {LOCAL_API_WS, MAINNET_API_WS} from "../../utils/constants.js"
 import WebSocket, { Event } from "ws"
 
 import {
@@ -64,7 +64,7 @@ export class WsProvider extends BaseProvider {
     private isClosed = false
     private streamMap: Map<string, string> = new Map()
 
-    constructor(address: string = LOCAL_API_WS) {
+    constructor(address: string = MAINNET_API_WS) {
         super()
         this.wsConnection = new RpcWsConnection(address)
         this.address = address
@@ -115,12 +115,6 @@ export class WsProvider extends BaseProvider {
     getOrderbooksStream = async (request: GetOrderbooksRequest): Promise<AsyncGenerator<GetOrderbooksStreamResponse>> => {
         const subscriptionId = await this.wsConnection.subscribe("GetOrderbooksStream", request)
 
-        function delay(ms: number) {
-            return new Promise((resolve) => setTimeout(resolve, ms))
-        }
-
-        await delay(10000)
-
         this.streamMap.set("GetOrderbooksStream", subscriptionId)
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
@@ -137,11 +131,6 @@ export class WsProvider extends BaseProvider {
 
     getTickersStream = async (request: GetTickersRequest): Promise<AsyncGenerator<GetTickersStreamResponse>> => {
         const subscriptionId = await this.wsConnection.subscribe("GetTickersStream", request)
-        function delay(ms: number) {
-            return new Promise((resolve) => setTimeout(resolve, ms))
-        }
-
-        await delay(10000)
 
         this.streamMap.set("GetTickersStream", subscriptionId)
         return this.wsConnection.subscribeToNotifications(subscriptionId)
@@ -159,11 +148,6 @@ export class WsProvider extends BaseProvider {
 
     getTradesStream = async (request: GetTradesRequest): Promise<AsyncGenerator<GetTradesStreamResponse>> => {
         const subscriptionId = await this.wsConnection.subscribe("GetTradesStream", request)
-        function delay(ms: number) {
-            return new Promise((resolve) => setTimeout(resolve, ms))
-        }
-
-        await delay(10000)
 
         this.streamMap.set("GetTradesStream", subscriptionId)
         return this.wsConnection.subscribeToNotifications(subscriptionId)
@@ -181,11 +165,6 @@ export class WsProvider extends BaseProvider {
 
     getOrderStatusStream = async (request: GetOrderStatusStreamRequest): Promise<AsyncGenerator<GetOrderStatusStreamResponse>> => {
         const subscriptionId = await this.wsConnection.subscribe("GetOrderStatusStream", request)
-        function delay(ms: number) {
-            return new Promise((resolve) => setTimeout(resolve, ms))
-        }
-
-        await delay(2000)
 
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
@@ -241,16 +220,12 @@ export class WsProvider extends BaseProvider {
 
     getRecentBlockHashStream = async (request: GetRecentBlockHashRequest): Promise<AsyncGenerator<GetRecentBlockHashResponse>> => {
         const subscriptionId = await this.wsConnection.subscribe("GetRecentBlockHashStream", request)
-        function delay(ms: number) {
-            return new Promise((resolve) => setTimeout(resolve, ms))
-        }
 
-        await delay(2000)
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
     cancelGetRecentBlockHashStream = async (): Promise<boolean> => {
-        const subID = this.streamMap.get("GetOrderbooksStream")
+        const subID = this.streamMap.get("GetRecentBlockHashStream")
 
         if (subID) {
             return this.wsConnection.unsubscribe(subID)
@@ -261,16 +236,12 @@ export class WsProvider extends BaseProvider {
 
     getQuotesStream = async (request: GetQuotesStreamRequest): Promise<AsyncGenerator<GetQuotesStreamResponse>> => {
         const subscriptionId = await this.wsConnection.subscribe("GetQuotesStream", request)
-        function delay(ms: number) {
-            return new Promise((resolve) => setTimeout(resolve, ms))
-        }
 
-        await delay(2000)
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
     cancelGetQuotesStream = async (): Promise<boolean> => {
-        const subID = this.streamMap.get("GetOrderbooksStream")
+        const subID = this.streamMap.get("GetQuotesStream")
 
         if (subID) {
             return this.wsConnection.unsubscribe(subID)
@@ -281,16 +252,12 @@ export class WsProvider extends BaseProvider {
 
     getPoolReservesStream = async (request: GetPoolReservesStreamRequest): Promise<AsyncGenerator<GetPoolReservesStreamResponse>> => {
         const subscriptionId = await this.wsConnection.subscribe("GetPoolReservesStream", request)
-        function delay(ms: number) {
-            return new Promise((resolve) => setTimeout(resolve, ms))
-        }
 
-        await delay(2000)
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
     cancelGetPoolReservesStream = async (): Promise<boolean> => {
-        const subID = this.streamMap.get("GetOrderbooksStream")
+        const subID = this.streamMap.get("GetPoolReservesStream")
 
         if (subID) {
             return this.wsConnection.unsubscribe(subID)
