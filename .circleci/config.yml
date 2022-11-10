@@ -9,8 +9,7 @@ jobs:
     executor: bxts
     steps:
       - attach_workspace: ~/ws
-      - checkout:
-          path: solana-trader-client-ts
+      - checkout
       - run:
           name: Install dependencies
           command: |
@@ -51,7 +50,7 @@ jobs:
               cd ~/ws/solana-trader-client-ts
               API_ENV=testnet AUTH_HEADER=$AUTH_HEADER_TESTNET npm start
 workflows:
-  version: 2.1
+  version: 2
   test-branch:
     jobs:
       - init
