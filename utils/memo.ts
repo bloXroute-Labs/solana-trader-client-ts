@@ -16,8 +16,13 @@ export function createTraderAPIMemoInstruction(msg: string): TransactionInstruct
     })
 }
 
-export function addMemo(instructions: TransactionInstruction[], memoContent: string,
-    blockhash: string | undefined, owner: PublicKey, signer: Keypair): string {
+export function addMemo(
+    instructions: TransactionInstruction[],
+    memoContent: string,
+    blockhash: string | undefined,
+    owner: PublicKey,
+    signer: Keypair
+): string {
     const memo = createTraderAPIMemoInstruction(memoContent)
 
     instructions.push(memo)
@@ -26,35 +31,41 @@ export function addMemo(instructions: TransactionInstruction[], memoContent: str
     if (txnBytes.length == 0) {
         return ""
     }
-    return Buffer.from(txnBytes).toString('base64')
+    return Buffer.from(txnBytes).toString("base64")
 }
 
 // addMemoToSerializedTxn adds memo instruction to a serialized transaction, it's primarily used if the user
 // doesn't want to interact with Trader-API directly
 export function addMemoToSerializedTxn(txBase64: string, memoContent: string, owner: PublicKey, signer: Keypair): string {
-    const solanaTx = Transaction.from(Buffer.from(txBase64, 'base64'))
+    const solanaTx = Transaction.from(Buffer.from(txBase64, "base64"))
 
     const instructions = []
 
     for (const inst of solanaTx.instructions) {
-        instructions.push(new TransactionInstruction({
-            keys: inst.keys,
-            programId: inst.programId,
-            data:inst.data
-        }))
+        instructions.push(
+            new TransactionInstruction({
+                keys: inst.keys,
+                programId: inst.programId,
+                data: inst.data,
+            })
+        )
     }
 
     return addMemo(instructions, memoContent, solanaTx.recentBlockhash, owner, signer)
 }
 
-export function buildFullySignedTxn(recentBlockHash: string | undefined, owner: PublicKey, instructions: TransactionInstruction[],  signer: Keypair): Uint8Array {
-
+export function buildFullySignedTxn(
+    recentBlockHash: string | undefined,
+    owner: PublicKey,
+    instructions: TransactionInstruction[],
+    signer: Keypair
+): Uint8Array {
     const tx = new Transaction({
         recentBlockhash: recentBlockHash,
         feePayer: owner,
-    });
+    })
 
-    tx.add(...instructions);
+    tx.add(...instructions)
 
     tx.sign(signer)
 
