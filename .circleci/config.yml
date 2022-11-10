@@ -51,7 +51,7 @@ jobs:
               cd ~/ws/solana-trader-client-ts
               API_ENV=testnet AUTH_HEADER=$AUTH_HEADER_TESTNET npm start
 workflows:
-  version: 2
+  version: 2.1
   test-branch:
     jobs:
       - init
