@@ -54,7 +54,7 @@ workflows:
   version: 2.1
   test-branch:
     jobs:
-      - init
+      - init:
       - lint:
           requires:
             - init
