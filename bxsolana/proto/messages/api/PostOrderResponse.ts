@@ -1,9 +1,17 @@
 import {
+  Type as TransactionMessage,
+  encodeJson as encodeJson_1,
+  decodeJson as decodeJson_1,
+  encodeBinary as encodeBinary_1,
+  decodeBinary as decodeBinary_1,
+} from "./TransactionMessage.js";
+import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar.js";
 import {
   WireMessage,
+  WireType,
 } from "../../runtime/wire/index.js";
 import {
   default as serialize,
@@ -18,7 +26,7 @@ import {
 
 export declare namespace $.api {
   export type PostOrderResponse = {
-    transaction: string;
+    transaction?: TransactionMessage;
     openOrdersAddress: string;
   }
 }
@@ -26,7 +34,7 @@ export type Type = $.api.PostOrderResponse;
 
 export function getDefaultValue(): $.api.PostOrderResponse {
   return {
-    transaction: "",
+    transaction: undefined,
     openOrdersAddress: "",
   };
 }
@@ -40,14 +48,14 @@ export function createValue(partialValue: Partial<$.api.PostOrderResponse>): $.a
 
 export function encodeJson(value: $.api.PostOrderResponse): unknown {
   const result: any = {};
-  if (value.transaction !== undefined) result.transaction = tsValueToJsonValueFns.string(value.transaction);
+  if (value.transaction !== undefined) result.transaction = encodeJson_1(value.transaction);
   if (value.openOrdersAddress !== undefined) result.openOrdersAddress = tsValueToJsonValueFns.string(value.openOrdersAddress);
   return result;
 }
 
 export function decodeJson(value: any): $.api.PostOrderResponse {
   const result = getDefaultValue();
-  if (value.transaction !== undefined) result.transaction = jsonValueToTsValueFns.string(value.transaction);
+  if (value.transaction !== undefined) result.transaction = decodeJson_1(value.transaction);
   if (value.openOrdersAddress !== undefined) result.openOrdersAddress = jsonValueToTsValueFns.string(value.openOrdersAddress);
   return result;
 }
@@ -57,7 +65,7 @@ export function encodeBinary(value: $.api.PostOrderResponse): Uint8Array {
   if (value.transaction !== undefined) {
     const tsValue = value.transaction;
     result.push(
-      [1, tsValueToWireValueFns.string(tsValue)],
+      [1, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
     );
   }
   if (value.openOrdersAddress !== undefined) {
@@ -76,7 +84,7 @@ export function decodeBinary(binary: Uint8Array): $.api.PostOrderResponse {
   field: {
     const wireValue = wireFields.get(1);
     if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.string(wireValue);
+    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined;
     if (value === undefined) break field;
     result.transaction = value;
   }

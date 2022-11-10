@@ -1,24 +1,27 @@
 import {
-  tsValueToJsonValueFns,
+  Type as TransactionMessage,
+  encodeJson as encodeJson_1,
+  decodeJson as decodeJson_1,
+  encodeBinary as encodeBinary_1,
+  decodeBinary as decodeBinary_1,
+} from "./TransactionMessage.js";
+import {
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar.js";
 import {
   WireMessage,
+  WireType,
 } from "../../runtime/wire/index.js";
 import {
   default as serialize,
 } from "../../runtime/wire/serialize.js";
-import {
-  tsValueToWireValueFns,
-  wireValueToTsValueFns,
-} from "../../runtime/wire/scalar.js";
 import {
   default as deserialize,
 } from "../../runtime/wire/deserialize.js";
 
 export declare namespace $.api {
   export type PostCancelAllResponse = {
-    transactions: string[];
+    transactions: TransactionMessage[];
   }
 }
 export type Type = $.api.PostCancelAllResponse;
@@ -38,13 +41,13 @@ export function createValue(partialValue: Partial<$.api.PostCancelAllResponse>):
 
 export function encodeJson(value: $.api.PostCancelAllResponse): unknown {
   const result: any = {};
-  result.transactions = value.transactions.map(value => tsValueToJsonValueFns.string(value));
+  result.transactions = value.transactions.map(value => encodeJson_1(value));
   return result;
 }
 
 export function decodeJson(value: any): $.api.PostCancelAllResponse {
   const result = getDefaultValue();
-  result.transactions = value.transactions?.map((value: any) => jsonValueToTsValueFns.string(value)) ?? [];
+  result.transactions = value.transactions?.map((value: any) => decodeJson_1(value)) ?? [];
   return result;
 }
 
@@ -52,7 +55,7 @@ export function encodeBinary(value: $.api.PostCancelAllResponse): Uint8Array {
   const result: WireMessage = [];
   for (const tsValue of value.transactions) {
     result.push(
-      [1, tsValueToWireValueFns.string(tsValue)],
+      [1, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
     );
   }
   return serialize(result);
@@ -64,7 +67,7 @@ export function decodeBinary(binary: Uint8Array): $.api.PostCancelAllResponse {
   const wireFields = new Map(wireMessage);
   collection: {
     const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 1).map(([, wireValue]) => wireValue);
-    const value = wireValues.map((wireValue) => wireValueToTsValueFns.string(wireValue)).filter(x => x !== undefined);
+    const value = wireValues.map((wireValue) => wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined).filter(x => x !== undefined);
     if (!value.length) break collection;
     result.transactions = value as any;
   }
