@@ -309,7 +309,7 @@ async function submitTxWithMemo(provider: BaseProvider) {
         const recentBlockhash = await provider.getRecentBlockHash({})
         console.info(recentBlockhash.blockHash)
         const keypair = Keypair.fromSecretKey(config.WalletSecretKey)
-        const encodedTxn = addMemo([],"new memo by dev", recentBlockhash.blockHash, keypair.publicKey, keypair)
+        const encodedTxn = addMemo([], "new memo by dev", recentBlockhash.blockHash, keypair.publicKey, keypair)
         console.info("Submitting tx with one memo")
         let response = await provider.postSubmit({
             transaction: encodedTxn,
