@@ -51,7 +51,7 @@ export declare namespace $.api {
     project: Project;
     transactions: TransactionMessage[];
     outAmount: number;
-    minOutAmount: number;
+    outAmountMin: number;
     priceImpact?: PriceImpactPercent;
     fees: Fee[];
   }
@@ -63,7 +63,7 @@ export function getDefaultValue(): $.api.TradeSwapResponse {
     project: "P_UNKNOWN",
     transactions: [],
     outAmount: 0,
-    minOutAmount: 0,
+    outAmountMin: 0,
     priceImpact: undefined,
     fees: [],
   };
@@ -81,7 +81,7 @@ export function encodeJson(value: $.api.TradeSwapResponse): unknown {
   if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
   result.transactions = value.transactions.map(value => encodeJson_1(value));
   if (value.outAmount !== undefined) result.outAmount = tsValueToJsonValueFns.double(value.outAmount);
-  if (value.minOutAmount !== undefined) result.minOutAmount = tsValueToJsonValueFns.double(value.minOutAmount);
+  if (value.outAmountMin !== undefined) result.outAmountMin = tsValueToJsonValueFns.double(value.outAmountMin);
   if (value.priceImpact !== undefined) result.priceImpact = encodeJson_2(value.priceImpact);
   result.fees = value.fees.map(value => encodeJson_3(value));
   return result;
@@ -92,7 +92,7 @@ export function decodeJson(value: any): $.api.TradeSwapResponse {
   if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
   result.transactions = value.transactions?.map((value: any) => decodeJson_1(value)) ?? [];
   if (value.outAmount !== undefined) result.outAmount = jsonValueToTsValueFns.double(value.outAmount);
-  if (value.minOutAmount !== undefined) result.minOutAmount = jsonValueToTsValueFns.double(value.minOutAmount);
+  if (value.outAmountMin !== undefined) result.outAmountMin = jsonValueToTsValueFns.double(value.outAmountMin);
   if (value.priceImpact !== undefined) result.priceImpact = decodeJson_2(value.priceImpact);
   result.fees = value.fees?.map((value: any) => decodeJson_3(value)) ?? [];
   return result;
@@ -117,8 +117,8 @@ export function encodeBinary(value: $.api.TradeSwapResponse): Uint8Array {
       [3, tsValueToWireValueFns.double(tsValue)],
     );
   }
-  if (value.minOutAmount !== undefined) {
-    const tsValue = value.minOutAmount;
+  if (value.outAmountMin !== undefined) {
+    const tsValue = value.outAmountMin;
     result.push(
       [4, tsValueToWireValueFns.double(tsValue)],
     );
@@ -166,7 +166,7 @@ export function decodeBinary(binary: Uint8Array): $.api.TradeSwapResponse {
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
-    result.minOutAmount = value;
+    result.outAmountMin = value;
   }
   field: {
     const wireValue = wireFields.get(5);

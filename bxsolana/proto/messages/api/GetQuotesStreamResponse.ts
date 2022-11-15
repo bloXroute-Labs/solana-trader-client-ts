@@ -1,8 +1,10 @@
 import {
-  Type as Project,
-  name2num,
-  num2name,
-} from "./Project.js";
+  Type as GetQuotesStreamUpdate,
+  encodeJson as encodeJson_1,
+  decodeJson as decodeJson_1,
+  encodeBinary as encodeBinary_1,
+  decodeBinary as decodeBinary_1,
+} from "./GetQuotesStreamUpdate.js";
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -19,22 +21,13 @@ import {
   wireValueToTsValueFns,
 } from "../../runtime/wire/scalar.js";
 import {
-  default as Long,
-} from "../../runtime/Long.js";
-import {
   default as deserialize,
 } from "../../runtime/wire/deserialize.js";
 
 export declare namespace $.api {
   export type GetQuotesStreamResponse = {
     slot: string;
-    inToken: string;
-    inTokenAddress: string;
-    outToken: string;
-    outTokenAddress: string;
-    inAmount: number;
-    outAmount: number;
-    project: Project;
+    quote?: GetQuotesStreamUpdate;
   }
 }
 export type Type = $.api.GetQuotesStreamResponse;
@@ -42,13 +35,7 @@ export type Type = $.api.GetQuotesStreamResponse;
 export function getDefaultValue(): $.api.GetQuotesStreamResponse {
   return {
     slot: "0",
-    inToken: "",
-    inTokenAddress: "",
-    outToken: "",
-    outTokenAddress: "",
-    inAmount: 0,
-    outAmount: 0,
-    project: "P_UNKNOWN",
+    quote: undefined,
   };
 }
 
@@ -62,26 +49,14 @@ export function createValue(partialValue: Partial<$.api.GetQuotesStreamResponse>
 export function encodeJson(value: $.api.GetQuotesStreamResponse): unknown {
   const result: any = {};
   if (value.slot !== undefined) result.slot = tsValueToJsonValueFns.int64(value.slot);
-  if (value.inToken !== undefined) result.inToken = tsValueToJsonValueFns.string(value.inToken);
-  if (value.inTokenAddress !== undefined) result.inTokenAddress = tsValueToJsonValueFns.string(value.inTokenAddress);
-  if (value.outToken !== undefined) result.outToken = tsValueToJsonValueFns.string(value.outToken);
-  if (value.outTokenAddress !== undefined) result.outTokenAddress = tsValueToJsonValueFns.string(value.outTokenAddress);
-  if (value.inAmount !== undefined) result.inAmount = tsValueToJsonValueFns.double(value.inAmount);
-  if (value.outAmount !== undefined) result.outAmount = tsValueToJsonValueFns.double(value.outAmount);
-  if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
+  if (value.quote !== undefined) result.quote = encodeJson_1(value.quote);
   return result;
 }
 
 export function decodeJson(value: any): $.api.GetQuotesStreamResponse {
   const result = getDefaultValue();
   if (value.slot !== undefined) result.slot = jsonValueToTsValueFns.int64(value.slot);
-  if (value.inToken !== undefined) result.inToken = jsonValueToTsValueFns.string(value.inToken);
-  if (value.inTokenAddress !== undefined) result.inTokenAddress = jsonValueToTsValueFns.string(value.inTokenAddress);
-  if (value.outToken !== undefined) result.outToken = jsonValueToTsValueFns.string(value.outToken);
-  if (value.outTokenAddress !== undefined) result.outTokenAddress = jsonValueToTsValueFns.string(value.outTokenAddress);
-  if (value.inAmount !== undefined) result.inAmount = jsonValueToTsValueFns.double(value.inAmount);
-  if (value.outAmount !== undefined) result.outAmount = jsonValueToTsValueFns.double(value.outAmount);
-  if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
+  if (value.quote !== undefined) result.quote = decodeJson_1(value.quote);
   return result;
 }
 
@@ -93,46 +68,10 @@ export function encodeBinary(value: $.api.GetQuotesStreamResponse): Uint8Array {
       [1, tsValueToWireValueFns.int64(tsValue)],
     );
   }
-  if (value.inToken !== undefined) {
-    const tsValue = value.inToken;
+  if (value.quote !== undefined) {
+    const tsValue = value.quote;
     result.push(
-      [2, tsValueToWireValueFns.string(tsValue)],
-    );
-  }
-  if (value.inTokenAddress !== undefined) {
-    const tsValue = value.inTokenAddress;
-    result.push(
-      [3, tsValueToWireValueFns.string(tsValue)],
-    );
-  }
-  if (value.outToken !== undefined) {
-    const tsValue = value.outToken;
-    result.push(
-      [4, tsValueToWireValueFns.string(tsValue)],
-    );
-  }
-  if (value.outTokenAddress !== undefined) {
-    const tsValue = value.outTokenAddress;
-    result.push(
-      [5, tsValueToWireValueFns.string(tsValue)],
-    );
-  }
-  if (value.inAmount !== undefined) {
-    const tsValue = value.inAmount;
-    result.push(
-      [6, tsValueToWireValueFns.double(tsValue)],
-    );
-  }
-  if (value.outAmount !== undefined) {
-    const tsValue = value.outAmount;
-    result.push(
-      [7, tsValueToWireValueFns.double(tsValue)],
-    );
-  }
-  if (value.project !== undefined) {
-    const tsValue = value.project;
-    result.push(
-      [8, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
+      [2, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
     );
   }
   return serialize(result);
@@ -152,51 +91,9 @@ export function decodeBinary(binary: Uint8Array): $.api.GetQuotesStreamResponse 
   field: {
     const wireValue = wireFields.get(2);
     if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.string(wireValue);
+    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined;
     if (value === undefined) break field;
-    result.inToken = value;
-  }
-  field: {
-    const wireValue = wireFields.get(3);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.string(wireValue);
-    if (value === undefined) break field;
-    result.inTokenAddress = value;
-  }
-  field: {
-    const wireValue = wireFields.get(4);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.string(wireValue);
-    if (value === undefined) break field;
-    result.outToken = value;
-  }
-  field: {
-    const wireValue = wireFields.get(5);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.string(wireValue);
-    if (value === undefined) break field;
-    result.outTokenAddress = value;
-  }
-  field: {
-    const wireValue = wireFields.get(6);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.double(wireValue);
-    if (value === undefined) break field;
-    result.inAmount = value;
-  }
-  field: {
-    const wireValue = wireFields.get(7);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.double(wireValue);
-    if (value === undefined) break field;
-    result.outAmount = value;
-  }
-  field: {
-    const wireValue = wireFields.get(8);
-    if (wireValue === undefined) break field;
-    const value = wireValue.type === WireType.Varint ? num2name[wireValue.value[0] as keyof typeof num2name] : undefined;
-    if (value === undefined) break field;
-    result.project = value;
+    result.quote = value;
   }
   return result;
 }
