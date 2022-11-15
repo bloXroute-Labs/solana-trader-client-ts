@@ -5,10 +5,7 @@ Provides a Typescript SDK for bloXroute's Solana Trader API.
 ## Installation
 
 ```
-$ git clone https://github.com/bloXroute-Labs/solana-trader-client-ts.git
-$ cd solana-trader-client-ts
-$ npm i
-$ brew install pbkit/tap/pbkit
+npm i @bloxroute/solana-trader-client-ts
 ```
 
 Full repo installation via NPM is expected to be supported soon.

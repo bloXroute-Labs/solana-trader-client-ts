@@ -1,7 +1,6 @@
 export type ScalarValueTypePath = `.${ScalarValueType}`;
-export type ScalarValueTypes = Writable<typeof _scalarValueTypes>;
-export type ScalarValueType = ScalarValueTypes[number];
-export const _scalarValueTypes = [
+export type ScalarValueType = (typeof scalarValueTypes)[number];
+export const scalarValueTypes = [
   "double",
   "float",
   "int32",
@@ -18,9 +17,3 @@ export const _scalarValueTypes = [
   "string",
   "bytes",
 ] as const;
-export const scalarValueTypes: ScalarValueTypes =
-  _scalarValueTypes as ScalarValueTypes;
-
-type Writable<T extends readonly string[]> = {
-  -readonly [K in keyof T]: T[K];
-};
