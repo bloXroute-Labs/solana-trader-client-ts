@@ -50,6 +50,8 @@ import {
     GetPoolReservesStreamRequest,
     GetPoolReservesStreamResponse,
     GetPriceResponse,
+    GetSwapsStreamRequest,
+    GetSwapsStreamResponse,
 } from "../proto/messages/api/index.js"
 import { createServiceClient, Service } from "../proto/services/api/Api.js"
 import { BaseProvider } from "./base.js"
@@ -190,5 +192,9 @@ export class GrpcProvider extends BaseProvider {
 
     getPoolReservesStream(request: GetPoolReservesStreamRequest): Promise<AsyncGenerator<GetPoolReservesStreamResponse>> {
         return this.client.getPoolReservesStream(request)
+    }
+
+    getSwaps(request: GetSwapsStreamRequest): Promise<AsyncGenerator<GetSwapsStreamResponse>> {
+        return this.client.getSwapsStream(request)
     }
 }

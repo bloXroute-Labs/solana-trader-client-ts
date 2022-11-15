@@ -4,12 +4,12 @@ import {
   num2name,
 } from "./Project.js";
 import {
-  Type as ProjectPool,
+  Type as RouteStep,
   encodeJson as encodeJson_1,
   decodeJson as decodeJson_1,
   encodeBinary as encodeBinary_1,
   decodeBinary as decodeBinary_1,
-} from "./ProjectPool.js";
+} from "./RouteStep.js";
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -25,46 +25,54 @@ import {
   default as Long,
 } from "../../runtime/Long.js";
 import {
+  tsValueToWireValueFns,
+  wireValueToTsValueFns,
+} from "../../runtime/wire/scalar.js";
+import {
   default as deserialize,
 } from "../../runtime/wire/deserialize.js";
 
 export declare namespace $.api {
-  export type ProjectPools = {
+  export type RouteTradeSwapRequest = {
     project: Project;
-    pools: ProjectPool[];
+    ownerAddress: string;
+    steps: RouteStep[];
   }
 }
-export type Type = $.api.ProjectPools;
+export type Type = $.api.RouteTradeSwapRequest;
 
-export function getDefaultValue(): $.api.ProjectPools {
+export function getDefaultValue(): $.api.RouteTradeSwapRequest {
   return {
     project: "P_UNKNOWN",
-    pools: [],
+    ownerAddress: "",
+    steps: [],
   };
 }
 
-export function createValue(partialValue: Partial<$.api.ProjectPools>): $.api.ProjectPools {
+export function createValue(partialValue: Partial<$.api.RouteTradeSwapRequest>): $.api.RouteTradeSwapRequest {
   return {
     ...getDefaultValue(),
     ...partialValue,
   };
 }
 
-export function encodeJson(value: $.api.ProjectPools): unknown {
+export function encodeJson(value: $.api.RouteTradeSwapRequest): unknown {
   const result: any = {};
   if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
-  result.pools = value.pools.map(value => encodeJson_1(value));
+  if (value.ownerAddress !== undefined) result.ownerAddress = tsValueToJsonValueFns.string(value.ownerAddress);
+  result.steps = value.steps.map(value => encodeJson_1(value));
   return result;
 }
 
-export function decodeJson(value: any): $.api.ProjectPools {
+export function decodeJson(value: any): $.api.RouteTradeSwapRequest {
   const result = getDefaultValue();
   if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
-  result.pools = value.pools?.map((value: any) => decodeJson_1(value)) ?? [];
+  if (value.ownerAddress !== undefined) result.ownerAddress = jsonValueToTsValueFns.string(value.ownerAddress);
+  result.steps = value.steps?.map((value: any) => decodeJson_1(value)) ?? [];
   return result;
 }
 
-export function encodeBinary(value: $.api.ProjectPools): Uint8Array {
+export function encodeBinary(value: $.api.RouteTradeSwapRequest): Uint8Array {
   const result: WireMessage = [];
   if (value.project !== undefined) {
     const tsValue = value.project;
@@ -72,15 +80,21 @@ export function encodeBinary(value: $.api.ProjectPools): Uint8Array {
       [1, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
     );
   }
-  for (const tsValue of value.pools) {
+  if (value.ownerAddress !== undefined) {
+    const tsValue = value.ownerAddress;
     result.push(
-      [2, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
+      [2, tsValueToWireValueFns.string(tsValue)],
+    );
+  }
+  for (const tsValue of value.steps) {
+    result.push(
+      [3, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
     );
   }
   return serialize(result);
 }
 
-export function decodeBinary(binary: Uint8Array): $.api.ProjectPools {
+export function decodeBinary(binary: Uint8Array): $.api.RouteTradeSwapRequest {
   const result = getDefaultValue();
   const wireMessage = deserialize(binary);
   const wireFields = new Map(wireMessage);
@@ -91,11 +105,18 @@ export function decodeBinary(binary: Uint8Array): $.api.ProjectPools {
     if (value === undefined) break field;
     result.project = value;
   }
+  field: {
+    const wireValue = wireFields.get(2);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.ownerAddress = value;
+  }
   collection: {
-    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 2).map(([, wireValue]) => wireValue);
+    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 3).map(([, wireValue]) => wireValue);
     const value = wireValues.map((wireValue) => wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined).filter(x => x !== undefined);
     if (!value.length) break collection;
-    result.pools = value as any;
+    result.steps = value as any;
   }
   return result;
 }

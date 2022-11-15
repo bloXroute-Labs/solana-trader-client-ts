@@ -1,10 +1,10 @@
 import {
-  Type as TransactionMessage,
+  Type as PostSubmitBatchResponseEntry,
   encodeJson as encodeJson_1,
   decodeJson as decodeJson_1,
   encodeBinary as encodeBinary_1,
   decodeBinary as decodeBinary_1,
-} from "./TransactionMessage.js";
+} from "./PostSubmitBatchResponseEntry.js";
 import {
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar.js";
@@ -20,38 +20,38 @@ import {
 } from "../../runtime/wire/deserialize.js";
 
 export declare namespace $.api {
-  export type PostCancelAllResponse = {
-    transactions: TransactionMessage[];
+  export type PostSubmitBatchResponse = {
+    transactions: PostSubmitBatchResponseEntry[];
   }
 }
-export type Type = $.api.PostCancelAllResponse;
+export type Type = $.api.PostSubmitBatchResponse;
 
-export function getDefaultValue(): $.api.PostCancelAllResponse {
+export function getDefaultValue(): $.api.PostSubmitBatchResponse {
   return {
     transactions: [],
   };
 }
 
-export function createValue(partialValue: Partial<$.api.PostCancelAllResponse>): $.api.PostCancelAllResponse {
+export function createValue(partialValue: Partial<$.api.PostSubmitBatchResponse>): $.api.PostSubmitBatchResponse {
   return {
     ...getDefaultValue(),
     ...partialValue,
   };
 }
 
-export function encodeJson(value: $.api.PostCancelAllResponse): unknown {
+export function encodeJson(value: $.api.PostSubmitBatchResponse): unknown {
   const result: any = {};
   result.transactions = value.transactions.map(value => encodeJson_1(value));
   return result;
 }
 
-export function decodeJson(value: any): $.api.PostCancelAllResponse {
+export function decodeJson(value: any): $.api.PostSubmitBatchResponse {
   const result = getDefaultValue();
   result.transactions = value.transactions?.map((value: any) => decodeJson_1(value)) ?? [];
   return result;
 }
 
-export function encodeBinary(value: $.api.PostCancelAllResponse): Uint8Array {
+export function encodeBinary(value: $.api.PostSubmitBatchResponse): Uint8Array {
   const result: WireMessage = [];
   for (const tsValue of value.transactions) {
     result.push(
@@ -61,7 +61,7 @@ export function encodeBinary(value: $.api.PostCancelAllResponse): Uint8Array {
   return serialize(result);
 }
 
-export function decodeBinary(binary: Uint8Array): $.api.PostCancelAllResponse {
+export function decodeBinary(binary: Uint8Array): $.api.PostSubmitBatchResponse {
   const result = getDefaultValue();
   const wireMessage = deserialize(binary);
   const wireFields = new Map(wireMessage);

@@ -50,6 +50,8 @@ export declare namespace $.api {
     slippage: number;
     priceImpactPercent?: PriceImpactPercent;
     fee?: Fee;
+    outAmountMin: number;
+    poolAddress: string;
   }
 }
 export type Type = $.api.QuoteStep;
@@ -66,6 +68,8 @@ export function getDefaultValue(): $.api.QuoteStep {
     slippage: 0,
     priceImpactPercent: undefined,
     fee: undefined,
+    outAmountMin: 0,
+    poolAddress: "",
   };
 }
 
@@ -88,6 +92,8 @@ export function encodeJson(value: $.api.QuoteStep): unknown {
   if (value.slippage !== undefined) result.slippage = tsValueToJsonValueFns.double(value.slippage);
   if (value.priceImpactPercent !== undefined) result.priceImpactPercent = encodeJson_2(value.priceImpactPercent);
   if (value.fee !== undefined) result.fee = encodeJson_3(value.fee);
+  if (value.outAmountMin !== undefined) result.outAmountMin = tsValueToJsonValueFns.double(value.outAmountMin);
+  if (value.poolAddress !== undefined) result.poolAddress = tsValueToJsonValueFns.string(value.poolAddress);
   return result;
 }
 
@@ -103,6 +109,8 @@ export function decodeJson(value: any): $.api.QuoteStep {
   if (value.slippage !== undefined) result.slippage = jsonValueToTsValueFns.double(value.slippage);
   if (value.priceImpactPercent !== undefined) result.priceImpactPercent = decodeJson_2(value.priceImpactPercent);
   if (value.fee !== undefined) result.fee = decodeJson_3(value.fee);
+  if (value.outAmountMin !== undefined) result.outAmountMin = jsonValueToTsValueFns.double(value.outAmountMin);
+  if (value.poolAddress !== undefined) result.poolAddress = jsonValueToTsValueFns.string(value.poolAddress);
   return result;
 }
 
@@ -166,6 +174,18 @@ export function encodeBinary(value: $.api.QuoteStep): Uint8Array {
     const tsValue = value.fee;
     result.push(
       [10, { type: WireType.LengthDelimited as const, value: encodeBinary_3(tsValue) }],
+    );
+  }
+  if (value.outAmountMin !== undefined) {
+    const tsValue = value.outAmountMin;
+    result.push(
+      [11, tsValueToWireValueFns.double(tsValue)],
+    );
+  }
+  if (value.poolAddress !== undefined) {
+    const tsValue = value.poolAddress;
+    result.push(
+      [12, tsValueToWireValueFns.string(tsValue)],
     );
   }
   return serialize(result);
@@ -244,6 +264,20 @@ export function decodeBinary(binary: Uint8Array): $.api.QuoteStep {
     const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_3(wireValue.value) : undefined;
     if (value === undefined) break field;
     result.fee = value;
+  }
+  field: {
+    const wireValue = wireFields.get(11);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.double(wireValue);
+    if (value === undefined) break field;
+    result.outAmountMin = value;
+  }
+  field: {
+    const wireValue = wireFields.get(12);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.poolAddress = value;
   }
   return result;
 }

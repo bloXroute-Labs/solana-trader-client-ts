@@ -1,10 +1,10 @@
 import {
-  Type as QuoteStep,
+  Type as StepProject,
   encodeJson as encodeJson_1,
   decodeJson as decodeJson_1,
   encodeBinary as encodeBinary_1,
   decodeBinary as decodeBinary_1,
-} from "./QuoteStep.js";
+} from "./StepProject.js";
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -25,107 +25,143 @@ import {
 } from "../../runtime/wire/deserialize.js";
 
 export declare namespace $.api {
-  export type QuoteRoute = {
+  export type RouteStep = {
+    inToken: string;
     inAmount: number;
+    outToken: string;
     outAmount: number;
     outAmountMin: number;
-    steps: QuoteStep[];
+    project?: StepProject;
   }
 }
-export type Type = $.api.QuoteRoute;
+export type Type = $.api.RouteStep;
 
-export function getDefaultValue(): $.api.QuoteRoute {
+export function getDefaultValue(): $.api.RouteStep {
   return {
+    inToken: "",
     inAmount: 0,
+    outToken: "",
     outAmount: 0,
     outAmountMin: 0,
-    steps: [],
+    project: undefined,
   };
 }
 
-export function createValue(partialValue: Partial<$.api.QuoteRoute>): $.api.QuoteRoute {
+export function createValue(partialValue: Partial<$.api.RouteStep>): $.api.RouteStep {
   return {
     ...getDefaultValue(),
     ...partialValue,
   };
 }
 
-export function encodeJson(value: $.api.QuoteRoute): unknown {
+export function encodeJson(value: $.api.RouteStep): unknown {
   const result: any = {};
+  if (value.inToken !== undefined) result.inToken = tsValueToJsonValueFns.string(value.inToken);
   if (value.inAmount !== undefined) result.inAmount = tsValueToJsonValueFns.double(value.inAmount);
+  if (value.outToken !== undefined) result.outToken = tsValueToJsonValueFns.string(value.outToken);
   if (value.outAmount !== undefined) result.outAmount = tsValueToJsonValueFns.double(value.outAmount);
   if (value.outAmountMin !== undefined) result.outAmountMin = tsValueToJsonValueFns.double(value.outAmountMin);
-  result.steps = value.steps.map(value => encodeJson_1(value));
+  if (value.project !== undefined) result.project = encodeJson_1(value.project);
   return result;
 }
 
-export function decodeJson(value: any): $.api.QuoteRoute {
+export function decodeJson(value: any): $.api.RouteStep {
   const result = getDefaultValue();
+  if (value.inToken !== undefined) result.inToken = jsonValueToTsValueFns.string(value.inToken);
   if (value.inAmount !== undefined) result.inAmount = jsonValueToTsValueFns.double(value.inAmount);
+  if (value.outToken !== undefined) result.outToken = jsonValueToTsValueFns.string(value.outToken);
   if (value.outAmount !== undefined) result.outAmount = jsonValueToTsValueFns.double(value.outAmount);
   if (value.outAmountMin !== undefined) result.outAmountMin = jsonValueToTsValueFns.double(value.outAmountMin);
-  result.steps = value.steps?.map((value: any) => decodeJson_1(value)) ?? [];
+  if (value.project !== undefined) result.project = decodeJson_1(value.project);
   return result;
 }
 
-export function encodeBinary(value: $.api.QuoteRoute): Uint8Array {
+export function encodeBinary(value: $.api.RouteStep): Uint8Array {
   const result: WireMessage = [];
+  if (value.inToken !== undefined) {
+    const tsValue = value.inToken;
+    result.push(
+      [1, tsValueToWireValueFns.string(tsValue)],
+    );
+  }
   if (value.inAmount !== undefined) {
     const tsValue = value.inAmount;
     result.push(
-      [1, tsValueToWireValueFns.double(tsValue)],
+      [2, tsValueToWireValueFns.double(tsValue)],
+    );
+  }
+  if (value.outToken !== undefined) {
+    const tsValue = value.outToken;
+    result.push(
+      [3, tsValueToWireValueFns.string(tsValue)],
     );
   }
   if (value.outAmount !== undefined) {
     const tsValue = value.outAmount;
     result.push(
-      [2, tsValueToWireValueFns.double(tsValue)],
+      [4, tsValueToWireValueFns.double(tsValue)],
     );
   }
   if (value.outAmountMin !== undefined) {
     const tsValue = value.outAmountMin;
     result.push(
-      [3, tsValueToWireValueFns.double(tsValue)],
+      [5, tsValueToWireValueFns.double(tsValue)],
     );
   }
-  for (const tsValue of value.steps) {
+  if (value.project !== undefined) {
+    const tsValue = value.project;
     result.push(
-      [4, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
+      [6, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
     );
   }
   return serialize(result);
 }
 
-export function decodeBinary(binary: Uint8Array): $.api.QuoteRoute {
+export function decodeBinary(binary: Uint8Array): $.api.RouteStep {
   const result = getDefaultValue();
   const wireMessage = deserialize(binary);
   const wireFields = new Map(wireMessage);
   field: {
     const wireValue = wireFields.get(1);
     if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.double(wireValue);
+    const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
-    result.inAmount = value;
+    result.inToken = value;
   }
   field: {
     const wireValue = wireFields.get(2);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
-    result.outAmount = value;
+    result.inAmount = value;
   }
   field: {
     const wireValue = wireFields.get(3);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.outToken = value;
+  }
+  field: {
+    const wireValue = wireFields.get(4);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.double(wireValue);
+    if (value === undefined) break field;
+    result.outAmount = value;
+  }
+  field: {
+    const wireValue = wireFields.get(5);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
     result.outAmountMin = value;
   }
-  collection: {
-    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 4).map(([, wireValue]) => wireValue);
-    const value = wireValues.map((wireValue) => wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined).filter(x => x !== undefined);
-    if (!value.length) break collection;
-    result.steps = value as any;
+  field: {
+    const wireValue = wireFields.get(6);
+    if (wireValue === undefined) break field;
+    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined;
+    if (value === undefined) break field;
+    result.project = value;
   }
   return result;
 }

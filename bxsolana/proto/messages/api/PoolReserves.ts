@@ -30,8 +30,8 @@ export declare namespace $.api {
     token1Reserves: string;
     token1Address: string;
     token2Reserves: string;
-    Token2Address: string;
-    poolID: string;
+    token2Address: string;
+    poolAddress: string;
     project: Project;
   }
 }
@@ -42,8 +42,8 @@ export function getDefaultValue(): $.api.PoolReserves {
     token1Reserves: "",
     token1Address: "",
     token2Reserves: "",
-    Token2Address: "",
-    poolID: "",
+    token2Address: "",
+    poolAddress: "",
     project: "P_UNKNOWN",
   };
 }
@@ -60,8 +60,8 @@ export function encodeJson(value: $.api.PoolReserves): unknown {
   if (value.token1Reserves !== undefined) result.token1Reserves = tsValueToJsonValueFns.string(value.token1Reserves);
   if (value.token1Address !== undefined) result.token1Address = tsValueToJsonValueFns.string(value.token1Address);
   if (value.token2Reserves !== undefined) result.token2Reserves = tsValueToJsonValueFns.string(value.token2Reserves);
-  if (value.Token2Address !== undefined) result.Token2Address = tsValueToJsonValueFns.string(value.Token2Address);
-  if (value.poolID !== undefined) result.poolID = tsValueToJsonValueFns.string(value.poolID);
+  if (value.token2Address !== undefined) result.token2Address = tsValueToJsonValueFns.string(value.token2Address);
+  if (value.poolAddress !== undefined) result.poolAddress = tsValueToJsonValueFns.string(value.poolAddress);
   if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
   return result;
 }
@@ -71,8 +71,8 @@ export function decodeJson(value: any): $.api.PoolReserves {
   if (value.token1Reserves !== undefined) result.token1Reserves = jsonValueToTsValueFns.string(value.token1Reserves);
   if (value.token1Address !== undefined) result.token1Address = jsonValueToTsValueFns.string(value.token1Address);
   if (value.token2Reserves !== undefined) result.token2Reserves = jsonValueToTsValueFns.string(value.token2Reserves);
-  if (value.Token2Address !== undefined) result.Token2Address = jsonValueToTsValueFns.string(value.Token2Address);
-  if (value.poolID !== undefined) result.poolID = jsonValueToTsValueFns.string(value.poolID);
+  if (value.token2Address !== undefined) result.token2Address = jsonValueToTsValueFns.string(value.token2Address);
+  if (value.poolAddress !== undefined) result.poolAddress = jsonValueToTsValueFns.string(value.poolAddress);
   if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
   return result;
 }
@@ -97,14 +97,14 @@ export function encodeBinary(value: $.api.PoolReserves): Uint8Array {
       [3, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.Token2Address !== undefined) {
-    const tsValue = value.Token2Address;
+  if (value.token2Address !== undefined) {
+    const tsValue = value.token2Address;
     result.push(
       [4, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.poolID !== undefined) {
-    const tsValue = value.poolID;
+  if (value.poolAddress !== undefined) {
+    const tsValue = value.poolAddress;
     result.push(
       [5, tsValueToWireValueFns.string(tsValue)],
     );
@@ -148,14 +148,14 @@ export function decodeBinary(binary: Uint8Array): $.api.PoolReserves {
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
-    result.Token2Address = value;
+    result.token2Address = value;
   }
   field: {
     const wireValue = wireFields.get(5);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
-    result.poolID = value;
+    result.poolAddress = value;
   }
   field: {
     const wireValue = wireFields.get(6);

@@ -4,18 +4,25 @@ import {
   num2name,
 } from "./Project.js";
 import {
-  Type as PriceImpactPercent,
+  Type as TransactionMessage,
   encodeJson as encodeJson_1,
   decodeJson as decodeJson_1,
   encodeBinary as encodeBinary_1,
   decodeBinary as decodeBinary_1,
-} from "./PriceImpactPercent.js";
+} from "./TransactionMessage.js";
 import {
-  Type as Fee,
+  Type as PriceImpactPercent,
   encodeJson as encodeJson_2,
   decodeJson as decodeJson_2,
   encodeBinary as encodeBinary_2,
   decodeBinary as decodeBinary_2,
+} from "./PriceImpactPercent.js";
+import {
+  Type as Fee,
+  encodeJson as encodeJson_3,
+  decodeJson as decodeJson_3,
+  encodeBinary as encodeBinary_3,
+  decodeBinary as decodeBinary_3,
 } from "./Fee.js";
 import {
   tsValueToJsonValueFns,
@@ -42,11 +49,11 @@ import {
 export declare namespace $.api {
   export type TradeSwapResponse = {
     project: Project;
-    transactions: string[];
+    transactions: TransactionMessage[];
     outAmount: number;
     minOutAmount: number;
     priceImpact?: PriceImpactPercent;
-    fee?: Fee;
+    fees: Fee[];
   }
 }
 export type Type = $.api.TradeSwapResponse;
@@ -58,7 +65,7 @@ export function getDefaultValue(): $.api.TradeSwapResponse {
     outAmount: 0,
     minOutAmount: 0,
     priceImpact: undefined,
-    fee: undefined,
+    fees: [],
   };
 }
 
@@ -72,22 +79,22 @@ export function createValue(partialValue: Partial<$.api.TradeSwapResponse>): $.a
 export function encodeJson(value: $.api.TradeSwapResponse): unknown {
   const result: any = {};
   if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
-  result.transactions = value.transactions.map(value => tsValueToJsonValueFns.string(value));
+  result.transactions = value.transactions.map(value => encodeJson_1(value));
   if (value.outAmount !== undefined) result.outAmount = tsValueToJsonValueFns.double(value.outAmount);
   if (value.minOutAmount !== undefined) result.minOutAmount = tsValueToJsonValueFns.double(value.minOutAmount);
-  if (value.priceImpact !== undefined) result.priceImpact = encodeJson_1(value.priceImpact);
-  if (value.fee !== undefined) result.fee = encodeJson_2(value.fee);
+  if (value.priceImpact !== undefined) result.priceImpact = encodeJson_2(value.priceImpact);
+  result.fees = value.fees.map(value => encodeJson_3(value));
   return result;
 }
 
 export function decodeJson(value: any): $.api.TradeSwapResponse {
   const result = getDefaultValue();
   if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
-  result.transactions = value.transactions?.map((value: any) => jsonValueToTsValueFns.string(value)) ?? [];
+  result.transactions = value.transactions?.map((value: any) => decodeJson_1(value)) ?? [];
   if (value.outAmount !== undefined) result.outAmount = jsonValueToTsValueFns.double(value.outAmount);
   if (value.minOutAmount !== undefined) result.minOutAmount = jsonValueToTsValueFns.double(value.minOutAmount);
-  if (value.priceImpact !== undefined) result.priceImpact = decodeJson_1(value.priceImpact);
-  if (value.fee !== undefined) result.fee = decodeJson_2(value.fee);
+  if (value.priceImpact !== undefined) result.priceImpact = decodeJson_2(value.priceImpact);
+  result.fees = value.fees?.map((value: any) => decodeJson_3(value)) ?? [];
   return result;
 }
 
@@ -101,7 +108,7 @@ export function encodeBinary(value: $.api.TradeSwapResponse): Uint8Array {
   }
   for (const tsValue of value.transactions) {
     result.push(
-      [2, tsValueToWireValueFns.string(tsValue)],
+      [2, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
     );
   }
   if (value.outAmount !== undefined) {
@@ -119,13 +126,12 @@ export function encodeBinary(value: $.api.TradeSwapResponse): Uint8Array {
   if (value.priceImpact !== undefined) {
     const tsValue = value.priceImpact;
     result.push(
-      [5, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
+      [5, { type: WireType.LengthDelimited as const, value: encodeBinary_2(tsValue) }],
     );
   }
-  if (value.fee !== undefined) {
-    const tsValue = value.fee;
+  for (const tsValue of value.fees) {
     result.push(
-      [6, { type: WireType.LengthDelimited as const, value: encodeBinary_2(tsValue) }],
+      [6, { type: WireType.LengthDelimited as const, value: encodeBinary_3(tsValue) }],
     );
   }
   return serialize(result);
@@ -144,7 +150,7 @@ export function decodeBinary(binary: Uint8Array): $.api.TradeSwapResponse {
   }
   collection: {
     const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 2).map(([, wireValue]) => wireValue);
-    const value = wireValues.map((wireValue) => wireValueToTsValueFns.string(wireValue)).filter(x => x !== undefined);
+    const value = wireValues.map((wireValue) => wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined).filter(x => x !== undefined);
     if (!value.length) break collection;
     result.transactions = value as any;
   }
@@ -165,16 +171,15 @@ export function decodeBinary(binary: Uint8Array): $.api.TradeSwapResponse {
   field: {
     const wireValue = wireFields.get(5);
     if (wireValue === undefined) break field;
-    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined;
+    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_2(wireValue.value) : undefined;
     if (value === undefined) break field;
     result.priceImpact = value;
   }
-  field: {
-    const wireValue = wireFields.get(6);
-    if (wireValue === undefined) break field;
-    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_2(wireValue.value) : undefined;
-    if (value === undefined) break field;
-    result.fee = value;
+  collection: {
+    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 6).map(([, wireValue]) => wireValue);
+    const value = wireValues.map((wireValue) => wireValue.type === WireType.LengthDelimited ? decodeBinary_3(wireValue.value) : undefined).filter(x => x !== undefined);
+    if (!value.length) break collection;
+    result.fees = value as any;
   }
   return result;
 }

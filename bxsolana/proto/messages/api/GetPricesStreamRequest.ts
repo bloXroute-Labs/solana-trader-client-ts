@@ -18,55 +18,66 @@ import {
   default as Long,
 } from "../../runtime/Long.js";
 import {
+  tsValueToWireValueFns,
+  unpackFns,
+  wireValueToTsValueFns,
+} from "../../runtime/wire/scalar.js";
+import {
   default as deserialize,
 } from "../../runtime/wire/deserialize.js";
-import {
-  unpackFns,
-} from "../../runtime/wire/scalar.js";
 
 export declare namespace $.api {
-  export type GetPoolsRequest = {
+  export type GetPricesStreamRequest = {
     projects: Project[];
+    tokens: string[];
   }
 }
-export type Type = $.api.GetPoolsRequest;
+export type Type = $.api.GetPricesStreamRequest;
 
-export function getDefaultValue(): $.api.GetPoolsRequest {
+export function getDefaultValue(): $.api.GetPricesStreamRequest {
   return {
     projects: [],
+    tokens: [],
   };
 }
 
-export function createValue(partialValue: Partial<$.api.GetPoolsRequest>): $.api.GetPoolsRequest {
+export function createValue(partialValue: Partial<$.api.GetPricesStreamRequest>): $.api.GetPricesStreamRequest {
   return {
     ...getDefaultValue(),
     ...partialValue,
   };
 }
 
-export function encodeJson(value: $.api.GetPoolsRequest): unknown {
+export function encodeJson(value: $.api.GetPricesStreamRequest): unknown {
   const result: any = {};
   result.projects = value.projects.map(value => tsValueToJsonValueFns.enum(value));
+  result.tokens = value.tokens.map(value => tsValueToJsonValueFns.string(value));
   return result;
 }
 
-export function decodeJson(value: any): $.api.GetPoolsRequest {
+export function decodeJson(value: any): $.api.GetPricesStreamRequest {
   const result = getDefaultValue();
   result.projects = value.projects?.map((value: any) => jsonValueToTsValueFns.enum(value) as Project) ?? [];
+  result.tokens = value.tokens?.map((value: any) => jsonValueToTsValueFns.string(value)) ?? [];
   return result;
 }
 
-export function encodeBinary(value: $.api.GetPoolsRequest): Uint8Array {
+export function encodeBinary(value: $.api.GetPricesStreamRequest): Uint8Array {
   const result: WireMessage = [];
   for (const tsValue of value.projects) {
     result.push(
       [1, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
     );
   }
+  for (const tsValue of value.tokens) {
+    result.push(
+      [2, tsValueToWireValueFns.string(tsValue)],
+    );
+  }
   return serialize(result);
 }
 
-export function decodeBinary(binary: Uint8Array): $.api.GetPoolsRequest {
+export function decodeBinary(binary: Uint8Array): $.api.GetPricesStreamRequest {
   const result = getDefaultValue();
   const wireMessage = deserialize(binary);
   const wireFields = new Map(wireMessage);
@@ -75,6 +86,12 @@ export function decodeBinary(binary: Uint8Array): $.api.GetPoolsRequest {
     const value = Array.from(unpackFns.int32(wireValues)).map(num => num2name[num as keyof typeof num2name]);
     if (!value.length) break collection;
     result.projects = value as any;
+  }
+  collection: {
+    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 2).map(([, wireValue]) => wireValue);
+    const value = wireValues.map((wireValue) => wireValueToTsValueFns.string(wireValue)).filter(x => x !== undefined);
+    if (!value.length) break collection;
+    result.tokens = value as any;
   }
   return result;
 }
