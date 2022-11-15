@@ -8,6 +8,7 @@ import { PostOrderRequest, GetOpenOrdersRequest, GetOpenOrdersResponse, PostCanc
 import config from "../utils/config.js"
 import { addMemo, addMemoToSerializedTxn } from "../utils/memo.js"
 import { Keypair } from "@solana/web3.js"
+import { TESTNET_API_HTTP } from "../utils/constants.js"
 const marketAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"
 const ownerAddress = config.WalletPublicKey
 const payerAddress = config.WalletPublicKey
@@ -23,7 +24,7 @@ const testOrder: PostOrderRequest = {
     type: ["OT_LIMIT"],
     amount: 0.1,
     price: 200,
-    openOrdersAddress: openOrdersAddress,
+    openOrdersAddress: "",
     clientOrderID: "",
 }
 
@@ -47,7 +48,7 @@ async function run() {
 }
 
 async function http() {
-    const provider = new HttpProvider()
+    const provider = new HttpProvider(TESTNET_API_HTTP)
     console.info(" ----  HTTP Requests  ----")
     await doRequests(provider)
     console.info(" ----  HTTP Lifecycle  ----")
@@ -312,7 +313,7 @@ async function submitTxWithMemo(provider: BaseProvider) {
         const encodedTxn = addMemo([], "new memo by dev", recentBlockhash.blockHash, keypair.publicKey, keypair)
         console.info("Submitting tx with one memo")
         let response = await provider.postSubmit({
-            transaction: encodedTxn,
+            transaction: {content:encodedTxn, isCleanup: false},
             skipPreFlight: true,
         })
         console.info(response.signature)
@@ -320,7 +321,7 @@ async function submitTxWithMemo(provider: BaseProvider) {
         const encodedTxn2 = addMemoToSerializedTxn(encodedTxn, "new memo by dev2", keypair.publicKey, keypair)
         console.info("Submitting tx with two memos")
         response = await provider.postSubmit({
-            transaction: encodedTxn2,
+            transaction: {content:encodedTxn2, isCleanup: false},
             skipPreFlight: true,
         })
         console.info(response.signature)
@@ -353,7 +354,7 @@ async function callGetOpenOrders(provider: BaseProvider) {
 async function callGetUnsettled(provider: BaseProvider) {
     try {
         console.info("Retrieving unsettled funds in SOLUSDC market")
-        const req = await provider.getUnsettled({ market: "SOLUSDC", owner: ownerAddress })
+        const req = await provider.getUnsettled({ market: "SOLUSDC", ownerAddress: ownerAddress })
         console.info(req)
     } catch (error) {
         console.error("Failed to retrieve the unsettled funds", error)
