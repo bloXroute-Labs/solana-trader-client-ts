@@ -38,6 +38,7 @@ export declare namespace $.api {
     outAmountMin: string;
     sourceAccount: string;
     destinationAccount: string;
+    ownerAccount: string;
     signature: string;
   }
 }
@@ -56,6 +57,7 @@ export function getDefaultValue(): $.api.GetSwapsStreamUpdate {
     outAmountMin: "0",
     sourceAccount: "",
     destinationAccount: "",
+    ownerAccount: "",
     signature: "",
   };
 }
@@ -80,6 +82,7 @@ export function encodeJson(value: $.api.GetSwapsStreamUpdate): unknown {
   if (value.outAmountMin !== undefined) result.outAmountMin = tsValueToJsonValueFns.uint64(value.outAmountMin);
   if (value.sourceAccount !== undefined) result.sourceAccount = tsValueToJsonValueFns.string(value.sourceAccount);
   if (value.destinationAccount !== undefined) result.destinationAccount = tsValueToJsonValueFns.string(value.destinationAccount);
+  if (value.ownerAccount !== undefined) result.ownerAccount = tsValueToJsonValueFns.string(value.ownerAccount);
   if (value.signature !== undefined) result.signature = tsValueToJsonValueFns.string(value.signature);
   return result;
 }
@@ -97,6 +100,7 @@ export function decodeJson(value: any): $.api.GetSwapsStreamUpdate {
   if (value.outAmountMin !== undefined) result.outAmountMin = jsonValueToTsValueFns.uint64(value.outAmountMin);
   if (value.sourceAccount !== undefined) result.sourceAccount = jsonValueToTsValueFns.string(value.sourceAccount);
   if (value.destinationAccount !== undefined) result.destinationAccount = jsonValueToTsValueFns.string(value.destinationAccount);
+  if (value.ownerAccount !== undefined) result.ownerAccount = jsonValueToTsValueFns.string(value.ownerAccount);
   if (value.signature !== undefined) result.signature = jsonValueToTsValueFns.string(value.signature);
   return result;
 }
@@ -169,10 +173,16 @@ export function encodeBinary(value: $.api.GetSwapsStreamUpdate): Uint8Array {
       [11, tsValueToWireValueFns.string(tsValue)],
     );
   }
+  if (value.ownerAccount !== undefined) {
+    const tsValue = value.ownerAccount;
+    result.push(
+      [12, tsValueToWireValueFns.string(tsValue)],
+    );
+  }
   if (value.signature !== undefined) {
     const tsValue = value.signature;
     result.push(
-      [12, tsValueToWireValueFns.string(tsValue)],
+      [13, tsValueToWireValueFns.string(tsValue)],
     );
   }
   return serialize(result);
@@ -261,6 +271,13 @@ export function decodeBinary(binary: Uint8Array): $.api.GetSwapsStreamUpdate {
   }
   field: {
     const wireValue = wireFields.get(12);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.ownerAccount = value;
+  }
+  field: {
+    const wireValue = wireFields.get(13);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
