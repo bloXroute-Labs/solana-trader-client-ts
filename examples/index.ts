@@ -313,7 +313,7 @@ async function submitTxWithMemo(provider: BaseProvider) {
         const encodedTxn = addMemo([], "new memo by dev", recentBlockhash.blockHash, keypair.publicKey, keypair)
         console.info("Submitting tx with one memo")
         let response = await provider.postSubmit({
-            transaction: {content:encodedTxn, isCleanup: false},
+            transaction: { content: encodedTxn, isCleanup: false },
             skipPreFlight: true,
         })
         console.info(response.signature)
@@ -321,7 +321,7 @@ async function submitTxWithMemo(provider: BaseProvider) {
         const encodedTxn2 = addMemoToSerializedTxn(encodedTxn, "new memo by dev2", keypair.publicKey, keypair)
         console.info("Submitting tx with two memos")
         response = await provider.postSubmit({
-            transaction: {content:encodedTxn2, isCleanup: false},
+            transaction: { content: encodedTxn2, isCleanup: false },
             skipPreFlight: true,
         })
         console.info(response.signature)

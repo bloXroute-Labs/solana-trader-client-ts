@@ -170,7 +170,10 @@ export abstract class BaseProvider implements Api {
 
         const signedTx = signTx(res.transaction?.content || "")
 
-        const postSubmitRez = await this.postSubmit({ transaction: { content:signedTx.serialize().toString("base64"), isCleanup: false}, skipPreFlight })
+        const postSubmitRez = await this.postSubmit({
+            transaction: { content: signedTx.serialize().toString("base64"), isCleanup: false },
+            skipPreFlight,
+        })
         return { signature: postSubmitRez.signature, openOrdersAccount: res.openOrdersAddress }
     }
 
@@ -179,7 +182,7 @@ export abstract class BaseProvider implements Api {
 
         const signedTx = signTx(res.transaction?.content || "")
 
-        return this.postSubmit({ transaction: { content:signedTx.serialize().toString("base64"), isCleanup: false}, skipPreFlight })
+        return this.postSubmit({ transaction: { content: signedTx.serialize().toString("base64"), isCleanup: false }, skipPreFlight })
     }
 
     async submitCancelOrderByClientOrderID(request: PostCancelByClientOrderIDRequest, skipPreFlight = true): Promise<PostSubmitResponse> {
@@ -187,7 +190,7 @@ export abstract class BaseProvider implements Api {
 
         const signedTx = signTx(res.transaction?.content || "")
 
-        return this.postSubmit({ transaction: { content:signedTx.serialize().toString("base64"), isCleanup: false}, skipPreFlight })
+        return this.postSubmit({ transaction: { content: signedTx.serialize().toString("base64"), isCleanup: false }, skipPreFlight })
     }
 
     async submitCancelAll(request: PostCancelAllRequest, skipPreFlight = true): Promise<Awaited<PostSubmitResponse>[]> {
@@ -196,7 +199,10 @@ export abstract class BaseProvider implements Api {
 
         for (const tx of res.transactions) {
             const signedTx = signTx(tx.content)
-            const postSubmitRez = this.postSubmit({ transaction: { content:signedTx.serialize().toString("base64"), isCleanup: false}, skipPreFlight })
+            const postSubmitRez = this.postSubmit({
+                transaction: { content: signedTx.serialize().toString("base64"), isCleanup: false },
+                skipPreFlight,
+            })
             postSubmitResponses.push(postSubmitRez)
         }
 
@@ -208,7 +214,7 @@ export abstract class BaseProvider implements Api {
 
         const signedTx = signTx(res.transaction?.content || "")
 
-        return this.postSubmit({ transaction: { content:signedTx.serialize().toString("base64"), isCleanup: false}, skipPreFlight })
+        return this.postSubmit({ transaction: { content: signedTx.serialize().toString("base64"), isCleanup: false }, skipPreFlight })
     }
 
     async submitReplaceByClientOrderID(request: PostOrderRequest, skipPreFlight = true): Promise<PostSubmitResponse> {
@@ -216,7 +222,7 @@ export abstract class BaseProvider implements Api {
 
         const signedTx = signTx(res.transaction?.content || "")
 
-        return this.postSubmit({ transaction: { content:signedTx.serialize().toString("base64"), isCleanup: false}, skipPreFlight })
+        return this.postSubmit({ transaction: { content: signedTx.serialize().toString("base64"), isCleanup: false }, skipPreFlight })
     }
 
     async submitReplaceOrder(request: PostReplaceOrderRequest, skipPreFlight = true): Promise<PostSubmitResponse> {
@@ -224,7 +230,7 @@ export abstract class BaseProvider implements Api {
 
         const signedTx = signTx(res.transaction?.content || "")
 
-        return this.postSubmit({ transaction: { content:signedTx.serialize().toString("base64"), isCleanup: false}, skipPreFlight })
+        return this.postSubmit({ transaction: { content: signedTx.serialize().toString("base64"), isCleanup: false }, skipPreFlight })
     }
 
     getPoolReservesStream(request: GetPoolReservesStreamRequest): Promise<AsyncGenerator<GetPoolReservesStreamResponse>> {
