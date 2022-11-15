@@ -30,12 +30,14 @@ export declare namespace $.api {
     success: boolean;
     project: Project;
     poolAddress: string;
-    inToken: string;
-    inTokenAddress: string;
+    baseToken: string;
+    baseTokenAddress: string;
+    quoteToken: string;
+    quoteTokenAddress: string;
     inAmount: string;
-    outAmount: string;
-    outToken: string;
-    outTokenAddress: string;
+    outAmountMin: string;
+    sourceAccount: string;
+    destinationAccount: string;
     signature: string;
   }
 }
@@ -46,12 +48,14 @@ export function getDefaultValue(): $.api.GetSwapsStreamUpdate {
     success: false,
     project: "P_UNKNOWN",
     poolAddress: "",
-    inToken: "",
-    inTokenAddress: "",
+    baseToken: "",
+    baseTokenAddress: "",
+    quoteToken: "",
+    quoteTokenAddress: "",
     inAmount: "0",
-    outAmount: "0",
-    outToken: "",
-    outTokenAddress: "",
+    outAmountMin: "0",
+    sourceAccount: "",
+    destinationAccount: "",
     signature: "",
   };
 }
@@ -68,12 +72,14 @@ export function encodeJson(value: $.api.GetSwapsStreamUpdate): unknown {
   if (value.success !== undefined) result.success = tsValueToJsonValueFns.bool(value.success);
   if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
   if (value.poolAddress !== undefined) result.poolAddress = tsValueToJsonValueFns.string(value.poolAddress);
-  if (value.inToken !== undefined) result.inToken = tsValueToJsonValueFns.string(value.inToken);
-  if (value.inTokenAddress !== undefined) result.inTokenAddress = tsValueToJsonValueFns.string(value.inTokenAddress);
+  if (value.baseToken !== undefined) result.baseToken = tsValueToJsonValueFns.string(value.baseToken);
+  if (value.baseTokenAddress !== undefined) result.baseTokenAddress = tsValueToJsonValueFns.string(value.baseTokenAddress);
+  if (value.quoteToken !== undefined) result.quoteToken = tsValueToJsonValueFns.string(value.quoteToken);
+  if (value.quoteTokenAddress !== undefined) result.quoteTokenAddress = tsValueToJsonValueFns.string(value.quoteTokenAddress);
   if (value.inAmount !== undefined) result.inAmount = tsValueToJsonValueFns.uint64(value.inAmount);
-  if (value.outAmount !== undefined) result.outAmount = tsValueToJsonValueFns.uint64(value.outAmount);
-  if (value.outToken !== undefined) result.outToken = tsValueToJsonValueFns.string(value.outToken);
-  if (value.outTokenAddress !== undefined) result.outTokenAddress = tsValueToJsonValueFns.string(value.outTokenAddress);
+  if (value.outAmountMin !== undefined) result.outAmountMin = tsValueToJsonValueFns.uint64(value.outAmountMin);
+  if (value.sourceAccount !== undefined) result.sourceAccount = tsValueToJsonValueFns.string(value.sourceAccount);
+  if (value.destinationAccount !== undefined) result.destinationAccount = tsValueToJsonValueFns.string(value.destinationAccount);
   if (value.signature !== undefined) result.signature = tsValueToJsonValueFns.string(value.signature);
   return result;
 }
@@ -83,12 +89,14 @@ export function decodeJson(value: any): $.api.GetSwapsStreamUpdate {
   if (value.success !== undefined) result.success = jsonValueToTsValueFns.bool(value.success);
   if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
   if (value.poolAddress !== undefined) result.poolAddress = jsonValueToTsValueFns.string(value.poolAddress);
-  if (value.inToken !== undefined) result.inToken = jsonValueToTsValueFns.string(value.inToken);
-  if (value.inTokenAddress !== undefined) result.inTokenAddress = jsonValueToTsValueFns.string(value.inTokenAddress);
+  if (value.baseToken !== undefined) result.baseToken = jsonValueToTsValueFns.string(value.baseToken);
+  if (value.baseTokenAddress !== undefined) result.baseTokenAddress = jsonValueToTsValueFns.string(value.baseTokenAddress);
+  if (value.quoteToken !== undefined) result.quoteToken = jsonValueToTsValueFns.string(value.quoteToken);
+  if (value.quoteTokenAddress !== undefined) result.quoteTokenAddress = jsonValueToTsValueFns.string(value.quoteTokenAddress);
   if (value.inAmount !== undefined) result.inAmount = jsonValueToTsValueFns.uint64(value.inAmount);
-  if (value.outAmount !== undefined) result.outAmount = jsonValueToTsValueFns.uint64(value.outAmount);
-  if (value.outToken !== undefined) result.outToken = jsonValueToTsValueFns.string(value.outToken);
-  if (value.outTokenAddress !== undefined) result.outTokenAddress = jsonValueToTsValueFns.string(value.outTokenAddress);
+  if (value.outAmountMin !== undefined) result.outAmountMin = jsonValueToTsValueFns.uint64(value.outAmountMin);
+  if (value.sourceAccount !== undefined) result.sourceAccount = jsonValueToTsValueFns.string(value.sourceAccount);
+  if (value.destinationAccount !== undefined) result.destinationAccount = jsonValueToTsValueFns.string(value.destinationAccount);
   if (value.signature !== undefined) result.signature = jsonValueToTsValueFns.string(value.signature);
   return result;
 }
@@ -113,46 +121,58 @@ export function encodeBinary(value: $.api.GetSwapsStreamUpdate): Uint8Array {
       [3, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.inToken !== undefined) {
-    const tsValue = value.inToken;
+  if (value.baseToken !== undefined) {
+    const tsValue = value.baseToken;
     result.push(
       [4, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.inTokenAddress !== undefined) {
-    const tsValue = value.inTokenAddress;
+  if (value.baseTokenAddress !== undefined) {
+    const tsValue = value.baseTokenAddress;
     result.push(
       [5, tsValueToWireValueFns.string(tsValue)],
+    );
+  }
+  if (value.quoteToken !== undefined) {
+    const tsValue = value.quoteToken;
+    result.push(
+      [6, tsValueToWireValueFns.string(tsValue)],
+    );
+  }
+  if (value.quoteTokenAddress !== undefined) {
+    const tsValue = value.quoteTokenAddress;
+    result.push(
+      [7, tsValueToWireValueFns.string(tsValue)],
     );
   }
   if (value.inAmount !== undefined) {
     const tsValue = value.inAmount;
     result.push(
-      [6, tsValueToWireValueFns.uint64(tsValue)],
+      [8, tsValueToWireValueFns.uint64(tsValue)],
     );
   }
-  if (value.outAmount !== undefined) {
-    const tsValue = value.outAmount;
+  if (value.outAmountMin !== undefined) {
+    const tsValue = value.outAmountMin;
     result.push(
-      [7, tsValueToWireValueFns.uint64(tsValue)],
+      [9, tsValueToWireValueFns.uint64(tsValue)],
     );
   }
-  if (value.outToken !== undefined) {
-    const tsValue = value.outToken;
+  if (value.sourceAccount !== undefined) {
+    const tsValue = value.sourceAccount;
     result.push(
-      [8, tsValueToWireValueFns.string(tsValue)],
+      [10, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.outTokenAddress !== undefined) {
-    const tsValue = value.outTokenAddress;
+  if (value.destinationAccount !== undefined) {
+    const tsValue = value.destinationAccount;
     result.push(
-      [9, tsValueToWireValueFns.string(tsValue)],
+      [11, tsValueToWireValueFns.string(tsValue)],
     );
   }
   if (value.signature !== undefined) {
     const tsValue = value.signature;
     result.push(
-      [10, tsValueToWireValueFns.string(tsValue)],
+      [12, tsValueToWireValueFns.string(tsValue)],
     );
   }
   return serialize(result);
@@ -188,45 +208,59 @@ export function decodeBinary(binary: Uint8Array): $.api.GetSwapsStreamUpdate {
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
-    result.inToken = value;
+    result.baseToken = value;
   }
   field: {
     const wireValue = wireFields.get(5);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
-    result.inTokenAddress = value;
+    result.baseTokenAddress = value;
   }
   field: {
     const wireValue = wireFields.get(6);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.quoteToken = value;
+  }
+  field: {
+    const wireValue = wireFields.get(7);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.quoteTokenAddress = value;
+  }
+  field: {
+    const wireValue = wireFields.get(8);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.uint64(wireValue);
     if (value === undefined) break field;
     result.inAmount = value;
   }
   field: {
-    const wireValue = wireFields.get(7);
+    const wireValue = wireFields.get(9);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.uint64(wireValue);
     if (value === undefined) break field;
-    result.outAmount = value;
-  }
-  field: {
-    const wireValue = wireFields.get(8);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.string(wireValue);
-    if (value === undefined) break field;
-    result.outToken = value;
-  }
-  field: {
-    const wireValue = wireFields.get(9);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.string(wireValue);
-    if (value === undefined) break field;
-    result.outTokenAddress = value;
+    result.outAmountMin = value;
   }
   field: {
     const wireValue = wireFields.get(10);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.sourceAccount = value;
+  }
+  field: {
+    const wireValue = wireFields.get(11);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.destinationAccount = value;
+  }
+  field: {
+    const wireValue = wireFields.get(12);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
