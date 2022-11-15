@@ -48,7 +48,7 @@ async function run() {
 }
 
 async function http() {
-    const provider = new HttpProvider(TESTNET_API_HTTP)
+    const provider = new HttpProvider()
     console.info(" ----  HTTP Requests  ----")
     await doRequests(provider)
     console.info(" ----  HTTP Lifecycle  ----")
