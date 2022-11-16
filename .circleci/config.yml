@@ -20,9 +20,7 @@ jobs:
       - image: cimg/node:15.0.1
     steps:
       - checkout
-      - run:
-        name: Install dependencies
-        command: |
+      - run: |
           echo "this is the build job"
           cd ~/ws/solana-trader-client-ts
           npm i
