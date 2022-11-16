@@ -26,10 +26,10 @@ jobs:
             echo "this is the build job"
             cd ~/ws/solana-trader-client-ts
             npm i
-      - persist_to_workspace:
-          root: ~/ws
-          paths:
-            -solana-trader-client-ts
+#      - persist_to_workspace:
+#          root: ~/ws
+#          paths:
+#            -solana-trader-client-ts
 
 workflows:
   build_and_test:
