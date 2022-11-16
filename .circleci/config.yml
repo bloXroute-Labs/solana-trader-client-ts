@@ -15,6 +15,7 @@ jobs:
           name: Install dependenciess
           command: |
             cd ./solana-trader-client-ts
+            pwd
             npm i
   test:
     docker:
@@ -26,6 +27,7 @@ jobs:
           command: |
             pwd
             cd examples
+            pwd
             npm start
             API_ENV=testnet AUTH_HEADER=$AUTH_HEADER_TESTNET 
 
