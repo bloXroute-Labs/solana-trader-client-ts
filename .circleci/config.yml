@@ -9,13 +9,12 @@ jobs:
     docker:
       - image: cimg/node:15.0.1
     steps:
-      - working_directory: ./solana-trader-client-ts
       - checkout:
           path: solana-trader-client-ts
       - run:
           name: Install dependenciess
           command: |
-            cd ~/ws/solana-trader-client-ts
+            cd solana-trader-client-ts
             npm i 
 
   test:
