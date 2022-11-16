@@ -13,7 +13,7 @@ jobs:
       - checkout:
           path: solana-trader-client-ts
       - run:
-          name: Install dependencies
+          name: Install dependenciess
           command: |
             cd ~/ws/solana-trader-client-ts
             npm i 
