@@ -13,7 +13,11 @@ jobs:
           at: ~/ws
       - checkout:
           path: solana-trader-client-ts
-      - run: echo "this is the test job"
+      - run:
+          name: Install dependencies
+          command: |
+            cd ~/ws/solana-trader-client-ts
+            npm i 
 
   test:
     docker:
