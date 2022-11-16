@@ -5,56 +5,56 @@ version: 2.1
 #      - image: cimg/node:15.0.1
 #    working_directory: ~/solana-trader-client-ts
 jobs:
-  init:
+#  init:
+##    executor: bxts
+#    steps:
+#      - attach_workspace: ~/solana-trader-client-ts
+#      - checkout
+#      - run:
+#          name: Install dependencies
+#          command: |
+#            cd ~/ws/solana-trader-client-ts
+#            npm i
+#      - persist_to_workspace:
+#          root: ~/ws
+#          paths:
+#            -solana-trader-client-ts
+#  lint:
 #    executor: bxts
-    steps:
-      - attach_workspace: ~/solana-trader-client-ts
-      - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            cd ~/ws/solana-trader-client-ts
-            npm i
-      - persist_to_workspace:
-          root: ~/ws
-          paths:
-            -solana-trader-client-ts
-  lint:
-    executor: bxts
-    steps:
-      - attach_workspace:
-          at: ~/ws
-      - run:
-          name: lint
-          command: |
-            cd ~/ws/solana-trader-client-ts
-            npm run lint
-  format:
-    executor: bxts
-    steps:
-      - attach_workspace:
-          at: ~/ws
-      - run:
-          name: format
-          command: |
-            cd ~/ws/solana-trader-client-ts
-            npm run lint
-  examples:
-    executor: bxts
-    steps:
-      - attach_workspace:
-          at: ~/ws
-      - run:
-          name: Testnet
-          command: |
-              cd ~/ws/solana-trader-client-ts
-              API_ENV=testnet AUTH_HEADER=$AUTH_HEADER_TESTNET npm start
-workflows:
-  version: 2.1
-  test-branch:
-    jobs:
-      - init
-      - lint:
-          requires:
-            - init
+#    steps:
+#      - attach_workspace:
+#          at: ~/ws
+#      - run:
+#          name: lint
+#          command: |
+#            cd ~/ws/solana-trader-client-ts
+#            npm run lint
+#  format:
+#    executor: bxts
+#    steps:
+#      - attach_workspace:
+#          at: ~/ws
+#      - run:
+#          name: format
+#          command: |
+#            cd ~/ws/solana-trader-client-ts
+#            npm run lint
+#  examples:
+#    executor: bxts
+#    steps:
+#      - attach_workspace:
+#          at: ~/ws
+#      - run:
+#          name: Testnet
+#          command: |
+#              cd ~/ws/solana-trader-client-ts
+#              API_ENV=testnet AUTH_HEADER=$AUTH_HEADER_TESTNET npm start
+#workflows:
+#  version: 2.1
+#  test-branch:
+#    jobs:
+#      - init
+#      - lint:
+#          requires:
+#            - init
 
