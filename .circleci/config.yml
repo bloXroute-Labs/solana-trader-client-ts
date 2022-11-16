@@ -11,7 +11,8 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/ws
-      - checkout
+      - checkout:
+          path: solana-trader-client-ts
       - run: echo "this is the test job"
 
   test:
