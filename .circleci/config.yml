@@ -11,16 +11,14 @@ jobs:
     steps:
       - attach_workspace: ~/solana-trader-client-ts
       - checkout
-      - run:
-          name: Install dependencies
-
+      - run: echo "this is the test job"
 
   test:
     docker:
       - image: cimg/node:15.0.1
     steps:
       - checkout
-      - run: echo "this is the build job"
+      - run: echo "this is the test job"
 #          cd ~/ws/solana-trader-client-ts
 #          npm i
 #      - persist_to_workspace:
