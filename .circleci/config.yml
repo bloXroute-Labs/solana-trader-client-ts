@@ -21,11 +21,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install dependencies
-          command: |
-            echo "this is the build job"
-            cd ~/ws/solana-trader-client-ts
-            npm i
+        name: Install dependencies
+        command: |
+          echo "this is the build job"
+          cd ~/ws/solana-trader-client-ts
+          npm i
 #      - persist_to_workspace:
 #          root: ~/ws
 #          paths:
