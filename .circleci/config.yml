@@ -24,7 +24,8 @@ jobs:
       - run:
           name: Testnet
           command: |
-            cd ./solana-trader-client-ts/examples
+            pwd
+            cd examples
             npm start
             API_ENV=testnet AUTH_HEADER=$AUTH_HEADER_TESTNET 
 
