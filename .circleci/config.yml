@@ -22,8 +22,8 @@ jobs:
       - checkout
       - run: |
           echo "this is the build job"
-          cd ~/ws/solana-trader-client-ts
-          npm i
+#          cd ~/ws/solana-trader-client-ts
+#          npm i
 #      - persist_to_workspace:
 #          root: ~/ws
 #          paths:
