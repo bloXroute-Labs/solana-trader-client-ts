@@ -1,14 +1,14 @@
 version: 2.1
-executors:
-  bxts:
-    docker:
-      - image: cimg/node:15.0.1
-    working_directory: ~/ws
+#executors:
+#  bxts:
+#    docker:
+#      - image: cimg/node:15.0.1
+#    working_directory: ~/solana-trader-client-ts
 jobs:
   init:
-    executor: bxts
+#    executor: bxts
     steps:
-      - attach_workspace: ~/ws
+      - attach_workspace: ~/solana-trader-client-ts
       - checkout
       - run:
           name: Install dependencies
@@ -50,18 +50,11 @@ jobs:
               cd ~/ws/solana-trader-client-ts
               API_ENV=testnet AUTH_HEADER=$AUTH_HEADER_TESTNET npm start
 workflows:
-  version: 2
+  version: 2.1
   test-branch:
     jobs:
       - init
       - lint:
-          requires:
-            - init
-      - format:
-          requires:
-            - init
-      - examples:
-          context: trader-api-sdk
           requires:
             - init
 
