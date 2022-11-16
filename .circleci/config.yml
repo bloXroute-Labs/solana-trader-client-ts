@@ -15,20 +15,19 @@ jobs:
           name: Install dependenciess
           command: |
             cd solana-trader-client-ts
-            npm i 
-
+            npm i
+            npm audit fix
   test:
     docker:
       - image: cimg/node:15.0.1
     steps:
       - checkout
-      - run: echo "this is the test job"
-#          cd ~/ws/solana-trader-client-ts
-#          npm i
-#      - persist_to_workspace:
-#          root: ~/ws
-#          paths:
-#            -solana-trader-client-ts
+      - run:
+          name: Testnet
+          command: |
+            cd solana-trader-client-ts/examples
+            npm start
+            API_ENV=testnet AUTH_HEADER=$AUTH_HEADER_TESTNET 
 
 workflows:
   build_and_test:
