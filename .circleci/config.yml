@@ -9,8 +9,7 @@ jobs:
     docker:
       - image: cimg/node:15.0.1
     steps:
-#      - attach_workspace:
-#          at: ~/ws
+      - working_directory: ./solana-trader-client-ts
       - checkout:
           path: solana-trader-client-ts
       - run:
