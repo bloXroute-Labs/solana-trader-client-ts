@@ -16,7 +16,6 @@ jobs:
           command: |
             cd solana-trader-client-ts
             npm i
-            npm audit fix
   test:
     docker:
       - image: cimg/node:15.0.1
