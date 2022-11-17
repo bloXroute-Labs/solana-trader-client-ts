@@ -64,6 +64,7 @@ export class GrpcProvider extends BaseProvider {
     private grpcClient: Client
 
     constructor(address = `${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`) {
+        console.log(address)
         super()
         const metaCallback = (options: CallMetadataOptions, cb: (err: Error | null, metadata?: grpc.Metadata) => void) => {
             const meta = new grpc.Metadata()
