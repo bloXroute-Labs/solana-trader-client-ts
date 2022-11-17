@@ -33,8 +33,11 @@ jobs:
       - node/install-packages:
           pkg-manager: npm
       - run:
+          command: sudo npm install -g lint
+          name: Install ts-node
+      - run:
           name: lint
-          command: tslint -c tslint.json
+          command: lint
 
   test:
     executor: node/default
