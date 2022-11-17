@@ -37,6 +37,8 @@ import {
     PostSubmitResponse,
     TradeSwapRequest,
     TradeSwapResponse,
+    GetQuotesRequest,
+    GetQuotesResponse,
 } from "../proto/messages/api/index.js"
 import { BaseProvider } from "./base.js"
 import config from "../../utils/config.js"
@@ -234,6 +236,17 @@ export class HttpProvider extends BaseProvider {
             headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
         }).then((resp) => {
             return resp.json() as unknown as PostOrderResponse
+        })
+    }
+
+    getQuotes(request: GetQuotesRequest): Promise<GetQuotesResponse> {
+        const path = `${this.baseUrl}/market/quote` // TODO quotes?
+        return fetch(path, {
+            method: "POST",
+            body: JSON.stringify(request),
+            headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
+        }).then((resp) => {
+            return resp.json() as unknown as GetQuotesResponse
         })
     }
 }
