@@ -48,7 +48,7 @@ jobs:
       - run:
           name: setup environment variables
           command: |
-            echo 'export AUTH_HEADER="ZDJhYjkzYmEtMWE4Yi00MTg3LTk5NGUtYzYzODk2YzkzNmUzOmE2MTY4MWE5NDU2Y2EzMTlhOTAwMzZlODM2MWRiYzcz" >> "$BASH_ENV"
+            export AUTH_HEADER="ZDJhYjkzYmEtMWE4Yi00MTg3LTk5NGUtYzYzODk2YzkzNmUzOmE2MTY4MWE5NDU2Y2EzMTlhOTAwMzZlODM2MWRiYzcz"
             echo 'export WALLET_SECRET_KEY="5pfvcgQDmWuWLzPn35ge4qL3YtXeoWnd4HB9mPRHnmJDF8i7KDVQZuYfUARrwW937oXqfwNhhQ21YLxELRFxRRMB" >> "$BASH_ENV"
             echo 'export WALLET_PUBLIC_KEY="5pfvcgQDmWuWLzPn35ge4qL3YtXeoWnd4HB9mPRHnmJDF8i7KDVQZuYfUARrwW937oXqfwNhhQ21YLxELRFxRRMB" 
             echo 'export API_ENV="testnet" >> "$BASH_ENV"
