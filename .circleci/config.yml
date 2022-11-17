@@ -24,7 +24,7 @@ jobs:
           name: Run tests
       - run:
           command: ts-node -v
-          name: tsnode version
+          name: Check ts-node version to make sure it installed
 
   test:
     executor: node/default
@@ -37,13 +37,14 @@ jobs:
           command: |
             pwd
             npm start
-            API_ENV=testnet AUTH_HEADER=$AUTH_HEADER_TESTNET 
+            AUTH_HEADER=$AUTH_HEADER_TESTNET
 
 workflows:
   build_and_test:
     jobs:
       - build
       - test:
+          context: trader-api-sdk
           requires:
             - build
 
