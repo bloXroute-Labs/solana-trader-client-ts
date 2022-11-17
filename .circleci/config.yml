@@ -9,10 +9,8 @@ orbs:
 jobs:
   build:
     executor: node/default
-#    docker:
-#      - image: cimg/node:15.0.1
     steps:
-      - checkout:
+      - checkout
       - node/install-packages:
           pkg-manager: npm
       - run:
