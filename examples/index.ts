@@ -666,6 +666,21 @@ async function callReplaceByClientOrderID(provider: BaseProvider) {
     }
 }
 
+async function callTradeSwap(provider: BaseProvider) {
+    try {
+        console.info("Generating and submitting a Cancel by Client Order ID transaction")
+        const req = await provider.submitCancelOrderByClientOrderID({
+            marketAddress: marketAddress,
+            ownerAddress: ownerAddress,
+            openOrdersAddress: openOrdersAddress,
+            clientOrderID: testOrder.clientOrderID,
+        })
+        console.info(req)
+    } catch (error) {
+        console.error("Failed to generate and/or submit a Cancel by Client Order ID transaction", error)
+    }
+}
+
 async function callReplaceOrder(provider: BaseProvider) {
     try {
         console.info("Generating and submitting a Cancel and Replace by Client Order ID transaction")
