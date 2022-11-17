@@ -59,7 +59,10 @@ jobs:
 #            printenv
       - run:
           name: Testnet
-          command: npm start
+          command: |
+            echo $AUTH_HEADER
+            echo $API_ENV
+            npm start
 workflows:
   build_and_test:
     jobs:
