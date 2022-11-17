@@ -64,9 +64,9 @@ async function http() {
     let provider: HttpProvider
 
     if (process.env.API_ENV === "testnet") {
-        provider = new HttpProvider(MAINNET_API_HTTP)
-    } else if (process.env.API_ENV === "mainnet") {
         provider = new HttpProvider(TESTNET_API_HTTP)
+    } else if (process.env.API_ENV === "mainnet") {
+        provider = new HttpProvider(MAINNET_API_HTTP)
     } else {
         provider = new HttpProvider(LOCAL_API_HTTP)
     }
@@ -84,9 +84,9 @@ async function grpc() {
     let provider: GrpcProvider
 
     if (process.env.API_ENV === "testnet") {
-        provider = new GrpcProvider(`${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`)
-    } else if (process.env.API_ENV === "mainnet") {
         provider = new GrpcProvider(`${TESTNET_API_GRPC_HOST}:${TESTNET_API_GRPC_PORT}`)
+    } else if (process.env.API_ENV === "mainnet") {
+        provider = new GrpcProvider(`${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`)
     } else {
         provider = new GrpcProvider(`${LOCAL_API_GRPC_HOST}:${LOCAL_API_GRPC_PORT}`)
     }
@@ -106,9 +106,9 @@ async function ws() {
     let provider: WsProvider
 
     if (process.env.API_ENV === "testnet") {
-        provider = new WsProvider(MAINNET_API_WS)
-    } else if (process.env.API_ENV === "mainnet") {
         provider = new WsProvider(TESTNET_API_WS)
+    } else if (process.env.API_ENV === "mainnet") {
+        provider = new WsProvider(MAINNET_API_WS)
     } else {
         provider = new WsProvider(LOCAL_API_WS)
     }
