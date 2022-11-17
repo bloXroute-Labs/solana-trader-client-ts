@@ -48,7 +48,7 @@ jobs:
       - run:
           name: Testnet
           environment:
-            AUTH_HEADER: $AUTH_HEADER_TESTNET
+            AUTH_HEADER: ZDJhYjkzYmEtMWE4Yi00MTg3LTk5NGUtYzYzODk2YzkzNmUzOmE2MTY4MWE5NDU2Y2EzMTlhOTAwMzZlODM2MWRiYzcz
             WALLET_SECRET_KEY: 5pfvcgQDmWuWLzPn35ge4qL3YtXeoWnd4HB9mPRHnmJDF8i7KDVQZuYfUARrwW937oXqfwNhhQ21YLxELRFxRRMB
             WALLET_PUBLIC_KEY: 5ggt7wtjap91P3SPrFfi3QNuXRCn9D9oXcsNeRQH51q3
             API_ENV: testnet
