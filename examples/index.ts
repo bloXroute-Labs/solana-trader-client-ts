@@ -8,7 +8,14 @@ import { PostOrderRequest, GetOpenOrdersRequest, GetOpenOrdersResponse, PostCanc
 import config from "../utils/config.js"
 import { addMemo, addMemoToSerializedTxn } from "../utils/memo.js"
 import { Keypair } from "@solana/web3.js"
-import { TESTNET_API_HTTP } from "../utils/constants.js"
+import {
+    LOCAL_API_GRPC_HOST, LOCAL_API_GRPC_PORT,
+    LOCAL_API_HTTP, LOCAL_API_WS,
+    MAINNET_API_GRPC_HOST,
+    MAINNET_API_GRPC_PORT,
+    MAINNET_API_HTTP, MAINNET_API_WS, TESTNET_API_GRPC_HOST, TESTNET_API_GRPC_PORT,
+    TESTNET_API_HTTP, TESTNET_API_WS
+} from "../utils/constants";
 const marketAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"
 const ownerAddress = config.WalletPublicKey
 const payerAddress = config.WalletPublicKey
@@ -48,7 +55,16 @@ async function run() {
 }
 
 async function http() {
-    const provider = new HttpProvider()
+    let provider:HttpProvider
+
+    if (process.env.API_ENV === "testnet") {
+        provider = new HttpProvider(MAINNET_API_HTTP)
+    } else if (process.env.API_ENV === "mainnet") {
+        provider = new HttpProvider(TESTNET_API_HTTP)
+    } else {
+        provider = new HttpProvider(LOCAL_API_HTTP)
+    }
+
     console.info(" ----  HTTP Requests  ----")
     await doRequests(provider)
     console.info(" ----  HTTP Lifecycle  ----")
@@ -59,7 +75,16 @@ async function http() {
 }
 
 async function grpc() {
-    const provider = new GrpcProvider()
+    let provider:GrpcProvider
+
+    if (process.env.API_ENV === "testnet") {
+        provider = new GrpcProvider(`${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`)
+    } else if (process.env.API_ENV === "mainnet") {
+        provider = new GrpcProvider(`${TESTNET_API_GRPC_HOST}:${TESTNET_API_GRPC_PORT}`)
+    } else {
+        provider = new GrpcProvider(`${LOCAL_API_GRPC_HOST}:${LOCAL_API_GRPC_PORT}`)
+    }
+
     console.info(" ----  GRPC Requests  ----")
     await doRequests(provider)
     console.info(" ----  GRPC Streams  ----")
@@ -72,7 +97,16 @@ async function grpc() {
 }
 
 async function ws() {
-    const provider = new WsProvider()
+    let provider:WsProvider
+
+    if (process.env.API_ENV === "testnet") {
+        provider = new WsProvider(MAINNET_API_WS)
+    } else if (process.env.API_ENV === "mainnet") {
+        provider = new WsProvider(TESTNET_API_WS)
+    } else {
+        provider = new WsProvider(LOCAL_API_WS)
+    }
+
     console.info(" ----  WS Requests  ----")
     await doRequests(provider)
     console.info(" ----  WS Streams  ----")

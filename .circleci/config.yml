@@ -49,8 +49,7 @@ jobs:
           name: Testnet
           command: |
             pwd
-            npm start
-            AUTH_HEADER=$AUTH_HEADER_MAINNET
+            AUTH_HEADER=$AUTH_HEADER_TESTNET API_ENV=testent npm start
 
 workflows:
   build_and_test:
