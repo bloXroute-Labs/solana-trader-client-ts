@@ -81,25 +81,25 @@ async function http() {
 }
 
 async function grpc() {
-    // let provider: GrpcProvider
-    //
-    // if (process.env.API_ENV === "testnet") {
-    //     provider = new GrpcProvider(`${TESTNET_API_GRPC_HOST}:${TESTNET_API_GRPC_PORT}`)
-    // } else if (process.env.API_ENV === "mainnet") {
-    //     provider = new GrpcProvider(`${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`)
-    // } else {
-    //     provider = new GrpcProvider(`${LOCAL_API_GRPC_HOST}:${LOCAL_API_GRPC_PORT}`)
-    // }
-    //
-    // console.info(" ----  GRPC Requests  ----")
-    // await doRequests(provider)
-    // console.info(" ----  GRPC Streams  ----")
-    // await doStreams(provider)
-    // console.info(" ----  GRPC Cancel All  ----")
-    // await callCancelAll(provider)
-    // console.info(" ----  GRPC Lifecycle  ----")
-    // await doLifecycle(provider)
-    // console.info(" ")
+    let provider: GrpcProvider
+
+    if (process.env.API_ENV === "testnet") {
+        provider = new GrpcProvider(`${TESTNET_API_GRPC_HOST}:${TESTNET_API_GRPC_PORT}`)
+    } else if (process.env.API_ENV === "mainnet") {
+        provider = new GrpcProvider(`${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`)
+    } else {
+        provider = new GrpcProvider(`${LOCAL_API_GRPC_HOST}:${LOCAL_API_GRPC_PORT}`)
+    }
+
+    console.info(" ----  GRPC Requests  ----")
+    await doRequests(provider)
+    console.info(" ----  GRPC Streams  ----")
+    await doStreams(provider)
+    console.info(" ----  GRPC Cancel All  ----")
+    await callCancelAll(provider)
+    console.info(" ----  GRPC Lifecycle  ----")
+    await doLifecycle(provider)
+    console.info(" ")
 }
 
 async function ws() {
