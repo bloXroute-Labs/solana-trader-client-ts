@@ -26,6 +26,13 @@ jobs:
           command: ts-node -v
           name: Check ts-node version to make sure it installed
 
+  lint:
+    executor: node/default
+    steps:
+      - run:
+          name: lint
+          command: tslint -c tslint.json
+
   test:
     executor: node/default
     steps:
