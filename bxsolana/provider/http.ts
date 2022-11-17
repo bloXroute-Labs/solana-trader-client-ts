@@ -176,7 +176,6 @@ export class HttpProvider extends BaseProvider {
 
     postRouteTradeSwap(request: RouteTradeSwapRequest): Promise<TradeSwapResponse> {
         const path = `${this.baseUrl}/trade/route-swap`
-        console.log(JSON.stringify(request))
         return fetch(path, {
             method: "POST",
             body: JSON.stringify(request),
