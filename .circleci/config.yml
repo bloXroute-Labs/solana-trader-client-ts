@@ -16,7 +16,7 @@ jobs:
           command: |
             cd ./solana-trader-client-ts
             pwd
-            npm install -g ts-node
+            sudo npm install -g ts-node
   test:
     docker:
       - image: cimg/node:15.0.1
