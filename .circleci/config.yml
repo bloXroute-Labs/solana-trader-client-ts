@@ -46,12 +46,15 @@ jobs:
       - node/install-packages:
           pkg-manager: npm
       - run:
+          name: setup environment variables
+          command: |
+            echo 'export AUTH_HEADER="ZDJhYjkzYmEtMWE4Yi00MTg3LTk5NGUtYzYzODk2YzkzNmUzOmE2MTY4MWE5NDU2Y2EzMTlhOTAwMzZlODM2MWRiYzcz" >> "$BASH_ENV"
+            echo 'export WALLET_SECRET_KEY="5pfvcgQDmWuWLzPn35ge4qL3YtXeoWnd4HB9mPRHnmJDF8i7KDVQZuYfUARrwW937oXqfwNhhQ21YLxELRFxRRMB" >> "$BASH_ENV"
+            echo 'export WALLET_PUBLIC_KEY="5pfvcgQDmWuWLzPn35ge4qL3YtXeoWnd4HB9mPRHnmJDF8i7KDVQZuYfUARrwW937oXqfwNhhQ21YLxELRFxRRMB" >> "$BASH_ENV"
+            echo 'export API_ENV="testnet" >> "$BASH_ENV"
+            printenv
+      - run:
           name: Testnet
-          environment:
-            AUTH_HEADER: "ZDJhYjkzYmEtMWE4Yi00MTg3LTk5NGUtYzYzODk2YzkzNmUzOmE2MTY4MWE5NDU2Y2EzMTlhOTAwMzZlODM2MWRiYzcz"
-            WALLET_SECRET_KEY: "5pfvcgQDmWuWLzPn35ge4qL3YtXeoWnd4HB9mPRHnmJDF8i7KDVQZuYfUARrwW937oXqfwNhhQ21YLxELRFxRRMB"
-            WALLET_PUBLIC_KEY: "5ggt7wtjap91P3SPrFfi3QNuXRCn9D9oXcsNeRQH51q3"
-            API_ENV: testnet
           command: npm start
 workflows:
   build_and_test:
