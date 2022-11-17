@@ -23,13 +23,14 @@ jobs:
           name: Build app
       - persist_to_workspace:
           root: ~/solana-trader-client-ts
-          paths: .
-      - run:
-          name: Install dependencies
-          command: |
-            cd ./solana-trader-client-ts
-            pwd
-            sudo npm install -g ts-node
+          paths:
+            - .
+#      - run:
+#          name: Install dependencies
+#          command: |
+#            cd ./solana-trader-client-ts
+#            pwd
+#            sudo npm install -g ts-node
   test:
     docker:
       - image: cimg/node:15.0.1
