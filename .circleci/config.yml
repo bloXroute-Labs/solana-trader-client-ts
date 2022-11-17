@@ -56,6 +56,7 @@ jobs:
             echo $WALLET_SECRET_KEY
             echo $WALLET_PUBLIC_KEY
             echo $API_ENV
+            npm start
 #            printenv
       - run:
           name: Testnet
