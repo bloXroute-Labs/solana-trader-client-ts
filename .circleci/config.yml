@@ -17,6 +17,9 @@ jobs:
           command: npm install
           name: Install npm
       - run:
+          command: npm install -g ts-node
+          name: Install ts-node
+      - run:
           command: npm run test
           name: Run tests
 #      - run:
