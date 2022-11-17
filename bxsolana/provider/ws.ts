@@ -49,9 +49,12 @@ import {
     PostSubmitRequest,
     PostSubmitResponse,
     TradeSwapRequest,
+    RouteTradeSwapRequest,
     TradeSwapResponse,
     GetSwapsStreamRequest,
     GetSwapsStreamResponse,
+    GetPricesStreamRequest,
+    GetPricesStreamResponse,
 } from "../proto/messages/api/index.js"
 import { BaseProvider } from "./base.js"
 import config from "../../utils/config.js"
@@ -180,6 +183,10 @@ export class WsProvider extends BaseProvider {
 
     postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
         return this.wsSocketCall("PostTradeSwap", request)
+    }
+
+    postRouteTradeSwap(request: RouteTradeSwapRequest): Promise<TradeSwapResponse> {
+        return this.wsSocketCall("PostRouteTradeSwap", request);
     }
 
     getSwapsStream(request: GetSwapsStreamRequest): Promise<AsyncGenerator<GetSwapsStreamResponse>> {

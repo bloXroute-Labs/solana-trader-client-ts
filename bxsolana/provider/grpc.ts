@@ -42,6 +42,7 @@ import {
     GetRecentBlockHashRequest,
     GetRecentBlockHashResponse,
     TradeSwapRequest,
+    RouteTradeSwapRequest,
     TradeSwapResponse,
     GetQuotesStreamRequest,
     GetQuotesStreamResponse,
@@ -193,6 +194,10 @@ export class GrpcProvider extends BaseProvider {
 
     postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
         return this.client.postTradeSwap(request)
+    }
+
+    postRouteTradeSwap(request: RouteTradeSwapRequest): Promise<TradeSwapResponse> {
+        return this.client.postRouteTradeSwap(request);
     }
 
     getSwapsStream(request: GetSwapsStreamRequest): Promise<AsyncGenerator<GetSwapsStreamResponse>> {

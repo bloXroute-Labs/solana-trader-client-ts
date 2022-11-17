@@ -36,6 +36,7 @@ import {
     PostSubmitRequest,
     PostSubmitResponse,
     TradeSwapRequest,
+    RouteTradeSwapRequest,
     TradeSwapResponse,
     GetQuotesRequest,
     GetQuotesResponse,
@@ -152,7 +153,19 @@ export class HttpProvider extends BaseProvider {
     }
 
     postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
-        const path = `${this.baseUrl}/trade/place`
+        const path = `${this.baseUrl}/trade/swap`
+        return fetch(path, {
+            method: "POST",
+            body: JSON.stringify(request),
+            headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
+        }).then((resp) => {
+            return resp.json() as unknown as TradeSwapResponse
+        })
+    }
+
+    postRouteTradeSwap(request: RouteTradeSwapRequest): Promise<TradeSwapResponse> {
+        const path = `${this.baseUrl}/trade/route-swap`
+        console.log(JSON.stringify(request))
         return fetch(path, {
             method: "POST",
             body: JSON.stringify(request),
