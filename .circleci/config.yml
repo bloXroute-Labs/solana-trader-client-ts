@@ -56,15 +56,20 @@ jobs:
             echo $WALLET_SECRET_KEY
             echo $WALLET_PUBLIC_KEY
             echo $API_ENV
-            printenv
             npm start
-#            printenv
       - run:
-          name: Testnet
+          name: mainnet
           command: |
+            export AUTH_HEADER=$AUTH_HEADER_MAINNET
+            export WALLET_SECRET_KEY=$PRIVATE_KEY
+            export WALLET_PUBLIC_KEY=$PUBLIC_KEY
+            export API_ENV="testnet"
             echo $AUTH_HEADER
+            echo $WALLET_SECRET_KEY
+            echo $WALLET_PUBLIC_KEY
             echo $API_ENV
             npm start
+
 workflows:
   build_and_test:
     jobs:
