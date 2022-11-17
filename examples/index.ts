@@ -558,7 +558,7 @@ async function callGetPricesStream(provider: BaseProvider) {
     try {
         console.info("Subscribing for prices updates of SOL and USDC on Raydium")
 
-        const projects: Project[] = ["P_RAYDIUM"]
+        const projects: Project[] = ["P_RAYDIUM", "P_JUPITER"]
         const tokens: string[] = ["SOL", "USDC"]
         const stream = await provider.getPricesStream({ projects: projects, tokens })
 
