@@ -46,11 +46,11 @@ jobs:
       - node/install-packages:
           pkg-manager: npm
       - run:
-          name: setup environment variables
+          name: testnet
           command: |
-            export AUTH_HEADER="ZDJhYjkzYmEtMWE4Yi00MTg3LTk5NGUtYzYzODk2YzkzNmUzOmE2MTY4MWE5NDU2Y2EzMTlhOTAwMzZlODM2MWRiYzcz"
-            export WALLET_SECRET_KEY="5pfvcgQDmWuWLzPn35ge4qL3YtXeoWnd4HB9mPRHnmJDF8i7KDVQZuYfUARrwW937oXqfwNhhQ21YLxELRFxRRMB"
-            export WALLET_PUBLIC_KEY="5ggt7wtjap91P3SPrFfi3QNuXRCn9D9oXcsNeRQH51q3" 
+            export AUTH_HEADER=$AUTH_HEADER_TESTNET
+            export WALLET_SECRET_KEY=$PRIVATE_KEY
+            export WALLET_PUBLIC_KEY=$PUBLIC_KEY
             export API_ENV="testnet"
             echo $AUTH_HEADER
             echo $WALLET_SECRET_KEY
