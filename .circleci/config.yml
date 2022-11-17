@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  node: circleci/node@5.0.2
 #executors:
 #  bxts:
 #    docker:
@@ -6,11 +8,20 @@ version: 2.1
 #    working_directory: ~/solana-trader-client-ts
 jobs:
   build:
-    docker:
-      - image: cimg/node:15.0.1
+    executor: node/default
+#    docker:
+#      - image: cimg/node:15.0.1
     steps:
       - checkout:
           path: solana-trader-client-ts
+      - node/install-packages:
+          pkg-manager: yarn
+      - run:
+          command: yarn test
+          name: Run tests
+      - run:
+          command: yarn build
+          name: Build app
       - run:
           name: Install dependenciess
           command: |
