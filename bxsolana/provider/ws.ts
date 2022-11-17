@@ -166,7 +166,7 @@ export class WsProvider extends BaseProvider {
     }
 
     getPricesStream(request: GetPricesStreamRequest): Promise<AsyncGenerator<GetPricesStreamResponse>> {
-        return this.wsSocketCall("GetPricesStream", request);
+        return this.wsSocketStreamCall("GetPricesStream", request);
     }
 
     getPools(request: GetPoolsRequest): Promise<GetPoolsResponse> {
