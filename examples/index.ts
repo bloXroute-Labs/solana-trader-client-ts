@@ -172,6 +172,10 @@ async function doSolanaRequests(provider: BaseProvider) {
     await callTradeSwap(provider)
     console.info(" ")
     console.info(" ")
+
+    await callRouteTradeSwap(provider)
+    console.info(" ")
+    console.info(" ")
 }
 
 async function doStreams(provider: BaseProvider) {
@@ -672,16 +676,47 @@ async function callReplaceByClientOrderID(provider: BaseProvider) {
 
 async function callTradeSwap(provider: BaseProvider) {
     try {
-        console.info("Generating and submitting a Cancel by Client Order ID transaction")
-        const req = await provider.submitCancelOrderByClientOrderID({
-            marketAddress: marketAddress,
+        console.info("Submitting a trade swap")
+        const resp = await provider.postTradeSwap({
             ownerAddress: ownerAddress,
-            openOrdersAddress: openOrdersAddress,
-            clientOrderID: testOrder.clientOrderID,
+            inToken: "USDC",
+            outToken: "SOL",
+            inAmount: 0.01,
+            slippage: 0.1,
+            project: "P_RAYDIUM"
         })
-        console.info(req)
+        console.info(resp)
     } catch (error) {
-        console.error("Failed to generate and/or submit a Cancel by Client Order ID transaction", error)
+        console.error("Failed to generate and/or submit a trade swap", error)
+    }
+}
+
+async function callRouteTradeSwap(provider: BaseProvider) {
+    try {
+        console.info("Submitting a route trade swap")
+        const resp = await provider.postRouteTradeSwap({
+            ownerAddress: ownerAddress,
+            steps: [
+                {
+                    inToken: "FIDA",
+                    outToken: "RAY",
+                    inAmount: 0.01,
+                    outAmount: 0.007505,
+                    outAmountMin: 0.074
+                },
+                {
+                    inToken: "RAY",
+                    outToken: "USDC",
+                    inAmount: 0.007505,
+                    outAmount: 0.004043,
+                    outAmountMin: 0.00400
+                }
+            ],
+            project: "P_RAYDIUM"
+        })
+        console.info(resp)
+    } catch (error) {
+        console.error("Failed to generate and/or submit a route trade swap", error)
     }
 }
 
