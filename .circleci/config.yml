@@ -8,23 +8,24 @@ orbs:
 #    working_directory: ~/solana-trader-client-ts
 jobs:
   build:
-    working_directory: ./solana-trader-client-ts/
     executor: node/default
 #    docker:
 #      - image: cimg/node:15.0.1
     steps:
       - checkout:
-          path: solana-trader-client-ts
       - node/install-packages:
-          pkg-manager: yarn
+          pkg-manager: npm
       - run:
-          command: yarn test
+          command: npm run test
           name: Run tests
       - run:
-          command: yarn build
+          command: npm run build
           name: Build app
+      - persist_to_workspace:
+          root: ~/solana-trader-client-ts
+          paths: .
       - run:
-          name: Install dependenciess
+          name: Install dependencies
           command: |
             cd ./solana-trader-client-ts
             pwd
