@@ -47,7 +47,7 @@ jobs:
           command: |
             pwd
             npm start
-            AUTH_HEADER=$AUTH_HEADER_TESTNET
+            AUTH_HEADER=$AUTH_HEADER_MAINNET
 
 workflows:
   build_and_test:
