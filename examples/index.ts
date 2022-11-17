@@ -566,7 +566,7 @@ async function callGetPricesStream(provider: BaseProvider) {
         for await (const update of stream) {
             console.info(update)
             count++
-            if (count == 5) {
+            if (count == 3) {
                 break
             }
         }
