@@ -19,9 +19,9 @@ jobs:
       - run:
           command: npm run test
           name: Run tests
-      - run:
-          command: npm run build
-          name: Build app
+#      - run:
+#          command: npm run build
+#          name: Build app
       - persist_to_workspace:
           root: ~/solana-trader-client-ts
           paths:
@@ -33,8 +33,7 @@ jobs:
 #            pwd
 #            sudo npm install -g ts-node
   test:
-    docker:
-      - image: cimg/node:15.0.1
+    executor: node/default
     steps:
       - checkout
       - run:
