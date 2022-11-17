@@ -25,22 +25,7 @@ jobs:
       - run:
           command: ts-node -v
           name: tsnode version
-      - run:
-          command: npm start
-          name: Run client
-#      - run:
-#          command: npm run build
-#          name: Build app
-#      - persist_to_workspace:
-#          root: ~/solana-trader-client-ts
-#          paths:
-#            - .
-#      - run:
-#          name: Install dependencies
-#          command: |
-#            cd ./solana-trader-client-ts
-#            pwd
-#            sudo npm install -g ts-node
+
   test:
     executor: node/default
     steps:
