@@ -49,8 +49,8 @@ jobs:
           name: Testnet
           environment:
             AUTH_HEADER: $AUTH_HEADER_TESTNET
-            WALLET_SECRET_KEY: $PRIVATE_KEY
-            WALLET_PUBLIC_KEY: $PUBLIC_KEY
+#            WALLET_SECRET_KEY: $PRIVATE_KEY
+#            WALLET_PUBLIC_KEY: $PUBLIC_KEY
             API_ENV: testnet
           command: npm start
 workflows:
