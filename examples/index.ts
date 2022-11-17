@@ -54,34 +54,6 @@ async function run() {
     await ws()
 }
 
-async function doSolanaRequests(provider: BaseProvider) {
-    await callGetPrices(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callGetPools(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callGetQuotes(provider)
-    console.info(" ")
-    console.info(" ")
-}
-
-async function doSolanaStreams(provider: BaseProvider) {
-    await callGetPricesStream(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callGetPoolsStream(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callGetQuotesStream(provider)
-    console.info(" ")
-    console.info(" ")
-}
-
 async function http() {
     const provider = new HttpProvider()
     console.info(" ----  HTTP Requests  ----")
@@ -184,6 +156,24 @@ async function doRequests(provider: BaseProvider) {
     console.info(" ")
 }
 
+async function doSolanaRequests(provider: BaseProvider) {
+    await callGetPrices(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetPools(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetQuotes(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callTradeSwap(provider)
+    console.info(" ")
+    console.info(" ")
+}
+
 async function doStreams(provider: BaseProvider) {
     await callGetOrderbookStream(provider)
     console.info(" ")
@@ -194,6 +184,20 @@ async function doStreams(provider: BaseProvider) {
     console.info(" ")
 
     await callGetTradesStream(provider)
+    console.info(" ")
+    console.info(" ")
+}
+
+async function doSolanaStreams(provider: BaseProvider) {
+    await callGetPricesStream(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetPoolsStream(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetQuotesStream(provider)
     console.info(" ")
     console.info(" ")
 }
