@@ -50,6 +50,9 @@ workflows:
   build_and_test:
     jobs:
       - build
+      - lint:
+          requires:
+            build
       - test:
           context: trader-api-sdk
           requires:
