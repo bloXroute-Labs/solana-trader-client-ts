@@ -49,7 +49,7 @@ jobs:
           name: Testnet
           environment:
             AUTH_HEADER: $AUTH_HEADER_TESTNET
-#            WALLET_SECRET_KEY: $PRIVATE_KEY
+            WALLET_SECRET_KEY: 5pfvcgQDmWuWLzPn35ge4qL3YtXeoWnd4HB9mPRHnmJDF8i7KDVQZuYfUARrwW937oXqfwNhhQ21YLxELRFxRRMB
             WALLET_PUBLIC_KEY: 5ggt7wtjap91P3SPrFfi3QNuXRCn9D9oXcsNeRQH51q3
             API_ENV: testnet
           command: npm start
