@@ -8,7 +8,7 @@ orbs:
 #    working_directory: ~/solana-trader-client-ts
 jobs:
   build:
-    working_directory: ~/solana-trader-client-ts/
+    working_directory: ./solana-trader-client-ts/
     executor: node/default
 #    docker:
 #      - image: cimg/node:15.0.1
