@@ -143,9 +143,8 @@ export class HttpProvider extends BaseProvider {
 
     getQuotes(request: GetQuotesRequest): Promise<GetQuotesResponse> {
         let path = `${this.baseUrl}/market/quote?inToken=${request.inToken}&outToken=${request.outToken}&inAmount=${request.inAmount}&slippage=${request.slippage}&limit=${request.limit}`
-        const args = request.projects.map((v) => `projects=${v}`).join("&") // TODO see if you can do with for loop?
-        if (args != "") {
-            path += `&${args}`
+        for (const project of request.projects)  {
+            path += `&projects=${project}`
         }
 
         return fetch(path, {headers: { Authorization: config.AuthHeader }}).then((resp) => {
