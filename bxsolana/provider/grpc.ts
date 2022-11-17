@@ -51,6 +51,8 @@ import {
     GetPoolReservesStreamRequest,
     GetPoolReservesStreamResponse,
     GetPriceResponse,
+    GetPricesStreamRequest,
+    GetPricesStreamResponse,
     GetSwapsStreamRequest,
     GetSwapsStreamResponse,
 } from "../proto/messages/api/index.js"
@@ -174,6 +176,10 @@ export class GrpcProvider extends BaseProvider {
     // Amm
     getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
         return this.client.getPrice(request)
+    }
+
+    getPricesStream(request: GetPricesStreamRequest): Promise<AsyncGenerator<GetPricesStreamResponse>> {
+        return this.client.getPricesStream(request);
     }
 
     getPools(request: GetPoolsRequest): Promise<GetPoolsResponse> {
