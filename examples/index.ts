@@ -9,13 +9,19 @@ import config from "../utils/config.js"
 import { addMemo, addMemoToSerializedTxn } from "../utils/memo.js"
 import { Keypair } from "@solana/web3.js"
 import {
-    LOCAL_API_GRPC_HOST, LOCAL_API_GRPC_PORT,
-    LOCAL_API_HTTP, LOCAL_API_WS,
+    LOCAL_API_GRPC_HOST,
+    LOCAL_API_GRPC_PORT,
+    LOCAL_API_HTTP,
+    LOCAL_API_WS,
     MAINNET_API_GRPC_HOST,
     MAINNET_API_GRPC_PORT,
-    MAINNET_API_HTTP, MAINNET_API_WS, TESTNET_API_GRPC_HOST, TESTNET_API_GRPC_PORT,
-    TESTNET_API_HTTP, TESTNET_API_WS
-} from "../utils/constants";
+    MAINNET_API_HTTP,
+    MAINNET_API_WS,
+    TESTNET_API_GRPC_HOST,
+    TESTNET_API_GRPC_PORT,
+    TESTNET_API_HTTP,
+    TESTNET_API_WS,
+} from "../utils/constants.js"
 const marketAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"
 const ownerAddress = config.WalletPublicKey
 const payerAddress = config.WalletPublicKey
@@ -55,7 +61,7 @@ async function run() {
 }
 
 async function http() {
-    let provider:HttpProvider
+    let provider: HttpProvider
 
     if (process.env.API_ENV === "testnet") {
         provider = new HttpProvider(MAINNET_API_HTTP)
@@ -75,7 +81,7 @@ async function http() {
 }
 
 async function grpc() {
-    let provider:GrpcProvider
+    let provider: GrpcProvider
 
     if (process.env.API_ENV === "testnet") {
         provider = new GrpcProvider(`${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`)
@@ -97,7 +103,7 @@ async function grpc() {
 }
 
 async function ws() {
-    let provider:WsProvider
+    let provider: WsProvider
 
     if (process.env.API_ENV === "testnet") {
         provider = new WsProvider(MAINNET_API_WS)
