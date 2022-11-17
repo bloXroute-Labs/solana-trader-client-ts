@@ -52,7 +52,7 @@ workflows:
       - build
       - lint:
           requires:
-            build
+            - build
       - test:
           context: trader-api-sdk
           requires:
