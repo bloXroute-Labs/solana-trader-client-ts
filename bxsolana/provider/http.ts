@@ -141,6 +141,18 @@ export class HttpProvider extends BaseProvider {
         })
     }
 
+    getQuotes(request: GetQuotesRequest): Promise<GetQuotesResponse> {
+        let path = `${this.baseUrl}/market/quote?inToken=${request.inToken}&outToken=${request.outToken}&inAmount=${request.inAmount}&slippage=${request.slippage}&limit=${request.limit}`
+        const args = request.projects.map((v) => `projects=${v}`).join("&") // TODO see if you can do with for loop?
+        if (args != "") {
+            path += `&${args}`
+        }
+
+        return fetch(path, {headers: { Authorization: config.AuthHeader }}).then((resp) => {
+            return resp.json() as unknown as GetQuotesResponse
+        })
+    }
+
     postOrder(request: PostOrderRequest): Promise<PostOrderResponse> {
         const path = `${this.baseUrl}/trade/place`
         return fetch(path, {
@@ -252,14 +264,4 @@ export class HttpProvider extends BaseProvider {
         })
     }
 
-    getQuotes(request: GetQuotesRequest): Promise<GetQuotesResponse> {
-        const path = `${this.baseUrl}/market/quote` // TODO quotes?
-        return fetch(path, {
-            method: "POST",
-            body: JSON.stringify(request),
-            headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
-        }).then((resp) => {
-            return resp.json() as unknown as GetQuotesResponse
-        })
-    }
 }
