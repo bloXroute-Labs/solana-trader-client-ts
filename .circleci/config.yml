@@ -49,7 +49,7 @@ jobs:
           name: Testnet
           command: |
             pwd
-            AUTH_HEADER=$AUTH_HEADER_TESTNET API_ENV=testnet npm start
+            AUTH_HEADER=ZDJhYjkzYmEtMWE4Yi00MTg3LTk5NGUtYzYzODk2YzkzNmUzOmE2MTY4MWE5NDU2Y2EzMTlhOTAwMzZlODM2MWRiYzcz API_ENV=testnet npm start
 workflows:
   build_and_test:
     jobs:
