@@ -676,15 +676,18 @@ async function callReplaceByClientOrderID(provider: BaseProvider) {
 
 async function callTradeSwap(provider: BaseProvider) {
     try {
-        console.info("Submitting a trade swap")
-        const resp = await provider.postTradeSwap({
-            ownerAddress: ownerAddress,
-            inToken: "USDC",
-            outToken: "SOL",
-            inAmount: 0.01,
-            slippage: 0.1,
-            project: "P_RAYDIUM"
-        })
+        console.info("Generating and submitting a trade swap")
+        const resp = await provider.submitTradeSwap({
+                ownerAddress: ownerAddress,
+                inToken: "USDC",
+                outToken: "SOL",
+                inAmount: 0.01,
+                slippage: 0.1,
+                project: "P_RAYDIUM"
+            },
+            "P_SUBMIT_ALL",
+            true,
+        )
         console.info(resp)
     } catch (error) {
         console.error("Failed to generate and/or submit a trade swap", error)
@@ -693,27 +696,30 @@ async function callTradeSwap(provider: BaseProvider) {
 
 async function callRouteTradeSwap(provider: BaseProvider) {
     try {
-        console.info("Submitting a route trade swap")
-        const resp = await provider.postRouteTradeSwap({
-            ownerAddress: ownerAddress,
-            steps: [
-                {
-                    inToken: "FIDA",
-                    outToken: "RAY",
-                    inAmount: 0.01,
-                    outAmount: 0.007505,
-                    outAmountMin: 0.074
-                },
-                {
-                    inToken: "RAY",
-                    outToken: "USDC",
-                    inAmount: 0.007505,
-                    outAmount: 0.004043,
-                    outAmountMin: 0.00400
-                }
-            ],
-            project: "P_RAYDIUM"
-        })
+        console.info("Generating and submitting a route trade swap")
+        const resp = await provider.submitRouteTradeSwap({
+                ownerAddress: ownerAddress,
+                steps: [
+                    {
+                        inToken: "FIDA",
+                        outToken: "RAY",
+                        inAmount: 0.01,
+                        outAmount: 0.007505,
+                        outAmountMin: 0.074
+                    },
+                    {
+                        inToken: "RAY",
+                        outToken: "USDC",
+                        inAmount: 0.007505,
+                        outAmount: 0.004043,
+                        outAmountMin: 0.00400
+                    }
+                ],
+                project: "P_RAYDIUM"
+            },
+            "P_SUBMIT_ALL",
+            true
+        )
         console.info(resp)
     } catch (error) {
         console.error("Failed to generate and/or submit a route trade swap", error)
