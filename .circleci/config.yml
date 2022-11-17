@@ -48,9 +48,9 @@ jobs:
       - run:
           name: Testnet
           environment:
-            AUTH_HEADER: ZDJhYjkzYmEtMWE4Yi00MTg3LTk5NGUtYzYzODk2YzkzNmUzOmE2MTY4MWE5NDU2Y2EzMTlhOTAwMzZlODM2MWRiYzcz
-            WALLET_SECRET_KEY: MFXSuoG1hdiuaT9rVBeiQb3Xb5oGryKCBrw2so7msY3wMGf5qzhMX59Qhkpu3VW3uJxw39z7qR4EySc4thzVYR9\
-            WALLET_PUBLIC_KEY: BvdnPWXm1zAvUSUjL6KBRzATP3Q5QJY7ZTMtEwxyvdNB
+            AUTH_HEADER: $AUTH_HEADER_TESTNET
+            WALLET_SECRET_KEY: $PUBLIC_KEY
+            WALLET_PUBLIC_KEY: $PRIVATE_KEY
             API_ENV: testnet
           command: npm start
 workflows:
