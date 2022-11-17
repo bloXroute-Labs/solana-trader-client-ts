@@ -29,6 +29,9 @@ jobs:
   lint:
     executor: node/default
     steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
       - run:
           name: lint
           command: tslint -c tslint.json
