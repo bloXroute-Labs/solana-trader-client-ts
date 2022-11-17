@@ -61,9 +61,11 @@ import {
     GetPricesStreamResponse,
     PostSubmitBatchRequest,
     PostSubmitBatchResponse,
+    PostSubmitRequestEntry,
+    SubmitStrategy
 } from "../proto/messages/api/index.js"
 import { Api } from "../proto/services/api/index.js"
-import { signTx, SubmitTransactionResponse } from "../../utils/transaction.js"
+import {signTx, signTxMessage, SubmitTransactionResponse} from "../../utils/transaction.js"
 
 export abstract class BaseProvider implements Api {
     abstract close(): void
@@ -231,6 +233,42 @@ export abstract class BaseProvider implements Api {
         const signedTx = signTx(res.transaction?.content || "")
 
         return this.postSubmit({ transaction: { content: signedTx.serialize().toString("base64"), isCleanup: false }, skipPreFlight })
+    }
+
+    async submitTradeSwap(request: TradeSwapRequest, submitStrategy: SubmitStrategy, skipPreFlight = true): Promise<PostSubmitBatchResponse> {
+        const res = await this.postTradeSwap(request)
+
+        let entries = new Array<PostSubmitRequestEntry>()
+        for (const tx of res.transactions) {
+            entries.push({
+                transaction: signTxMessage(tx),
+                skipPreFlight: skipPreFlight
+            })
+        }
+
+        let submitBatchRequest: PostSubmitBatchRequest = {
+            entries: entries,
+            SubmitStrategy: submitStrategy
+        }
+        return this.postSubmitBatch(submitBatchRequest)
+    }
+
+    async submitRouteTradeSwap(request: RouteTradeSwapRequest, submitStrategy: SubmitStrategy, skipPreFlight = true): Promise<PostSubmitBatchResponse> {
+        const res = await this.postRouteTradeSwap(request)
+
+        let entries = new Array<PostSubmitRequestEntry>()
+        for (const tx of res.transactions) {
+            entries.push({
+                transaction: signTxMessage(tx),
+                skipPreFlight: skipPreFlight
+            })
+        }
+
+        let submitBatchRequest: PostSubmitBatchRequest = {
+            entries: entries,
+            SubmitStrategy: submitStrategy
+        }
+        return this.postSubmitBatch(submitBatchRequest)
     }
 
     getPoolReservesStream(request: GetPoolReservesStreamRequest): Promise<AsyncGenerator<GetPoolReservesStreamResponse>> {
