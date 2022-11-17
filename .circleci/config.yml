@@ -54,7 +54,9 @@ jobs:
             echo 'export API_ENV="testnet" >> "$BASH_ENV"
             echo $AUTH_HEADER
             echo $WALLET_SECRET_KEY
-            printenv
+            echo $WALLET_PUBLIC_KEY
+            echo $API_ENV
+#            printenv
       - run:
           name: Testnet
           command: npm start
