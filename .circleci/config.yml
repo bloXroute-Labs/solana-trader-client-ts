@@ -7,7 +7,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: cimg/node:14.13.1
+      - image: cimg/node:15.0.1
     steps:
       - checkout:
           path: solana-trader-client-ts
