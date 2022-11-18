@@ -200,7 +200,7 @@ export class HttpProvider extends BaseProvider {
             body: JSON.stringify(request),
             headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
         }).then((resp) => {
-            return resp.json() as any as PostCancelAllResponse
+            return resp.json() as never as PostCancelAllResponse
         })
     }
 
