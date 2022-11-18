@@ -36,7 +36,10 @@ import {
     PostSubmitRequest,
     PostSubmitResponse,
     TradeSwapRequest,
+    RouteTradeSwapRequest,
     TradeSwapResponse,
+    GetQuotesRequest,
+    GetQuotesResponse,
 } from "../proto/messages/api/index.js"
 import { BaseProvider } from "./base.js"
 import config from "../../utils/config.js"
@@ -138,6 +141,17 @@ export class HttpProvider extends BaseProvider {
         })
     }
 
+    getQuotes(request: GetQuotesRequest): Promise<GetQuotesResponse> {
+        let path = `${this.baseUrl}/market/quote?inToken=${request.inToken}&outToken=${request.outToken}&inAmount=${request.inAmount}&slippage=${request.slippage}&limit=${request.limit}`
+        for (const project of request.projects)  {
+            path += `&projects=${project}`
+        }
+
+        return fetch(path, {headers: { Authorization: config.AuthHeader }}).then((resp) => {
+            return resp.json() as unknown as GetQuotesResponse
+        })
+    }
+
     postOrder(request: PostOrderRequest): Promise<PostOrderResponse> {
         const path = `${this.baseUrl}/trade/place`
         return fetch(path, {
@@ -150,7 +164,18 @@ export class HttpProvider extends BaseProvider {
     }
 
     postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
-        const path = `${this.baseUrl}/trade/place`
+        const path = `${this.baseUrl}/trade/swap`
+        return fetch(path, {
+            method: "POST",
+            body: JSON.stringify(request),
+            headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
+        }).then((resp) => {
+            return resp.json() as unknown as TradeSwapResponse
+        })
+    }
+
+    postRouteTradeSwap(request: RouteTradeSwapRequest): Promise<TradeSwapResponse> {
+        const path = `${this.baseUrl}/trade/route-swap`
         return fetch(path, {
             method: "POST",
             body: JSON.stringify(request),
@@ -236,4 +261,5 @@ export class HttpProvider extends BaseProvider {
             return resp.json() as unknown as PostOrderResponse
         })
     }
+
 }

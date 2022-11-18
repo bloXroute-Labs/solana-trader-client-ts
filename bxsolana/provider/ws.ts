@@ -49,9 +49,12 @@ import {
     PostSubmitRequest,
     PostSubmitResponse,
     TradeSwapRequest,
+    RouteTradeSwapRequest,
     TradeSwapResponse,
     GetSwapsStreamRequest,
     GetSwapsStreamResponse,
+    GetPricesStreamRequest,
+    GetPricesStreamResponse,
 } from "../proto/messages/api/index.js"
 import { BaseProvider } from "./base.js"
 import config from "../../utils/config.js"
@@ -153,32 +156,41 @@ export class WsProvider extends BaseProvider {
         return this.wsSocketCall("postReplaceOrder", request)
     }
 
-    postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
-        return this.wsSocketCall("PostTradeSwap", request)
+    getRecentBlockHashStream(request: GetRecentBlockHashRequest): Promise<AsyncGenerator<GetRecentBlockHashResponse>> {
+        return this.wsSocketStreamCall("GetRecentBlockHashStream", request)
+    }
+
+    // Amm
+    getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
+        return this.wsSocketCall("GetPrice", request)
+    }
+
+    getPricesStream(request: GetPricesStreamRequest): Promise<AsyncGenerator<GetPricesStreamResponse>> {
+        return this.wsSocketStreamCall("GetPricesStream", request);
     }
 
     getPools(request: GetPoolsRequest): Promise<GetPoolsResponse> {
         return this.wsSocketCall("GetPools", request)
     }
 
+    getPoolReservesStream(request: GetPoolReservesStreamRequest): Promise<AsyncGenerator<GetPoolReservesStreamResponse>> {
+        return this.wsSocketStreamCall("GetPoolReservesStream", request)
+    }
+
     getQuotes(request: GetQuotesRequest): Promise<GetQuotesResponse> {
         return this.wsSocketCall("GetQuotes", request)
-    }
-
-    getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
-        return this.wsSocketCall("GetPrice", request)
-    }
-
-    getRecentBlockHashStream(request: GetRecentBlockHashRequest): Promise<AsyncGenerator<GetRecentBlockHashResponse>> {
-        return this.wsSocketStreamCall("GetRecentBlockHashStream", request)
     }
 
     getQuotesStream(request: GetQuotesStreamRequest): Promise<AsyncGenerator<GetQuotesStreamResponse>> {
         return this.wsSocketStreamCall("GetQuotesStream", request)
     }
 
-    getPoolReservesStream(request: GetPoolReservesStreamRequest): Promise<AsyncGenerator<GetPoolReservesStreamResponse>> {
-        return this.wsSocketStreamCall("GetPoolReservesStream", request)
+    postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
+        return this.wsSocketCall("PostTradeSwap", request)
+    }
+
+    postRouteTradeSwap(request: RouteTradeSwapRequest): Promise<TradeSwapResponse> {
+        return this.wsSocketCall("PostRouteTradeSwap", request);
     }
 
     getSwapsStream(request: GetSwapsStreamRequest): Promise<AsyncGenerator<GetSwapsStreamResponse>> {
