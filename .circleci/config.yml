@@ -1,11 +1,6 @@
 version: 2.1
 orbs:
   node: circleci/node@5.0.2
-#executors:
-#  bxts:
-#    docker:
-#      - image: cimg/node:15.0.1
-#    working_directory: ~/solana-trader-client-ts
 jobs:
   build:
     executor: node/default
