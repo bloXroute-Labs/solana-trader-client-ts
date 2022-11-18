@@ -4,6 +4,7 @@ export const MAINNET_API_GRPC_HOST = "virginia.solana.dex.blxrbdn.com"
 export const MAINNET_API_GRPC_PORT = 443
 
 export const TESTNET_API_HTTP = "http://serum-nlb-5a2c3912804344a3.elb.us-east-1.amazonaws.com"
+
 export const TESTNET_API_WS = "ws://serum-nlb-5a2c3912804344a3.elb.us-east-1.amazonaws.com/ws"
 export const TESTNET_API_GRPC_HOST = "serum-nlb-5a2c3912804344a3.elb.us-east-1.amazonaws.com"
 export const TESTNET_API_GRPC_PORT = 80

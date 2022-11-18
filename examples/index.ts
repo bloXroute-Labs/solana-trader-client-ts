@@ -73,11 +73,14 @@ async function http() {
 
     console.info(" ----  HTTP Requests  ----")
     await doRequests(provider)
+
+    if (process.env.RUN_LIFECYCLE === "true") {
     console.info(" ----  HTTP Lifecycle  ----")
     await doHttpLifecycle(provider)
     console.info(" ----  HTTP Cancel All  ----")
     await callCancelAll(provider)
     console.info(" ")
+    }
 }
 
 async function grpc() {
@@ -98,8 +101,11 @@ async function grpc() {
     console.info(" ----  GRPC Cancel All  ----")
     await callCancelAll(provider)
     console.info(" ----  GRPC Lifecycle  ----")
-    await doLifecycle(provider)
-    console.info(" ")
+
+    if (process.env.RUN_LIFECYCLE === "true") {
+        await doLifecycle(provider)
+        console.info(" ")
+    }
 }
 
 async function ws() {
@@ -120,8 +126,10 @@ async function ws() {
     console.info(" ----  WS Cancel All  ----")
     await callCancelAll(provider)
     console.info(" ----  WS Lifecycle  ----")
-    await doLifecycle(provider)
-    console.info(" ")
+    if (process.env.RUN_LIFECYCLE === "true") {
+        await doLifecycle(provider)
+        console.info(" ")
+    }
 }
 
 async function doRequests(provider: BaseProvider) {
