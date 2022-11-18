@@ -688,7 +688,12 @@ async function callTradeSwap(provider: BaseProvider) {
             "P_SUBMIT_ALL",
             true,
         )
-        console.info(resp)
+        for (const tx of resp.transactions) {
+            if (tx.error != "") {
+                throw tx.error
+            }
+            console.info(tx.signature)
+        }
     } catch (error) {
         console.error("Failed to generate and/or submit a trade swap", error)
     }
@@ -720,7 +725,12 @@ async function callRouteTradeSwap(provider: BaseProvider) {
             "P_SUBMIT_ALL",
             true
         )
-        console.info(resp)
+        for (const tx of resp.transactions) {
+            if (tx.error != "") {
+                throw tx.error
+            }
+            console.info(tx.signature)
+        }
     } catch (error) {
         console.error("Failed to generate and/or submit a route trade swap", error)
     }
