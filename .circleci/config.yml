@@ -37,7 +37,7 @@ jobs:
           name: Install ts-node
       - run:
           name: lint
-          command: lint
+          command: yarn lint
 
   test:
     executor: node/default
