@@ -55,6 +55,8 @@ import {
     GetPricesStreamResponse,
     GetSwapsStreamRequest,
     GetSwapsStreamResponse,
+    PostSubmitBatchRequest,
+    PostSubmitBatchResponse
 } from "../proto/messages/api/index.js"
 import { createServiceClient, Service } from "../proto/services/api/Api.js"
 import { BaseProvider } from "./base.js"
@@ -208,5 +210,9 @@ export class GrpcProvider extends BaseProvider {
 
     getSwapsStream(request: GetSwapsStreamRequest): Promise<AsyncGenerator<GetSwapsStreamResponse>> {
         return this.client.getSwapsStream(request)
+    }
+
+    postSubmitBatch(request: PostSubmitBatchRequest): Promise<PostSubmitBatchResponse> {
+        return this.client.postSubmitBatch(request);
     }
 }

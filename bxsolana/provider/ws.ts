@@ -48,6 +48,8 @@ import {
     PostSettleResponse,
     PostSubmitRequest,
     PostSubmitResponse,
+    PostSubmitBatchRequest,
+    PostSubmitBatchResponse,
     TradeSwapRequest,
     RouteTradeSwapRequest,
     TradeSwapResponse,
@@ -195,6 +197,10 @@ export class WsProvider extends BaseProvider {
 
     getSwapsStream(request: GetSwapsStreamRequest): Promise<AsyncGenerator<GetSwapsStreamResponse>> {
         return this.wsSocketStreamCall("GetSwapsStream", request)
+    }
+
+    postSubmitBatch(request: PostSubmitBatchRequest): Promise<PostSubmitBatchResponse> {
+        return this.wsSocketCall("PostSubmitBatch", request)
     }
 
     // Private
