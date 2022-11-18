@@ -55,8 +55,8 @@ function getRandom() {
 }
 
 async function run() {
-    // await http()
-    // await ws()
+    await http()
+    await ws()
     await grpc()
 }
 
@@ -75,11 +75,11 @@ async function http() {
     await doRequests(provider)
 
     if (process.env.RUN_LIFECYCLE === "true") {
-    console.info(" ----  HTTP Lifecycle  ----")
-    await doHttpLifecycle(provider)
-    console.info(" ----  HTTP Cancel All  ----")
-    await callCancelAll(provider)
-    console.info(" ")
+        console.info(" ----  HTTP Lifecycle  ----")
+        await doHttpLifecycle(provider)
+        console.info(" ----  HTTP Cancel All  ----")
+        await callCancelAll(provider)
+        console.info(" ")
     }
 }
 
