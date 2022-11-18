@@ -45,19 +45,19 @@ jobs:
       - checkout
       - node/install-packages:
           pkg-manager: npm
-#      - run:
-#          name: testnet
-#          command: |
-#            export AUTH_HEADER=$AUTH_HEADER_TESTNET
-#            export WALLET_SECRET_KEY=$PRIVATE_KEY
-#            export WALLET_PUBLIC_KEY=$PUBLIC_KEY
-#            export API_ENV="testnet"
-#            export RUN_LIFECYCLE="false"
-#            echo $AUTH_HEADER
-#            echo $WALLET_SECRET_KEY
-#            echo $WALLET_PUBLIC_KEY
-#            echo $API_ENV
-#            npm start
+      - run:
+          name: testnet
+          command: |
+            export AUTH_HEADER=$AUTH_HEADER_TESTNET
+            export WALLET_SECRET_KEY=$PRIVATE_KEY
+            export WALLET_PUBLIC_KEY=$PUBLIC_KEY
+            export API_ENV="testnet"
+            export RUN_LIFECYCLE="false"
+            echo $AUTH_HEADER
+            echo $WALLET_SECRET_KEY
+            echo $WALLET_PUBLIC_KEY
+            echo $API_ENV
+            npm start
       - run:
           name: mainnet
           command: |
