@@ -1,4 +1,10 @@
-import { MAINNET_API_GRPC_HOST, MAINNET_API_GRPC_PORT } from "../../utils/constants.js"
+import {
+    LOCAL_API_WS,
+    MAINNET_API_GRPC_HOST,
+    MAINNET_API_GRPC_PORT,
+    MAINNET_API_WS,
+    TESTNET_API_WS
+} from "../../utils/constants.js"
 import * as grpc from "@grpc/grpc-js"
 import { CreateGrpcClientImplConfig, createGrpcClientImpl } from "@pbkit/grpc-client"
 import {
@@ -61,6 +67,7 @@ import { BaseProvider } from "./base.js"
 import { Client } from "@grpc/grpc-js"
 import { CallMetadataOptions } from "@grpc/grpc-js/src/call-credentials"
 import config from "../../utils/config.js"
+import {WsProvider} from "./ws";
 
 export class GrpcProvider extends BaseProvider {
     private client: Service
@@ -74,10 +81,28 @@ export class GrpcProvider extends BaseProvider {
             meta.add("Authorization", config.AuthHeader)
             cb(null, meta)
         }
-        this.grpcClient = new Client(
-            address,
-            grpc.credentials.combineChannelCredentials(grpc.credentials.createSsl(), grpc.credentials.createFromMetadataGenerator(metaCallback))
-        )
+
+        let grpcClient: Client
+
+        if (process.env.API_ENV === "testnet") {
+            grpcClient = new Client(
+                address,
+                grpc.credentials.createInsecure()
+            )
+        } else if (process.env.API_ENV === "mainnet") {
+            grpcClient = new Client(
+                address,
+                grpc.credentials.combineChannelCredentials(grpc.credentials.createSsl(), grpc.credentials.createFromMetadataGenerator(metaCallback))
+            )
+        } else {
+            grpcClient = new Client(
+                address,
+                grpc.credentials.createInsecure()
+            )
+        }
+
+        this.grpcClient = grpcClient
+
         const configGrpc: CreateGrpcClientImplConfig = { grpcJsClient: this.grpcClient }
         const impl = createGrpcClientImpl(configGrpc)
         this.client = createServiceClient(impl)
@@ -180,7 +205,7 @@ export class GrpcProvider extends BaseProvider {
     }
 
     getPricesStream(request: GetPricesStreamRequest): Promise<AsyncGenerator<GetPricesStreamResponse>> {
-        return this.client.getPricesStream(request);
+        return this.client.getPricesStream(request)
     }
 
     getPools(request: GetPoolsRequest): Promise<GetPoolsResponse> {
@@ -204,7 +229,7 @@ export class GrpcProvider extends BaseProvider {
     }
 
     postRouteTradeSwap(request: RouteTradeSwapRequest): Promise<TradeSwapResponse> {
-        return this.client.postRouteTradeSwap(request);
+        return this.client.postRouteTradeSwap(request)
     }
 
     getSwapsStream(request: GetSwapsStreamRequest): Promise<AsyncGenerator<GetSwapsStreamResponse>> {
