@@ -1,10 +1,4 @@
-import {
-    LOCAL_API_WS,
-    MAINNET_API_GRPC_HOST,
-    MAINNET_API_GRPC_PORT,
-    MAINNET_API_WS,
-    TESTNET_API_WS
-} from "../../utils/constants.js"
+import { LOCAL_API_WS, MAINNET_API_GRPC_HOST, MAINNET_API_GRPC_PORT, MAINNET_API_WS, TESTNET_API_WS } from "../../utils/constants.js"
 import * as grpc from "@grpc/grpc-js"
 import { CreateGrpcClientImplConfig, createGrpcClientImpl } from "@pbkit/grpc-client"
 import {
@@ -67,14 +61,13 @@ import { BaseProvider } from "./base.js"
 import { Client } from "@grpc/grpc-js"
 import { CallMetadataOptions } from "@grpc/grpc-js/src/call-credentials"
 import config from "../../utils/config.js"
-import {WsProvider} from "./ws";
+import { WsProvider } from "./ws"
 
 export class GrpcProvider extends BaseProvider {
     private client: Service
     private grpcClient: Client
 
     constructor(address = `${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`) {
-        console.log(address)
         super()
         const metaCallback = (options: CallMetadataOptions, cb: (err: Error | null, metadata?: grpc.Metadata) => void) => {
             const meta = new grpc.Metadata()
@@ -85,20 +78,14 @@ export class GrpcProvider extends BaseProvider {
         let grpcClient: Client
 
         if (process.env.API_ENV === "testnet") {
-            grpcClient = new Client(
-                address,
-                grpc.credentials.createInsecure()
-            )
+            grpcClient = new Client(address, grpc.credentials.createInsecure())
         } else if (process.env.API_ENV === "mainnet") {
             grpcClient = new Client(
                 address,
                 grpc.credentials.combineChannelCredentials(grpc.credentials.createSsl(), grpc.credentials.createFromMetadataGenerator(metaCallback))
             )
         } else {
-            grpcClient = new Client(
-                address,
-                grpc.credentials.createInsecure()
-            )
+            grpcClient = new Client(address, grpc.credentials.createInsecure())
         }
 
         this.grpcClient = grpcClient
