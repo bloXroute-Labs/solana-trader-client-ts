@@ -21,6 +21,19 @@ jobs:
           command: ts-node -v
           name: Check ts-node version to make sure it installed
 
+  format:
+    executor: node/default
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      - run:
+          command: npm install
+          name: Install ts-node
+      - run:
+          name: format
+          command: npm run format
+
   lint:
     executor: node/default
     steps:
@@ -48,10 +61,6 @@ jobs:
             export WALLET_PUBLIC_KEY=$PUBLIC_KEY
             export API_ENV="mainnet"
             export RUN_LIFECYCLE="false"
-            echo $AUTH_HEADER
-            echo $WALLET_SECRET_KEY
-            echo $WALLET_PUBLIC_KEY
-            echo $API_ENV
             npm start
       - run:
           name: testnet
@@ -61,10 +70,6 @@ jobs:
             export WALLET_PUBLIC_KEY=$PUBLIC_KEY
             export API_ENV="testnet"
             export RUN_LIFECYCLE="false"
-            echo $AUTH_HEADER
-            echo $WALLET_SECRET_KEY
-            echo $WALLET_PUBLIC_KEY
-            echo $API_ENV
             npm start
 
 workflows:
@@ -74,6 +79,9 @@ workflows:
       - lint:
           requires:
             - build
+      - format:
+          requires:
+            - format
       - test:
           context: trader-api-sdk
           requires:
