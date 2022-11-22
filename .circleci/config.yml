@@ -15,11 +15,20 @@ jobs:
           command: sudo npm install -g ts-node
           name: Install ts-node
       - run:
-          command: npm run test
-          name: Run tests
-      - run:
           command: ts-node -v
           name: Check ts-node version to make sure it installed
+  test:
+    executor: node/default
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      - run:
+          command: npm install
+          name: install npm
+      - run:
+          command: npm run test
+          name: run tests
 
   format:
     executor: node/default
@@ -47,7 +56,7 @@ jobs:
           name: lint
           command: npm run lint
 
-  test:
+  integration:
     executor: node/default
     steps:
       - checkout
@@ -83,6 +92,9 @@ workflows:
           requires:
             - build
       - test:
+          requires:
+            - build
+      - integration:
           context: trader-api-sdk
           requires:
             - build
