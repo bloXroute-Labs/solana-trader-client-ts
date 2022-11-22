@@ -81,7 +81,7 @@ workflows:
             - build
       - format:
           requires:
-            - format
+            - build
       - test:
           context: trader-api-sdk
           requires:
