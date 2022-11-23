@@ -235,23 +235,27 @@ export abstract class BaseProvider implements Api {
         return this.postSubmit({ transaction: { content: signedTx.serialize().toString("base64"), isCleanup: false }, skipPreFlight })
     }
 
-    async submitTradeSwap(request: TradeSwapRequest, submitStrategy: SubmitStrategy, skipPreFlight = true): Promise<Awaited<PostSubmitResponse>[]> {
-        return this.postTradeSwap(request)
-            .then(async (res) => {
-                let entries = new Array<PostSubmitResponse>()
-                for (const tx of res.transactions) {
-                    const resp: PostSubmitResponse = await this.postSubmit({
-                        transaction: signTxMessage(tx),
-                        skipPreFlight: skipPreFlight
-                    })
-                    entries.push(resp)
-                }
+    async submitTradeSwap(request: TradeSwapRequest, submitStrategy: SubmitStrategy, skipPreFlight = true): Promise<PostSubmitBatchResponse> {
+        try {
+            const res = await this.postTradeSwap(request)
 
-                return Promise.all(entries)
-            })
-            .catch((e) => {
-                throw Error(e)
-            })
+            let entries = new Array<PostSubmitRequestEntry>()
+            for (const tx of res.transactions) {
+                entries.push({
+                    transaction: signTxMessage(tx),
+                    skipPreFlight: skipPreFlight
+                })
+            }
+
+            let submitBatchRequest: PostSubmitBatchRequest = {
+                entries: entries,
+                SubmitStrategy: submitStrategy
+            }
+            return this.postSubmitBatch(submitBatchRequest)
+        }
+        catch (e) {
+           throw Error(e)
+        }
     }
 
     async submitRouteTradeSwap(request: RouteTradeSwapRequest, submitStrategy: SubmitStrategy, skipPreFlight = true): Promise<PostSubmitBatchResponse> {
