@@ -45,6 +45,7 @@ import {
 } from "../proto/messages/api/index.js"
 import { BaseProvider } from "./base.js"
 import config from "../../utils/config.js"
+import {SolanaJSONRPCError} from "@solana/web3.js";
 
 export class HttpProvider extends BaseProvider {
     private baseUrl: string
@@ -171,9 +172,17 @@ export class HttpProvider extends BaseProvider {
             method: "POST",
             body: JSON.stringify(request),
             headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
-        }).then((resp) => {
-            return resp.json() as unknown as TradeSwapResponse
         })
+            .then((resp) => resp.json())
+            .then((j) => new Promise<TradeSwapResponse>((resolve, reject) => {
+                const error = j as SolanaJSONRPCError
+                if (error.message != "") {
+                    reject(error.message)
+                }
+                else {
+                    resolve(j as TradeSwapResponse)
+                }
+            }))
     }
 
     postRouteTradeSwap(request: RouteTradeSwapRequest): Promise<TradeSwapResponse> {
@@ -182,9 +191,17 @@ export class HttpProvider extends BaseProvider {
             method: "POST",
             body: JSON.stringify(request),
             headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
-        }).then((resp) => {
-            return resp.json() as unknown as TradeSwapResponse
         })
+            .then((resp) => resp.json())
+            .then((j) => new Promise<TradeSwapResponse>((resolve, reject) => {
+                const error = j as SolanaJSONRPCError
+                if (error.message != "") {
+                    reject(error.message)
+                }
+                else {
+                    resolve(j as TradeSwapResponse)
+                }
+            }))
     }
 
     postSubmit(request: PostSubmitRequest): Promise<PostSubmitResponse> {
@@ -193,10 +210,19 @@ export class HttpProvider extends BaseProvider {
             method: "POST",
             body: JSON.stringify(request),
             headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
-        }).then((resp) => {
-            return resp.json() as unknown as PostSubmitResponse
         })
+        .then((resp) => resp.json())
+        .then((j) => new Promise<PostSubmitResponse>((resolve, reject) => {
+                const error = j as SolanaJSONRPCError
+                if (error.message != "") {
+                    reject(error.message)
+                }
+                else {
+                    resolve(j as PostSubmitResponse)
+                }
+        }))
     }
+
 
     postCancelOrder(request: PostCancelOrderRequest): Promise<PostCancelOrderResponse> {
         const path = `${this.baseUrl}/trade/cancel`
@@ -260,7 +286,7 @@ export class HttpProvider extends BaseProvider {
             body: JSON.stringify(request),
             headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
         }).then((resp) => {
-            return resp.json() as unknown as PostOrderResponse
+            return resp.json() as any as PostOrderResponse
         })
     }
 
@@ -271,7 +297,8 @@ export class HttpProvider extends BaseProvider {
             body: JSON.stringify(request),
             headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
         }).then((resp) => {
-            return resp.json() as unknown as PostSubmitBatchResponse
+            console.log(-5)
+            return resp.json() as any as PostSubmitBatchResponse
         })
     }
 }
