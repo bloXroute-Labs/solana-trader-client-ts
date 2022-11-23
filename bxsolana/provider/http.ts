@@ -223,6 +223,16 @@ export class HttpProvider extends BaseProvider {
         }))
     }
 
+    postSubmitBatch(request: PostSubmitBatchRequest): Promise<PostSubmitBatchResponse> {
+        const path = `${this.baseUrl}/trade/submit-batch`
+        return fetch(path, {
+            method: "POST",
+            body: JSON.stringify(request),
+            headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
+        }).then((resp) => {
+            return resp.json() as any as PostSubmitBatchResponse
+        })
+    }
 
     postCancelOrder(request: PostCancelOrderRequest): Promise<PostCancelOrderResponse> {
         const path = `${this.baseUrl}/trade/cancel`
@@ -290,15 +300,4 @@ export class HttpProvider extends BaseProvider {
         })
     }
 
-    postSubmitBatch(request: PostSubmitBatchRequest): Promise<PostSubmitBatchResponse> {
-        const path = `${this.baseUrl}/trade/submit-batch`
-        return fetch(path, {
-            method: "POST",
-            body: JSON.stringify(request),
-            headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
-        }).then((resp) => {
-            console.log(-5)
-            return resp.json() as any as PostSubmitBatchResponse
-        })
-    }
 }
