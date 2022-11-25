@@ -1,21 +1,29 @@
 #!/usr/bin/env node
 
-import { GrpcProvider } from "../bxsolana/provider/grpc.js"
-import { BaseProvider } from "../bxsolana/provider/base.js"
-import { HttpProvider } from "../bxsolana/provider/http.js"
-import { WsProvider } from "../bxsolana/provider/ws.js"
+import { GrpcProvider } from "./bxsolana/provider/grpc.js"
+import { BaseProvider } from "./bxsolana/provider/base.js"
+import { HttpProvider } from "./bxsolana/provider/http.js"
+import { WsProvider } from "./bxsolana/provider/ws.js"
 import {
     PostOrderRequest,
     GetOpenOrdersRequest,
     GetOpenOrdersResponse,
     PostCancelAllRequest,
-    Project
-} from "../bxsolana/proto/messages/api/index.js"
-import config from "../utils/config.js"
-import { addMemo, addMemoToSerializedTxn } from "../utils/memo.js"
+    Project,
+    TokenPair
+} from "./bxsolana/proto/messages/api"
+import config from "./utils/config.js"
+import { addMemo, addMemoToSerializedTxn } from "./utils/memo.js"
 import { Keypair } from "@solana/web3.js"
-import {$} from "../bxsolana/proto/messages/api/TokenPair";
-import TokenPair = $.api.TokenPair;
+import {
+    LOCAL_API_GRPC_HOST,
+    LOCAL_API_GRPC_PORT,
+    LOCAL_API_HTTP, LOCAL_API_WS,
+    MAINNET_API_GRPC_HOST,
+    MAINNET_API_GRPC_PORT
+} from "./utils/constants.js";
+import 'reflect-metadata';
+
 const marketAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"
 const ownerAddress = config.WalletPublicKey
 const payerAddress = config.WalletPublicKey
@@ -50,54 +58,54 @@ function getRandom() {
 
 async function run() {
     await http()
-    await grpc()
-    await ws()
+    // await grpc()
+    // await ws()
 }
 
 async function http() {
     const provider = new HttpProvider()
     console.info(" ----  HTTP Requests  ----")
-    await doRequests(provider)
+    // await doRequests(provider)
     console.info(" ----  HTTP Amm Requests  ----")
     await doAmmRequests(provider)
-    console.info(" ----  HTTP Lifecycle  ----")
-    await doHttpLifecycle(provider)
-    console.info(" ----  HTTP Cancel All  ----")
-    await callCancelAll(provider)
-    console.info(" ")
+    // console.info(" ----  HTTP Lifecycle  ----")
+    // await doHttpLifecycle(provider)
+    // console.info(" ----  HTTP Cancel All  ----")
+    // await callCancelAll(provider)
+    // console.info(" ")
 }
 
 async function grpc() {
-    const provider = new GrpcProvider()
-    console.info(" ----  GRPC Requests  ----")
-    await doRequests(provider)
+    const provider = new GrpcProvider( `${LOCAL_API_GRPC_HOST}:${LOCAL_API_GRPC_PORT}`)
+    // console.info(" ----  GRPC Requests  ----")
+    // await doRequests(provider)
     console.info(" ----  GRPC Amm Requests  ----")
     await doAmmRequests(provider)
-    console.info(" ----  GRPC Streams  ----")
-    await doStreams(provider)
+    // console.info(" ----  GRPC Streams  ----")
+    // await doStreams(provider)
     console.info(" ----  GRPC Amm Streams  ----")
-    await doAmmStreams(provider)
-    console.info(" ----  GRPC Cancel All  ----")
-    await callCancelAll(provider)
-    console.info(" ----  GRPC Lifecycle  ----")
-    await doLifecycle(provider)
+    //await doAmmStreams(provider)
+    // console.info(" ----  GRPC Cancel All  ----")
+    // await callCancelAll(provider)
+    // console.info(" ----  GRPC Lifecycle  ----")
+    // await doLifecycle(provider)
     console.info(" ")
 }
 
 async function ws() {
-    const provider = new WsProvider()
-    console.info(" ----  WS Requests  ----")
-    await doRequests(provider)
+    const provider = new WsProvider(LOCAL_API_WS)
+    // console.info(" ----  WS Requests  ----")
+    // await doRequests(provider)
     console.info(" ----  WS Amm Requests  ----")
     await doAmmRequests(provider)
-    console.info(" ----  WS Streams  ----")
-    await doStreams(provider)
+    // console.info(" ----  WS Streams  ----")
+    // await doStreams(provider)
     console.info(" ----  WS Amm Streams  ----")
-    await doAmmStreams(provider)
-    console.info(" ----  WS Cancel All  ----")
-    await callCancelAll(provider)
-    console.info(" ----  WS Lifecycle  ----")
-    await doLifecycle(provider)
+    //await doAmmStreams(provider)
+    // console.info(" ----  WS Cancel All  ----")
+    // await callCancelAll(provider)
+    // console.info(" ----  WS Lifecycle  ----")
+    // await doLifecycle(provider)
     console.info(" ")
 }
 
@@ -157,25 +165,25 @@ async function doRequests(provider: BaseProvider) {
 }
 
 async function doAmmRequests(provider: BaseProvider) {
-    await callGetPrices(provider)
+    // await callGetPrices(provider)
+    // console.info(" ")
+    // console.info(" ")
+    //
+    // await callGetPools(provider)
+    // console.info(" ")
+    // console.info(" ")
+    //
+    // await callGetQuotes(provider)
+    // console.info(" ")
+    // console.info(" ")
+
+    const resps = await callTradeSwap(provider)
     console.info(" ")
     console.info(" ")
 
-    await callGetPools(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callGetQuotes(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callTradeSwap(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callRouteTradeSwap(provider)
-    console.info(" ")
-    console.info(" ")
+    // const resps2 = await callRouteTradeSwap(provider)
+    // console.info(" ")
+    // console.info(" ")
 }
 
 async function doStreams(provider: BaseProvider) {
@@ -677,7 +685,7 @@ async function callReplaceByClientOrderID(provider: BaseProvider) {
 async function callTradeSwap(provider: BaseProvider) {
     try {
         console.info("Generating and submitting a trade swap")
-        const resp = await provider.submitTradeSwap({
+        const tradeSwapResponse = await provider.submitTradeSwap({
                 ownerAddress: ownerAddress,
                 inToken: "USDC",
                 outToken: "SOL",
@@ -686,16 +694,14 @@ async function callTradeSwap(provider: BaseProvider) {
                 project: "P_RAYDIUM"
             },
             "P_SUBMIT_ALL",
-            true,
-        )
-        for (const tx of resp.transactions) {
-            if (tx.error != "") {
-                throw tx.error
-            }
+            true)
+
+        for (const tx of tradeSwapResponse.transactions) {
             console.info(tx.signature)
         }
-    } catch (error) {
-        console.error("Failed to generate and/or submit a trade swap", error)
+    }
+    catch (e) {
+        console.error("Failed to generate and/or submit a trade swap", e)
     }
 }
 

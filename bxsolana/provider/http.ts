@@ -172,17 +172,36 @@ export class HttpProvider extends BaseProvider {
             method: "POST",
             body: JSON.stringify(request),
             headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
-        })
-            .then((resp) => resp.json())
-            .then((j) => new Promise<TradeSwapResponse>((resolve, reject) => {
-                const error = j as SolanaJSONRPCError
-                if (error.message != "") {
+        }).then((resp) => {
+            return resp.json() as unknown // TODO why convert promise to unknown?
+        }).then((json) => {
+            return new Promise<TradeSwapResponse>((resolve, reject) => {
+                console.info("here 0")
+                const jsonObject = json as Object
+                console.info("here 1")
+                const errorMessage = JSONRPCErrorMessage(jsonObject)
+                console.info("here 2")
+
+                if (errorMessage) {
+                    const error = plainToClass(SolanaJSONRPCError, json)
                     reject(error.message)
                 }
                 else {
-                    resolve(j as TradeSwapResponse)
+                    resolve(json as TradeSwapResponse)
                 }
-            }))
+            })
+        })
+
+            // .then((resp) => resp.json())
+            // .then((j) => new Promise<TradeSwapResponse>((resolve, reject) => {
+            //     const error = j as SolanaJSONRPCError
+            //     if (error.message != "") {
+            //         reject(error.message)
+            //     }
+            //     else {
+            //         resolve(j as TradeSwapResponse)
+            //     }
+            // }))
     }
 
     postRouteTradeSwap(request: RouteTradeSwapRequest): Promise<TradeSwapResponse> {
@@ -299,5 +318,4 @@ export class HttpProvider extends BaseProvider {
             return resp.json() as any as PostOrderResponse
         })
     }
-
 }

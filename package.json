@@ -13,7 +13,7 @@
   "scripts": {
     "test": "echo \"No test specified\"",
     "release": "np --no-2fa",
-    "start": "ts-node ./examples/index.ts",
+    "start": "ts-node index.ts",
     "lint": "eslint --fix .",
     "format": "prettier --config .prettierrc './**/*.ts' --write",
     "proto": "pb gen ts --entry-path ./solana-trader-proto/proto --out-dir=./bxsolana/proto ./solana-trader-proto/proto/api.proto --ext-in-import='.js'"
@@ -31,15 +31,18 @@
   "dependencies": {
     "@grpc/grpc-js": "^1.6.7",
     "@pbkit/grpc-client": "^0.0.1",
-    "@solana/web3.js": "^1.47.3",
+    "@solana/web3.js": "^1.66.2",
     "bs58": "^5.0.0",
+    "class-transformer": "^0.5.1",
     "dotenv": "^16.0.1",
     "google-protobuf": "^3.20.1",
     "node-fetch": "^3.2.6",
     "np": "^6.0.0",
     "pbkit": "^0.0.53",
+    "reflect-metadata": "^0.1.13",
     "ts-node": "^10.8.1",
     "typescript": "^4.7.4",
+    "web3": "^1.8.1",
     "websocket-iterator": "^1.0.1",
     "ws": "^8.8.0"
   },
@@ -57,5 +60,8 @@
     "husky": "^8.0.1",
     "prettier": "^2.7.1",
     "ts-proto": "^1.115.5"
+  },
+  "compilerOptions": {
+    "esModuleInterop": true
   }
 }
