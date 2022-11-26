@@ -59,7 +59,7 @@ async function http() {
     console.info(" ----  HTTP Requests  ----")
     await doRequests(provider)
     console.info(" ----  HTTP Solana Requests  ----")
-    await doSolanaRequests(provider)
+    await doAmmRequests(provider)
     console.info(" ----  HTTP Lifecycle  ----")
     await doHttpLifecycle(provider)
     console.info(" ----  HTTP Cancel All  ----")
@@ -72,11 +72,11 @@ async function grpc() {
     console.info(" ----  GRPC Requests  ----")
     await doRequests(provider)
     console.info(" ----  GRPC Solana Requests  ----")
-    await doSolanaRequests(provider)
+    await doAmmRequests(provider)
     console.info(" ----  GRPC Streams  ----")
     await doStreams(provider)
     console.info(" ----  GRPC Solana Streams  ----")
-    await doSolanaStreams(provider)
+    await doAmmStreams(provider)
     console.info(" ----  GRPC Cancel All  ----")
     await callCancelAll(provider)
     console.info(" ----  GRPC Lifecycle  ----")
@@ -89,11 +89,11 @@ async function ws() {
     console.info(" ----  WS Requests  ----")
     await doRequests(provider)
     console.info(" ----  WS Solana Requests  ----")
-    await doSolanaRequests(provider)
+    await doAmmRequests(provider)
     console.info(" ----  WS Streams  ----")
     await doStreams(provider)
     console.info(" ----  WS Solana Streams  ----")
-    await doSolanaStreams(provider)
+    await doAmmStreams(provider)
     console.info(" ----  WS Cancel All  ----")
     await callCancelAll(provider)
     console.info(" ----  WS Lifecycle  ----")
@@ -156,7 +156,7 @@ async function doRequests(provider: BaseProvider) {
     console.info(" ")
 }
 
-async function doSolanaRequests(provider: BaseProvider) {
+async function doAmmRequests(provider: BaseProvider) {
     await callGetPrices(provider)
     console.info(" ")
     console.info(" ")
@@ -192,7 +192,7 @@ async function doStreams(provider: BaseProvider) {
     console.info(" ")
 }
 
-async function doSolanaStreams(provider: BaseProvider) {
+async function doAmmStreams(provider: BaseProvider) {
     await callGetPricesStream(provider)
     console.info(" ")
     console.info(" ")
