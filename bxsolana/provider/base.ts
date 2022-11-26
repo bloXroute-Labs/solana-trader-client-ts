@@ -233,6 +233,47 @@ export abstract class BaseProvider implements Api {
         return this.postSubmit({ transaction: { content: signedTx.serialize().toString("base64"), isCleanup: false }, skipPreFlight })
     }
 
+    // Create submit functions (with postSubmit for each transaction, at first)
+    // check that this works for ws and grpc
+    // Use postbatchsubmit
+    // check that this works for ws and grpc
+
+    // Q - is throwing an error the same as rejecting a promise?
+    //      pretty much! but better to just reject because throwing an error won't work inside an async callback because it doesn't trigger the catch
+    // Add error handling for submit..., postTradeSwap, postRouteTradeSwap, postsubmit for http
+    //      SubmitTradeSwap => try/catch
+    //          PostTradeSwap =>
+    //          PostSubmit
+    async submitTradeSwap(request: TradeSwapRequest, skipPreFlight = true): Promise<PostSubmitResponse[]> {
+        const res = await this.postTradeSwap(request)
+
+        let responses: PostSubmitResponse[] = []
+
+        for (const transaction in res.transactions) {
+            const signedTx = signTx(transaction)
+            const response = await this.postSubmit({ transaction: { content: signedTx.serialize().toString("base64"), isCleanup: false }, skipPreFlight }) // TODO do this in PostBatchSwap
+
+            responses.push(response)
+        }
+
+        return responses
+    }
+
+    async submitRouteTradeSwap(request: RouteTradeSwapRequest, skipPreFlight = true): Promise<PostSubmitResponse[]> {
+        const res = await this.postRouteTradeSwap(request)
+
+        let responses: PostSubmitResponse[] = []
+
+        for (const transaction in res.transactions) {
+            const signedTx = signTx(transaction)
+            const response = await this.postSubmit({ transaction: { content: signedTx.serialize().toString("base64"), isCleanup: false }, skipPreFlight }) // TODO do this in PostBatchSwap
+
+            responses.push(response)
+        }
+
+        return responses
+    }
+
     getPoolReservesStream(request: GetPoolReservesStreamRequest): Promise<AsyncGenerator<GetPoolReservesStreamResponse>> {
         throw new Error("Not implemented")
     }
