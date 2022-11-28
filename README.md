@@ -5,10 +5,7 @@ Provides a Typescript SDK for bloXroute's Solana Trader API.
 ## Installation
 
 ```
-$ git clone https://github.com/bloXroute-Labs/solana-trader-client-ts.git
-$ cd solana-trader-client-ts
-$ npm i
-$ brew install pbkit/tap/pbkit
+npm i @bloxroute/solana-trader-client-ts
 ```
 
 Full repo installation via NPM is expected to be supported soon.
@@ -88,4 +85,13 @@ Regenerate protobuf definitions:
 ```
 $ npm run proto
 ```
+
+## How to Publish a new NPM release
+We use `np` to publish new releases to npm. To make a new release, in the project directory use:
+
+```
+$ np --no-2fa
+```
+
+Follow the menu items to select a version for the release (major, minor, patch). 
 

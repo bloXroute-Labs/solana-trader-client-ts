@@ -36,7 +36,10 @@ import {
     PostSubmitRequest,
     PostSubmitResponse,
     TradeSwapRequest,
+    RouteTradeSwapRequest,
     TradeSwapResponse,
+    GetQuotesRequest,
+    GetQuotesResponse,
 } from "../proto/messages/api/index.js"
 import { BaseProvider } from "./base.js"
 import config from "../../utils/config.js"
@@ -96,7 +99,7 @@ export class HttpProvider extends BaseProvider {
     }
 
     getUnsettled(request: GetUnsettledRequest): Promise<GetUnsettledResponse> {
-        const path = `${this.baseUrl}/trade/unsettled/${request.market}?owner=${request.owner}`
+        const path = `${this.baseUrl}/trade/unsettled/${request.market}?owner=${request.ownerAddress}`
         return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
             return resp.json() as unknown as GetUnsettledResponse
         })
@@ -110,7 +113,7 @@ export class HttpProvider extends BaseProvider {
     }
 
     getPools(request: GetPoolsRequest): Promise<GetPoolsResponse> {
-        let path = `${this.baseUrl}/api/v1/market/pools`
+        let path = `${this.baseUrl}/market/pools`
         const args = request.projects.map((v) => `projects=${v}`).join("&")
         if (args != "") {
             path += `?${args}`
@@ -121,7 +124,7 @@ export class HttpProvider extends BaseProvider {
     }
 
     getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
-        let path = `${this.baseUrl}/api/v1/market/price`
+        let path = `${this.baseUrl}/market/price`
         const args = request.tokens.map((v) => `tokens=${v}`).join("&")
         if (args != "") {
             path += `?${args}`
@@ -132,9 +135,20 @@ export class HttpProvider extends BaseProvider {
     }
 
     getRecentBlockHash(request: GetRecentBlockHashRequest): Promise<GetRecentBlockHashResponse> {
-        const path = `${this.baseUrl}/api/v1/system/blockhash`
+        const path = `${this.baseUrl}/system/blockhash`
         return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
             return resp.json() as unknown as GetRecentBlockHashResponse
+        })
+    }
+
+    getQuotes(request: GetQuotesRequest): Promise<GetQuotesResponse> {
+        let path = `${this.baseUrl}/market/quote?inToken=${request.inToken}&outToken=${request.outToken}&inAmount=${request.inAmount}&slippage=${request.slippage}&limit=${request.limit}`
+        for (const project of request.projects)  {
+            path += `&projects=${project}`
+        }
+
+        return fetch(path, {headers: { Authorization: config.AuthHeader }}).then((resp) => {
+            return resp.json() as unknown as GetQuotesResponse
         })
     }
 
@@ -150,7 +164,18 @@ export class HttpProvider extends BaseProvider {
     }
 
     postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
-        const path = `${this.baseUrl}/trade/place`
+        const path = `${this.baseUrl}/trade/swap`
+        return fetch(path, {
+            method: "POST",
+            body: JSON.stringify(request),
+            headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
+        }).then((resp) => {
+            return resp.json() as unknown as TradeSwapResponse
+        })
+    }
+
+    postRouteTradeSwap(request: RouteTradeSwapRequest): Promise<TradeSwapResponse> {
+        const path = `${this.baseUrl}/trade/route-swap`
         return fetch(path, {
             method: "POST",
             body: JSON.stringify(request),
@@ -236,4 +261,5 @@ export class HttpProvider extends BaseProvider {
             return resp.json() as unknown as PostOrderResponse
         })
     }
+
 }

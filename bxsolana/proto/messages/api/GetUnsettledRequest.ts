@@ -19,7 +19,7 @@ import {
 export declare namespace $.api {
   export type GetUnsettledRequest = {
     market: string;
-    owner: string;
+    ownerAddress: string;
   }
 }
 export type Type = $.api.GetUnsettledRequest;
@@ -27,7 +27,7 @@ export type Type = $.api.GetUnsettledRequest;
 export function getDefaultValue(): $.api.GetUnsettledRequest {
   return {
     market: "",
-    owner: "",
+    ownerAddress: "",
   };
 }
 
@@ -41,14 +41,14 @@ export function createValue(partialValue: Partial<$.api.GetUnsettledRequest>): $
 export function encodeJson(value: $.api.GetUnsettledRequest): unknown {
   const result: any = {};
   if (value.market !== undefined) result.market = tsValueToJsonValueFns.string(value.market);
-  if (value.owner !== undefined) result.owner = tsValueToJsonValueFns.string(value.owner);
+  if (value.ownerAddress !== undefined) result.ownerAddress = tsValueToJsonValueFns.string(value.ownerAddress);
   return result;
 }
 
 export function decodeJson(value: any): $.api.GetUnsettledRequest {
   const result = getDefaultValue();
   if (value.market !== undefined) result.market = jsonValueToTsValueFns.string(value.market);
-  if (value.owner !== undefined) result.owner = jsonValueToTsValueFns.string(value.owner);
+  if (value.ownerAddress !== undefined) result.ownerAddress = jsonValueToTsValueFns.string(value.ownerAddress);
   return result;
 }
 
@@ -60,8 +60,8 @@ export function encodeBinary(value: $.api.GetUnsettledRequest): Uint8Array {
       [1, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.owner !== undefined) {
-    const tsValue = value.owner;
+  if (value.ownerAddress !== undefined) {
+    const tsValue = value.ownerAddress;
     result.push(
       [2, tsValueToWireValueFns.string(tsValue)],
     );
@@ -85,7 +85,7 @@ export function decodeBinary(binary: Uint8Array): $.api.GetUnsettledRequest {
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
-    result.owner = value;
+    result.ownerAddress = value;
   }
   return result;
 }

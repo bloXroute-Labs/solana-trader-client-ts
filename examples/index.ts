@@ -4,8 +4,18 @@ import { GrpcProvider } from "../bxsolana/provider/grpc.js"
 import { BaseProvider } from "../bxsolana/provider/base.js"
 import { HttpProvider } from "../bxsolana/provider/http.js"
 import { WsProvider } from "../bxsolana/provider/ws.js"
-import { PostOrderRequest, GetOpenOrdersRequest, GetOpenOrdersResponse, PostCancelAllRequest } from "../bxsolana/proto/messages/api/index.js"
+import {
+    PostOrderRequest,
+    GetOpenOrdersRequest,
+    GetOpenOrdersResponse,
+    PostCancelAllRequest,
+    Project
+} from "../bxsolana/proto/messages/api/index.js"
 import config from "../utils/config.js"
+import { addMemo, addMemoToSerializedTxn } from "../utils/memo.js"
+import { Keypair } from "@solana/web3.js"
+import {$} from "../bxsolana/proto/messages/api/TokenPair";
+import TokenPair = $.api.TokenPair;
 const marketAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"
 const ownerAddress = config.WalletPublicKey
 const payerAddress = config.WalletPublicKey
@@ -21,7 +31,7 @@ const testOrder: PostOrderRequest = {
     type: ["OT_LIMIT"],
     amount: 0.1,
     price: 200,
-    openOrdersAddress: openOrdersAddress,
+    openOrdersAddress: "",
     clientOrderID: "",
 }
 
@@ -51,6 +61,8 @@ async function http() {
     const provider = new HttpProvider()
     console.info(" ----  HTTP Requests  ----")
     await doRequests(provider)
+    console.info(" ----  HTTP Solana Requests  ----")
+    await doSolanaRequests(provider)
     console.info(" ----  HTTP Lifecycle  ----")
     await doHttpLifecycle(provider)
     console.info(" ----  HTTP Cancel All  ----")
@@ -62,8 +74,12 @@ async function grpc() {
     const provider = new GrpcProvider()
     console.info(" ----  GRPC Requests  ----")
     await doRequests(provider)
+    console.info(" ----  GRPC Solana Requests  ----")
+    await doSolanaRequests(provider)
     console.info(" ----  GRPC Streams  ----")
     await doStreams(provider)
+    console.info(" ----  GRPC Solana Streams  ----")
+    await doSolanaStreams(provider)
     console.info(" ----  GRPC Cancel All  ----")
     await callCancelAll(provider)
     console.info(" ----  GRPC Lifecycle  ----")
@@ -76,8 +92,12 @@ async function ws() {
     await provider.connect()
     console.info(" ----  WS Requests  ----")
     await doRequests(provider)
+    console.info(" ----  WS Solana Requests  ----")
+    await doSolanaRequests(provider)
     console.info(" ----  WS Streams  ----")
     await doStreams(provider)
+    console.info(" ----  WS Solana Streams  ----")
+    await doSolanaStreams(provider)
     console.info(" ----  WS Cancel All  ----")
     await callCancelAll(provider)
     console.info(" ----  WS Lifecycle  ----")
@@ -134,6 +154,32 @@ async function doRequests(provider: BaseProvider) {
     await callSettleFunds(provider)
     console.info(" ")
     console.info(" ")
+
+    await submitTxWithMemo(provider)
+    console.info(" ")
+    console.info(" ")
+}
+
+async function doSolanaRequests(provider: BaseProvider) {
+    await callGetPrices(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetPools(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetQuotes(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callTradeSwap(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callRouteTradeSwap(provider)
+    console.info(" ")
+    console.info(" ")
 }
 
 async function doStreams(provider: BaseProvider) {
@@ -151,6 +197,20 @@ async function doStreams(provider: BaseProvider) {
 
     console.info("cancelling streams")
     await cancelStreams(provider)
+}
+
+async function doSolanaStreams(provider: BaseProvider) {
+    await callGetPricesStream(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetPoolsStream(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetQuotesStream(provider)
+    console.info(" ")
+    console.info(" ")
 }
 
 async function doLifecycle(provider: BaseProvider) {
@@ -304,6 +364,32 @@ async function callGetOrderbook(provider: BaseProvider) {
     }
 }
 
+async function submitTxWithMemo(provider: BaseProvider) {
+    try {
+        console.info("Retrieving recent blockHash")
+        const recentBlockhash = await provider.getRecentBlockHash({})
+        console.info(recentBlockhash.blockHash)
+        const keypair = Keypair.fromSecretKey(config.WalletSecretKey)
+        const encodedTxn = addMemo([], "new memo by dev", recentBlockhash.blockHash, keypair.publicKey, keypair)
+        console.info("Submitting tx with one memo")
+        let response = await provider.postSubmit({
+            transaction: { content: encodedTxn, isCleanup: false },
+            skipPreFlight: true,
+        })
+        console.info(response.signature)
+
+        const encodedTxn2 = addMemoToSerializedTxn(encodedTxn, "new memo by dev2", keypair.publicKey, keypair)
+        console.info("Submitting tx with two memos")
+        response = await provider.postSubmit({
+            transaction: { content: encodedTxn2, isCleanup: false },
+            skipPreFlight: true,
+        })
+        console.info(response.signature)
+    } catch (error) {
+        console.error("Failed to retrieve the orderbook for market SOL/USDC", error)
+    }
+}
+
 async function callGetMarkets(provider: BaseProvider) {
     try {
         console.info("Retrieving all supported markets")
@@ -328,7 +414,7 @@ async function callGetOpenOrders(provider: BaseProvider) {
 async function callGetUnsettled(provider: BaseProvider) {
     try {
         console.info("Retrieving unsettled funds in SOLUSDC market")
-        const req = await provider.getUnsettled({ market: "SOLUSDC", owner: ownerAddress })
+        const req = await provider.getUnsettled({ market: "SOLUSDC", ownerAddress: ownerAddress })
         console.info(req)
     } catch (error) {
         console.error("Failed to retrieve the unsettled funds", error)
@@ -375,12 +461,34 @@ async function callGetServerTime(provider: BaseProvider) {
     }
 }
 
-async function cancelStreams(provider: BaseProvider) {
-    let closed: boolean
+async function callGetPrices(provider: BaseProvider) {
+    try {
+        console.info("Retrieving price")
+        const resp = await provider.getPrice({tokens: ["SOL", "USDC"]})
+        console.info(resp)
+    } catch (error) {
+        console.error("Failed to retrieve server time", error)
+    }
+}
 
-    closed = await provider.cancelGetTradesStream()
-    closed = await provider.cancelGetOrderbooksStream()
-    closed = await provider.cancelGetTickersStream()
+async function callGetPools(provider: BaseProvider) {
+    try {
+        console.info("Retrieving pools")
+        const resp = await provider.getPools({projects: ["P_RAYDIUM"]})
+        console.info(resp)
+    } catch (error) {
+        console.error("Failed to retrieve server time", error)
+    }
+}
+
+async function callGetQuotes(provider: BaseProvider) {
+    try {
+        console.info("Retrieving quotes")
+        const resp = await provider.getQuotes({inToken: "SOL", outToken: "USDC", inAmount: 1, slippage: 5, limit: 5, projects: ["P_RAYDIUM", "P_JUPITER"]})
+        console.info(resp)
+    } catch (error) {
+        console.error("Failed to retrieve quotes", error)
+    }
 }
 
 //streaming requests
@@ -452,6 +560,69 @@ async function callGetTradesStream(provider: BaseProvider) {
     }
 }
 
+
+async function callGetPricesStream(provider: BaseProvider) {
+    try {
+        console.info("Subscribing for prices updates of SOL and USDC on Raydium")
+
+        const projects: Project[] = ["P_RAYDIUM", "P_JUPITER"]
+        const tokens: string[] = ["SOL", "USDC"]
+        const stream = await provider.getPricesStream({ projects: projects, tokens })
+
+        let count = 0
+        for await (const update of stream) {
+            console.info(update)
+            count++
+            if (count == 3) {
+                break
+            }
+        }
+    } catch (error) {
+        console.error("Failed to retrieve prices updates for SOL and USDC on Raydium", error)
+    }
+}
+
+async function callGetPoolsStream(provider: BaseProvider) {
+    try {
+        console.info("Subscribing for pool updates of Raydium")
+
+        const projects: Project[] = ["P_RAYDIUM"]
+        const stream = await provider.getPoolReservesStream({ projects: projects })
+
+        let count = 0
+        for await (const update of stream) {
+            console.info(update)
+            count++
+            if (count == 3) {
+                break
+            }
+        }
+    } catch (error) {
+        console.error("Failed to retrieve pool updates for Raydium", error)
+    }
+}
+
+async function callGetQuotesStream(provider: BaseProvider) {
+    try {
+        console.info("Subscribing for quote updates of SOLUSDC market")
+
+        const projects: Project[] = ["P_RAYDIUM"]
+        const tokenPairs: TokenPair[] = [{inToken: "SOL", outToken: "USDC", inAmount: 1}]
+        const stream = await provider.getQuotesStream({ projects: projects, tokenPairs: tokenPairs })
+
+        let count = 0
+        for await (const update of stream) {
+            console.info(update)
+            count++
+            if (count == 3) {
+                break
+            }
+        }
+    } catch (error) {
+        console.error("Failed to retrieve USDC quote for 1 SOL on Raydium", error)
+    }
+}
+
 //POST requests
 async function callSubmitOrder(provider: BaseProvider) {
     try {
@@ -507,6 +678,52 @@ async function callReplaceByClientOrderID(provider: BaseProvider) {
         console.info(req)
     } catch (error) {
         console.error("Failed to generate and/or submit a Cancel by Client Order ID transaction", error)
+    }
+}
+
+async function callTradeSwap(provider: BaseProvider) {
+    try {
+        console.info("Submitting a trade swap")
+        const resp = await provider.postTradeSwap({
+            ownerAddress: ownerAddress,
+            inToken: "USDC",
+            outToken: "SOL",
+            inAmount: 0.01,
+            slippage: 0.1,
+            project: "P_RAYDIUM"
+        })
+        console.info(resp)
+    } catch (error) {
+        console.error("Failed to generate and/or submit a trade swap", error)
+    }
+}
+
+async function callRouteTradeSwap(provider: BaseProvider) {
+    try {
+        console.info("Submitting a route trade swap")
+        const resp = await provider.postRouteTradeSwap({
+            ownerAddress: ownerAddress,
+            steps: [
+                {
+                    inToken: "FIDA",
+                    outToken: "RAY",
+                    inAmount: 0.01,
+                    outAmount: 0.007505,
+                    outAmountMin: 0.074
+                },
+                {
+                    inToken: "RAY",
+                    outToken: "USDC",
+                    inAmount: 0.007505,
+                    outAmount: 0.004043,
+                    outAmountMin: 0.00400
+                }
+            ],
+            project: "P_RAYDIUM"
+        })
+        console.info(resp)
+    } catch (error) {
+        console.error("Failed to generate and/or submit a route trade swap", error)
     }
 }
 

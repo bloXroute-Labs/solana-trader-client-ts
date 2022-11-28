@@ -1,10 +1,10 @@
 import {
-  Type as GetQuotesStreamUpdate,
+  Type as TokenPrice,
   encodeJson as encodeJson_1,
   decodeJson as decodeJson_1,
   encodeBinary as encodeBinary_1,
   decodeBinary as decodeBinary_1,
-} from "./GetQuotesStreamUpdate.js";
+} from "./TokenPrice.js";
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -25,42 +25,42 @@ import {
 } from "../../runtime/wire/deserialize.js";
 
 export declare namespace $.api {
-  export type GetQuotesStreamResponse = {
+  export type GetPricesStreamResponse = {
     slot: string;
-    quote?: GetQuotesStreamUpdate;
+    price?: TokenPrice;
   }
 }
-export type Type = $.api.GetQuotesStreamResponse;
+export type Type = $.api.GetPricesStreamResponse;
 
-export function getDefaultValue(): $.api.GetQuotesStreamResponse {
+export function getDefaultValue(): $.api.GetPricesStreamResponse {
   return {
     slot: "0",
-    quote: undefined,
+    price: undefined,
   };
 }
 
-export function createValue(partialValue: Partial<$.api.GetQuotesStreamResponse>): $.api.GetQuotesStreamResponse {
+export function createValue(partialValue: Partial<$.api.GetPricesStreamResponse>): $.api.GetPricesStreamResponse {
   return {
     ...getDefaultValue(),
     ...partialValue,
   };
 }
 
-export function encodeJson(value: $.api.GetQuotesStreamResponse): unknown {
+export function encodeJson(value: $.api.GetPricesStreamResponse): unknown {
   const result: any = {};
   if (value.slot !== undefined) result.slot = tsValueToJsonValueFns.int64(value.slot);
-  if (value.quote !== undefined) result.quote = encodeJson_1(value.quote);
+  if (value.price !== undefined) result.price = encodeJson_1(value.price);
   return result;
 }
 
-export function decodeJson(value: any): $.api.GetQuotesStreamResponse {
+export function decodeJson(value: any): $.api.GetPricesStreamResponse {
   const result = getDefaultValue();
   if (value.slot !== undefined) result.slot = jsonValueToTsValueFns.int64(value.slot);
-  if (value.quote !== undefined) result.quote = decodeJson_1(value.quote);
+  if (value.price !== undefined) result.price = decodeJson_1(value.price);
   return result;
 }
 
-export function encodeBinary(value: $.api.GetQuotesStreamResponse): Uint8Array {
+export function encodeBinary(value: $.api.GetPricesStreamResponse): Uint8Array {
   const result: WireMessage = [];
   if (value.slot !== undefined) {
     const tsValue = value.slot;
@@ -68,8 +68,8 @@ export function encodeBinary(value: $.api.GetQuotesStreamResponse): Uint8Array {
       [1, tsValueToWireValueFns.int64(tsValue)],
     );
   }
-  if (value.quote !== undefined) {
-    const tsValue = value.quote;
+  if (value.price !== undefined) {
+    const tsValue = value.price;
     result.push(
       [2, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
     );
@@ -77,7 +77,7 @@ export function encodeBinary(value: $.api.GetQuotesStreamResponse): Uint8Array {
   return serialize(result);
 }
 
-export function decodeBinary(binary: Uint8Array): $.api.GetQuotesStreamResponse {
+export function decodeBinary(binary: Uint8Array): $.api.GetPricesStreamResponse {
   const result = getDefaultValue();
   const wireMessage = deserialize(binary);
   const wireFields = new Map(wireMessage);
@@ -93,7 +93,7 @@ export function decodeBinary(binary: Uint8Array): $.api.GetQuotesStreamResponse 
     if (wireValue === undefined) break field;
     const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined;
     if (value === undefined) break field;
-    result.quote = value;
+    result.price = value;
   }
   return result;
 }

@@ -49,7 +49,12 @@ import {
     PostSubmitRequest,
     PostSubmitResponse,
     TradeSwapRequest,
+    RouteTradeSwapRequest,
     TradeSwapResponse,
+    GetSwapsStreamRequest,
+    GetSwapsStreamResponse,
+    GetPricesStreamRequest,
+    GetPricesStreamResponse,
 } from "../proto/messages/api/index.js"
 import { BaseProvider } from "./base.js"
 import config from "../../utils/config.js"

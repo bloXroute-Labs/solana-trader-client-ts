@@ -1,13 +1,18 @@
 {
-  "name": "solana-trader-client-ts",
-  "version": "0.0.1",
+  "name": "@bloxroute/solana-trader-client-ts",
+  "version": "1.2.0",
   "description": "Solana Trader API SDK",
   "main": "index.ts",
   "type": "module",
   "directories": {
     "example": "example"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
+    "test": "echo \"No test specified\"",
+    "release": "np --no-2fa",
     "start": "ts-node ./examples/index.ts",
     "lint": "eslint --fix .",
     "format": "prettier --config .prettierrc './**/*.ts' --write",
@@ -31,6 +36,7 @@
     "dotenv": "^16.0.1",
     "google-protobuf": "^3.20.1",
     "node-fetch": "^3.2.6",
+    "np": "^6.0.0",
     "pbkit": "^0.0.53",
     "ts-node": "^10.8.1",
     "typescript": "^4.7.4",
