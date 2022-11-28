@@ -35,6 +35,8 @@ import {
     PostSettleResponse,
     PostSubmitRequest,
     PostSubmitResponse,
+    PostSubmitBatchRequest,
+    PostSubmitBatchResponse,
     TradeSwapRequest,
     RouteTradeSwapRequest,
     TradeSwapResponse,
@@ -193,6 +195,17 @@ export class HttpProvider extends BaseProvider {
             headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
         }).then((resp) => {
             return resp.json() as unknown as PostSubmitResponse
+        })
+    }
+
+    postSubmitBatch(request: PostSubmitBatchRequest): Promise<PostSubmitBatchResponse> {
+        const path = `${this.baseUrl}/trade/submit-batch`
+        return fetch(path, {
+            method: "POST",
+            body: JSON.stringify(request),
+            headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
+        }).then((resp) => {
+            return resp.json() as unknown as PostSubmitBatchResponse
         })
     }
 
