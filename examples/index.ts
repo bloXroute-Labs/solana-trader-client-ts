@@ -102,10 +102,10 @@ async function grpc() {
     await doRequests(provider)
     console.info(" ----  GRPC Solana Requests  ----")
     await doSolanaRequests(provider)
-    console.info(" ----  GRPC Cancel All  ----")
-    await callCancelAll(provider)
 
     if (process.env.RUN_LIFECYCLE === "true") {
+        console.info(" ----  GRPC Cancel All  ----")
+        await callCancelAll(provider)
         await doStreams(provider)
         console.info(" ----  GRPC Solana Streams  ----")
         await doSolanaStreams(provider)
@@ -131,9 +131,10 @@ async function ws() {
     console.info(" ----  WS Solana Requests  ----")
     await doSolanaRequests(provider)
     console.info(" ----  WS Streams  ----")
-    await callCancelAll(provider)
-    console.info(" ----  WS Lifecycle  ----")
+
     if (process.env.RUN_LIFECYCLE === "true") {
+        await callCancelAll(provider)
+        console.info(" ----  WS Lifecycle  ----")
         await doLifecycle(provider)
         console.info(" ")
         console.info(" ----  WS Streams  ----")
