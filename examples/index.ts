@@ -91,11 +91,11 @@ async function grpc() {
     let provider: GrpcProvider
 
     if (process.env.API_ENV === "testnet") {
-        provider = new GrpcProvider(`${TESTNET_API_GRPC_HOST}:${TESTNET_API_GRPC_PORT}`)
+        provider = new GrpcProvider(`${TESTNET_API_GRPC_HOST}:${TESTNET_API_GRPC_PORT}`, false)
     } else if (process.env.API_ENV === "mainnet") {
-        provider = new GrpcProvider(`${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`)
+        provider = new GrpcProvider(`${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`, true)
     } else {
-        provider = new GrpcProvider(`${LOCAL_API_GRPC_HOST}:${LOCAL_API_GRPC_PORT}`)
+        provider = new GrpcProvider(`${LOCAL_API_GRPC_HOST}:${LOCAL_API_GRPC_PORT}`, false)
     }
 
     console.info(" ----  GRPC Requests  ----")

@@ -67,7 +67,7 @@ export class GrpcProvider extends BaseProvider {
     private client: Service
     private grpcClient: Client
 
-    constructor(address = `${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`) {
+    constructor(address = `${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`, useTLS: boolean) {
         super()
         const metaCallback = (options: CallMetadataOptions, cb: (err: Error | null, metadata?: grpc.Metadata) => void) => {
             const meta = new grpc.Metadata()
@@ -77,15 +77,13 @@ export class GrpcProvider extends BaseProvider {
 
         let grpcClient: Client
 
-        if (process.env.API_ENV === "testnet") {
+        if (!useTLS) { // testnet or local
             grpcClient = new Client(address, grpc.credentials.createInsecure())
-        } else if (process.env.API_ENV === "mainnet") {
+        } else { // mainnet
             grpcClient = new Client(
                 address,
                 grpc.credentials.combineChannelCredentials(grpc.credentials.createSsl(), grpc.credentials.createFromMetadataGenerator(metaCallback))
             )
-        } else {
-            grpcClient = new Client(address, grpc.credentials.createInsecure())
         }
 
         this.grpcClient = grpcClient
