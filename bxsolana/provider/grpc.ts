@@ -77,9 +77,11 @@ export class GrpcProvider extends BaseProvider {
 
         let grpcClient: Client
 
-        if (!useTLS) { // testnet or local
+        if (!useTLS) {
+            // testnet or local
             grpcClient = new Client(address, grpc.credentials.createInsecure())
-        } else { // mainnet
+        } else {
+            // mainnet
             grpcClient = new Client(
                 address,
                 grpc.credentials.combineChannelCredentials(grpc.credentials.createSsl(), grpc.credentials.createFromMetadataGenerator(metaCallback))

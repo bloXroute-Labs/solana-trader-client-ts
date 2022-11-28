@@ -166,7 +166,7 @@ export class WsProvider extends BaseProvider {
     }
 
     getPricesStream(request: GetPricesStreamRequest): Promise<AsyncGenerator<GetPricesStreamResponse>> {
-        return this.wsSocketStreamCall("GetPricesStream", request);
+        return this.wsSocketStreamCall("GetPricesStream", request)
     }
 
     getPools(request: GetPoolsRequest): Promise<GetPoolsResponse> {
@@ -190,7 +190,7 @@ export class WsProvider extends BaseProvider {
     }
 
     postRouteTradeSwap(request: RouteTradeSwapRequest): Promise<TradeSwapResponse> {
-        return this.wsSocketCall("PostRouteTradeSwap", request);
+        return this.wsSocketCall("PostRouteTradeSwap", request)
     }
 
     getSwapsStream(request: GetSwapsStreamRequest): Promise<AsyncGenerator<GetSwapsStreamResponse>> {
