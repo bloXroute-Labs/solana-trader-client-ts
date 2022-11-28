@@ -61,9 +61,15 @@ import {
     GetPricesStreamResponse,
     PostSubmitBatchRequest,
     PostSubmitBatchResponse,
+    PostSubmitRequestEntry,
+    SubmitStrategy
 } from "../proto/messages/api/index.js"
 import { Api } from "../proto/services/api/index.js"
-import { signTx, SubmitTransactionResponse } from "../../utils/transaction.js"
+import {
+    signTx,
+    signTxMessage,
+    SubmitTransactionResponse
+} from "../../utils/transaction.js"
 
 export abstract class BaseProvider implements Api {
     abstract close(): void
@@ -244,34 +250,38 @@ export abstract class BaseProvider implements Api {
     //      SubmitTradeSwap => try/catch
     //          PostTradeSwap =>
     //          PostSubmit
-    async submitTradeSwap(request: TradeSwapRequest, skipPreFlight = true): Promise<PostSubmitResponse[]> {
+    async submitTradeSwap(request: TradeSwapRequest, submitStrategy: SubmitStrategy, skipPreFlight = true): Promise<PostSubmitBatchResponse> {
         const res = await this.postTradeSwap(request)
 
-        let responses: PostSubmitResponse[] = []
-
-        for (const transaction in res.transactions) {
-            const signedTx = signTx(transaction)
-            const response = await this.postSubmit({ transaction: { content: signedTx.serialize().toString("base64"), isCleanup: false }, skipPreFlight }) // TODO do this in PostBatchSwap
-
-            responses.push(response)
+        let entries = new Array<PostSubmitRequestEntry>()
+        for (const transactionMessage of res.transactions) {
+            entries.push({
+                transaction: signTxMessage(transactionMessage),
+                skipPreFlight: skipPreFlight
+            })
         }
 
-        return responses
+        return await this.postSubmitBatch({
+            entries: entries,
+            SubmitStrategy: submitStrategy,
+        })
     }
 
-    async submitRouteTradeSwap(request: RouteTradeSwapRequest, skipPreFlight = true): Promise<PostSubmitResponse[]> {
+    async submitRouteTradeSwap(request: RouteTradeSwapRequest, submitStrategy: SubmitStrategy, skipPreFlight = true): Promise<PostSubmitBatchResponse> {
         const res = await this.postRouteTradeSwap(request)
 
-        let responses: PostSubmitResponse[] = []
-
-        for (const transaction in res.transactions) {
-            const signedTx = signTx(transaction)
-            const response = await this.postSubmit({ transaction: { content: signedTx.serialize().toString("base64"), isCleanup: false }, skipPreFlight }) // TODO do this in PostBatchSwap
-
-            responses.push(response)
+        let entries = new Array<PostSubmitRequestEntry>()
+        for (const transactionMessage of res.transactions) {
+            entries.push({
+                transaction: signTxMessage(transactionMessage),
+                skipPreFlight: skipPreFlight
+            })
         }
 
-        return responses
+        return await this.postSubmitBatch({
+            entries: entries,
+            SubmitStrategy: submitStrategy,
+        })
     }
 
     getPoolReservesStream(request: GetPoolReservesStreamRequest): Promise<AsyncGenerator<GetPoolReservesStreamResponse>> {
