@@ -1,5 +1,5 @@
 import { MAINNET_API_HTTP } from "../../utils/constants.js"
-import fetch from "node-fetch"
+import fetch, {Response} from "node-fetch"
 import {
     GetAccountBalanceRequest,
     GetAccountBalanceResponse,
@@ -45,6 +45,7 @@ import {
 } from "../proto/messages/api/index.js"
 import { BaseProvider } from "./base.js"
 import config from "../../utils/config.js"
+import {SolanaJSONRPCError} from "@solana/web3.js";
 
 export class HttpProvider extends BaseProvider {
     private baseUrl: string
@@ -171,9 +172,9 @@ export class HttpProvider extends BaseProvider {
             method: "POST",
             body: JSON.stringify(request),
             headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
-        }).then((resp) => {
-            return resp.json() as unknown as TradeSwapResponse
-        })
+        }).then((resp) =>
+            this.handleResponse(resp)
+        )
     }
 
     postRouteTradeSwap(request: RouteTradeSwapRequest): Promise<TradeSwapResponse> {
@@ -182,9 +183,9 @@ export class HttpProvider extends BaseProvider {
             method: "POST",
             body: JSON.stringify(request),
             headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
-        }).then((resp) => {
-            return resp.json() as unknown as TradeSwapResponse
-        })
+        }).then((resp) =>
+            this.handleResponse(resp)
+        )
     }
 
     postSubmit(request: PostSubmitRequest): Promise<PostSubmitResponse> {
@@ -193,9 +194,9 @@ export class HttpProvider extends BaseProvider {
             method: "POST",
             body: JSON.stringify(request),
             headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
-        }).then((resp) => {
-            return resp.json() as unknown as PostSubmitResponse
-        })
+        }).then((resp) =>
+            this.handleResponse(resp)
+        )
     }
 
     postSubmitBatch(request: PostSubmitBatchRequest): Promise<PostSubmitBatchResponse> {
@@ -203,10 +204,10 @@ export class HttpProvider extends BaseProvider {
         return fetch(path, {
             method: "POST",
             body: JSON.stringify(request),
-            headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
-        }).then((resp) => {
-            return resp.json() as unknown as PostSubmitBatchResponse
-        })
+            headers: {"Content-Type": "application/json", Authorization: config.AuthHeader},
+        }).then((resp) =>
+            this.handleResponse(resp)
+        )
     }
 
     postCancelOrder(request: PostCancelOrderRequest): Promise<PostCancelOrderResponse> {
@@ -275,4 +276,14 @@ export class HttpProvider extends BaseProvider {
         })
     }
 
+    async handleResponse<T>(response: Response): Promise<T> {
+        return response.json().then((j) => {
+            if (j instanceof SolanaJSONRPCError) {
+                return Promise.reject(j.message)
+            }
+            else {
+                return Promise.resolve(j as T)
+            }
+        })
+    }
 }
