@@ -158,15 +158,61 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    cancelGetTradesStream = async (): Promise<boolean> => {
+    // these following cancel functions are only used by
+
+    cancelAllGetOrderbooksStream = async (): Promise<boolean> => {
         throw new Error("Not implemented")
     }
 
-    cancelGetTickersStream = async (): Promise<boolean> => {
+    cancelGetOrderbooksStreamByCount = async (streamNumber:number): Promise<boolean> => {
         throw new Error("Not implemented")
     }
 
-    cancelGetOrderbooksStream = async (): Promise<boolean> => {
+    cancelAllGetTradesStream = async (): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetTradesStreamByCount = async (streamNumber:number): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelAllGetTickersStream = async (): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetTickersStreamByCount = async (streamNumber:number): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelAllGetOrderStatusStream = async (): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetOrderStatusStreamByCount = async (streamNumber:number): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelAllGetRecentBlockhashStream = async (): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetRecentBlockhashStreamByCount = async (streamNumber:number): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelAllGetQuotesStream = async (): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetQuotesStreamByCount = async (streamNumber:number): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelAllGetPoolReservesStream = async (): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetPoolReservesStreamByCount = async (streamNumber:number): Promise<boolean> => {
         throw new Error("Not implemented")
     }
 

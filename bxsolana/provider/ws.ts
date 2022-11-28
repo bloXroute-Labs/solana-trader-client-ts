@@ -1,4 +1,4 @@
-import {LOCAL_API_WS, MAINNET_API_WS} from "../../utils/constants.js"
+import { LOCAL_API_WS, MAINNET_API_WS } from "../../utils/constants.js"
 import WebSocket, { Event } from "ws"
 
 import {
@@ -64,6 +64,19 @@ export class WsProvider extends BaseProvider {
     private isClosed = false
     private streamMap: Map<string, string> = new Map()
 
+    // stream to count is going to be a map to a stream and how many instances of that stream are open
+    // ex: if someone calls GetOrderbooksStream 3 times, the map will look like:
+    // <GetOrderbooksStream, 1>
+    // <GetOrderbooksStream, 2>
+    // <GetOrderbooksStream, 3>
+    private streamToCountMap: Map<string, Map<number, string>> = new Map()
+
+    // countToSubscriptionID is going to be a map from the number in the above map (i.e 3 if GetOrderbooksStream is
+    // called 3 times) to the subscription id. This will be used to manage cancellations
+    private countToSubscriptionID: Map<number, string> = new Map()
+
+
+
     constructor(address: string = MAINNET_API_WS) {
         super()
         this.wsConnection = new RpcWsConnection(address)
@@ -115,18 +128,68 @@ export class WsProvider extends BaseProvider {
     getOrderbooksStream = async (request: GetOrderbooksRequest): Promise<AsyncGenerator<GetOrderbooksStreamResponse>> => {
         const subscriptionId = await this.wsConnection.subscribe("GetOrderbooksStream", request)
 
-        this.streamMap.set("GetOrderbooksStream", subscriptionId)
+        let count:number
+        if (this.streamToCountMap.size === 0) {
+            count = 1
+            const countToSubscriptionID = new Map()
+            countToSubscriptionID.set(count, subscriptionId)
+            this.streamToCountMap.set("GetOrderbooksStream", countToSubscriptionID)
+        } else {
+            count = this.streamToCountMap.size + 1
+            const countToSubscriptionID = this.streamToCountMap.get("GetOrderbooksStream")
+
+            if (countToSubscriptionID) {
+                countToSubscriptionID.set(count, subscriptionId)
+                this.streamToCountMap.set("GetOrderbooksStream", countToSubscriptionID)
+            }
+        }
+
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
-    cancelGetOrderbooksStream = async (): Promise<boolean> => {
-        const subID = this.streamMap.get("GetOrderbooksStream")
+    // Since the implementation of the subscription functions rely on the count incrementing on every subsequent call
+    // to the same stream, the cancel functionality operates on the assumption that the "streamNumber" corresponds to
+    // the specific call of the stream by the user
 
-        if (subID) {
-            return this.wsConnection.unsubscribe(subID)
-        } else {
-            return false
+    // example
+    // getOrderbooksStream (count === 1)
+    // getOrderbooksStream (count === 2)
+
+    // can cancel 1, or 2. If a nonvalid cancellation number is sent as an input, the promise will be rejected with a
+    // false boolean
+
+    cancelGetOrderbooksStreamByCount = async (streamNumber: number): Promise<boolean> => {
+        const countToSubscriptionID = this.streamToCountMap.get("GetOrderbooksStream")
+
+        if (countToSubscriptionID) {
+            this.countToSubscriptionID.forEach((value: string, key: number) => {
+                if (key === streamNumber)
+                return this.wsConnection.unsubscribe(value)
+            });
         }
+
+        return false
+    }
+
+    cancelAllGetOrderbooksStream = async (): Promise<boolean> => {
+        let retValues:Promise<boolean>
+        let p = Promise.resolve(false)
+
+        const countToSubscriptionID = this.streamToCountMap.get("GetOrderbooksStream")
+
+        if (countToSubscriptionID) {
+            countToSubscriptionID.forEach((value: string, key: number) => {
+                retValues = this.wsConnection.unsubscribe(value)
+                retValues.catch(function () {
+                    return retValues
+                });
+            });
+
+            return p
+        }
+
+        p = Promise.reject(true)
+        return p
     }
 
     getTickersStream = async (request: GetTickersRequest): Promise<AsyncGenerator<GetTickersStreamResponse>> => {
@@ -136,14 +199,38 @@ export class WsProvider extends BaseProvider {
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
-    cancelGetTickersStream = async (): Promise<boolean> => {
-        const subID = this.streamMap.get("GetTickersStream")
+    cancelGetTickersStreamByCount = async (streamNumber: number): Promise<boolean> => {
+        const countToSubscriptionID = this.streamToCountMap.get("GetTickersStream")
 
-        if (subID) {
-            return this.wsConnection.unsubscribe(subID)
-        } else {
-            return false
+        if (countToSubscriptionID) {
+            this.countToSubscriptionID.forEach((value: string, key: number) => {
+                if (key === streamNumber)
+                    return this.wsConnection.unsubscribe(value)
+            });
         }
+
+        return false
+    }
+
+    cancelAllGetTickersStream = async (): Promise<boolean> => {
+        let retValues:Promise<boolean>
+        let p = Promise.resolve(false)
+
+        const countToSubscriptionID = this.streamToCountMap.get("GetTickersStream")
+
+        if (countToSubscriptionID) {
+            countToSubscriptionID.forEach((value: string, key: number) => {
+                retValues = this.wsConnection.unsubscribe(value)
+                retValues.catch(function () {
+                    return retValues
+                });
+            });
+
+            return p
+        }
+
+        p = Promise.reject(true)
+        return p
     }
 
     getTradesStream = async (request: GetTradesRequest): Promise<AsyncGenerator<GetTradesStreamResponse>> => {
@@ -153,20 +240,79 @@ export class WsProvider extends BaseProvider {
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
-    cancelGetTradesStream = async (): Promise<boolean> => {
-        const subID = this.streamMap.get("GetTradesStream")
+    cancelGetTradesStreamByCount = async (streamNumber: number): Promise<boolean> => {
+        const countToSubscriptionID = this.streamToCountMap.get("GetTradesStream")
 
-        if (subID) {
-            return this.wsConnection.unsubscribe(subID)
-        } else {
-            return false
+        if (countToSubscriptionID) {
+            this.countToSubscriptionID.forEach((value: string, key: number) => {
+                if (key === streamNumber)
+                    return this.wsConnection.unsubscribe(value)
+            });
         }
+
+        return false
     }
+
+    cancelAllGetTradesStream = async (): Promise<boolean> => {
+        let retValues:Promise<boolean>
+        let p = Promise.resolve(false)
+
+        const countToSubscriptionID = this.streamToCountMap.get("GetTradesStream")
+
+        if (countToSubscriptionID) {
+            countToSubscriptionID.forEach((value: string, key: number) => {
+                retValues = this.wsConnection.unsubscribe(value)
+                retValues.catch(function () {
+                    return retValues
+                });
+            });
+
+            return p
+        }
+
+        p = Promise.reject(true)
+        return p
+    }
+
 
     getOrderStatusStream = async (request: GetOrderStatusStreamRequest): Promise<AsyncGenerator<GetOrderStatusStreamResponse>> => {
         const subscriptionId = await this.wsConnection.subscribe("GetOrderStatusStream", request)
 
         return this.wsConnection.subscribeToNotifications(subscriptionId)
+    }
+
+    cancelGetOrderStatusStreamByCount = async (streamNumber: number): Promise<boolean> => {
+        const countToSubscriptionID = this.streamToCountMap.get("GetOrderStatusStream")
+
+        if (countToSubscriptionID) {
+            this.countToSubscriptionID.forEach((value: string, key: number) => {
+                if (key === streamNumber)
+                    return this.wsConnection.unsubscribe(value)
+            });
+        }
+
+        return false
+    }
+
+    cancelAllGetOrderStatusStream = async (): Promise<boolean> => {
+        let retValues:Promise<boolean>
+        let p = Promise.resolve(false)
+
+        const countToSubscriptionID = this.streamToCountMap.get("GetOrderStatusStream")
+
+        if (countToSubscriptionID) {
+            countToSubscriptionID.forEach((value: string, key: number) => {
+                retValues = this.wsConnection.unsubscribe(value)
+                retValues.catch(function () {
+                    return retValues
+                });
+            });
+
+            return p
+        }
+
+        p = Promise.reject(true)
+        return p
     }
 
     //POST requests
@@ -224,14 +370,38 @@ export class WsProvider extends BaseProvider {
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
-    cancelGetRecentBlockHashStream = async (): Promise<boolean> => {
-        const subID = this.streamMap.get("GetRecentBlockHashStream")
+    cancelGetRecentBlockhashStreamByCount = async (streamNumber: number): Promise<boolean> => {
+        const countToSubscriptionID = this.streamToCountMap.get("GetRecentBlockHashStream")
 
-        if (subID) {
-            return this.wsConnection.unsubscribe(subID)
-        } else {
-            return false
+        if (countToSubscriptionID) {
+            this.countToSubscriptionID.forEach((value: string, key: number) => {
+                if (key === streamNumber)
+                    return this.wsConnection.unsubscribe(value)
+            });
         }
+
+        return false
+    }
+
+    cancelAllGetRecentBlockhashStream = async (): Promise<boolean> => {
+        let retValues:Promise<boolean>
+        let p = Promise.resolve(false)
+
+        const countToSubscriptionID = this.streamToCountMap.get("GetRecentBlockHashStream")
+
+        if (countToSubscriptionID) {
+            countToSubscriptionID.forEach((value: string, key: number) => {
+                retValues = this.wsConnection.unsubscribe(value)
+                retValues.catch(function () {
+                    return retValues
+                });
+            });
+
+            return p
+        }
+
+        p = Promise.reject(true)
+        return p
     }
 
     getQuotesStream = async (request: GetQuotesStreamRequest): Promise<AsyncGenerator<GetQuotesStreamResponse>> => {
@@ -240,14 +410,38 @@ export class WsProvider extends BaseProvider {
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
-    cancelGetQuotesStream = async (): Promise<boolean> => {
-        const subID = this.streamMap.get("GetQuotesStream")
+    cancelGetQuotesStreamByCount = async (streamNumber: number): Promise<boolean> => {
+        const countToSubscriptionID = this.streamToCountMap.get("GetQuotesStream")
 
-        if (subID) {
-            return this.wsConnection.unsubscribe(subID)
-        } else {
-            return false
+        if (countToSubscriptionID) {
+            this.countToSubscriptionID.forEach((value: string, key: number) => {
+                if (key === streamNumber)
+                    return this.wsConnection.unsubscribe(value)
+            });
         }
+
+        return false
+    }
+
+    cancelAllGetQuotesStream = async (): Promise<boolean> => {
+        let retValues:Promise<boolean>
+        let p = Promise.resolve(false)
+
+        const countToSubscriptionID = this.streamToCountMap.get("GetQuotesStream")
+
+        if (countToSubscriptionID) {
+            countToSubscriptionID.forEach((value: string, key: number) => {
+                retValues = this.wsConnection.unsubscribe(value)
+                retValues.catch(function () {
+                    return retValues
+                });
+            });
+
+            return p
+        }
+
+        p = Promise.reject(true)
+        return p
     }
 
     getPoolReservesStream = async (request: GetPoolReservesStreamRequest): Promise<AsyncGenerator<GetPoolReservesStreamResponse>> => {
@@ -256,13 +450,37 @@ export class WsProvider extends BaseProvider {
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
-    cancelGetPoolReservesStream = async (): Promise<boolean> => {
-        const subID = this.streamMap.get("GetPoolReservesStream")
+    cancelGetPoolReservesStreamByCount = async (streamNumber: number): Promise<boolean> => {
+        const countToSubscriptionID = this.streamToCountMap.get("GetPoolReservesStream")
 
-        if (subID) {
-            return this.wsConnection.unsubscribe(subID)
-        } else {
-            return false
+        if (countToSubscriptionID) {
+            this.countToSubscriptionID.forEach((value: string, key: number) => {
+                if (key === streamNumber)
+                    return this.wsConnection.unsubscribe(value)
+            });
         }
+
+        return false
+    }
+
+    cancelAllGetPoolReservesStream = async (): Promise<boolean> => {
+        let retValues:Promise<boolean>
+        let p = Promise.resolve(false)
+
+        const countToSubscriptionID = this.streamToCountMap.get("GetPoolReservesStream")
+
+        if (countToSubscriptionID) {
+            countToSubscriptionID.forEach((value: string, key: number) => {
+                retValues = this.wsConnection.unsubscribe(value)
+                retValues.catch(function () {
+                    return retValues
+                });
+            });
+
+            return p
+        }
+
+        p = Promise.reject(true)
+        return p
     }
 }
