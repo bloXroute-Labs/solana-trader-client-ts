@@ -677,15 +677,16 @@ async function callReplaceByClientOrderID(provider: BaseProvider) {
 async function callTradeSwap(provider: BaseProvider) {
     try {
         console.info("Submitting a trade swap")
-        const resp = await provider.postTradeSwap({
+        const resp = await provider.submitTradeSwap({
             ownerAddress: ownerAddress,
             inToken: "USDC",
             outToken: "SOL",
             inAmount: 0.01,
             slippage: 0.1,
             project: "P_RAYDIUM"
-        })
+        }, "P_SUBMIT_ALL", true)
         console.info(resp)
+
     } catch (error) {
         console.error("Failed to generate and/or submit a trade swap", error)
     }
@@ -694,7 +695,7 @@ async function callTradeSwap(provider: BaseProvider) {
 async function callRouteTradeSwap(provider: BaseProvider) {
     try {
         console.info("Submitting a route trade swap")
-        const resp = await provider.postRouteTradeSwap({
+        const resp = await provider.submitRouteTradeSwap({
             ownerAddress: ownerAddress,
             steps: [
                 {
@@ -713,7 +714,7 @@ async function callRouteTradeSwap(provider: BaseProvider) {
                 }
             ],
             project: "P_RAYDIUM"
-        })
+        }, "P_SUBMIT_ALL", true)
         console.info(resp)
     } catch (error) {
         console.error("Failed to generate and/or submit a route trade swap", error)
