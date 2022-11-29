@@ -97,10 +97,3 @@ workflows:
                 - develop
     jobs:
       - build
-      - test:
-          requires:
-            build
-      - integration:
-          context: trader-api-sdk
-          requires:
-            - build
