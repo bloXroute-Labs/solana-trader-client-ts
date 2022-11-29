@@ -242,13 +242,13 @@ export abstract class BaseProvider implements Api {
         for (const transactionMessage of res.transactions) {
             entries.push({
                 transaction: signTxMessage(transactionMessage),
-                skipPreFlight: skipPreFlight
+                skipPreFlight: skipPreFlight,
             })
         }
 
         return await this.postSubmitBatch({
             entries: entries,
-            SubmitStrategy: submitStrategy
+            SubmitStrategy: submitStrategy,
         })
     }
 
