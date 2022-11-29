@@ -8,9 +8,9 @@ jobs:
       - checkout
       - node/install-packages:
           pkg-manager: npm
-      - run:
-          command: npm install
-          name: Install npm
+#      - run:
+#          command: npm install
+#          name: Install npm
       - run:
           command: sudo npm install -g ts-node
           name: Install ts-node
