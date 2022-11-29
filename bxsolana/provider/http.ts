@@ -45,7 +45,7 @@ import {
 } from "../proto/messages/api/index.js"
 import { BaseProvider } from "./base.js"
 import config from "../../utils/config.js"
-import { IsRPCError, RPCError } from "./error.js"
+import { IsRPCError, RPCError } from "../../utils/error.js"
 
 export class HttpProvider extends BaseProvider {
     private baseUrl: string
