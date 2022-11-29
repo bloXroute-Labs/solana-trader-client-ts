@@ -281,7 +281,7 @@ export class HttpProvider extends BaseProvider {
             if (IsRPCError(json)) {
                 return Promise.reject((json as RPCError).message)
             } else {
-                return Promise.resolve(response as unknown as T)
+                return Promise.resolve(json as unknown as T)
             }
         })
     }
