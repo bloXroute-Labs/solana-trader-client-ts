@@ -148,7 +148,7 @@ export class GrpcProvider extends BaseProvider {
     }
 
     postSubmitBatch(request: PostSubmitBatchRequest): Promise<PostSubmitBatchResponse> {
-        return this.client.postSubmitBatch(request);
+        return this.client.postSubmitBatch(request)
     }
 
     postCancelOrder(request: PostCancelOrderRequest): Promise<PostCancelOrderResponse> {
@@ -185,7 +185,7 @@ export class GrpcProvider extends BaseProvider {
     }
 
     getPricesStream(request: GetPricesStreamRequest): Promise<AsyncGenerator<GetPricesStreamResponse>> {
-        return this.client.getPricesStream(request);
+        return this.client.getPricesStream(request)
     }
 
     getPools(request: GetPoolsRequest): Promise<GetPoolsResponse> {
@@ -209,7 +209,7 @@ export class GrpcProvider extends BaseProvider {
     }
 
     postRouteTradeSwap(request: RouteTradeSwapRequest): Promise<TradeSwapResponse> {
-        return this.client.postRouteTradeSwap(request);
+        return this.client.postRouteTradeSwap(request)
     }
 
     getSwapsStream(request: GetSwapsStreamRequest): Promise<AsyncGenerator<GetSwapsStreamResponse>> {

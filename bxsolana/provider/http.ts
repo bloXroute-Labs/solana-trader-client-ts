@@ -184,7 +184,7 @@ export class HttpProvider extends BaseProvider {
             body: JSON.stringify(request),
             headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
         }).then((resp) => {
-            return this.handleResponse(resp.json());
+            return this.handleResponse(resp.json())
         })
     }
 

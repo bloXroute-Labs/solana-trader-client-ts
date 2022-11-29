@@ -10,7 +10,7 @@ import {
     GetOpenOrdersResponse,
     PostCancelAllRequest,
     TokenPair,
-    Project
+    Project,
 } from "../bxsolana/proto/messages/api/index.js"
 import config from "../utils/config.js"
 import { addMemo, addMemoToSerializedTxn } from "../utils/memo.js"
@@ -456,7 +456,7 @@ async function callGetServerTime(provider: BaseProvider) {
 async function callGetPrices(provider: BaseProvider) {
     try {
         console.info("Retrieving price")
-        const resp = await provider.getPrice({tokens: ["SOL", "USDC"]})
+        const resp = await provider.getPrice({ tokens: ["SOL", "USDC"] })
         console.info(resp)
     } catch (error) {
         console.error("Failed to retrieve server time", error)
@@ -466,7 +466,7 @@ async function callGetPrices(provider: BaseProvider) {
 async function callGetPools(provider: BaseProvider) {
     try {
         console.info("Retrieving pools")
-        const resp = await provider.getPools({projects: ["P_RAYDIUM"]})
+        const resp = await provider.getPools({ projects: ["P_RAYDIUM"] })
         console.info(resp)
     } catch (error) {
         console.error("Failed to retrieve server time", error)
@@ -476,7 +476,14 @@ async function callGetPools(provider: BaseProvider) {
 async function callGetQuotes(provider: BaseProvider) {
     try {
         console.info("Retrieving quotes")
-        const resp = await provider.getQuotes({inToken: "SOL", outToken: "USDC", inAmount: 1, slippage: 5, limit: 5, projects: ["P_RAYDIUM", "P_JUPITER"]})
+        const resp = await provider.getQuotes({
+            inToken: "SOL",
+            outToken: "USDC",
+            inAmount: 1,
+            slippage: 5,
+            limit: 5,
+            projects: ["P_RAYDIUM", "P_JUPITER"],
+        })
         console.info(resp)
     } catch (error) {
         console.error("Failed to retrieve quotes", error)
@@ -552,7 +559,6 @@ async function callGetTradesStream(provider: BaseProvider) {
     }
 }
 
-
 async function callGetPricesStream(provider: BaseProvider) {
     try {
         console.info("Subscribing for prices updates of SOL and USDC on Raydium")
@@ -599,7 +605,7 @@ async function callGetQuotesStream(provider: BaseProvider) {
         console.info("Subscribing for quote updates of SOLUSDC market")
 
         const projects: Project[] = ["P_RAYDIUM"]
-        const tokenPairs: TokenPair[] = [{inToken: "SOL", outToken: "USDC", inAmount: 1}]
+        const tokenPairs: TokenPair[] = [{ inToken: "SOL", outToken: "USDC", inAmount: 1 }]
         const stream = await provider.getQuotesStream({ projects: projects, tokenPairs: tokenPairs })
 
         let count = 0
@@ -676,14 +682,18 @@ async function callReplaceByClientOrderID(provider: BaseProvider) {
 async function callTradeSwap(provider: BaseProvider) {
     try {
         console.info("Submitting a trade swap")
-        const responses = await provider.submitTradeSwap({
-            ownerAddress: ownerAddress,
-            inToken: "USDC",
-            outToken: "SOL",
-            inAmount: 0.01,
-            slippage: 0.1,
-            project: "P_RAYDIUM"
-        }, "P_SUBMIT_ALL", true)
+        const responses = await provider.submitTradeSwap(
+            {
+                ownerAddress: ownerAddress,
+                inToken: "USDC",
+                outToken: "SOL",
+                inAmount: 0.01,
+                slippage: 0.1,
+                project: "P_RAYDIUM",
+            },
+            "P_SUBMIT_ALL",
+            true
+        )
 
         for (const response of responses) {
             console.info(response.signature)
@@ -696,26 +706,30 @@ async function callTradeSwap(provider: BaseProvider) {
 async function callRouteTradeSwap(provider: BaseProvider) {
     try {
         console.info("Submitting a route trade swap")
-        const responses = await provider.submitRouteTradeSwap({
-            ownerAddress: ownerAddress,
-            steps: [
-                {
-                    inToken: "FIDA",
-                    outToken: "RAY",
-                    inAmount: 0.01,
-                    outAmount: 0.007505,
-                    outAmountMin: 0.074
-                },
-                {
-                    inToken: "RAY",
-                    outToken: "USDC",
-                    inAmount: 0.007505,
-                    outAmount: 0.004043,
-                    outAmountMin: 0.00400
-                }
-            ],
-            project: "P_RAYDIUM"
-        }, "P_SUBMIT_ALL", true)
+        const responses = await provider.submitRouteTradeSwap(
+            {
+                ownerAddress: ownerAddress,
+                steps: [
+                    {
+                        inToken: "FIDA",
+                        outToken: "RAY",
+                        inAmount: 0.01,
+                        outAmount: 0.007505,
+                        outAmountMin: 0.074,
+                    },
+                    {
+                        inToken: "RAY",
+                        outToken: "USDC",
+                        inAmount: 0.007505,
+                        outAmount: 0.004043,
+                        outAmountMin: 0.004,
+                    },
+                ],
+                project: "P_RAYDIUM",
+            },
+            "P_SUBMIT_ALL",
+            true
+        )
 
         for (const response of responses.transactions) {
             console.info(response.signature)
