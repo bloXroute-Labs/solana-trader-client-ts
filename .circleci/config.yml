@@ -32,9 +32,9 @@ jobs:
   format:
     executor: node/default
     steps:
+      - attach_workspace:
+          at: .
       - checkout
-      - node/install-packages:
-          pkg-manager: npm
       - run:
           name: format
           command: npm run format
@@ -42,9 +42,9 @@ jobs:
   lint:
     executor: node/default
     steps:
+      - attach_workspace:
+          at: .
       - checkout
-      - node/install-packages:
-          pkg-manager: npm
       - run:
           name: lint
           command: npm run lint
