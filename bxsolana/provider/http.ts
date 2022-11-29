@@ -1,5 +1,5 @@
 import { MAINNET_API_HTTP } from "../../utils/constants.js"
-import fetch, {Response} from "node-fetch"
+import fetch, { Response } from "node-fetch"
 import {
     GetAccountBalanceRequest,
     GetAccountBalanceResponse,
@@ -45,7 +45,7 @@ import {
 } from "../proto/messages/api/index.js"
 import { BaseProvider } from "./base.js"
 import config from "../../utils/config.js"
-import {SolanaJSONRPCError} from "@solana/web3.js";
+import { IsRPCError, RPCError } from "./error.js"
 
 export class HttpProvider extends BaseProvider {
     private baseUrl: string
@@ -146,11 +146,11 @@ export class HttpProvider extends BaseProvider {
 
     getQuotes(request: GetQuotesRequest): Promise<GetQuotesResponse> {
         let path = `${this.baseUrl}/market/quote?inToken=${request.inToken}&outToken=${request.outToken}&inAmount=${request.inAmount}&slippage=${request.slippage}&limit=${request.limit}`
-        for (const project of request.projects)  {
+        for (const project of request.projects) {
             path += `&projects=${project}`
         }
 
-        return fetch(path, {headers: { Authorization: config.AuthHeader }}).then((resp) => {
+        return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
             return resp.json() as unknown as GetQuotesResponse
         })
     }
@@ -172,21 +172,22 @@ export class HttpProvider extends BaseProvider {
             method: "POST",
             body: JSON.stringify(request),
             headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
-        }).then((resp) =>
-            this.handleResponse(resp)
-        )
+        }).then((resp) => {
+            return this.handleResponse(resp.json())
+        })
     }
 
-    postRouteTradeSwap(request: RouteTradeSwapRequest): Promise<TradeSwapResponse> {
-        const path = `${this.baseUrl}/trade/route-swap`
-        return fetch(path, {
-            method: "POST",
-            body: JSON.stringify(request),
-            headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
-        }).then((resp) =>
-            this.handleResponse(resp)
-        )
-    }
+    // postRouteTradeSwap(request: RouteTradeSwapRequest): Promise<TradeSwapResponse> {
+    //     const path = `${this.baseUrl}/trade/route-swap`
+    //     return fetch(path, {
+    //         method: "POST",
+    //         body: JSON.stringify(request),
+    //         headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
+    //     }).then((resp) => {
+    //         console.log(resp.bodyUsed)
+    //         return this.handleResponse(resp.clone());
+    //     })
+    // }
 
     postSubmit(request: PostSubmitRequest): Promise<PostSubmitResponse> {
         const path = `${this.baseUrl}/trade/submit`
@@ -194,9 +195,9 @@ export class HttpProvider extends BaseProvider {
             method: "POST",
             body: JSON.stringify(request),
             headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
-        }).then((resp) =>
-            this.handleResponse(resp)
-        )
+        }).then((resp) => {
+            return this.handleResponse(resp.json())
+        })
     }
 
     postSubmitBatch(request: PostSubmitBatchRequest): Promise<PostSubmitBatchResponse> {
@@ -204,10 +205,10 @@ export class HttpProvider extends BaseProvider {
         return fetch(path, {
             method: "POST",
             body: JSON.stringify(request),
-            headers: {"Content-Type": "application/json", Authorization: config.AuthHeader},
-        }).then((resp) =>
-            this.handleResponse(resp)
-        )
+            headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
+        }).then((resp) => {
+            return this.handleResponse(resp.json())
+        })
     }
 
     postCancelOrder(request: PostCancelOrderRequest): Promise<PostCancelOrderResponse> {
@@ -276,13 +277,12 @@ export class HttpProvider extends BaseProvider {
         })
     }
 
-    async handleResponse<T>(response: Response): Promise<T> {
-        return response.json().then((j) => {
-            if (j instanceof SolanaJSONRPCError) {
-                return Promise.reject(j.message)
-            }
-            else {
-                return Promise.resolve(j as T)
+    async handleResponse<T>(response: Promise<unknown>): Promise<T> {
+        return response.then((json) => {
+            if (IsRPCError(json)) {
+                return Promise.reject((json as RPCError).message)
+            } else {
+                return Promise.resolve(response as unknown as T)
             }
         })
     }
