@@ -52,9 +52,9 @@ jobs:
   integration:
     executor: node/default
     steps:
+      - attach_workspace:
+          at: .
       - checkout
-      - node/install-packages:
-          pkg-manager: npm
       - run:
           name: mainnet
           command: |
