@@ -104,3 +104,9 @@ workflows:
       - lint:
           requires:
             - build
+      - format:
+          requires:
+            - build
+      - test:
+          requires:
+            - build
