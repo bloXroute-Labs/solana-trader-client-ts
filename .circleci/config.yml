@@ -64,6 +64,7 @@ jobs:
             export API_ENV="mainnet"
             export RUN_LIFECYCLE="false"
             npm start
+          no_output_timeout: 30m
       - run:
           name: testnet
           command: |
@@ -73,6 +74,7 @@ jobs:
             export API_ENV="testnet"
             export RUN_LIFECYCLE="false"
             npm start
+          no_output_timeout: 30m
 
 workflows:
   build_and_test:
