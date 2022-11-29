@@ -14,6 +14,10 @@ jobs:
       - run:
           command: ts-node -v
           name: Check ts-node version to make sure it installed
+      - persist_to_workspace:
+          root: .
+          paths:
+            - '*'
 
   test:
     executor: node/default
