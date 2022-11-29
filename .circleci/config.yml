@@ -31,9 +31,6 @@ jobs:
       - node/install-packages:
           pkg-manager: npm
       - run:
-          command: npm install
-          name: Install ts-node
-      - run:
           name: format
           command: npm run format
 
@@ -43,9 +40,6 @@ jobs:
       - checkout
       - node/install-packages:
           pkg-manager: npm
-      - run:
-          command: npm install
-          name: Install ts-node
       - run:
           name: lint
           command: npm run lint
