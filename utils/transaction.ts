@@ -26,6 +26,6 @@ function txFromBase64(base64EncodedTx: string): Transaction {
 }
 
 function txToBase64(transaction: Transaction): string {
-    const buff = transaction.serializeMessage()
+    const buff = transaction.serialize()
     return buff.toString("base64")
 }
