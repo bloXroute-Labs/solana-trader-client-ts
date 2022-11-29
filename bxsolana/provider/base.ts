@@ -250,21 +250,19 @@ export abstract class BaseProvider implements Api {
     //      SubmitTradeSwap => try/catch
     //          PostTradeSwap =>
     //          PostSubmit
-    async submitTradeSwap(request: TradeSwapRequest, submitStrategy: SubmitStrategy, skipPreFlight = true): Promise<PostSubmitBatchResponse> {
+    async submitTradeSwap(request: TradeSwapRequest, submitStrategy: SubmitStrategy, skipPreFlight = true): Promise<PostSubmitResponse[]> {
         const res = await this.postTradeSwap(request)
 
-        let entries = new Array<PostSubmitRequestEntry>()
+        const responses = new Array<PostSubmitResponse>()
         for (const transactionMessage of res.transactions) {
-            entries.push({
+            const response = await this.postSubmit({
                 transaction: signTxMessage(transactionMessage),
                 skipPreFlight: skipPreFlight
             })
+            responses.push(response)
         }
 
-        return await this.postSubmitBatch({
-            entries: entries,
-            SubmitStrategy: submitStrategy,
-        })
+        return responses
     }
 
     async submitRouteTradeSwap(request: RouteTradeSwapRequest, submitStrategy: SubmitStrategy, skipPreFlight = true): Promise<PostSubmitBatchResponse> {
