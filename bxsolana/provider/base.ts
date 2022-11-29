@@ -235,19 +235,21 @@ export abstract class BaseProvider implements Api {
         return this.postSubmit({ transaction: { content: signedTx.serialize().toString("base64"), isCleanup: false }, skipPreFlight })
     }
 
-    async submitTradeSwap(request: TradeSwapRequest, submitStrategy: SubmitStrategy, skipPreFlight = true): Promise<PostSubmitResponse[]> {
+    async submitTradeSwap(request: TradeSwapRequest, submitStrategy: SubmitStrategy, skipPreFlight = true): Promise<PostSubmitBatchResponse> {
         const res = await this.postTradeSwap(request)
 
-        const responses = new Array<PostSubmitResponse>()
+        const entries = new Array<PostSubmitRequestEntry>()
         for (const transactionMessage of res.transactions) {
-            const response = await this.postSubmit({
+            entries.push({
                 transaction: signTxMessage(transactionMessage),
-                skipPreFlight: skipPreFlight,
+                skipPreFlight: skipPreFlight
             })
-            responses.push(response)
         }
 
-        return responses
+        return await this.postSubmitBatch({
+            entries: entries,
+            SubmitStrategy: submitStrategy
+        })
     }
 
     async submitRouteTradeSwap(
@@ -257,7 +259,7 @@ export abstract class BaseProvider implements Api {
     ): Promise<PostSubmitBatchResponse> {
         const res = await this.postRouteTradeSwap(request)
 
-        let entries = new Array<PostSubmitRequestEntry>()
+        const entries = new Array<PostSubmitRequestEntry>()
         for (const transactionMessage of res.transactions) {
             entries.push({
                 transaction: signTxMessage(transactionMessage),
