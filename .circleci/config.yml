@@ -8,9 +8,6 @@ jobs:
       - checkout
       - node/install-packages:
           pkg-manager: npm
-#      - run:
-#          command: npm install
-#          name: Install npm
       - run:
           command: sudo npm install -g ts-node
           name: Install ts-node
@@ -23,9 +20,6 @@ jobs:
       - checkout
       - node/install-packages:
           pkg-manager: npm
-      - run:
-          command: npm install
-          name: install npm
       - run:
           command: npm run test
           name: run tests
