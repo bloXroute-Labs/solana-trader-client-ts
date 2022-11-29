@@ -9,13 +9,12 @@ import {
     GetOpenOrdersRequest,
     GetOpenOrdersResponse,
     PostCancelAllRequest,
+    TokenPair,
     Project
 } from "../bxsolana/proto/messages/api/index.js"
 import config from "../utils/config.js"
 import { addMemo, addMemoToSerializedTxn } from "../utils/memo.js"
 import { Keypair } from "@solana/web3.js"
-import {$} from "../bxsolana/proto/messages/api/TokenPair";
-import TokenPair = $.api.TokenPair;
 const marketAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"
 const ownerAddress = config.WalletPublicKey
 const payerAddress = config.WalletPublicKey
@@ -677,7 +676,7 @@ async function callReplaceByClientOrderID(provider: BaseProvider) {
 async function callTradeSwap(provider: BaseProvider) {
     try {
         console.info("Submitting a trade swap")
-        const resp = await provider.submitTradeSwap({
+        const responses = await provider.submitTradeSwap({
             ownerAddress: ownerAddress,
             inToken: "USDC",
             outToken: "SOL",
@@ -685,8 +684,10 @@ async function callTradeSwap(provider: BaseProvider) {
             slippage: 0.1,
             project: "P_RAYDIUM"
         }, "P_SUBMIT_ALL", true)
-        console.info(resp)
 
+        for (const response of responses) {
+            console.info(response.signature)
+        }
     } catch (error) {
         console.error("Failed to generate and/or submit a trade swap", error)
     }
@@ -695,7 +696,7 @@ async function callTradeSwap(provider: BaseProvider) {
 async function callRouteTradeSwap(provider: BaseProvider) {
     try {
         console.info("Submitting a route trade swap")
-        const resp = await provider.submitRouteTradeSwap({
+        const responses = await provider.submitRouteTradeSwap({
             ownerAddress: ownerAddress,
             steps: [
                 {
@@ -715,7 +716,10 @@ async function callRouteTradeSwap(provider: BaseProvider) {
             ],
             project: "P_RAYDIUM"
         }, "P_SUBMIT_ALL", true)
-        console.info(resp)
+
+        for (const response of responses.transactions) {
+            console.info(response.signature)
+        }
     } catch (error) {
         console.error("Failed to generate and/or submit a route trade swap", error)
     }
