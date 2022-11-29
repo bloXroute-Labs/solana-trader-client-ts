@@ -695,8 +695,8 @@ async function callTradeSwap(provider: BaseProvider) {
             true
         )
 
-        for (const response of responses) {
-            console.info(response.signature)
+        for (const transaction of responses.transactions) {
+            console.info(transaction.signature)
         }
     } catch (error) {
         console.error("Failed to generate and/or submit a trade swap", error)
@@ -731,8 +731,8 @@ async function callRouteTradeSwap(provider: BaseProvider) {
             true
         )
 
-        for (const response of responses.transactions) {
-            console.info(response.signature)
+        for (const transaction of responses.transactions) {
+            console.info(transaction.signature)
         }
     } catch (error) {
         console.error("Failed to generate and/or submit a route trade swap", error)
