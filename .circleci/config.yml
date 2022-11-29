@@ -97,3 +97,6 @@ workflows:
                 - develop
     jobs:
       - build
+      - lint:
+          requires:
+            - build
