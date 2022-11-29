@@ -1,5 +1,5 @@
 import { MAINNET_API_HTTP } from "../../utils/constants.js"
-import fetch, { Response } from "node-fetch"
+import fetch from "node-fetch"
 import {
     GetAccountBalanceRequest,
     GetAccountBalanceResponse,
@@ -177,17 +177,16 @@ export class HttpProvider extends BaseProvider {
         })
     }
 
-    // postRouteTradeSwap(request: RouteTradeSwapRequest): Promise<TradeSwapResponse> {
-    //     const path = `${this.baseUrl}/trade/route-swap`
-    //     return fetch(path, {
-    //         method: "POST",
-    //         body: JSON.stringify(request),
-    //         headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
-    //     }).then((resp) => {
-    //         console.log(resp.bodyUsed)
-    //         return this.handleResponse(resp.clone());
-    //     })
-    // }
+    postRouteTradeSwap(request: RouteTradeSwapRequest): Promise<TradeSwapResponse> {
+        const path = `${this.baseUrl}/trade/route-swap`
+        return fetch(path, {
+            method: "POST",
+            body: JSON.stringify(request),
+            headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
+        }).then((resp) => {
+            return this.handleResponse(resp.json());
+        })
+    }
 
     postSubmit(request: PostSubmitRequest): Promise<PostSubmitResponse> {
         const path = `${this.baseUrl}/trade/submit`
