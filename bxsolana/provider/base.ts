@@ -62,14 +62,10 @@ import {
     PostSubmitBatchRequest,
     PostSubmitBatchResponse,
     PostSubmitRequestEntry,
-    SubmitStrategy
+    SubmitStrategy,
 } from "../proto/messages/api/index.js"
 import { Api } from "../proto/services/api/index.js"
-import {
-    signTx,
-    signTxMessage,
-    SubmitTransactionResponse
-} from "../../utils/transaction.js"
+import { signTx, signTxMessage, SubmitTransactionResponse } from "../../utils/transaction.js"
 
 export abstract class BaseProvider implements Api {
     abstract close(): void
@@ -239,17 +235,6 @@ export abstract class BaseProvider implements Api {
         return this.postSubmit({ transaction: { content: signedTx.serialize().toString("base64"), isCleanup: false }, skipPreFlight })
     }
 
-    // Create submit functions (with postSubmit for each transaction, at first)
-    // check that this works for ws and grpc
-    // Use postbatchsubmit
-    // check that this works for ws and grpc
-
-    // Q - is throwing an error the same as rejecting a promise?
-    //      pretty much! but better to just reject because throwing an error won't work inside an async callback because it doesn't trigger the catch
-    // Add error handling for submit..., postTradeSwap, postRouteTradeSwap, postsubmit for http
-    //      SubmitTradeSwap => try/catch
-    //          PostTradeSwap =>
-    //          PostSubmit
     async submitTradeSwap(request: TradeSwapRequest, submitStrategy: SubmitStrategy, skipPreFlight = true): Promise<PostSubmitResponse[]> {
         const res = await this.postTradeSwap(request)
 
@@ -257,7 +242,7 @@ export abstract class BaseProvider implements Api {
         for (const transactionMessage of res.transactions) {
             const response = await this.postSubmit({
                 transaction: signTxMessage(transactionMessage),
-                skipPreFlight: skipPreFlight
+                skipPreFlight: skipPreFlight,
             })
             responses.push(response)
         }
@@ -265,14 +250,18 @@ export abstract class BaseProvider implements Api {
         return responses
     }
 
-    async submitRouteTradeSwap(request: RouteTradeSwapRequest, submitStrategy: SubmitStrategy, skipPreFlight = true): Promise<PostSubmitBatchResponse> {
+    async submitRouteTradeSwap(
+        request: RouteTradeSwapRequest,
+        submitStrategy: SubmitStrategy,
+        skipPreFlight = true
+    ): Promise<PostSubmitBatchResponse> {
         const res = await this.postRouteTradeSwap(request)
 
         let entries = new Array<PostSubmitRequestEntry>()
         for (const transactionMessage of res.transactions) {
             entries.push({
                 transaction: signTxMessage(transactionMessage),
-                skipPreFlight: skipPreFlight
+                skipPreFlight: skipPreFlight,
             })
         }
 
