@@ -230,7 +230,7 @@ export abstract class BaseProvider implements Api {
 
     private signAndSubmitTx(transactionMessage: TransactionMessage | undefined, skipPreFlight: boolean, isCleanup: boolean = false): Promise<PostSubmitResponse> {
         if (transactionMessage == undefined) {
-            throw Error("transaction was undefined")
+            throw Error("transaction message was undefined")
         }
 
         const signedTx = signTx(transactionMessage.content)
