@@ -803,11 +803,11 @@ async function callCancelAll(provider: BaseProvider) {
             ownerAddress: ownerAddress,
             openOrdersAddresses: [openOrdersAddress],
         }
-        const submitCancelAllResponses = await provider.submitCancelAll(cancelAllRequest)
+        const response = await provider.submitCancelAll(cancelAllRequest)
 
         const signatures: string[] = []
-        for (const cancelAllResponse of submitCancelAllResponses) {
-            signatures.push(cancelAllResponse.signature)
+        for (const transaction of response.transactions) {
+            signatures.push(transaction.signature)
         }
 
         console.info(`Cancelling all orders, response signatures(s): ${signatures.join(", ")}`)
