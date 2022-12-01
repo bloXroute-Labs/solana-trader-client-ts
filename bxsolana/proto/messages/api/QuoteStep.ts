@@ -11,14 +11,14 @@ import {
   decodeJson as decodeJson_2,
   encodeBinary as encodeBinary_2,
   decodeBinary as decodeBinary_2,
-} from "./PriceImpactPercent.js";
+} from "../common/PriceImpactPercent.js";
 import {
   Type as Fee,
   encodeJson as encodeJson_3,
   decodeJson as decodeJson_3,
   encodeBinary as encodeBinary_3,
   decodeBinary as decodeBinary_3,
-} from "./Fee.js";
+} from "../common/Fee.js";
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,

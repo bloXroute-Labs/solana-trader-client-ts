@@ -57,6 +57,8 @@ import {
     GetSwapsStreamResponse,
     GetPricesStreamRequest,
     GetPricesStreamResponse,
+    GetBlockStreamRequest,
+    GetBlockStreamResponse,
 } from "../proto/messages/api/index.js"
 import { BaseProvider } from "./base.js"
 import config from "../../utils/config.js"
@@ -201,6 +203,10 @@ export class WsProvider extends BaseProvider {
 
     getSwapsStream(request: GetSwapsStreamRequest): Promise<AsyncGenerator<GetSwapsStreamResponse>> {
         return this.wsSocketStreamCall("GetSwapsStream", request)
+    }
+
+    getBlockStream(request: GetBlockStreamRequest): Promise<AsyncGenerator<GetBlockStreamResponse>> {
+        return this.wsSocketStreamCall("GetBlockStream", request)
     }
 
     // Private

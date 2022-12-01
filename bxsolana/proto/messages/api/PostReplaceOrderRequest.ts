@@ -9,6 +9,11 @@ import {
   num2name as num2name_1,
 } from "./OrderType.js";
 import {
+  Type as MarketProgram,
+  name2num as name2num_2,
+  num2name as num2name_2,
+} from "./MarketProgram.js";
+import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar.js";
@@ -43,6 +48,7 @@ export declare namespace $.api {
     openOrdersAddress: string;
     clientOrderID: string;
     orderID: string;
+    program: MarketProgram;
   }
 }
 export type Type = $.api.PostReplaceOrderRequest;
@@ -59,6 +65,7 @@ export function getDefaultValue(): $.api.PostReplaceOrderRequest {
     openOrdersAddress: "",
     clientOrderID: "0",
     orderID: "",
+    program: "MP_SERUM",
   };
 }
 
@@ -81,6 +88,7 @@ export function encodeJson(value: $.api.PostReplaceOrderRequest): unknown {
   if (value.openOrdersAddress !== undefined) result.openOrdersAddress = tsValueToJsonValueFns.string(value.openOrdersAddress);
   if (value.clientOrderID !== undefined) result.clientOrderID = tsValueToJsonValueFns.uint64(value.clientOrderID);
   if (value.orderID !== undefined) result.orderID = tsValueToJsonValueFns.string(value.orderID);
+  if (value.program !== undefined) result.program = tsValueToJsonValueFns.enum(value.program);
   return result;
 }
 
@@ -96,6 +104,7 @@ export function decodeJson(value: any): $.api.PostReplaceOrderRequest {
   if (value.openOrdersAddress !== undefined) result.openOrdersAddress = jsonValueToTsValueFns.string(value.openOrdersAddress);
   if (value.clientOrderID !== undefined) result.clientOrderID = jsonValueToTsValueFns.uint64(value.clientOrderID);
   if (value.orderID !== undefined) result.orderID = jsonValueToTsValueFns.string(value.orderID);
+  if (value.program !== undefined) result.program = jsonValueToTsValueFns.enum(value.program) as MarketProgram;
   return result;
 }
 
@@ -158,6 +167,12 @@ export function encodeBinary(value: $.api.PostReplaceOrderRequest): Uint8Array {
     const tsValue = value.orderID;
     result.push(
       [10, tsValueToWireValueFns.string(tsValue)],
+    );
+  }
+  if (value.program !== undefined) {
+    const tsValue = value.program;
+    result.push(
+      [11, { type: WireType.Varint as const, value: new Long(name2num_2[tsValue as keyof typeof name2num_2]) }],
     );
   }
   return serialize(result);
@@ -235,6 +250,13 @@ export function decodeBinary(binary: Uint8Array): $.api.PostReplaceOrderRequest 
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
     result.orderID = value;
+  }
+  field: {
+    const wireValue = wireFields.get(11);
+    if (wireValue === undefined) break field;
+    const value = wireValue.type === WireType.Varint ? num2name_2[wireValue.value[0] as keyof typeof num2name_2] : undefined;
+    if (value === undefined) break field;
+    result.program = value;
   }
   return result;
 }
