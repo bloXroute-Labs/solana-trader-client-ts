@@ -3,6 +3,6 @@ export interface RpcError {
     message: string
 }
 
-export function IsRpcError(obj: any): obj is RpcError {
+export function IsRpcError(obj: any): boolean {
     return typeof obj.code == "number" && typeof obj.message == "string"
 }
