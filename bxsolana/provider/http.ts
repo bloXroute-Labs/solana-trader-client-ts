@@ -45,7 +45,7 @@ import {
 } from "../proto/messages/api/index.js"
 import { BaseProvider } from "./base.js"
 import config from "../../utils/config.js"
-import { IsRpcError, RpcError } from "../../utils/error.js"
+import { isRpcError, RpcError } from "../../utils/error.js"
 
 export class HttpProvider extends BaseProvider {
     private baseUrl: string
@@ -278,7 +278,7 @@ export class HttpProvider extends BaseProvider {
 
     async handleResponse<T>(response: Promise<unknown>): Promise<T> {
         return response.then((json) => {
-            if (IsRpcError(json)) {
+            if (isRpcError(json)) {
                 return Promise.reject((json as RpcError).message)
             } else {
                 return Promise.resolve(json as unknown as T)
