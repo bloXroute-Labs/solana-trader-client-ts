@@ -67,7 +67,7 @@ export class GrpcProvider extends BaseProvider {
     private client: Service
     private grpcClient: Client
 
-    constructor(address = `${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`, useTLs: boolean) {
+    constructor(address = `${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`, useTls: boolean) {
         super()
         const metaCallback = (options: CallMetadataOptions, cb: (err: Error | null, metadata?: grpc.Metadata) => void) => {
             const meta = new grpc.Metadata()
@@ -77,7 +77,7 @@ export class GrpcProvider extends BaseProvider {
 
         let grpcClient: Client
 
-        if (!useTLs) {
+        if (!useTls) {
             // testnet or local
             grpcClient = new Client(address, grpc.credentials.createInsecure())
         } else {
