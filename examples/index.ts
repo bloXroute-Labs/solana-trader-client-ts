@@ -63,8 +63,8 @@ function getRandom() {
 }
 
 async function run() {
-    await http()
-    await grpc()
+    // await http()
+    // await grpc()
     await ws()
 }
 
@@ -133,22 +133,22 @@ async function ws() {
         provider = new WsProvider(LOCAL_API_WS)
     }
 
-    console.info(" ----  WS Requests  ----")
-    await doRequests(provider)
+    // console.info(" ----  WS Requests  ----")
+    // await doRequests(provider)
     console.info(" ----  WS Amm Requests  ----")
     await doAmmRequests(provider)
 
-    if (process.env.RUN_LIFECYCLE === "true") {
-        console.info(" ----  WS Streams  ----")
-        await doStreams(provider)
-        console.info(" ----  WS Amm Streams  ----")
-        await doAmmStreams(provider)
-        console.info(" ----  WS Cancel All  ----")
-        await callCancelAll(provider)
-        console.info(" ----  WS Lifecycle  ----")
-        await doLifecycle(provider)
-        console.info(" ")
-    }
+    // if (process.env.RUN_LIFECYCLE === "true") {
+    //     console.info(" ----  WS Streams  ----")
+    //     await doStreams(provider)
+    //     console.info(" ----  WS Amm Streams  ----")
+    //     await doAmmStreams(provider)
+    //     console.info(" ----  WS Cancel All  ----")
+    //     await callCancelAll(provider)
+    //     console.info(" ----  WS Lifecycle  ----")
+    //     await doLifecycle(provider)
+    //     console.info(" ")
+    // }
 }
 
 async function doRequests(provider: BaseProvider) {
@@ -207,21 +207,21 @@ async function doRequests(provider: BaseProvider) {
 }
 
 async function doAmmRequests(provider: BaseProvider) {
-    await callGetPrices(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callGetPools(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callGetQuotes(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callTradeSwap(provider)
-    console.info(" ")
-    console.info(" ")
+    // await callGetPrices(provider)
+    // console.info(" ")
+    // console.info(" ")
+    //
+    // await callGetPools(provider)
+    // console.info(" ")
+    // console.info(" ")
+    //
+    // await callGetQuotes(provider)
+    // console.info(" ")
+    // console.info(" ")
+    //
+    // await callTradeSwap(provider)
+    // console.info(" ")
+    // console.info(" ")
 
     await callRouteTradeSwap(provider)
     console.info(" ")
@@ -785,9 +785,6 @@ async function callRouteTradeSwap(provider: BaseProvider) {
         for (const transaction of responses.transactions) {
             console.info(transaction.signature)
             console.info("made it here 1")
-
-            return
-            continue
         }
     } catch (error) {
         console.error("Failed to generate and/or submit a route trade swap", error)
