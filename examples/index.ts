@@ -209,25 +209,25 @@ async function doRequests(provider: BaseProvider) {
 }
 
 async function doAmmRequests(provider: BaseProvider) {
-    // await callGetPrices(provider)
-    // console.info(" ")
-    // console.info(" ")
-    //
-    // await callGetPools(provider)
-    // console.info(" ")
-    // console.info(" ")
-    //
-    // await callGetQuotes(provider)
-    // console.info(" ")
-    // console.info(" ")
-    //
-    // await callTradeSwap(provider)
-    // console.info(" ")
-    // console.info(" ")
+    await callGetPrices(provider)
+    console.info(" ")
+    console.info(" ")
 
-    await callRouteTradeSwap(provider)
+    await callGetPools(provider)
     console.info(" ")
     console.info(" ")
+
+    await callGetQuotes(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callTradeSwap(provider)
+    console.info(" ")
+    console.info(" ")
+    //
+    // await callRouteTradeSwap(provider)
+    // console.info(" ")
+    // console.info(" ")
 }
 
 async function doStreams(provider: BaseProvider) {
