@@ -30,9 +30,6 @@ import {
     TESTNET_API_WS,
 } from "../utils/constants.js"
 
-import { $ } from "../bxsolana/proto/messages/api/TokenPair"
-import TokenPair = $.api.TokenPair
-
 const marketAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"
 const ownerAddress = config.WalletPublicKey
 const payerAddress = config.WalletPublicKey
@@ -86,15 +83,14 @@ async function http() {
     await doRequests(provider)
 
     if (process.env.RUN_LIFECYCLE === "true") {
-	    console.info(" ----  HTTP Amm Requests  ----")
-	    await doAmmRequests(provider)
-	    console.info(" ----  HTTP Lifecycle  ----")
-	    await doHttpLifecycle(provider)
-	    console.info(" ----  HTTP Cancel All  ----")
-	    await callCancelAll(provider)
-	    console.info(" ")
+        console.info(" ----  HTTP Amm Requests  ----")
+        await doAmmRequests(provider)
+        console.info(" ----  HTTP Lifecycle  ----")
+        await doHttpLifecycle(provider)
+        console.info(" ----  HTTP Cancel All  ----")
+        await callCancelAll(provider)
+        console.info(" ")
     }
-
 }
 
 async function grpc() {
@@ -110,22 +106,20 @@ async function grpc() {
 
     console.info(" ----  GRPC Requests  ----")
     await doRequests(provider)
-    
 
     if (process.env.RUN_LIFECYCLE === "true") {
-	    console.info(" ----  GRPC AMM Requests  ----")
-	    await doAmmRequests(provider)
-	    console.info(" ----  GRPC Streams  ----")
-	    await doStreams(provider)
-	    console.info(" ----  GRPC Amm Streams  ----")
-	    await doAmmStreams(provider)
-	    console.info(" ----  GRPC Cancel All  ----")
-	    await callCancelAll(provider)
-	    console.info(" ----  GRPC Lifecycle  ----")
-	    await doLifecycle(provider)
-	    console.info(" ")
+        console.info(" ----  GRPC AMM Requests  ----")
+        await doAmmRequests(provider)
+        console.info(" ----  GRPC Streams  ----")
+        await doStreams(provider)
+        console.info(" ----  GRPC Amm Streams  ----")
+        await doAmmStreams(provider)
+        console.info(" ----  GRPC Cancel All  ----")
+        await callCancelAll(provider)
+        console.info(" ----  GRPC Lifecycle  ----")
+        await doLifecycle(provider)
+        console.info(" ")
     }
-
 }
 
 async function ws() {
@@ -145,15 +139,15 @@ async function ws() {
     await doAmmRequests(provider)
 
     if (process.env.RUN_LIFECYCLE === "true") {
-  	console.info(" ----  WS Streams  ----")
-    await doStreams(provider)
-	console.info(" ----  WS Amm Streams  ----")
-	await doAmmStreams(provider)
-	console.info(" ----  WS Cancel All  ----")
-	await callCancelAll(provider)
-	console.info(" ----  WS Lifecycle  ----")
-	await doLifecycle(provider)
-	console.info(" ")
+        console.info(" ----  WS Streams  ----")
+        await doStreams(provider)
+        console.info(" ----  WS Amm Streams  ----")
+        await doAmmStreams(provider)
+        console.info(" ----  WS Cancel All  ----")
+        await callCancelAll(provider)
+        console.info(" ----  WS Lifecycle  ----")
+        await doLifecycle(provider)
+        console.info(" ")
     }
 }
 
