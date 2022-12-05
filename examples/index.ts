@@ -107,9 +107,10 @@ async function grpc() {
     console.info(" ----  GRPC Requests  ----")
     await doRequests(provider)
 
+    console.info(" ----  GRPC AMM Requests  ----")
+    await doAmmRequests(provider)
+
     if (process.env.RUN_LIFECYCLE === "true") {
-        console.info(" ----  GRPC AMM Requests  ----")
-        await doAmmRequests(provider)
         console.info(" ----  GRPC Streams  ----")
         await doStreams(provider)
         console.info(" ----  GRPC Amm Streams  ----")
@@ -133,22 +134,23 @@ async function ws() {
         provider = new WsProvider(LOCAL_API_WS)
     }
 
-    // console.info(" ----  WS Requests  ----")
-    // await doRequests(provider)
+    console.info(" ----  WS Requests  ----")
+    await doRequests(provider)
     console.info(" ----  WS Amm Requests  ----")
     await doAmmRequests(provider)
+    console.info("after amm requests")
 
-    // if (process.env.RUN_LIFECYCLE === "true") {
-    //     console.info(" ----  WS Streams  ----")
-    //     await doStreams(provider)
-    //     console.info(" ----  WS Amm Streams  ----")
-    //     await doAmmStreams(provider)
-    //     console.info(" ----  WS Cancel All  ----")
-    //     await callCancelAll(provider)
-    //     console.info(" ----  WS Lifecycle  ----")
-    //     await doLifecycle(provider)
-    //     console.info(" ")
-    // }
+    if (process.env.RUN_LIFECYCLE === "true") {
+        console.info(" ----  WS Streams  ----")
+        await doStreams(provider)
+        console.info(" ----  WS Amm Streams  ----")
+        await doAmmStreams(provider)
+        console.info(" ----  WS Cancel All  ----")
+        await callCancelAll(provider)
+        console.info(" ----  WS Lifecycle  ----")
+        await doLifecycle(provider)
+        console.info(" ")
+    }
 }
 
 async function doRequests(provider: BaseProvider) {
