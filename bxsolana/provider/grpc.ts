@@ -36,6 +36,8 @@ import {
     PostSettleResponse,
     PostSubmitRequest,
     PostSubmitResponse,
+    PostSubmitBatchRequest,
+    PostSubmitBatchResponse,
     GetPoolsRequest,
     GetPoolsResponse,
     GetPriceRequest,
@@ -156,6 +158,10 @@ export class GrpcProvider extends BaseProvider {
 
     postSubmit(request: PostSubmitRequest): Promise<PostSubmitResponse> {
         return this.client.postSubmit(request)
+    }
+
+    postSubmitBatch(request: PostSubmitBatchRequest): Promise<PostSubmitBatchResponse> {
+        return this.client.postSubmitBatch(request)
     }
 
     postCancelOrder(request: PostCancelOrderRequest): Promise<PostCancelOrderResponse> {

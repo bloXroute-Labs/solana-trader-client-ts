@@ -48,6 +48,8 @@ import {
     PostSettleResponse,
     PostSubmitRequest,
     PostSubmitResponse,
+    PostSubmitBatchRequest,
+    PostSubmitBatchResponse,
     TradeSwapRequest,
     RouteTradeSwapRequest,
     TradeSwapResponse,
@@ -130,6 +132,10 @@ export class WsProvider extends BaseProvider {
 
     postSubmit(request: PostSubmitRequest): Promise<PostSubmitResponse> {
         return this.wsSocketCall("PostSubmit", request)
+    }
+
+    postSubmitBatch(request: PostSubmitBatchRequest): Promise<PostSubmitBatchResponse> {
+        return this.wsSocketCall("PostSubmitBatch", request)
     }
 
     postCancelOrder(request: PostCancelOrderRequest): Promise<PostCancelOrderResponse> {

@@ -1,10 +1,6 @@
 import { Keypair, Transaction } from "@solana/web3.js"
 import config from "./config.js"
-
-function txFromBase64(base64EncodedTx: string): Transaction {
-    const buff = Buffer.from(base64EncodedTx, "base64")
-    return Transaction.from(buff)
-}
+import { TransactionMessage } from "../bxsolana/proto/messages/api"
 
 export function signTx(base64EncodedTx: string): Transaction {
     const tx = txFromBase64(base64EncodedTx)
@@ -13,7 +9,23 @@ export function signTx(base64EncodedTx: string): Transaction {
     return tx
 }
 
+export function signTxMessage(txMessage: TransactionMessage): TransactionMessage {
+    const signedTx = signTx(txMessage.content)
+    txMessage.content = txToBase64(signedTx)
+    return txMessage
+}
+
 export type SubmitTransactionResponse = {
     signature: string
     openOrdersAccount: string
+}
+
+function txFromBase64(base64EncodedTx: string): Transaction {
+    const buff = Buffer.from(base64EncodedTx, "base64")
+    return Transaction.from(buff)
+}
+
+function txToBase64(transaction: Transaction): string {
+    const buff = transaction.serialize()
+    return buff.toString("base64")
 }

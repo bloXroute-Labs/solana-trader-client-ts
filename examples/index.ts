@@ -4,7 +4,14 @@ import { GrpcProvider } from "../bxsolana/provider/grpc.js"
 import { BaseProvider } from "../bxsolana/provider/base.js"
 import { HttpProvider } from "../bxsolana/provider/http.js"
 import { WsProvider } from "../bxsolana/provider/ws.js"
-import { PostOrderRequest, GetOpenOrdersRequest, GetOpenOrdersResponse, PostCancelAllRequest, Project } from "../bxsolana/proto/messages/api/index.js"
+import {
+    PostOrderRequest,
+    GetOpenOrdersRequest,
+    GetOpenOrdersResponse,
+    PostCancelAllRequest,
+    TokenPair,
+    Project,
+} from "../bxsolana/proto/messages/api/index.js"
 import config from "../utils/config.js"
 import { addMemo, addMemoToSerializedTxn } from "../utils/memo.js"
 import { Keypair } from "@solana/web3.js"
@@ -60,8 +67,8 @@ function getRandom() {
 
 async function run() {
     await http()
-    await ws()
     await grpc()
+    await ws()
 }
 
 async function http() {
@@ -79,12 +86,15 @@ async function http() {
     await doRequests(provider)
 
     if (process.env.RUN_LIFECYCLE === "true") {
-        console.info(" ----  HTTP Lifecycle  ----")
-        await doHttpLifecycle(provider)
-        console.info(" ----  HTTP Cancel All  ----")
-        await callCancelAll(provider)
-        console.info(" ")
+	    console.info(" ----  HTTP Amm Requests  ----")
+	    await doAmmRequests(provider)
+	    console.info(" ----  HTTP Lifecycle  ----")
+	    await doHttpLifecycle(provider)
+	    console.info(" ----  HTTP Cancel All  ----")
+	    await callCancelAll(provider)
+	    console.info(" ")
     }
+
 }
 
 async function grpc() {
@@ -100,19 +110,22 @@ async function grpc() {
 
     console.info(" ----  GRPC Requests  ----")
     await doRequests(provider)
-    console.info(" ----  GRPC Solana Requests  ----")
-    await doSolanaRequests(provider)
+    
 
     if (process.env.RUN_LIFECYCLE === "true") {
-        console.info(" ----  GRPC Cancel All  ----")
-        await callCancelAll(provider)
-        await doStreams(provider)
-        console.info(" ----  GRPC Solana Streams  ----")
-        await doSolanaStreams(provider)
-        console.info(" ----  GRPC Lifecycle  ----")
-        await doLifecycle(provider)
-        console.info(" ")
+	    console.info(" ----  GRPC AMM Requests  ----")
+	    await doAmmRequests(provider)
+	    console.info(" ----  GRPC Streams  ----")
+	    await doStreams(provider)
+	    console.info(" ----  GRPC Amm Streams  ----")
+	    await doAmmStreams(provider)
+	    console.info(" ----  GRPC Cancel All  ----")
+	    await callCancelAll(provider)
+	    console.info(" ----  GRPC Lifecycle  ----")
+	    await doLifecycle(provider)
+	    console.info(" ")
     }
+
 }
 
 async function ws() {
@@ -128,20 +141,19 @@ async function ws() {
 
     console.info(" ----  WS Requests  ----")
     await doRequests(provider)
-    console.info(" ----  WS Solana Requests  ----")
-    await doSolanaRequests(provider)
-    console.info(" ----  WS Streams  ----")
+    console.info(" ----  WS Amm Requests  ----")
+    await doAmmRequests(provider)
 
     if (process.env.RUN_LIFECYCLE === "true") {
-        await callCancelAll(provider)
-        console.info(" ----  WS Lifecycle  ----")
-        await doLifecycle(provider)
-        console.info(" ")
-        console.info(" ----  WS Streams  ----")
-        await doStreams(provider)
-        console.info(" ----  WS Solana Streams  ----")
-        await doSolanaStreams(provider)
-        console.info(" ----  WS Cancel All  ----")
+  	console.info(" ----  WS Streams  ----")
+    await doStreams(provider)
+	console.info(" ----  WS Amm Streams  ----")
+	await doAmmStreams(provider)
+	console.info(" ----  WS Cancel All  ----")
+	await callCancelAll(provider)
+	console.info(" ----  WS Lifecycle  ----")
+	await doLifecycle(provider)
+	console.info(" ")
     }
 }
 
@@ -200,7 +212,7 @@ async function doRequests(provider: BaseProvider) {
     console.info(" ")
 }
 
-async function doSolanaRequests(provider: BaseProvider) {
+async function doAmmRequests(provider: BaseProvider) {
     await callGetPrices(provider)
     console.info(" ")
     console.info(" ")
@@ -236,7 +248,7 @@ async function doStreams(provider: BaseProvider) {
     console.info(" ")
 }
 
-async function doSolanaStreams(provider: BaseProvider) {
+async function doAmmStreams(provider: BaseProvider) {
     await callGetPricesStream(provider)
     console.info(" ")
     console.info(" ")
@@ -727,25 +739,32 @@ async function callReplaceByClientOrderID(provider: BaseProvider) {
 async function callTradeSwap(provider: BaseProvider) {
     try {
         console.info("Submitting a trade swap")
-        const resp = await provider.postTradeSwap({
-            ownerAddress: ownerAddress,
-            inToken: "USDC",
-            outToken: "SOL",
-            inAmount: 0.01,
-            slippage: 0.1,
-            project: "P_RAYDIUM",
-        })
-        console.info(resp)
+        const responses = await provider.submitTradeSwap(
+            {
+                ownerAddress: ownerAddress,
+                inToken: "USDC",
+                outToken: "SOL",
+                inAmount: 0.01,
+                slippage: 0.1,
+                project: "P_RAYDIUM",
+            },
+            "P_SUBMIT_ALL",
+            true
+        )
+
+        for (const transaction of responses.transactions) {
+            console.info(transaction.signature)
+        }
     } catch (error) {
         console.error("Failed to generate and/or submit a trade swap", error)
     }
 }
 
 async function callRouteTradeSwap(provider: BaseProvider) {
-    setTimeout(async function () {
-        try {
-            console.info("Submitting a route trade swap")
-            const resp = await provider.postRouteTradeSwap({
+    try {
+        console.info("Submitting a route trade swap")
+        const responses = await provider.submitRouteTradeSwap(
+            {
                 ownerAddress: ownerAddress,
                 steps: [
                     {
@@ -764,12 +783,17 @@ async function callRouteTradeSwap(provider: BaseProvider) {
                     },
                 ],
                 project: "P_RAYDIUM",
-            })
-            console.info(resp)
-        } catch (error) {
-            console.error("Failed to generate and/or submit a route trade swap", error)
+            },
+            "P_SUBMIT_ALL",
+            true
+        )
+
+        for (const transaction of responses.transactions) {
+            console.info(transaction.signature)
         }
-    }, 100)
+    } catch (error) {
+        console.error("Failed to generate and/or submit a route trade swap", error)
+    }
 }
 
 async function callReplaceOrder(provider: BaseProvider) {
@@ -836,11 +860,11 @@ async function callCancelAll(provider: BaseProvider) {
             ownerAddress: ownerAddress,
             openOrdersAddresses: [openOrdersAddress],
         }
-        const submitCancelAllResponses = await provider.submitCancelAll(cancelAllRequest)
+        const response = await provider.submitCancelAll(cancelAllRequest)
 
         const signatures: string[] = []
-        for (const cancelAllResponse of submitCancelAllResponses) {
-            signatures.push(cancelAllResponse.signature)
+        for (const transaction of response.transactions) {
+            signatures.push(transaction.signature)
         }
 
         console.info(`Cancelling all orders, response signatures(s): ${signatures.join(", ")}`)

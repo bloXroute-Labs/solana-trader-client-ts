@@ -61,9 +61,12 @@ import {
     GetPricesStreamResponse,
     PostSubmitBatchRequest,
     PostSubmitBatchResponse,
+    PostSubmitRequestEntry,
+    SubmitStrategy,
+    TransactionMessage
 } from "../proto/messages/api/index.js"
 import { Api } from "../proto/services/api/index.js"
-import { signTx, SubmitTransactionResponse } from "../../utils/transaction.js"
+import { signTx, signTxMessage, SubmitTransactionResponse } from "../../utils/transaction.js"
 
 export abstract class BaseProvider implements Api {
     abstract close(): void
@@ -168,69 +171,90 @@ export abstract class BaseProvider implements Api {
     async submitOrder(request: PostOrderRequest, skipPreFlight = false): Promise<SubmitTransactionResponse> {
         const res = await this.postOrder(request)
 
-        const signedTx = signTx(res.transaction?.content || "")
+        const submitResponse = await this.signAndSubmitTx(res.transaction, skipPreFlight)
 
-        const postSubmitRez = await this.postSubmit({
-            transaction: { content: signedTx.serialize().toString("base64"), isCleanup: false },
-            skipPreFlight,
-        })
-        return { signature: postSubmitRez.signature, openOrdersAccount: res.openOrdersAddress }
+        return { signature: submitResponse.signature, openOrdersAccount: res.openOrdersAddress }
     }
 
     async submitCancelOrder(request: PostCancelOrderRequest, skipPreFlight = false): Promise<PostSubmitResponse> {
         const res = await this.postCancelOrder(request)
 
-        const signedTx = signTx(res.transaction?.content || "")
-
-        return this.postSubmit({ transaction: { content: signedTx.serialize().toString("base64"), isCleanup: false }, skipPreFlight })
+        return this.signAndSubmitTx(res.transaction, skipPreFlight);
     }
 
     async submitCancelOrderByClientOrderID(request: PostCancelByClientOrderIDRequest, skipPreFlight = true): Promise<PostSubmitResponse> {
         const res = await this.postCancelByClientOrderID(request)
 
-        const signedTx = signTx(res.transaction?.content || "")
-
-        return this.postSubmit({ transaction: { content: signedTx.serialize().toString("base64"), isCleanup: false }, skipPreFlight })
+        return this.signAndSubmitTx(res.transaction, skipPreFlight)
     }
 
-    async submitCancelAll(request: PostCancelAllRequest, skipPreFlight = true): Promise<Awaited<PostSubmitResponse>[]> {
+    async submitCancelAll(request: PostCancelAllRequest, skipPreFlight = true): Promise<PostSubmitBatchResponse> {
         const res = await this.postCancelAll(request)
-        const postSubmitResponses: Promise<PostSubmitResponse>[] = []
 
-        for (const tx of res.transactions) {
-            const signedTx = signTx(tx.content)
-            const postSubmitRez = this.postSubmit({
-                transaction: { content: signedTx.serialize().toString("base64"), isCleanup: false },
-                skipPreFlight,
-            })
-            postSubmitResponses.push(postSubmitRez)
-        }
-
-        return Promise.all(postSubmitResponses)
+        return this.signAndSubmitTxs(res.transactions, "P_SUBMIT_ALL", skipPreFlight)
     }
 
     async submitSettle(request: PostSettleRequest, skipPreFlight = true): Promise<PostSubmitResponse> {
         const res = await this.postSettle(request)
 
-        const signedTx = signTx(res.transaction?.content || "")
-
-        return this.postSubmit({ transaction: { content: signedTx.serialize().toString("base64"), isCleanup: false }, skipPreFlight })
+        return this.signAndSubmitTx(res.transaction, skipPreFlight)
     }
 
     async submitReplaceByClientOrderID(request: PostOrderRequest, skipPreFlight = true): Promise<PostSubmitResponse> {
         const res = await this.postReplaceByClientOrderID(request)
 
-        const signedTx = signTx(res.transaction?.content || "")
-
-        return this.postSubmit({ transaction: { content: signedTx.serialize().toString("base64"), isCleanup: false }, skipPreFlight })
+        return this.signAndSubmitTx(res.transaction, skipPreFlight)
     }
 
     async submitReplaceOrder(request: PostReplaceOrderRequest, skipPreFlight = true): Promise<PostSubmitResponse> {
         const res = await this.postReplaceOrder(request)
 
-        const signedTx = signTx(res.transaction?.content || "")
+        return this.signAndSubmitTx(res.transaction, skipPreFlight)
+    }
 
-        return this.postSubmit({ transaction: { content: signedTx.serialize().toString("base64"), isCleanup: false }, skipPreFlight })
+    async submitTradeSwap(request: TradeSwapRequest, submitStrategy: SubmitStrategy, skipPreFlight = true): Promise<PostSubmitBatchResponse> {
+        const res = await this.postTradeSwap(request)
+
+        return this.signAndSubmitTxs(res.transactions, submitStrategy, skipPreFlight)
+    }
+
+    async submitRouteTradeSwap(
+        request: RouteTradeSwapRequest,
+        submitStrategy: SubmitStrategy,
+        skipPreFlight = true
+    ): Promise<PostSubmitBatchResponse> {
+        const res = await this.postRouteTradeSwap(request)
+
+        return this.signAndSubmitTxs(res.transactions, submitStrategy, skipPreFlight)
+    }
+
+    private signAndSubmitTx(transactionMessage: TransactionMessage | undefined, skipPreFlight: boolean, isCleanup: boolean = false): Promise<PostSubmitResponse> {
+        if (transactionMessage == undefined) {
+            throw Error("transaction message was undefined")
+        }
+
+        const signedTx = signTx(transactionMessage.content)
+
+        return this.postSubmit({transaction: {content: signedTx.serialize().toString("base64"), isCleanup: isCleanup}, skipPreFlight})
+    }
+
+    private signAndSubmitTxs(transactionMessages: TransactionMessage[], submitStrategy: SubmitStrategy, skipPreFlight: boolean): Promise<PostSubmitBatchResponse> {
+        if (transactionMessages == undefined) {
+            throw Error("transaction was undefined")
+        }
+
+        const entries = new Array<PostSubmitRequestEntry>()
+        for (const transactionMessage of transactionMessages) {
+            entries.push({
+                transaction: signTxMessage(transactionMessage),
+                skipPreFlight: skipPreFlight,
+            })
+        }
+
+        return this.postSubmitBatch({
+            entries: entries,
+            SubmitStrategy: submitStrategy,
+        })
     }
 
     getPoolReservesStream(request: GetPoolReservesStreamRequest): Promise<AsyncGenerator<GetPoolReservesStreamResponse>> {
