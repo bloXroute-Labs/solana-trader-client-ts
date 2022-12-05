@@ -663,7 +663,7 @@ async function callGetQuotesStream(provider: BaseProvider) {
         for await (const update of stream) {
             console.info(update)
             count++
-            if (count == 3) {
+            if (count == 2) {
                 break
             }
         }
