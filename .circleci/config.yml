@@ -56,22 +56,22 @@ jobs:
           at: .
       - checkout
       - run:
-          name: mainnet
-          command: |
-            export AUTH_HEADER=$AUTH_HEADER_MAINNET
-            export WALLET_SECRET_KEY=$PRIVATE_KEY
-            export WALLET_PUBLIC_KEY=$PUBLIC_KEY
-            export API_ENV="mainnet"
-            export RUN_LIFECYCLE="false"
-            npm start
-          no_output_timeout: 30m
-      - run:
           name: testnet
           command: |
             export AUTH_HEADER=$AUTH_HEADER_TESTNET
             export WALLET_SECRET_KEY=$PRIVATE_KEY
             export WALLET_PUBLIC_KEY=$PUBLIC_KEY
             export API_ENV="testnet"
+            export RUN_LIFECYCLE="false"
+            npm start
+          no_output_timeout: 30m
+      - run:
+          name: mainnet
+          command: |
+            export AUTH_HEADER=$AUTH_HEADER_MAINNET
+            export WALLET_SECRET_KEY=$PRIVATE_KEY
+            export WALLET_PUBLIC_KEY=$PUBLIC_KEY
+            export API_ENV="mainnet"
             export RUN_LIFECYCLE="false"
             npm start
           no_output_timeout: 30m
