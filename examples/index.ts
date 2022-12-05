@@ -139,6 +139,7 @@ async function ws() {
     console.info(" ----  WS Amm Requests  ----")
     await doAmmRequests(provider)
     console.info("after amm requests")
+    return
 
     if (process.env.RUN_LIFECYCLE === "true") {
         console.info(" ----  WS Streams  ----")
@@ -151,6 +152,8 @@ async function ws() {
         await doLifecycle(provider)
         console.info(" ")
     }
+
+    return
 }
 
 async function doRequests(provider: BaseProvider) {
@@ -224,10 +227,10 @@ async function doAmmRequests(provider: BaseProvider) {
     await callTradeSwap(provider)
     console.info(" ")
     console.info(" ")
-    //
-    // await callRouteTradeSwap(provider)
-    // console.info(" ")
-    // console.info(" ")
+
+    await callRouteTradeSwap(provider)
+    console.info(" ")
+    console.info(" ")
 }
 
 async function doStreams(provider: BaseProvider) {
