@@ -63,8 +63,8 @@ function getRandom() {
 }
 
 async function run() {
-    // await http()
-    // await grpc()
+    await http()
+    await grpc()
     await ws()
     process.exit(0)
     console.info("after ws")
@@ -93,6 +93,9 @@ async function http() {
         await callCancelAll(provider)
         console.info(" ")
     }
+
+    process.exit(0)
+    return
 }
 
 async function grpc() {
@@ -123,6 +126,9 @@ async function grpc() {
         await doLifecycle(provider)
         console.info(" ")
     }
+
+    process.exit(0)
+    return
 }
 
 async function ws() {
@@ -791,13 +797,10 @@ async function callRouteTradeSwap(provider: BaseProvider) {
 
         for (const transaction of responses.transactions) {
             console.info(transaction.signature)
-            console.info("made it here 1")
         }
     } catch (error) {
         console.error("Failed to generate and/or submit a route trade swap", error)
     }
-
-    console.info("made it here 2")
 }
 
 async function callReplaceOrder(provider: BaseProvider) {
