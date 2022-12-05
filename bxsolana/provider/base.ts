@@ -63,7 +63,7 @@ import {
     PostSubmitBatchResponse,
     PostSubmitRequestEntry,
     SubmitStrategy,
-    TransactionMessage
+    TransactionMessage,
 } from "../proto/messages/api/index.js"
 import { Api } from "../proto/services/api/index.js"
 import { signTx, signTxMessage, SubmitTransactionResponse } from "../../utils/transaction.js"
@@ -179,7 +179,7 @@ export abstract class BaseProvider implements Api {
     async submitCancelOrder(request: PostCancelOrderRequest, skipPreFlight = false): Promise<PostSubmitResponse> {
         const res = await this.postCancelOrder(request)
 
-        return this.signAndSubmitTx(res.transaction, skipPreFlight);
+        return this.signAndSubmitTx(res.transaction, skipPreFlight)
     }
 
     async submitCancelOrderByClientOrderID(request: PostCancelByClientOrderIDRequest, skipPreFlight = true): Promise<PostSubmitResponse> {
@@ -228,17 +228,25 @@ export abstract class BaseProvider implements Api {
         return this.signAndSubmitTxs(res.transactions, submitStrategy, skipPreFlight)
     }
 
-    private signAndSubmitTx(transactionMessage: TransactionMessage | undefined, skipPreFlight: boolean, isCleanup: boolean = false): Promise<PostSubmitResponse> {
+    private signAndSubmitTx(
+        transactionMessage: TransactionMessage | undefined,
+        skipPreFlight: boolean,
+        isCleanup = false
+    ): Promise<PostSubmitResponse> {
         if (transactionMessage == undefined) {
             throw Error("transaction message was undefined")
         }
 
         const signedTx = signTx(transactionMessage.content)
 
-        return this.postSubmit({transaction: {content: signedTx.serialize().toString("base64"), isCleanup: isCleanup}, skipPreFlight})
+        return this.postSubmit({ transaction: { content: signedTx.serialize().toString("base64"), isCleanup: isCleanup }, skipPreFlight })
     }
 
-    private signAndSubmitTxs(transactionMessages: TransactionMessage[], submitStrategy: SubmitStrategy, skipPreFlight: boolean): Promise<PostSubmitBatchResponse> {
+    private signAndSubmitTxs(
+        transactionMessages: TransactionMessage[],
+        submitStrategy: SubmitStrategy,
+        skipPreFlight: boolean
+    ): Promise<PostSubmitBatchResponse> {
         if (transactionMessages == undefined) {
             throw Error("transaction was undefined")
         }
