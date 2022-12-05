@@ -66,6 +66,7 @@ async function run() {
     // await http()
     // await grpc()
     await ws()
+    process.exit(0)
     console.info("after ws")
 }
 
@@ -140,7 +141,6 @@ async function ws() {
     console.info(" ----  WS Amm Requests  ----")
     await doAmmRequests(provider)
     console.info("after amm requests")
-    return
 
     if (process.env.RUN_LIFECYCLE === "true") {
         console.info(" ----  WS Streams  ----")
@@ -154,6 +154,7 @@ async function ws() {
         console.info(" ")
     }
 
+    process.exit(0)
     return
 }
 
