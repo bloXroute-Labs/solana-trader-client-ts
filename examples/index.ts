@@ -784,10 +784,16 @@ async function callRouteTradeSwap(provider: BaseProvider) {
 
         for (const transaction of responses.transactions) {
             console.info(transaction.signature)
+            console.info("made it here 1")
+
+            return
+            continue
         }
     } catch (error) {
         console.error("Failed to generate and/or submit a route trade swap", error)
     }
+
+    console.info("made it here 2")
 }
 
 async function callReplaceOrder(provider: BaseProvider) {
