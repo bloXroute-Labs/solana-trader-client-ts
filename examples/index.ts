@@ -66,6 +66,7 @@ async function run() {
     // await http()
     // await grpc()
     await ws()
+    console.info("after ws")
 }
 
 async function http() {
