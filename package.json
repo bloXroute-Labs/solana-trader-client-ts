@@ -12,7 +12,7 @@
   },
   "scripts": {
     "test": "echo \"No test specified\"",
-    "release": "np --no-2fa --develop --any-branch",
+    "release": "np --develop --any-branch",
     "start": "ts-node ./examples/index.ts",
     "lint": "eslint --fix .",
     "format": "prettier --config .prettierrc './**/*.ts' --write",
