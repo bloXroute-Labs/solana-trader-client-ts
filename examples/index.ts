@@ -67,7 +67,6 @@ async function run() {
     await grpc()
     await ws()
     process.exit(0)
-    console.info("after ws")
 }
 
 async function http() {
@@ -82,16 +81,16 @@ async function http() {
     }
 
     if (process.env.RUN_LIFECYCLE === "true") {
-	    console.info(" ----  HTTP Requests  ----")
-	    await doRequests(provider)
-	    console.info(" ----  HTTP Amm Requests  ----")
-	    await doAmmRequests(provider)
-	    console.info(" ----  HTTP Lifecycle  ----")
-	    await doHttpLifecycle(provider)
-	    console.info(" ----  HTTP Cancel All  ----")
-	    await callCancelAll(provider)
-	    console.info(" ") 
-  }
+        console.info(" ----  HTTP Requests  ----")
+        await doRequests(provider)
+        console.info(" ----  HTTP Amm Requests  ----")
+        await doAmmRequests(provider)
+        console.info(" ----  HTTP Lifecycle  ----")
+        await doHttpLifecycle(provider)
+        console.info(" ----  HTTP Cancel All  ----")
+        await callCancelAll(provider)
+        console.info(" ")
+    }
 
     process.exit(0)
     return
@@ -113,18 +112,17 @@ async function grpc() {
 
     console.info(" ----  GRPC Amm Requests  ----")
     await doAmmRequests(provider)
- 
 
     if (process.env.RUN_LIFECYCLE === "true") {
-      console.info(" ----  GRPC Streams  ----")
-      await doStreams(provider)
-      console.info(" ----  GRPC Amm Streams  ----")
-      await doAmmStreams(provider)
-      console.info(" ----  GRPC Cancel All  ----")
-      await callCancelAll(provider)
-      console.info(" ----  GRPC Lifecycle  ----")
-      await doLifecycle(provider)
-      console.info(" ")
+        console.info(" ----  GRPC Streams  ----")
+        await doStreams(provider)
+        console.info(" ----  GRPC Amm Streams  ----")
+        await doAmmStreams(provider)
+        console.info(" ----  GRPC Cancel All  ----")
+        await callCancelAll(provider)
+        console.info(" ----  GRPC Lifecycle  ----")
+        await doLifecycle(provider)
+        console.info(" ")
     }
 
     process.exit(0)
@@ -145,20 +143,19 @@ async function ws() {
     console.info(" ----  WS Requests  ----")
     await doRequests(provider)
 
-
     if (process.env.RUN_LIFECYCLE === "true") {
-	    console.info(" ----  WS Amm Requests  ----")
-	    await doAmmRequests(provider)
-	    console.info(" ----  WS Streams  ----")
-	    await doStreams(provider)
-	    console.info(" ----  WS Amm Streams  ----")
-	    await doAmmStreams(provider)
-	    console.info(" ----  WS Cancel All  ----")
-	    await callCancelAll(provider)
-	    console.info(" ----  WS Lifecycle  ----")
-	    await doLifecycle(provider)
-	    console.info(" ")
-  }
+        console.info(" ----  WS Amm Requests  ----")
+        await doAmmRequests(provider)
+        console.info(" ----  WS Streams  ----")
+        await doStreams(provider)
+        console.info(" ----  WS Amm Streams  ----")
+        await doAmmStreams(provider)
+        console.info(" ----  WS Cancel All  ----")
+        await callCancelAll(provider)
+        console.info(" ----  WS Lifecycle  ----")
+        await doLifecycle(provider)
+        console.info(" ")
+    }
 
     process.exit(0)
     return

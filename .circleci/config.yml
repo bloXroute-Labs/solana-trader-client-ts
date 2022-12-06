@@ -12,6 +12,9 @@ jobs:
           command: sudo npm install -g ts-node
           name: Install ts-node
       - run:
+          command: npm ci
+          name: Install NPM dependencies for fmt/lint
+      - run:
           command: ts-node -v
           name: Check ts-node version to make sure it installed
       - persist_to_workspace:
@@ -38,6 +41,9 @@ jobs:
       - run:
           name: format
           command: npm run format
+      - run:
+          command: npm run prettier:check:ci
+          name: Run Prettier with project config
 
   lint:
     executor: node/default
