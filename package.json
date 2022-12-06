@@ -1,6 +1,6 @@
 {
   "name": "@bloxroute/solana-trader-client-ts",
-  "version": "1.2.0",
+  "version": "1.0.0",
   "description": "Solana Trader API SDK",
   "main": "index.ts",
   "type": "module",
@@ -12,7 +12,7 @@
   },
   "scripts": {
     "test": "echo \"No test specified\"",
-    "release": "np --no-2fa",
+    "release": "np --no-2fa --develop",
     "start": "ts-node ./examples/index.ts",
     "lint": "eslint --fix .",
     "format": "prettier --config .prettierrc './**/*.ts' --write",
