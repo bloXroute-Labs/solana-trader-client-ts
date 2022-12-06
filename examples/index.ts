@@ -160,6 +160,8 @@ async function ws() {
         console.info(" ")
     }
 
+    await cancelWsStreams(provider)
+
     process.exit(0)
     return
 }
@@ -255,7 +257,23 @@ async function doStreams(provider: BaseProvider) {
     console.info(" ")
 
     console.info("cancelling streams")
-    await cancelStreams(provider)
+}
+
+async function cancelWsStreams(provider: BaseProvider) {
+    console.info("Cancelling orderbooks stream")
+    await provider.cancelAllGetOrderbooksStream()
+    console.info(" ")
+    console.info(" ")
+
+    console.info("Cancelling get tickers stream")
+    await provider.cancelAllGetOrderbooksStream()
+    console.info(" ")
+    console.info(" ")
+
+    console.info("Cancelling trades stream")
+    await provider.cancelAllGetTradesStream()
+    console.info(" ")
+    console.info(" ")
 }
 
 async function doAmmStreams(provider: BaseProvider) {

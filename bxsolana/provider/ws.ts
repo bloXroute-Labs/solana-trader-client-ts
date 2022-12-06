@@ -82,8 +82,6 @@ export class WsProvider extends BaseProvider {
     // called 3 times) to the subscription id. This will be used to manage cancellations
     private countToSubscriptionID: Map<number, string> = new Map()
 
-
-
     constructor(address: string = MAINNET_API_WS) {
         super()
         this.wsConnection = new RpcWsConnection(address)
@@ -135,7 +133,7 @@ export class WsProvider extends BaseProvider {
     getOrderbooksStream = async (request: GetOrderbooksRequest): Promise<AsyncGenerator<GetOrderbooksStreamResponse>> => {
         const subscriptionId = await this.wsConnection.subscribe("GetOrderbooksStream", request)
 
-        let count:number
+        let count: number
         if (this.streamToCountMap.size === 0) {
             count = 1
             const countToSubscriptionID = new Map()
@@ -170,16 +168,15 @@ export class WsProvider extends BaseProvider {
 
         if (countToSubscriptionID) {
             this.countToSubscriptionID.forEach((value: string, key: number) => {
-                if (key === streamNumber)
-                return this.wsConnection.unsubscribe(value)
-            });
+                if (key === streamNumber) return this.wsConnection.unsubscribe(value)
+            })
         }
 
         return false
     }
 
     cancelAllGetOrderbooksStream = async (): Promise<boolean> => {
-        let retValues:Promise<boolean>
+        let retValues: Promise<boolean>
         let p = Promise.resolve(false)
 
         const countToSubscriptionID = this.streamToCountMap.get("GetOrderbooksStream")
@@ -189,8 +186,8 @@ export class WsProvider extends BaseProvider {
                 retValues = this.wsConnection.unsubscribe(value)
                 retValues.catch(function () {
                     return retValues
-                });
-            });
+                })
+            })
 
             return p
         }
@@ -211,16 +208,15 @@ export class WsProvider extends BaseProvider {
 
         if (countToSubscriptionID) {
             this.countToSubscriptionID.forEach((value: string, key: number) => {
-                if (key === streamNumber)
-                    return this.wsConnection.unsubscribe(value)
-            });
+                if (key === streamNumber) return this.wsConnection.unsubscribe(value)
+            })
         }
 
         return false
     }
 
     cancelAllGetTickersStream = async (): Promise<boolean> => {
-        let retValues:Promise<boolean>
+        let retValues: Promise<boolean>
         let p = Promise.resolve(false)
 
         const countToSubscriptionID = this.streamToCountMap.get("GetTickersStream")
@@ -230,8 +226,8 @@ export class WsProvider extends BaseProvider {
                 retValues = this.wsConnection.unsubscribe(value)
                 retValues.catch(function () {
                     return retValues
-                });
-            });
+                })
+            })
 
             return p
         }
@@ -252,16 +248,15 @@ export class WsProvider extends BaseProvider {
 
         if (countToSubscriptionID) {
             this.countToSubscriptionID.forEach((value: string, key: number) => {
-                if (key === streamNumber)
-                    return this.wsConnection.unsubscribe(value)
-            });
+                if (key === streamNumber) return this.wsConnection.unsubscribe(value)
+            })
         }
 
         return false
     }
 
     cancelAllGetTradesStream = async (): Promise<boolean> => {
-        let retValues:Promise<boolean>
+        let retValues: Promise<boolean>
         let p = Promise.resolve(false)
 
         const countToSubscriptionID = this.streamToCountMap.get("GetTradesStream")
@@ -271,8 +266,8 @@ export class WsProvider extends BaseProvider {
                 retValues = this.wsConnection.unsubscribe(value)
                 retValues.catch(function () {
                     return retValues
-                });
-            });
+                })
+            })
 
             return p
         }
@@ -280,7 +275,6 @@ export class WsProvider extends BaseProvider {
         p = Promise.reject(true)
         return p
     }
-
 
     getOrderStatusStream = async (request: GetOrderStatusStreamRequest): Promise<AsyncGenerator<GetOrderStatusStreamResponse>> => {
         const subscriptionId = await this.wsConnection.subscribe("GetOrderStatusStream", request)
@@ -293,16 +287,15 @@ export class WsProvider extends BaseProvider {
 
         if (countToSubscriptionID) {
             this.countToSubscriptionID.forEach((value: string, key: number) => {
-                if (key === streamNumber)
-                    return this.wsConnection.unsubscribe(value)
-            });
+                if (key === streamNumber) return this.wsConnection.unsubscribe(value)
+            })
         }
 
         return false
     }
 
     cancelAllGetOrderStatusStream = async (): Promise<boolean> => {
-        let retValues:Promise<boolean>
+        let retValues: Promise<boolean>
         let p = Promise.resolve(false)
 
         const countToSubscriptionID = this.streamToCountMap.get("GetOrderStatusStream")
@@ -312,8 +305,8 @@ export class WsProvider extends BaseProvider {
                 retValues = this.wsConnection.unsubscribe(value)
                 retValues.catch(function () {
                     return retValues
-                });
-            });
+                })
+            })
 
             return p
         }
@@ -368,7 +361,7 @@ export class WsProvider extends BaseProvider {
     }
 
     postRouteTradeSwap(request: RouteTradeSwapRequest): Promise<TradeSwapResponse> {
-        return this.wsConnection.call("PostRouteTradeSwap", request);
+        return this.wsConnection.call("PostRouteTradeSwap", request)
     }
 
     async getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
@@ -386,16 +379,15 @@ export class WsProvider extends BaseProvider {
 
         if (countToSubscriptionID) {
             this.countToSubscriptionID.forEach((value: string, key: number) => {
-                if (key === streamNumber)
-                    return this.wsConnection.unsubscribe(value)
-            });
+                if (key === streamNumber) return this.wsConnection.unsubscribe(value)
+            })
         }
 
         return false
     }
 
     cancelAllGetRecentBlockhashStream = async (): Promise<boolean> => {
-        let retValues:Promise<boolean>
+        let retValues: Promise<boolean>
         let p = Promise.resolve(false)
 
         const countToSubscriptionID = this.streamToCountMap.get("GetRecentBlockHashStream")
@@ -405,8 +397,8 @@ export class WsProvider extends BaseProvider {
                 retValues = this.wsConnection.unsubscribe(value)
                 retValues.catch(function () {
                     return retValues
-                });
-            });
+                })
+            })
 
             return p
         }
@@ -426,16 +418,15 @@ export class WsProvider extends BaseProvider {
 
         if (countToSubscriptionID) {
             this.countToSubscriptionID.forEach((value: string, key: number) => {
-                if (key === streamNumber)
-                    return this.wsConnection.unsubscribe(value)
-            });
+                if (key === streamNumber) return this.wsConnection.unsubscribe(value)
+            })
         }
 
         return false
     }
 
     cancelAllGetQuotesStream = async (): Promise<boolean> => {
-        let retValues:Promise<boolean>
+        let retValues: Promise<boolean>
         let p = Promise.resolve(false)
 
         const countToSubscriptionID = this.streamToCountMap.get("GetQuotesStream")
@@ -445,8 +436,8 @@ export class WsProvider extends BaseProvider {
                 retValues = this.wsConnection.unsubscribe(value)
                 retValues.catch(function () {
                     return retValues
-                });
-            });
+                })
+            })
 
             return p
         }
@@ -466,16 +457,15 @@ export class WsProvider extends BaseProvider {
 
         if (countToSubscriptionID) {
             this.countToSubscriptionID.forEach((value: string, key: number) => {
-                if (key === streamNumber)
-                    return this.wsConnection.unsubscribe(value)
-            });
+                if (key === streamNumber) return this.wsConnection.unsubscribe(value)
+            })
         }
 
         return false
     }
 
     cancelAllGetPoolReservesStream = async (): Promise<boolean> => {
-        let retValues:Promise<boolean>
+        let retValues: Promise<boolean>
         let p = Promise.resolve(false)
 
         const countToSubscriptionID = this.streamToCountMap.get("GetPoolReservesStream")
@@ -485,8 +475,8 @@ export class WsProvider extends BaseProvider {
                 retValues = this.wsConnection.unsubscribe(value)
                 retValues.catch(function () {
                     return retValues
-                });
-            });
+                })
+            })
 
             return p
         }
