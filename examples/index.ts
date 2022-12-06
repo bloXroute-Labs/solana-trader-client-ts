@@ -9,13 +9,27 @@ import {
     GetOpenOrdersRequest,
     GetOpenOrdersResponse,
     PostCancelAllRequest,
-    Project
+    TokenPair,
+    Project,
 } from "../bxsolana/proto/messages/api/index.js"
 import config from "../utils/config.js"
 import { addMemo, addMemoToSerializedTxn } from "../utils/memo.js"
 import { Keypair } from "@solana/web3.js"
-import {$} from "../bxsolana/proto/messages/api/TokenPair";
-import TokenPair = $.api.TokenPair;
+import {
+    LOCAL_API_GRPC_HOST,
+    LOCAL_API_GRPC_PORT,
+    LOCAL_API_HTTP,
+    LOCAL_API_WS,
+    MAINNET_API_GRPC_HOST,
+    MAINNET_API_GRPC_PORT,
+    MAINNET_API_HTTP,
+    MAINNET_API_WS,
+    TESTNET_API_GRPC_HOST,
+    TESTNET_API_GRPC_PORT,
+    TESTNET_API_HTTP,
+    TESTNET_API_WS,
+} from "../utils/constants.js"
+
 const marketAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"
 const ownerAddress = config.WalletPublicKey
 const payerAddress = config.WalletPublicKey
@@ -55,54 +69,99 @@ async function run() {
     await grpc()
     console.info("---- STARTING WS TESTS ----")
     await ws()
+    process.exit(0)
 }
 
 async function http() {
-    const provider = new HttpProvider()
-    console.info(" ----  HTTP Requests  ----")
-    await doRequests(provider)
-    console.info(" ----  HTTP Solana Requests  ----")
-    await doSolanaRequests(provider)
-    console.info(" ----  HTTP Lifecycle  ----")
-    await doHttpLifecycle(provider)
-    console.info(" ----  HTTP Cancel All  ----")
-    await callCancelAll(provider)
-    console.info(" ")
+    let provider: HttpProvider
+
+    if (process.env.API_ENV === "testnet") {
+        provider = new HttpProvider(TESTNET_API_HTTP)
+    } else if (process.env.API_ENV === "mainnet") {
+        provider = new HttpProvider(MAINNET_API_HTTP)
+    } else {
+        provider = new HttpProvider(LOCAL_API_HTTP)
+    }
+
+    if (process.env.RUN_LIFECYCLE === "true") {
+        console.info(" ----  HTTP Requests  ----")
+        await doRequests(provider)
+        console.info(" ----  HTTP Amm Requests  ----")
+        await doAmmRequests(provider)
+        console.info(" ----  HTTP Lifecycle  ----")
+        await doHttpLifecycle(provider)
+        console.info(" ----  HTTP Cancel All  ----")
+        await callCancelAll(provider)
+        console.info(" ")
+    }
+
+    process.exit(0)
+    return
 }
 
 async function grpc() {
-    const provider = new GrpcProvider()
+    let provider: GrpcProvider
+
+    if (process.env.API_ENV === "testnet") {
+        provider = new GrpcProvider(`${TESTNET_API_GRPC_HOST}:${TESTNET_API_GRPC_PORT}`, false)
+    } else if (process.env.API_ENV === "mainnet") {
+        provider = new GrpcProvider(`${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`, true)
+    } else {
+        provider = new GrpcProvider(`${LOCAL_API_GRPC_HOST}:${LOCAL_API_GRPC_PORT}`, false)
+    }
+
     console.info(" ----  GRPC Requests  ----")
     await doRequests(provider)
-    console.info(" ----  GRPC Solana Requests  ----")
-    await doSolanaRequests(provider)
-    console.info(" ----  GRPC Streams  ----")
-    await doStreams(provider)
-    console.info(" ----  GRPC Solana Streams  ----")
-    await doSolanaStreams(provider)
-    console.info(" ----  GRPC Cancel All  ----")
-    await callCancelAll(provider)
-    console.info(" ----  GRPC Lifecycle  ----")
-    await doLifecycle(provider)
-    console.info(" ")
+
+    console.info(" ----  GRPC Amm Requests  ----")
+    await doAmmRequests(provider)
+
+    if (process.env.RUN_LIFECYCLE === "true") {
+        console.info(" ----  GRPC Streams  ----")
+        await doStreams(provider)
+        console.info(" ----  GRPC Amm Streams  ----")
+        await doAmmStreams(provider)
+        console.info(" ----  GRPC Cancel All  ----")
+        await callCancelAll(provider)
+        console.info(" ----  GRPC Lifecycle  ----")
+        await doLifecycle(provider)
+        console.info(" ")
+    }
+
+    process.exit(0)
+    return
 }
 
 async function ws() {
-    const provider = new WsProvider()
-    await provider.connect()
+    let provider: WsProvider
+
+    if (process.env.API_ENV === "testnet") {
+        provider = new WsProvider(TESTNET_API_WS)
+    } else if (process.env.API_ENV === "mainnet") {
+        provider = new WsProvider(MAINNET_API_WS)
+    } else {
+        provider = new WsProvider(LOCAL_API_WS)
+    }
+
     console.info(" ----  WS Requests  ----")
     await doRequests(provider)
-    console.info(" ----  WS Solana Requests  ----")
-    await doSolanaRequests(provider)
-    console.info(" ----  WS Streams  ----")
-    await doStreams(provider)
-    console.info(" ----  WS Solana Streams  ----")
-    await doSolanaStreams(provider)
-    console.info(" ----  WS Cancel All  ----")
-    await callCancelAll(provider)
-    console.info(" ----  WS Lifecycle  ----")
-    await doLifecycle(provider)
-    console.info(" ")
+
+    if (process.env.RUN_LIFECYCLE === "true") {
+        console.info(" ----  WS Amm Requests  ----")
+        await doAmmRequests(provider)
+        console.info(" ----  WS Streams  ----")
+        await doStreams(provider)
+        console.info(" ----  WS Amm Streams  ----")
+        await doAmmStreams(provider)
+        console.info(" ----  WS Cancel All  ----")
+        await callCancelAll(provider)
+        console.info(" ----  WS Lifecycle  ----")
+        await doLifecycle(provider)
+        console.info(" ")
+    }
+
+    process.exit(0)
+    return
 }
 
 async function doRequests(provider: BaseProvider) {
@@ -160,7 +219,7 @@ async function doRequests(provider: BaseProvider) {
     console.info(" ")
 }
 
-async function doSolanaRequests(provider: BaseProvider) {
+async function doAmmRequests(provider: BaseProvider) {
     await callGetPrices(provider)
     console.info(" ")
     console.info(" ")
@@ -199,7 +258,7 @@ async function doStreams(provider: BaseProvider) {
     await cancelStreams(provider)
 }
 
-async function doSolanaStreams(provider: BaseProvider) {
+async function doAmmStreams(provider: BaseProvider) {
     await callGetPricesStream(provider)
     console.info(" ")
     console.info(" ")
@@ -464,7 +523,7 @@ async function callGetServerTime(provider: BaseProvider) {
 async function callGetPrices(provider: BaseProvider) {
     try {
         console.info("Retrieving price")
-        const resp = await provider.getPrice({tokens: ["SOL", "USDC"]})
+        const resp = await provider.getPrice({ tokens: ["SOL", "USDC"] })
         console.info(resp)
     } catch (error) {
         console.error("Failed to retrieve server time", error)
@@ -474,7 +533,7 @@ async function callGetPrices(provider: BaseProvider) {
 async function callGetPools(provider: BaseProvider) {
     try {
         console.info("Retrieving pools")
-        const resp = await provider.getPools({projects: ["P_RAYDIUM"]})
+        const resp = await provider.getPools({ projects: ["P_RAYDIUM"] })
         console.info(resp)
     } catch (error) {
         console.error("Failed to retrieve server time", error)
@@ -484,7 +543,14 @@ async function callGetPools(provider: BaseProvider) {
 async function callGetQuotes(provider: BaseProvider) {
     try {
         console.info("Retrieving quotes")
-        const resp = await provider.getQuotes({inToken: "SOL", outToken: "USDC", inAmount: 1, slippage: 5, limit: 5, projects: ["P_RAYDIUM", "P_JUPITER"]})
+        const resp = await provider.getQuotes({
+            inToken: "SOL",
+            outToken: "USDC",
+            inAmount: 1,
+            slippage: 5,
+            limit: 5,
+            projects: ["P_RAYDIUM", "P_JUPITER"],
+        })
         console.info(resp)
     } catch (error) {
         console.error("Failed to retrieve quotes", error)
@@ -560,7 +626,6 @@ async function callGetTradesStream(provider: BaseProvider) {
     }
 }
 
-
 async function callGetPricesStream(provider: BaseProvider) {
     try {
         console.info("Subscribing for prices updates of SOL and USDC on Raydium")
@@ -607,14 +672,14 @@ async function callGetQuotesStream(provider: BaseProvider) {
         console.info("Subscribing for quote updates of SOLUSDC market")
 
         const projects: Project[] = ["P_RAYDIUM"]
-        const tokenPairs: TokenPair[] = [{inToken: "SOL", outToken: "USDC", inAmount: 1}]
+        const tokenPairs: TokenPair[] = [{ inToken: "SOL", outToken: "USDC", inAmount: 1 }]
         const stream = await provider.getQuotesStream({ projects: projects, tokenPairs: tokenPairs })
 
         let count = 0
         for await (const update of stream) {
             console.info(update)
             count++
-            if (count == 3) {
+            if (count == 2) {
                 break
             }
         }
@@ -684,15 +749,22 @@ async function callReplaceByClientOrderID(provider: BaseProvider) {
 async function callTradeSwap(provider: BaseProvider) {
     try {
         console.info("Submitting a trade swap")
-        const resp = await provider.postTradeSwap({
-            ownerAddress: ownerAddress,
-            inToken: "USDC",
-            outToken: "SOL",
-            inAmount: 0.01,
-            slippage: 0.1,
-            project: "P_RAYDIUM"
-        })
-        console.info(resp)
+        const responses = await provider.submitTradeSwap(
+            {
+                ownerAddress: ownerAddress,
+                inToken: "USDC",
+                outToken: "SOL",
+                inAmount: 0.01,
+                slippage: 0.1,
+                project: "P_RAYDIUM",
+            },
+            "P_SUBMIT_ALL",
+            true
+        )
+
+        for (const transaction of responses.transactions) {
+            console.info(transaction.signature)
+        }
     } catch (error) {
         console.error("Failed to generate and/or submit a trade swap", error)
     }
@@ -701,27 +773,34 @@ async function callTradeSwap(provider: BaseProvider) {
 async function callRouteTradeSwap(provider: BaseProvider) {
     try {
         console.info("Submitting a route trade swap")
-        const resp = await provider.postRouteTradeSwap({
-            ownerAddress: ownerAddress,
-            steps: [
-                {
-                    inToken: "FIDA",
-                    outToken: "RAY",
-                    inAmount: 0.01,
-                    outAmount: 0.007505,
-                    outAmountMin: 0.074
-                },
-                {
-                    inToken: "RAY",
-                    outToken: "USDC",
-                    inAmount: 0.007505,
-                    outAmount: 0.004043,
-                    outAmountMin: 0.00400
-                }
-            ],
-            project: "P_RAYDIUM"
-        })
-        console.info(resp)
+        const responses = await provider.submitRouteTradeSwap(
+            {
+                ownerAddress: ownerAddress,
+                steps: [
+                    {
+                        inToken: "FIDA",
+                        outToken: "RAY",
+                        inAmount: 0.01,
+                        outAmount: 0.007505,
+                        outAmountMin: 0.074,
+                    },
+                    {
+                        inToken: "RAY",
+                        outToken: "USDC",
+                        inAmount: 0.007505,
+                        outAmount: 0.004043,
+                        outAmountMin: 0.004,
+                    },
+                ],
+                project: "P_RAYDIUM",
+            },
+            "P_SUBMIT_ALL",
+            true
+        )
+
+        for (const transaction of responses.transactions) {
+            console.info(transaction.signature)
+        }
     } catch (error) {
         console.error("Failed to generate and/or submit a route trade swap", error)
     }
@@ -791,11 +870,11 @@ async function callCancelAll(provider: BaseProvider) {
             ownerAddress: ownerAddress,
             openOrdersAddresses: [openOrdersAddress],
         }
-        const submitCancelAllResponses = await provider.submitCancelAll(cancelAllRequest)
+        const response = await provider.submitCancelAll(cancelAllRequest)
 
         const signatures: string[] = []
-        for (const cancelAllResponse of submitCancelAllResponses) {
-            signatures.push(cancelAllResponse.signature)
+        for (const transaction of response.transactions) {
+            signatures.push(transaction.signature)
         }
 
         console.info(`Cancelling all orders, response signatures(s): ${signatures.join(", ")}`)

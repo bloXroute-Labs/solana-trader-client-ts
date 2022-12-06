@@ -1,4 +1,4 @@
-import { MAINNET_API_GRPC_HOST, MAINNET_API_GRPC_PORT } from "../../utils/constants.js"
+import { LOCAL_API_WS, MAINNET_API_GRPC_HOST, MAINNET_API_GRPC_PORT, MAINNET_API_WS, TESTNET_API_WS } from "../../utils/constants.js"
 import * as grpc from "@grpc/grpc-js"
 import { CreateGrpcClientImplConfig, createGrpcClientImpl } from "@pbkit/grpc-client"
 import {
@@ -36,6 +36,8 @@ import {
     PostSettleResponse,
     PostSubmitRequest,
     PostSubmitResponse,
+    PostSubmitBatchRequest,
+    PostSubmitBatchResponse,
     GetPoolsRequest,
     GetPoolsResponse,
     GetPriceRequest,
@@ -61,22 +63,35 @@ import { BaseProvider } from "./base.js"
 import { Client } from "@grpc/grpc-js"
 import { CallMetadataOptions } from "@grpc/grpc-js/src/call-credentials"
 import config from "../../utils/config.js"
+import { WsProvider } from "./ws"
 
 export class GrpcProvider extends BaseProvider {
     private client: Service
     private grpcClient: Client
 
-    constructor(address = `${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`) {
+    constructor(address = `${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`, useTls: boolean) {
         super()
         const metaCallback = (options: CallMetadataOptions, cb: (err: Error | null, metadata?: grpc.Metadata) => void) => {
             const meta = new grpc.Metadata()
             meta.add("Authorization", config.AuthHeader)
             cb(null, meta)
         }
-        this.grpcClient = new Client(
-            address,
-            grpc.credentials.combineChannelCredentials(grpc.credentials.createSsl(), grpc.credentials.createFromMetadataGenerator(metaCallback))
-        )
+
+        let grpcClient: Client
+
+        if (!useTls) {
+            // testnet or local
+            grpcClient = new Client(address, grpc.credentials.createInsecure())
+        } else {
+            // mainnet
+            grpcClient = new Client(
+                address,
+                grpc.credentials.combineChannelCredentials(grpc.credentials.createSsl(), grpc.credentials.createFromMetadataGenerator(metaCallback))
+            )
+        }
+
+        this.grpcClient = grpcClient
+
         const configGrpc: CreateGrpcClientImplConfig = { grpcJsClient: this.grpcClient }
         const impl = createGrpcClientImpl(configGrpc)
         this.client = createServiceClient(impl)
@@ -145,6 +160,10 @@ export class GrpcProvider extends BaseProvider {
         return this.client.postSubmit(request)
     }
 
+    postSubmitBatch(request: PostSubmitBatchRequest): Promise<PostSubmitBatchResponse> {
+        return this.client.postSubmitBatch(request)
+    }
+
     postCancelOrder(request: PostCancelOrderRequest): Promise<PostCancelOrderResponse> {
         return this.client.postCancelOrder(request)
     }
@@ -179,7 +198,7 @@ export class GrpcProvider extends BaseProvider {
     }
 
     getPricesStream(request: GetPricesStreamRequest): Promise<AsyncGenerator<GetPricesStreamResponse>> {
-        return this.client.getPricesStream(request);
+        return this.client.getPricesStream(request)
     }
 
     getPools(request: GetPoolsRequest): Promise<GetPoolsResponse> {
@@ -203,7 +222,7 @@ export class GrpcProvider extends BaseProvider {
     }
 
     postRouteTradeSwap(request: RouteTradeSwapRequest): Promise<TradeSwapResponse> {
-        return this.client.postRouteTradeSwap(request);
+        return this.client.postRouteTradeSwap(request)
     }
 
     getSwapsStream(request: GetSwapsStreamRequest): Promise<AsyncGenerator<GetSwapsStreamResponse>> {

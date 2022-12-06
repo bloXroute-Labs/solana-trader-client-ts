@@ -48,6 +48,8 @@ import {
     PostSettleResponse,
     PostSubmitRequest,
     PostSubmitResponse,
+    PostSubmitBatchRequest,
+    PostSubmitBatchResponse,
     TradeSwapRequest,
     RouteTradeSwapRequest,
     TradeSwapResponse,
@@ -363,6 +365,10 @@ export class WsProvider extends BaseProvider {
 
     async getQuotes(request: GetQuotesRequest): Promise<GetQuotesResponse> {
         return this.wsConnection.call("GetQuotes", request)
+    }
+
+    postRouteTradeSwap(request: RouteTradeSwapRequest): Promise<TradeSwapResponse> {
+        return this.wsConnection.call("PostRouteTradeSwap", request);
     }
 
     async getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
