@@ -41,9 +41,6 @@ jobs:
       - run:
           name: format
           command: npm run format
-      - run:
-          command: npm run lint:prettier
-          name: Run prettier with project config
 
   lint:
     executor: node/default
