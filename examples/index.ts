@@ -4,18 +4,12 @@ import { GrpcProvider } from "../bxsolana/provider/grpc.js"
 import { BaseProvider } from "../bxsolana/provider/base.js"
 import { HttpProvider } from "../bxsolana/provider/http.js"
 import { WsProvider } from "../bxsolana/provider/ws.js"
-import {
-    PostOrderRequest,
-    GetOpenOrdersRequest,
-    GetOpenOrdersResponse,
-    PostCancelAllRequest,
-    Project
-} from "../bxsolana/proto/messages/api/index.js"
+import { PostOrderRequest, GetOpenOrdersRequest, GetOpenOrdersResponse, PostCancelAllRequest, Project } from "../bxsolana/proto/messages/api/index.js"
 import config from "../utils/config.js"
 import { addMemo, addMemoToSerializedTxn } from "../utils/memo.js"
 import { Keypair } from "@solana/web3.js"
-import {$} from "../bxsolana/proto/messages/api/TokenPair";
-import TokenPair = $.api.TokenPair;
+import { $ } from "../bxsolana/proto/messages/api/TokenPair"
+import TokenPair = $.api.TokenPair
 const marketAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"
 const ownerAddress = config.WalletPublicKey
 const payerAddress = config.WalletPublicKey
@@ -457,7 +451,7 @@ async function callGetServerTime(provider: BaseProvider) {
 async function callGetPrices(provider: BaseProvider) {
     try {
         console.info("Retrieving price")
-        const resp = await provider.getPrice({tokens: ["SOL", "USDC"]})
+        const resp = await provider.getPrice({ tokens: ["SOL", "USDC"] })
         console.info(resp)
     } catch (error) {
         console.error("Failed to retrieve server time", error)
@@ -467,7 +461,7 @@ async function callGetPrices(provider: BaseProvider) {
 async function callGetPools(provider: BaseProvider) {
     try {
         console.info("Retrieving pools")
-        const resp = await provider.getPools({projects: ["P_RAYDIUM"]})
+        const resp = await provider.getPools({ projects: ["P_RAYDIUM"] })
         console.info(resp)
     } catch (error) {
         console.error("Failed to retrieve server time", error)
@@ -477,7 +471,14 @@ async function callGetPools(provider: BaseProvider) {
 async function callGetQuotes(provider: BaseProvider) {
     try {
         console.info("Retrieving quotes")
-        const resp = await provider.getQuotes({inToken: "SOL", outToken: "USDC", inAmount: 1, slippage: 5, limit: 5, projects: ["P_RAYDIUM", "P_JUPITER"]})
+        const resp = await provider.getQuotes({
+            inToken: "SOL",
+            outToken: "USDC",
+            inAmount: 1,
+            slippage: 5,
+            limit: 5,
+            projects: ["P_RAYDIUM", "P_JUPITER"],
+        })
         console.info(resp)
     } catch (error) {
         console.error("Failed to retrieve quotes", error)
@@ -553,7 +554,6 @@ async function callGetTradesStream(provider: BaseProvider) {
     }
 }
 
-
 async function callGetPricesStream(provider: BaseProvider) {
     try {
         console.info("Subscribing for prices updates of SOL and USDC on Raydium")
@@ -600,7 +600,7 @@ async function callGetQuotesStream(provider: BaseProvider) {
         console.info("Subscribing for quote updates of SOLUSDC market")
 
         const projects: Project[] = ["P_RAYDIUM"]
-        const tokenPairs: TokenPair[] = [{inToken: "SOL", outToken: "USDC", inAmount: 1}]
+        const tokenPairs: TokenPair[] = [{ inToken: "SOL", outToken: "USDC", inAmount: 1 }]
         const stream = await provider.getQuotesStream({ projects: projects, tokenPairs: tokenPairs })
 
         let count = 0
@@ -683,7 +683,7 @@ async function callTradeSwap(provider: BaseProvider) {
             outToken: "SOL",
             inAmount: 0.01,
             slippage: 0.1,
-            project: "P_RAYDIUM"
+            project: "P_RAYDIUM",
         })
         console.info(resp)
     } catch (error) {
@@ -702,17 +702,17 @@ async function callRouteTradeSwap(provider: BaseProvider) {
                     outToken: "RAY",
                     inAmount: 0.01,
                     outAmount: 0.007505,
-                    outAmountMin: 0.074
+                    outAmountMin: 0.074,
                 },
                 {
                     inToken: "RAY",
                     outToken: "USDC",
                     inAmount: 0.007505,
                     outAmount: 0.004043,
-                    outAmountMin: 0.00400
-                }
+                    outAmountMin: 0.004,
+                },
             ],
-            project: "P_RAYDIUM"
+            project: "P_RAYDIUM",
         })
         console.info(resp)
     } catch (error) {

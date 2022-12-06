@@ -143,11 +143,11 @@ export class HttpProvider extends BaseProvider {
 
     getQuotes(request: GetQuotesRequest): Promise<GetQuotesResponse> {
         let path = `${this.baseUrl}/market/quote?inToken=${request.inToken}&outToken=${request.outToken}&inAmount=${request.inAmount}&slippage=${request.slippage}&limit=${request.limit}`
-        for (const project of request.projects)  {
+        for (const project of request.projects) {
             path += `&projects=${project}`
         }
 
-        return fetch(path, {headers: { Authorization: config.AuthHeader }}).then((resp) => {
+        return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
             return resp.json() as unknown as GetQuotesResponse
         })
     }
@@ -261,5 +261,4 @@ export class HttpProvider extends BaseProvider {
             return resp.json() as unknown as PostOrderResponse
         })
     }
-
 }
