@@ -98,7 +98,11 @@ workflows:
       - test:
           requires:
             - build
-      - integration:
+      - integration-testnet:
+          context: trader-api-sdk
+          requires:
+            - build
+      - integration-mainnet:
           context: trader-api-sdk
           requires:
             - build
