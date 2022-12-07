@@ -52,7 +52,7 @@ jobs:
           name: lint
           command: npm run lint
 
-  integration:
+  integration-testnet:
     executor: node/default
     steps:
       - attach_workspace:
@@ -68,6 +68,13 @@ jobs:
             export RUN_LIFECYCLE="false"
             npm start
           no_output_timeout: 30m
+
+  integration-mainnet:
+    executor: node/default
+    steps:
+      - attach_workspace:
+          at: .
+      - checkout
       - run:
           name: mainnet
           command: |
@@ -92,7 +99,11 @@ workflows:
       - test:
           requires:
             - build
-      - integration:
+      - integration-testnet:
+          context: trader-api-sdk
+          requires:
+            - build
+      - integration-mainnet:
           context: trader-api-sdk
           requires:
             - build
