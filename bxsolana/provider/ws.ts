@@ -219,7 +219,7 @@ export class WsProvider extends BaseProvider {
     // can cancel 1, or 2. If a nonvalid cancellation number is sent as an input, the promise will be rejected with a
     // false boolean
 
-    cancelStreamByCount = async(streamName: string, streamNumber: number): Promise<boolean> => {
+    cancelStreamByCount = async (streamName: string, streamNumber: number): Promise<boolean> => {
         const countToSubscriptionID = this.streamToCountMap.get(streamName)
 
         if (countToSubscriptionID) {
@@ -262,8 +262,8 @@ export class WsProvider extends BaseProvider {
         return this.cancelStreamByCount("GetPoolReservesStream", streamNumber)
     }
 
-    cancelAllStreams = async(streamName: string): Promise<Awaited<boolean>[]> => {
-        const retValues: Promise<boolean>[] = [];
+    cancelAllStreams = async (streamName: string): Promise<Awaited<boolean>[]> => {
+        const retValues: Promise<boolean>[] = []
 
         const countToSubscriptionID = this.streamToCountMap.get(streamName)
 
@@ -281,7 +281,7 @@ export class WsProvider extends BaseProvider {
     }
 
     cancelAllGetOrderbooksStream = async (): Promise<Awaited<boolean>[]> => {
-       return this.cancelAllStreams("GetOrderbooksStream")
+        return this.cancelAllStreams("GetOrderbooksStream")
     }
 
     cancelAllGetTickersStream = async (): Promise<Awaited<boolean>[]> => {
