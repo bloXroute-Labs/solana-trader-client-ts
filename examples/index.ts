@@ -159,7 +159,7 @@ async function ws() {
         await doLifecycle(provider)
         console.info(" ")
     }
-    
+
     console.info(" ----  WS Streams  ----")
     await doStreams(provider)
     await cancelWsStreams(provider)
