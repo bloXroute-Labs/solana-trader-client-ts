@@ -46,6 +46,7 @@ const testOrder: PostOrderRequest = {
     amount: 0.1,
     price: 200,
     openOrdersAddress: "",
+    project: "P_UNKNOWN",
     clientOrderID: "",
 }
 
@@ -280,7 +281,7 @@ async function doLifecycle(provider: BaseProvider) {
 
         await Promise.all([
             new Promise(async (resolve, reject) => {
-                const req = await provider.getOrderStatusStream({ market: mktAddress, ownerAddress: testOrder.ownerAddress })
+                const req = await provider.getOrderStatusStream({ market: mktAddress, project: "P_OPENBOOK", ownerAddress: testOrder.ownerAddress })
                 for await (const ob of req) {
                     if (ob.orderInfo && ob.orderInfo.clientOrderID == testOrder.clientOrderID && ob.orderInfo.orderStatus == "OS_OPEN") {
                         console.info(`order went to orderbook ('${ob.orderInfo.orderStatus}') successfully`)
@@ -306,7 +307,7 @@ async function doLifecycle(provider: BaseProvider) {
 
         await Promise.all([
             new Promise(async (resolve, reject) => {
-                const req = await provider.getOrderStatusStream({ market: mktAddress, ownerAddress: testOrder.ownerAddress })
+                const req = await provider.getOrderStatusStream({ market: mktAddress, project: "P_OPENBOOK", ownerAddress: testOrder.ownerAddress })
                 const clientOrderID = testOrder.clientOrderID
                 let oldCanceled = false
                 let newOpened = false
@@ -344,7 +345,7 @@ async function doLifecycle(provider: BaseProvider) {
 
         await Promise.all([
             new Promise(async (resolve, reject) => {
-                const req = await provider.getOrderStatusStream({ market: mktAddress, ownerAddress: testOrder.ownerAddress })
+                const req = await provider.getOrderStatusStream({ market: mktAddress, project: "P_OPENBOOK", ownerAddress: testOrder.ownerAddress })
                 for await (const ob of req) {
                     if (ob.orderInfo && ob.orderInfo.clientOrderID == testOrder.clientOrderID && ob.orderInfo.orderStatus == "OS_CANCELLED") {
                         console.info(`order canceled ('${ob.orderInfo.orderStatus}') successfully`)
@@ -414,11 +415,11 @@ async function doHttpLifecycle(provider: BaseProvider) {
 async function callGetOrderbook(provider: BaseProvider) {
     try {
         console.info("Retrieving orderbook for SOLUSDC market")
-        let req = await provider.getOrderbook({ market: "SOLUSDC", limit: 5 })
+        let req = await provider.getOrderbook({ market: "SOLUSDC", project: "P_OPENBOOK", limit: 5 })
         console.info(req)
 
         console.info("Retrieving orderbook for SOL-USDC market")
-        req = await provider.getOrderbook({ market: "SOL-USDC", limit: 5 })
+        req = await provider.getOrderbook({ market: "SOL-USDC", project: "P_OPENBOOK", limit: 5 })
         console.info(req)
     } catch (error) {
         console.error("Failed to retrieve the orderbook for market SOL/USDC", error)
@@ -464,7 +465,7 @@ async function callGetMarkets(provider: BaseProvider) {
 async function callGetOpenOrders(provider: BaseProvider) {
     try {
         console.info("Retrieving all open orders in SOLUSDC market")
-        const req = await provider.getOpenOrders({ market: "SOLUSDC", address: ownerAddress, limit: 0, openOrdersAddress: "" })
+        const req = await provider.getOpenOrders({ market: "SOLUSDC", project: "P_OPENBOOK", address: ownerAddress, limit: 0, openOrdersAddress: "" })
         console.info(req)
         return req.orders
     } catch (error) {
@@ -475,7 +476,7 @@ async function callGetOpenOrders(provider: BaseProvider) {
 async function callGetUnsettled(provider: BaseProvider) {
     try {
         console.info("Retrieving unsettled funds in SOLUSDC market")
-        const req = await provider.getUnsettled({ market: "SOLUSDC", ownerAddress: ownerAddress })
+        const req = await provider.getUnsettled({ market: "SOLUSDC", project: "P_OPENBOOK", ownerAddress: ownerAddress })
         console.info(req)
     } catch (error) {
         console.error("Failed to retrieve the unsettled funds", error)
@@ -495,7 +496,7 @@ async function callGetAccountBalance(provider: BaseProvider) {
 async function callGetTrades(provider: BaseProvider) {
     try {
         console.info("Retrieving trades for SOL/USDC market ")
-        const req = await provider.getTrades({ market: "SOLUSDC", limit: 5 })
+        const req = await provider.getTrades({ market: "SOLUSDC", project: "P_OPENBOOK", limit: 5 })
         console.info(req)
     } catch (error) {
         console.error("Failed to retrieve trades", error)
@@ -505,7 +506,7 @@ async function callGetTrades(provider: BaseProvider) {
 async function callGetTickers(provider: BaseProvider) {
     try {
         console.info("Retrieving tickers for SOL/USDC market ")
-        const req = await provider.getTickers({ market: "SOLUSDC" })
+        const req = await provider.getTickers({ market: "SOLUSDC", project: "P_OPENBOOK"})
         console.info(req)
     } catch (error) {
         console.error("Failed to retrieve tickers", error)
@@ -563,7 +564,7 @@ async function callGetQuotes(provider: BaseProvider) {
 async function callGetOrderbookStream(provider: BaseProvider) {
     try {
         console.info("Subscribing for orderbook updates of SOLUSDC market")
-        let req = await provider.getOrderbooksStream({ markets: ["SOLUSDC"], limit: 5 })
+        let req = await provider.getOrderbooksStream({ markets: ["SOLUSDC"], project: "P_OPENBOOK", limit: 5 })
 
         let count = 0
         for await (const ob of req) {
@@ -577,7 +578,7 @@ async function callGetOrderbookStream(provider: BaseProvider) {
         console.info(" ")
 
         console.info("Subscribing for orderbook updates of SOLUSDC market")
-        req = await provider.getOrderbooksStream({ markets: ["SOL-USDC"], limit: 5 })
+        req = await provider.getOrderbooksStream({ markets: ["SOL-USDC"], project: "P_OPENBOOK", limit: 5 })
 
         count = 0
         for await (const ob of req) {
@@ -595,7 +596,7 @@ async function callGetOrderbookStream(provider: BaseProvider) {
 async function callGetTickersStream(provider: BaseProvider) {
     try {
         console.info("Subscribing for ticker updates of SOLUSDC market")
-        const req = await provider.getTickersStream({ market: "SOLUSDC" })
+        const req = await provider.getTickersStream({ market: "SOLUSDC", project: "P_OPENBOOK"})
 
         let count = 0
         for await (const tick of req) {
@@ -613,7 +614,7 @@ async function callGetTickersStream(provider: BaseProvider) {
 async function callGetTradesStream(provider: BaseProvider) {
     try {
         console.info("Subscribing for trade updates of SOLUSDC market")
-        const req = await provider.getTradesStream({ market: "SOLUSDC", limit: 5 })
+        const req = await provider.getTradesStream({ market: "SOLUSDC", limit: 5, project: "P_OPENBOOK"})
 
         let count = 0
         for await (const tr of req) {
@@ -747,6 +748,7 @@ async function callSubmitCancelByClientOrderID(provider: BaseProvider) {
             ownerAddress: ownerAddress,
             openOrdersAddress: openOrdersAddress,
             clientOrderID: testOrder.clientOrderID,
+            project: "P_OPENBOOK",
         })
         console.info(req)
     } catch (error) {
@@ -763,6 +765,7 @@ async function callSettleFunds(provider: BaseProvider) {
             baseTokenWallet: baseTokenWallet,
             quoteTokenWallet: quoteTokenWallet,
             ownerAddress: ownerAddress,
+            project: "P_OPENBOOK",
         })
         console.info(req)
     } catch (error) {
@@ -881,6 +884,7 @@ async function callCancelAll(provider: BaseProvider) {
             limit: 0,
             address: ownerAddress,
             openOrdersAddress: "",
+            project: "P_OPENBOOK",
         }
 
         await delay(crank_timeout_s * 1000)
@@ -907,6 +911,7 @@ async function callCancelAll(provider: BaseProvider) {
             market: marketAddress,
             ownerAddress: ownerAddress,
             openOrdersAddresses: [openOrdersAddress],
+            project: "P_OPENBOOK",
         }
         const response = await provider.submitCancelAll(cancelAllRequest)
 
