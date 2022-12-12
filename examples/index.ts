@@ -506,7 +506,7 @@ async function callGetTrades(provider: BaseProvider) {
 async function callGetTickers(provider: BaseProvider) {
     try {
         console.info("Retrieving tickers for SOL/USDC market ")
-        const req = await provider.getTickers({ market: "SOLUSDC", project: "P_OPENBOOK"})
+        const req = await provider.getTickers({ market: "SOLUSDC", project: "P_OPENBOOK" })
         console.info(req)
     } catch (error) {
         console.error("Failed to retrieve tickers", error)
@@ -596,7 +596,7 @@ async function callGetOrderbookStream(provider: BaseProvider) {
 async function callGetTickersStream(provider: BaseProvider) {
     try {
         console.info("Subscribing for ticker updates of SOLUSDC market")
-        const req = await provider.getTickersStream({ market: "SOLUSDC", project: "P_OPENBOOK"})
+        const req = await provider.getTickersStream({ market: "SOLUSDC", project: "P_OPENBOOK" })
 
         let count = 0
         for await (const tick of req) {
@@ -614,7 +614,7 @@ async function callGetTickersStream(provider: BaseProvider) {
 async function callGetTradesStream(provider: BaseProvider) {
     try {
         console.info("Subscribing for trade updates of SOLUSDC market")
-        const req = await provider.getTradesStream({ market: "SOLUSDC", limit: 5, project: "P_OPENBOOK"})
+        const req = await provider.getTradesStream({ market: "SOLUSDC", limit: 5, project: "P_OPENBOOK" })
 
         let count = 0
         for await (const tr of req) {
