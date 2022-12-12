@@ -73,6 +73,7 @@ async function run() {
 }
 
 async function http() {
+    console.log("here")
     let provider: HttpProvider
 
     if (process.env.API_ENV === "testnet") {
@@ -82,6 +83,8 @@ async function http() {
     } else {
         provider = new HttpProvider(LOCAL_API_HTTP)
     }
+
+    console.log("here 2")
 
     if (process.env.RUN_LIFECYCLE === "true") {
         console.info(" ----  HTTP Requests  ----")
@@ -95,7 +98,6 @@ async function http() {
         console.info(" ")
     }
 
-    process.exit(0)
     return
 }
 
@@ -128,7 +130,6 @@ async function grpc() {
         console.info(" ")
     }
 
-    process.exit(0)
     return
 }
 
@@ -164,7 +165,6 @@ async function ws() {
     await doStreams(provider)
     await cancelWsStreams(provider)
 
-    process.exit(0)
     return
 }
 
