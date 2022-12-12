@@ -14,7 +14,8 @@
     "test": "echo \"No test specified\"",
     "release": "np --no-2fa",
     "start": "ts-node ./examples/index.ts",
-    "lint": "eslint --max-warnings 0 .",
+    "lintCI": "eslint --max-warnings 0 .",
+    "lint": "eslint --fix .",
     "format": "prettier --config .prettierrc './**/*.ts' --write",
     "proto": "pb gen ts --entry-path ./solana-trader-proto/proto --out-dir=./bxsolana/proto ./solana-trader-proto/proto/api.proto --ext-in-import='.js'"
   },
