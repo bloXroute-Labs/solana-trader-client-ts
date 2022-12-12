@@ -199,7 +199,22 @@ export class WsProvider extends BaseProvider {
     getTickersStream = async (request: GetTickersRequest): Promise<AsyncGenerator<GetTickersStreamResponse>> => {
         const subscriptionId = await this.wsConnection.subscribe("GetTickersStream", request)
 
-        this.streamMap.set("GetTickersStream", subscriptionId)
+        let count: number
+        if (this.streamToCountMap.size === 0) {
+            count = 1
+            const countToSubscriptionID = new Map()
+            countToSubscriptionID.set(count, subscriptionId)
+            this.streamToCountMap.set("GetTickersStream", countToSubscriptionID)
+        } else {
+            count = this.streamToCountMap.size + 1
+            const countToSubscriptionID = this.streamToCountMap.get("GetTickersStream")
+
+            if (countToSubscriptionID) {
+                countToSubscriptionID.set(count, subscriptionId)
+                this.streamToCountMap.set("GetTickersStream", countToSubscriptionID)
+            }
+        }
+
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
@@ -239,7 +254,22 @@ export class WsProvider extends BaseProvider {
     getTradesStream = async (request: GetTradesRequest): Promise<AsyncGenerator<GetTradesStreamResponse>> => {
         const subscriptionId = await this.wsConnection.subscribe("GetTradesStream", request)
 
-        this.streamMap.set("GetTradesStream", subscriptionId)
+        let count: number
+        if (this.streamToCountMap.size === 0) {
+            count = 1
+            const countToSubscriptionID = new Map()
+            countToSubscriptionID.set(count, subscriptionId)
+            this.streamToCountMap.set("GetTradesStream", countToSubscriptionID)
+        } else {
+            count = this.streamToCountMap.size + 1
+            const countToSubscriptionID = this.streamToCountMap.get("GetTradesStream")
+
+            if (countToSubscriptionID) {
+                countToSubscriptionID.set(count, subscriptionId)
+                this.streamToCountMap.set("GetTradesStream", countToSubscriptionID)
+            }
+        }
+
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
@@ -277,7 +307,23 @@ export class WsProvider extends BaseProvider {
     }
 
     getOrderStatusStream = async (request: GetOrderStatusStreamRequest): Promise<AsyncGenerator<GetOrderStatusStreamResponse>> => {
-        const subscriptionId = await this.wsConnection.subscribe("GetOrderStatusStream", request)
+        const subscriptionId = await this.wsConnection.subscribe("GetOrderStatusSTream", request)
+
+        let count: number
+        if (this.streamToCountMap.size === 0) {
+            count = 1
+            const countToSubscriptionID = new Map()
+            countToSubscriptionID.set(count, subscriptionId)
+            this.streamToCountMap.set("GetOrderStatusStream", countToSubscriptionID)
+        } else {
+            count = this.streamToCountMap.size + 1
+            const countToSubscriptionID = this.streamToCountMap.get("GetOrderStatusStream")
+
+            if (countToSubscriptionID) {
+                countToSubscriptionID.set(count, subscriptionId)
+                this.streamToCountMap.set("GetOrderStatusStream", countToSubscriptionID)
+            }
+        }
 
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
@@ -371,6 +417,22 @@ export class WsProvider extends BaseProvider {
     getRecentBlockHashStream = async (request: GetRecentBlockHashRequest): Promise<AsyncGenerator<GetRecentBlockHashResponse>> => {
         const subscriptionId = await this.wsConnection.subscribe("GetRecentBlockHashStream", request)
 
+        let count: number
+        if (this.streamToCountMap.size === 0) {
+            count = 1
+            const countToSubscriptionID = new Map()
+            countToSubscriptionID.set(count, subscriptionId)
+            this.streamToCountMap.set("GetRecentBlockHashStream", countToSubscriptionID)
+        } else {
+            count = this.streamToCountMap.size + 1
+            const countToSubscriptionID = this.streamToCountMap.get("GetRecentBlockHashStream")
+
+            if (countToSubscriptionID) {
+                countToSubscriptionID.set(count, subscriptionId)
+                this.streamToCountMap.set("GetRecentBlockHashStream", countToSubscriptionID)
+            }
+        }
+
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
@@ -410,6 +472,22 @@ export class WsProvider extends BaseProvider {
     getQuotesStream = async (request: GetQuotesStreamRequest): Promise<AsyncGenerator<GetQuotesStreamResponse>> => {
         const subscriptionId = await this.wsConnection.subscribe("GetQuotesStream", request)
 
+        let count: number
+        if (this.streamToCountMap.size === 0) {
+            count = 1
+            const countToSubscriptionID = new Map()
+            countToSubscriptionID.set(count, subscriptionId)
+            this.streamToCountMap.set("GetQuotesStream", countToSubscriptionID)
+        } else {
+            count = this.streamToCountMap.size + 1
+            const countToSubscriptionID = this.streamToCountMap.get("GetQuotesStream")
+
+            if (countToSubscriptionID) {
+                countToSubscriptionID.set(count, subscriptionId)
+                this.streamToCountMap.set("GetQuotesStream", countToSubscriptionID)
+            }
+        }
+
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
@@ -448,6 +526,22 @@ export class WsProvider extends BaseProvider {
 
     getPoolReservesStream = async (request: GetPoolReservesStreamRequest): Promise<AsyncGenerator<GetPoolReservesStreamResponse>> => {
         const subscriptionId = await this.wsConnection.subscribe("GetPoolReservesStream", request)
+
+        let count: number
+        if (this.streamToCountMap.size === 0) {
+            count = 1
+            const countToSubscriptionID = new Map()
+            countToSubscriptionID.set(count, subscriptionId)
+            this.streamToCountMap.set("GetPoolReservesStream", countToSubscriptionID)
+        } else {
+            count = this.streamToCountMap.size + 1
+            const countToSubscriptionID = this.streamToCountMap.get("GetPoolReservesStream")
+
+            if (countToSubscriptionID) {
+                countToSubscriptionID.set(count, subscriptionId)
+                this.streamToCountMap.set("GetPoolReservesStream", countToSubscriptionID)
+            }
+        }
 
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
