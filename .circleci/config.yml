@@ -126,3 +126,11 @@ workflows:
       - test:
           requires:
             - build
+      - integration-testnet:
+          context: trader-api-sdk
+          requires:
+            - build
+      - integration-mainnet:
+          context: trader-api-sdk
+          requires:
+            - build
