@@ -1,0 +1,136 @@
+version: 2.1
+orbs:
+  node: circleci/node@5.0.2
+jobs:
+  build:
+    executor: node/default
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      - run:
+          command: sudo npm install -g ts-node
+          name: Install ts-node
+      - run:
+          command: npm ci
+          name: Install NPM dependencies for fmt/lint
+      - run:
+          command: ts-node -v
+          name: Check ts-node version to make sure it installed
+      - persist_to_workspace:
+          root: .
+          paths:
+            - '*'
+
+  test:
+    executor: node/default
+    steps:
+      - attach_workspace:
+          at: .
+      - checkout
+      - run:
+          command: npm run test
+          name: run tests
+
+  format:
+    executor: node/default
+    steps:
+      - attach_workspace:
+          at: .
+      - checkout
+      - run:
+          name: format
+          command: npm run formatCI
+
+  lint:
+    executor: node/default
+    steps:
+      - attach_workspace:
+          at: .
+      - checkout
+      - run:
+          name: lint
+          command: npm run lintCI
+
+  integration-testnet:
+    executor: node/default
+    steps:
+      - attach_workspace:
+          at: .
+      - checkout
+      - run:
+          name: testnet
+          command: |
+            export AUTH_HEADER=$AUTH_HEADER_TESTNET
+            export WALLET_SECRET_KEY=$PRIVATE_KEY
+            export WALLET_PUBLIC_KEY=$PUBLIC_KEY
+            export API_ENV="testnet"
+            export RUN_LIFECYCLE="false"
+            npm start
+          no_output_timeout: 30m
+
+  integration-mainnet:
+    executor: node/default
+    steps:
+      - attach_workspace:
+          at: .
+      - checkout
+      - run:
+          name: mainnet
+          command: |
+            export AUTH_HEADER=$AUTH_HEADER_MAINNET
+            export WALLET_SECRET_KEY=$PRIVATE_KEY
+            export WALLET_PUBLIC_KEY=$PUBLIC_KEY
+            export API_ENV="mainnet"
+            export RUN_LIFECYCLE="false"
+            npm start
+          no_output_timeout: 30m
+
+workflows:
+  build_and_test:
+    jobs:
+      - build
+      - lint:
+          requires:
+            - build
+      - format:
+          requires:
+            - build
+      - test:
+          requires:
+            - build
+      - integration-testnet:
+          context: trader-api-sdk
+          requires:
+            - build
+      - integration-mainnet:
+          context: trader-api-sdk
+          requires:
+            - build
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - develop
+    jobs:
+      - build
+      - lint:
+          requires:
+            - build
+      - format:
+          requires:
+            - build
+      - test:
+          requires:
+            - build
+      - integration-testnet:
+          context: trader-api-sdk
+          requires:
+            - build
+      - integration-mainnet:
+          context: trader-api-sdk
+          requires:
+            - build

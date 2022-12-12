@@ -15,6 +15,21 @@ import {
 import config from "../utils/config.js"
 import { addMemo, addMemoToSerializedTxn } from "../utils/memo.js"
 import { Keypair } from "@solana/web3.js"
+import {
+    LOCAL_API_GRPC_HOST,
+    LOCAL_API_GRPC_PORT,
+    LOCAL_API_HTTP,
+    LOCAL_API_WS,
+    MAINNET_API_GRPC_HOST,
+    MAINNET_API_GRPC_PORT,
+    MAINNET_API_HTTP,
+    MAINNET_API_WS,
+    TESTNET_API_GRPC_HOST,
+    TESTNET_API_GRPC_PORT,
+    TESTNET_API_HTTP,
+    TESTNET_API_WS,
+} from "../utils/constants.js"
+
 const marketAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"
 const ownerAddress = config.WalletPublicKey
 const payerAddress = config.WalletPublicKey
@@ -51,53 +66,99 @@ async function run() {
     await http()
     await grpc()
     await ws()
+    process.exit(0)
 }
 
 async function http() {
-    const provider = new HttpProvider()
-    console.info(" ----  HTTP Requests  ----")
-    await doRequests(provider)
-    console.info(" ----  HTTP Amm Requests  ----")
-    await doAmmRequests(provider)
-    console.info(" ----  HTTP Lifecycle  ----")
-    await doHttpLifecycle(provider)
-    console.info(" ----  HTTP Cancel All  ----")
-    await callCancelAll(provider)
-    console.info(" ")
+    let provider: HttpProvider
+
+    if (process.env.API_ENV === "testnet") {
+        provider = new HttpProvider(TESTNET_API_HTTP)
+    } else if (process.env.API_ENV === "mainnet") {
+        provider = new HttpProvider(MAINNET_API_HTTP)
+    } else {
+        provider = new HttpProvider(LOCAL_API_HTTP)
+    }
+
+    if (process.env.RUN_LIFECYCLE === "true") {
+        console.info(" ----  HTTP Requests  ----")
+        await doRequests(provider)
+        console.info(" ----  HTTP Amm Requests  ----")
+        await doAmmRequests(provider)
+        console.info(" ----  HTTP Lifecycle  ----")
+        await doHttpLifecycle(provider)
+        console.info(" ----  HTTP Cancel All  ----")
+        await callCancelAll(provider)
+        console.info(" ")
+    }
+
+    process.exit(0)
+    return
 }
 
 async function grpc() {
-    const provider = new GrpcProvider()
+    let provider: GrpcProvider
+
+    if (process.env.API_ENV === "testnet") {
+        provider = new GrpcProvider(`${TESTNET_API_GRPC_HOST}:${TESTNET_API_GRPC_PORT}`, false)
+    } else if (process.env.API_ENV === "mainnet") {
+        provider = new GrpcProvider(`${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`, true)
+    } else {
+        provider = new GrpcProvider(`${LOCAL_API_GRPC_HOST}:${LOCAL_API_GRPC_PORT}`, false)
+    }
+
     console.info(" ----  GRPC Requests  ----")
     await doRequests(provider)
+
     console.info(" ----  GRPC Amm Requests  ----")
     await doAmmRequests(provider)
-    console.info(" ----  GRPC Streams  ----")
-    await doStreams(provider)
-    console.info(" ----  GRPC Amm Streams  ----")
-    await doAmmStreams(provider)
-    console.info(" ----  GRPC Cancel All  ----")
-    await callCancelAll(provider)
-    console.info(" ----  GRPC Lifecycle  ----")
-    await doLifecycle(provider)
-    console.info(" ")
+
+    if (process.env.RUN_LIFECYCLE === "true") {
+        console.info(" ----  GRPC Streams  ----")
+        await doStreams(provider)
+        console.info(" ----  GRPC Amm Streams  ----")
+        await doAmmStreams(provider)
+        console.info(" ----  GRPC Cancel All  ----")
+        await callCancelAll(provider)
+        console.info(" ----  GRPC Lifecycle  ----")
+        await doLifecycle(provider)
+        console.info(" ")
+    }
+
+    process.exit(0)
+    return
 }
 
 async function ws() {
-    const provider = new WsProvider()
+    let provider: WsProvider
+
+    if (process.env.API_ENV === "testnet") {
+        provider = new WsProvider(TESTNET_API_WS)
+    } else if (process.env.API_ENV === "mainnet") {
+        provider = new WsProvider(MAINNET_API_WS)
+    } else {
+        provider = new WsProvider(LOCAL_API_WS)
+    }
+
     console.info(" ----  WS Requests  ----")
     await doRequests(provider)
-    console.info(" ----  WS Amm Requests  ----")
-    await doAmmRequests(provider)
-    console.info(" ----  WS Streams  ----")
-    await doStreams(provider)
-    console.info(" ----  WS Amm Streams  ----")
-    await doAmmStreams(provider)
-    console.info(" ----  WS Cancel All  ----")
-    await callCancelAll(provider)
-    console.info(" ----  WS Lifecycle  ----")
-    await doLifecycle(provider)
-    console.info(" ")
+
+    if (process.env.RUN_LIFECYCLE === "true") {
+        console.info(" ----  WS Amm Requests  ----")
+        await doAmmRequests(provider)
+        console.info(" ----  WS Streams  ----")
+        await doStreams(provider)
+        console.info(" ----  WS Amm Streams  ----")
+        await doAmmStreams(provider)
+        console.info(" ----  WS Cancel All  ----")
+        await callCancelAll(provider)
+        console.info(" ----  WS Lifecycle  ----")
+        await doLifecycle(provider)
+        console.info(" ")
+    }
+
+    process.exit(0)
+    return
 }
 
 async function doRequests(provider: BaseProvider) {
@@ -612,7 +673,7 @@ async function callGetQuotesStream(provider: BaseProvider) {
         for await (const update of stream) {
             console.info(update)
             count++
-            if (count == 3) {
+            if (count == 2) {
                 break
             }
         }
