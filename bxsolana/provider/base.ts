@@ -328,10 +328,6 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    cancelGetPoolReservesStream = async (): Promise<boolean> => {
-        throw new Error("Not implemented")
-    }
-
     getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
         throw new Error("Not implemented")
     }
@@ -344,19 +340,11 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    cancelGetQuotesStream = async (): Promise<boolean> => {
-        throw new Error("Not implemented")
-    }
-
     getRecentBlockHash(request: GetRecentBlockHashRequest): Promise<GetRecentBlockHashResponse> {
         throw new Error("Not implemented")
     }
 
     getRecentBlockHashStream(request: GetRecentBlockHashRequest): Promise<AsyncGenerator<GetRecentBlockHashResponse>> {
-        throw new Error("Not implemented")
-    }
-
-    cancelGetRecentBlockHashStream = async (): Promise<boolean> => {
         throw new Error("Not implemented")
     }
 
