@@ -149,8 +149,6 @@ async function ws() {
     if (process.env.RUN_LIFECYCLE === "true") {
         console.info(" ----  WS Amm Requests  ----")
         await doAmmRequests(provider)
-        console.info(" ----  WS Streams  ----")
-        await doStreams(provider)
         console.info(" ----  WS Amm Streams  ----")
         await doAmmStreams(provider)
         console.info(" ----  WS Cancel All  ----")
@@ -160,6 +158,8 @@ async function ws() {
         console.info(" ")
     }
 
+    console.info(" ----  WS Streams  ----")
+    await doStreams(provider)
     await cancelWsStreams(provider)
 
     process.exit(0)
@@ -629,7 +629,7 @@ async function callGetTickersStream(provider: BaseProvider) {
 async function callGetTradesStream(provider: BaseProvider) {
     try {
         console.info("Subscribing for trade updates of SOLUSDC market")
-        const req = await provider.getTradesStream({ market: "SOLUSDC", limit: 5 })
+        const req = await provider.getTradesStream({ market: "SOLUSDC", limit: 1 })
 
         let count = 0
         for await (const tr of req) {

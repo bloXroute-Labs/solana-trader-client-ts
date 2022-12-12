@@ -171,7 +171,7 @@ export abstract class BaseProvider implements Api {
     // these following cancel functions are only used by the websocket provider. Streams are supported by websockets or
     // by GRPC calls, but the cancellation for GRPC streams is handled on the server side.
 
-    cancelAllGetOrderbooksStream = async (): Promise<boolean> => {
+    cancelAllGetOrderbooksStream = async (): Promise<Awaited<boolean>[]> => {
         throw new Error("Not implemented")
     }
 
@@ -179,7 +179,7 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    cancelAllGetTradesStream = async (): Promise<boolean> => {
+    cancelAllGetTradesStream = async (): Promise<Awaited<boolean>[]> => {
         throw new Error("Not implemented")
     }
 
@@ -187,7 +187,7 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    cancelAllGetTickersStream = async (): Promise<boolean> => {
+    cancelAllGetTickersStream = async (): Promise<Awaited<boolean>[]> => {
         throw new Error("Not implemented")
     }
 
@@ -195,7 +195,7 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    cancelAllGetOrderStatusStream = async (): Promise<boolean> => {
+    cancelAllGetOrderStatusStream = async (): Promise<Awaited<boolean>[]> => {
         throw new Error("Not implemented")
     }
 
@@ -203,7 +203,7 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    cancelAllGetRecentBlockhashStream = async (): Promise<boolean> => {
+    cancelAllGetRecentBlockhashStream = async (): Promise<Awaited<boolean>[]> => {
         throw new Error("Not implemented")
     }
 
@@ -211,7 +211,7 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    cancelAllGetQuotesStream = async (): Promise<boolean> => {
+    cancelAllGetQuotesStream = async (): Promise<Awaited<boolean>[]> => {
         throw new Error("Not implemented")
     }
 
@@ -219,7 +219,7 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    cancelAllGetPoolReservesStream = async (): Promise<boolean> => {
+    cancelAllGetPoolReservesStream = async (): Promise<Awaited<boolean>[]> => {
         throw new Error("Not implemented")
     }
 
