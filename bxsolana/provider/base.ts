@@ -168,7 +168,8 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    // these following cancel functions are only used by
+    // these following cancel functions are only used by the websocket provider. Streams are supported by websockets or
+    // by GRPC calls, but the cancellation for GRPC streams is handled on the server side.
 
     cancelAllGetOrderbooksStream = async (): Promise<boolean> => {
         throw new Error("Not implemented")
