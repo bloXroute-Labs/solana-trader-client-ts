@@ -73,7 +73,6 @@ async function run() {
 }
 
 async function http() {
-    console.log("here")
     let provider: HttpProvider
 
     if (process.env.API_ENV === "testnet") {
@@ -84,13 +83,12 @@ async function http() {
         provider = new HttpProvider(LOCAL_API_HTTP)
     }
 
-    console.log("here 2")
+    console.info(" ----  HTTP Requests  ----")
+    await doRequests(provider)
+    console.info(" ----  HTTP Amm Requests  ----")
+    await doAmmRequests(provider)
 
     if (process.env.RUN_LIFECYCLE === "true") {
-        console.info(" ----  HTTP Requests  ----")
-        await doRequests(provider)
-        console.info(" ----  HTTP Amm Requests  ----")
-        await doAmmRequests(provider)
         console.info(" ----  HTTP Lifecycle  ----")
         await doHttpLifecycle(provider)
         console.info(" ----  HTTP Cancel All  ----")
