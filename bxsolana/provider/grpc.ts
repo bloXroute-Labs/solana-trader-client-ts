@@ -229,23 +229,11 @@ export class GrpcProvider extends BaseProvider {
         return this.client.getSwapsStream(request)
     }
 
-    cancelGetTradesStream = async (): Promise<boolean> => {
-        throw new Error("Not implemented")
-    }
-
     cancelGetQuotesStream = async (): Promise<boolean> => {
         throw new Error("Not implemented")
     }
 
-    cancelGetTickersStream = async (): Promise<boolean> => {
-        throw new Error("Not implemented")
-    }
-
     cancelGetRecentBlockHashStream = async (): Promise<boolean> => {
-        throw new Error("Not implemented")
-    }
-
-    cancelGetOrderbooksStream = async (): Promise<boolean> => {
         throw new Error("Not implemented")
     }
 
