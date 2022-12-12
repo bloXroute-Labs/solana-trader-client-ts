@@ -40,7 +40,7 @@ jobs:
       - checkout
       - run:
           name: format
-          command: npm run format
+          command: npm run formatCI
 
   lint:
     executor: node/default
@@ -50,7 +50,7 @@ jobs:
       - checkout
       - run:
           name: lint
-          command: npm run lint
+          command: npm run lintCI
 
   integration-testnet:
     executor: node/default
@@ -68,6 +68,7 @@ jobs:
             export RUN_LIFECYCLE="false"
             npm start
           no_output_timeout: 30m
+
   integration-mainnet:
     executor: node/default
     steps:
@@ -109,7 +110,7 @@ workflows:
   nightly:
     triggers:
       - schedule:
-          cron: "0 0 12 * *"
+          cron: "0 0 * * *"
           filters:
             branches:
               only:
@@ -123,5 +124,13 @@ workflows:
           requires:
             - build
       - test:
+          requires:
+            - build
+      - integration-testnet:
+          context: trader-api-sdk
+          requires:
+            - build
+      - integration-mainnet:
+          context: trader-api-sdk
           requires:
             - build

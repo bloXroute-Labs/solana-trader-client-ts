@@ -149,6 +149,8 @@ async function ws() {
     if (process.env.RUN_LIFECYCLE === "true") {
         console.info(" ----  WS Amm Requests  ----")
         await doAmmRequests(provider)
+        console.info(" ----  WS Streams  ----")
+        await doStreams(provider)
         console.info(" ----  WS Amm Streams  ----")
         await doAmmStreams(provider)
         console.info(" ----  WS Cancel All  ----")
@@ -157,7 +159,7 @@ async function ws() {
         await doLifecycle(provider)
         console.info(" ")
     }
-
+    
     console.info(" ----  WS Streams  ----")
     await doStreams(provider)
     await cancelWsStreams(provider)
