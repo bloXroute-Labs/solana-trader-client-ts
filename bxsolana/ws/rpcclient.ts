@@ -2,6 +2,7 @@ import config from "../../utils/config.js"
 import WebSocket from "ws"
 import { AsyncBlockingQueue } from "../../utils/blockingqueue.js"
 
+// eslint-disable-next-line
 type Resolver = (result: any) => void
 type SubscriptionResolver = {
     update: Resolver
@@ -16,6 +17,7 @@ export class RpcWsConnection {
     private requestId = 1
     private requestMap: Map<number, Resolver> = new Map()
     private subscriptionMap: Map<string, SubscriptionResolver> = new Map()
+    // eslint-disable-next-line
     queue: AsyncBlockingQueue<any> = new AsyncBlockingQueue<any>()
 
     constructor(address: string) {
@@ -105,6 +107,7 @@ export class RpcWsConnection {
             queue.enqueue(value)
         }
 
+        // eslint-disable-next-line
         const read = (async function* (this: any) {
             while (!queue.isBlocked()) {
                 {
@@ -117,6 +120,7 @@ export class RpcWsConnection {
             }
         })()
 
+        // eslint-disable-next-line
         const cancel = function (this: any, err: Error) {
             this.queue.enqueue(err)
         }

@@ -62,8 +62,9 @@ import {
 } from "../proto/messages/api/index.js"
 import { BaseProvider } from "./base.js"
 import config from "../../utils/config.js"
-import { RpcWsConnection } from "../ws/rpcclient.js"
+import {RpcWsConnection} from "../ws/rpcclient.js";
 
+// eslint-disable-next-line
 type Resolver = (result: any) => void
 export class WsProvider extends BaseProvider {
     private wsConnection: RpcWsConnection
@@ -87,9 +88,6 @@ export class WsProvider extends BaseProvider {
         super()
         this.wsConnection = new RpcWsConnection(address)
         this.address = address
-        this.connect().then((r) => {
-            console.info("yay!")
-        })
     }
 
     async connect() {
