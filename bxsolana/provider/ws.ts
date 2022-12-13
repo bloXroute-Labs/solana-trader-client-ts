@@ -70,7 +70,6 @@ export class WsProvider extends BaseProvider {
     private address = ""
     private isClosed = false
 
-
     // stream to count is going to be a map to a stream and how many instances of that stream are open
     // ex: if someone calls GetOrderbooksStream 3 times, the map will look like:
     // <GetOrderbooksStream, 1>
