@@ -60,7 +60,7 @@ export class HttpProvider extends BaseProvider {
     }
 
     getOrderbook = (request: GetOrderbookRequest): Promise<GetOrderbookResponse> => {
-        const path = `${this.baseUrl}/market/orderbooks/${request.market}?limit=${request.limit}`
+        const path = `${this.baseUrl}/market/orderbooks/${request.market}?limit=${request.limit}&project=${request.project}`
         return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
             return this.handleResponse<GetOrderbookResponse>(resp.json())
         })
@@ -74,14 +74,14 @@ export class HttpProvider extends BaseProvider {
     }
 
     getTickers(request: GetTickersRequest): Promise<GetTickersResponse> {
-        const path = `${this.baseUrl}/market/tickers/${request.market}`
+        const path = `${this.baseUrl}/market/tickers/${request.market}?project=${request.project}`
         return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
             return this.handleResponse<GetTickersResponse>(resp.json())
         })
     }
 
     getTrades(request: GetTradesRequest): Promise<GetTradesResponse> {
-        const path = `${this.baseUrl}/market/trades/${request.market}?limit=${request.limit}`
+        const path = `${this.baseUrl}/market/trades/${request.market}?limit=${request.limit}&project=${request.project}`
         return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
             return this.handleResponse<GetTradesResponse>(resp.json())
         })
@@ -95,14 +95,14 @@ export class HttpProvider extends BaseProvider {
     }
 
     getOpenOrders(request: GetOpenOrdersRequest): Promise<GetOpenOrdersResponse> {
-        const path = `${this.baseUrl}/trade/openorders/${request.market}?address=${request.address}&limit=${request.limit}&openOrdersAddress=${request.openOrdersAddress}`
+        const path = `${this.baseUrl}/trade/openorders/${request.market}?address=${request.address}&limit=${request.limit}&openOrdersAddress=${request.openOrdersAddress}&project=${request.project}`
         return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
             return this.handleResponse<GetOpenOrdersResponse>(resp.json())
         })
     }
 
     getUnsettled(request: GetUnsettledRequest): Promise<GetUnsettledResponse> {
-        const path = `${this.baseUrl}/trade/unsettled/${request.market}?owner=${request.ownerAddress}`
+        const path = `${this.baseUrl}/trade/unsettled/${request.market}?owner=${request.ownerAddress}&project=${request.project}`
         return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
             return this.handleResponse<GetUnsettledResponse>(resp.json())
         })
