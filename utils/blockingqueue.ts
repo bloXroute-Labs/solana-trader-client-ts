@@ -17,12 +17,14 @@ export class AsyncBlockingQueue<T> {
 
     enqueue(t: T) {
         if (!this._resolvers.length) this._add()
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const resolve = this._resolvers.shift()!
         resolve(t)
     }
 
     dequeue() {
         if (!this._promises.length) this._add()
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const promise = this._promises.shift()!
         return promise
     }

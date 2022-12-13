@@ -69,7 +69,7 @@ export class WsProvider extends BaseProvider {
     private socket!: WebSocket
     private address = ""
     private isClosed = false
-    private streamMap: Map<string, string> = new Map()
+
 
     // stream to count is going to be a map to a stream and how many instances of that stream are open
     // ex: if someone calls GetOrderbooksStream 3 times, the map will look like:
@@ -137,6 +137,7 @@ export class WsProvider extends BaseProvider {
             countToSubscriptionID.set(count, subscriptionID)
             this.streamToCountMap.set(streamName, countToSubscriptionID)
         } else {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const countToID = this.streamToCountMap.get(streamName)!
 
             count = countToID.size + 1

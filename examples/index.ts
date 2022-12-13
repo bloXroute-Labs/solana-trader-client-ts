@@ -63,10 +63,10 @@ function getRandom() {
 }
 
 async function run() {
-    console.info("---- STARTING HTTP TESTS ----")
-    await http()
-    console.info("---- STARTING GRPC TESTS ----")
-    await grpc()
+    // console.info("---- STARTING HTTP TESTS ----")
+    // await http()
+    // console.info("---- STARTING GRPC TESTS ----")
+    // await grpc()
     console.info("---- STARTING WS TESTS ----")
     await ws()
     process.exit(0)
@@ -103,7 +103,7 @@ async function grpc() {
     let provider: GrpcProvider
 
     if (process.env.API_ENV === "testnet") {
-        provider = new GrpcProvider(`${TESTNET_API_GRPC_HOST}:${TESTNET_API_GRPC_PORT}`, false)
+        provider = new GrpcProvider(`${TESTNET_API_GRPC_HOST}:${TESTNET_API_GRPC_PORT}`, true)
     } else if (process.env.API_ENV === "mainnet") {
         provider = new GrpcProvider(`${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`, true)
     } else {
