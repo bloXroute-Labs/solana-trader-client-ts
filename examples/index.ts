@@ -81,11 +81,12 @@ async function http() {
         provider = new HttpProvider(LOCAL_API_HTTP)
     }
 
+    console.info(" ----  HTTP Requests  ----")
+    await doRequests(provider)
+    console.info(" ----  HTTP Amm Requests  ----")
+    await doAmmRequests(provider)
+
     if (process.env.RUN_LIFECYCLE === "true") {
-        console.info(" ----  HTTP Requests  ----")
-        await doRequests(provider)
-        console.info(" ----  HTTP Amm Requests  ----")
-        await doAmmRequests(provider)
         console.info(" ----  HTTP Lifecycle  ----")
         await doHttpLifecycle(provider)
         console.info(" ----  HTTP Cancel All  ----")
@@ -93,7 +94,6 @@ async function http() {
         console.info(" ")
     }
 
-    process.exit(0)
     return
 }
 
@@ -101,7 +101,7 @@ async function grpc() {
     let provider: GrpcProvider
 
     if (process.env.API_ENV === "testnet") {
-        provider = new GrpcProvider(`${TESTNET_API_GRPC_HOST}:${TESTNET_API_GRPC_PORT}`, false)
+        provider = new GrpcProvider(`${TESTNET_API_GRPC_HOST}:${TESTNET_API_GRPC_PORT}`, true)
     } else if (process.env.API_ENV === "mainnet") {
         provider = new GrpcProvider(`${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`, true)
     } else {
@@ -126,7 +126,6 @@ async function grpc() {
         console.info(" ")
     }
 
-    process.exit(0)
     return
 }
 
@@ -158,7 +157,6 @@ async function ws() {
         console.info(" ")
     }
 
-    process.exit(0)
     return
 }
 
