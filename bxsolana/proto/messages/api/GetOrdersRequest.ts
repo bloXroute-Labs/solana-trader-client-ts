@@ -26,11 +26,6 @@ import {
   num2name as num2name_3,
 } from "./Direction.js";
 import {
-  Type as Project,
-  name2num as name2num_4,
-  num2name as num2name_4,
-} from "./Project.js";
-import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar.js";
@@ -64,7 +59,6 @@ export declare namespace $.api {
     direction: Direction;
     address: string;
     openOrdersAddress: string;
-    project: Project;
   }
 }
 export type Type = $.api.GetOrdersRequest;
@@ -80,7 +74,6 @@ export function getDefaultValue(): $.api.GetOrdersRequest {
     direction: "D_ASCENDING",
     address: "",
     openOrdersAddress: "",
-    project: "P_UNKNOWN",
   };
 }
 
@@ -102,7 +95,6 @@ export function encodeJson(value: $.api.GetOrdersRequest): unknown {
   if (value.direction !== undefined) result.direction = tsValueToJsonValueFns.enum(value.direction);
   if (value.address !== undefined) result.address = tsValueToJsonValueFns.string(value.address);
   if (value.openOrdersAddress !== undefined) result.openOrdersAddress = tsValueToJsonValueFns.string(value.openOrdersAddress);
-  if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
   return result;
 }
 
@@ -117,7 +109,6 @@ export function decodeJson(value: any): $.api.GetOrdersRequest {
   if (value.direction !== undefined) result.direction = jsonValueToTsValueFns.enum(value.direction) as Direction;
   if (value.address !== undefined) result.address = jsonValueToTsValueFns.string(value.address);
   if (value.openOrdersAddress !== undefined) result.openOrdersAddress = jsonValueToTsValueFns.string(value.openOrdersAddress);
-  if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
   return result;
 }
 
@@ -174,12 +165,6 @@ export function encodeBinary(value: $.api.GetOrdersRequest): Uint8Array {
     const tsValue = value.openOrdersAddress;
     result.push(
       [9, tsValueToWireValueFns.string(tsValue)],
-    );
-  }
-  if (value.project !== undefined) {
-    const tsValue = value.project;
-    result.push(
-      [10, { type: WireType.Varint as const, value: new Long(name2num_4[tsValue as keyof typeof name2num_4]) }],
     );
   }
   return serialize(result);
@@ -250,13 +235,6 @@ export function decodeBinary(binary: Uint8Array): $.api.GetOrdersRequest {
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
     result.openOrdersAddress = value;
-  }
-  field: {
-    const wireValue = wireFields.get(10);
-    if (wireValue === undefined) break field;
-    const value = wireValue.type === WireType.Varint ? num2name_4[wireValue.value[0] as keyof typeof num2name_4] : undefined;
-    if (value === undefined) break field;
-    result.project = value;
   }
   return result;
 }

@@ -1,15 +1,9 @@
 import {
-  Type as Project,
-  name2num,
-  num2name,
-} from "./Project.js";
-import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar.js";
 import {
   WireMessage,
-  WireType,
 } from "../../runtime/wire/index.js";
 import {
   default as serialize,
@@ -18,9 +12,6 @@ import {
   tsValueToWireValueFns,
   wireValueToTsValueFns,
 } from "../../runtime/wire/scalar.js";
-import {
-  default as Long,
-} from "../../runtime/Long.js";
 import {
   default as deserialize,
 } from "../../runtime/wire/deserialize.js";
@@ -31,7 +22,6 @@ export declare namespace $.api {
     marketAddress: string;
     ownerAddress: string;
     openOrdersAddress: string;
-    project: Project;
   }
 }
 export type Type = $.api.PostCancelByClientOrderIDRequest;
@@ -42,7 +32,6 @@ export function getDefaultValue(): $.api.PostCancelByClientOrderIDRequest {
     marketAddress: "",
     ownerAddress: "",
     openOrdersAddress: "",
-    project: "P_UNKNOWN",
   };
 }
 
@@ -59,7 +48,6 @@ export function encodeJson(value: $.api.PostCancelByClientOrderIDRequest): unkno
   if (value.marketAddress !== undefined) result.marketAddress = tsValueToJsonValueFns.string(value.marketAddress);
   if (value.ownerAddress !== undefined) result.ownerAddress = tsValueToJsonValueFns.string(value.ownerAddress);
   if (value.openOrdersAddress !== undefined) result.openOrdersAddress = tsValueToJsonValueFns.string(value.openOrdersAddress);
-  if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
   return result;
 }
 
@@ -69,7 +57,6 @@ export function decodeJson(value: any): $.api.PostCancelByClientOrderIDRequest {
   if (value.marketAddress !== undefined) result.marketAddress = jsonValueToTsValueFns.string(value.marketAddress);
   if (value.ownerAddress !== undefined) result.ownerAddress = jsonValueToTsValueFns.string(value.ownerAddress);
   if (value.openOrdersAddress !== undefined) result.openOrdersAddress = jsonValueToTsValueFns.string(value.openOrdersAddress);
-  if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
   return result;
 }
 
@@ -97,12 +84,6 @@ export function encodeBinary(value: $.api.PostCancelByClientOrderIDRequest): Uin
     const tsValue = value.openOrdersAddress;
     result.push(
       [4, tsValueToWireValueFns.string(tsValue)],
-    );
-  }
-  if (value.project !== undefined) {
-    const tsValue = value.project;
-    result.push(
-      [5, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
     );
   }
   return serialize(result);
@@ -139,13 +120,6 @@ export function decodeBinary(binary: Uint8Array): $.api.PostCancelByClientOrderI
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
     result.openOrdersAddress = value;
-  }
-  field: {
-    const wireValue = wireFields.get(5);
-    if (wireValue === undefined) break field;
-    const value = wireValue.type === WireType.Varint ? num2name[wireValue.value[0] as keyof typeof num2name] : undefined;
-    if (value === undefined) break field;
-    result.project = value;
   }
   return result;
 }
