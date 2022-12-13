@@ -61,6 +61,8 @@ import {
     GetPricesStreamResponse,
     PostSubmitBatchRequest,
     PostSubmitBatchResponse,
+    GetBlockStreamRequest,
+    GetBlockStreamResponse,
     PostSubmitRequestEntry,
     SubmitStrategy,
     TransactionMessage,
@@ -311,5 +313,9 @@ export abstract class BaseProvider implements Api {
 
     postSubmitBatch(request: PostSubmitBatchRequest): Promise<PostSubmitBatchResponse> {
         throw new Error("Not implemented")
+    }
+
+    getBlockStream(request: GetBlockStreamRequest): Promise<AsyncGenerator<GetBlockStreamResponse>> {
+        throw new Error("Method not implemented.")
     }
 }

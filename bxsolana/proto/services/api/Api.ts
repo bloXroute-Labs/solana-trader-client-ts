@@ -328,52 +328,64 @@ import {
   encodeJson as encodeJson_53,
 } from "../../messages/api/GetOrderStatusStreamResponse.js";
 import {
-  Type as GetQuotesStreamRequest,
+  Type as GetBlockStreamRequest,
   encodeBinary as encodeBinary_54,
   decodeBinary as decodeBinary_54,
   encodeJson as encodeJson_54,
-} from "../../messages/api/GetQuotesStreamRequest.js";
+} from "../../messages/api/GetBlockStreamRequest.js";
 import {
-  Type as GetQuotesStreamResponse,
+  Type as GetBlockStreamResponse,
   encodeBinary as encodeBinary_55,
   decodeBinary as decodeBinary_55,
   encodeJson as encodeJson_55,
-} from "../../messages/api/GetQuotesStreamResponse.js";
+} from "../../messages/api/GetBlockStreamResponse.js";
 import {
-  Type as GetPoolReservesStreamRequest,
+  Type as GetQuotesStreamRequest,
   encodeBinary as encodeBinary_56,
   decodeBinary as decodeBinary_56,
   encodeJson as encodeJson_56,
-} from "../../messages/api/GetPoolReservesStreamRequest.js";
+} from "../../messages/api/GetQuotesStreamRequest.js";
 import {
-  Type as GetPoolReservesStreamResponse,
+  Type as GetQuotesStreamResponse,
   encodeBinary as encodeBinary_57,
   decodeBinary as decodeBinary_57,
   encodeJson as encodeJson_57,
-} from "../../messages/api/GetPoolReservesStreamResponse.js";
+} from "../../messages/api/GetQuotesStreamResponse.js";
 import {
-  Type as GetPricesStreamRequest,
+  Type as GetPoolReservesStreamRequest,
   encodeBinary as encodeBinary_58,
   decodeBinary as decodeBinary_58,
   encodeJson as encodeJson_58,
-} from "../../messages/api/GetPricesStreamRequest.js";
+} from "../../messages/api/GetPoolReservesStreamRequest.js";
 import {
-  Type as GetPricesStreamResponse,
+  Type as GetPoolReservesStreamResponse,
   encodeBinary as encodeBinary_59,
   decodeBinary as decodeBinary_59,
   encodeJson as encodeJson_59,
-} from "../../messages/api/GetPricesStreamResponse.js";
+} from "../../messages/api/GetPoolReservesStreamResponse.js";
 import {
-  Type as GetSwapsStreamRequest,
+  Type as GetPricesStreamRequest,
   encodeBinary as encodeBinary_60,
   decodeBinary as decodeBinary_60,
   encodeJson as encodeJson_60,
-} from "../../messages/api/GetSwapsStreamRequest.js";
+} from "../../messages/api/GetPricesStreamRequest.js";
 import {
-  Type as GetSwapsStreamResponse,
+  Type as GetPricesStreamResponse,
   encodeBinary as encodeBinary_61,
   decodeBinary as decodeBinary_61,
   encodeJson as encodeJson_61,
+} from "../../messages/api/GetPricesStreamResponse.js";
+import {
+  Type as GetSwapsStreamRequest,
+  encodeBinary as encodeBinary_62,
+  decodeBinary as decodeBinary_62,
+  encodeJson as encodeJson_62,
+} from "../../messages/api/GetSwapsStreamRequest.js";
+import {
+  Type as GetSwapsStreamResponse,
+  encodeBinary as encodeBinary_63,
+  decodeBinary as decodeBinary_63,
+  encodeJson as encodeJson_63,
 } from "../../messages/api/GetSwapsStreamResponse.js";
 import {
   fromSingle,
@@ -417,6 +429,7 @@ export interface Service<TReqArgs extends any[] = [], TResArgs extends any[] = [
   getTradesStream(request: GetTradesRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetTradesStreamResponse>, TResArgs>;
   getOrderStatusStream(request: GetOrderStatusStreamRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetOrderStatusStreamResponse>, TResArgs>;
   getRecentBlockHashStream(request: GetRecentBlockHashRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetRecentBlockHashResponse>, TResArgs>;
+  getBlockStream(request: GetBlockStreamRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetBlockStreamResponse>, TResArgs>;
   getQuotesStream(request: GetQuotesStreamRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetQuotesStreamResponse>, TResArgs>;
   getPoolReservesStream(request: GetPoolReservesStreamRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetPoolReservesStreamResponse>, TResArgs>;
   getPricesStream(request: GetPricesStreamRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetPricesStreamResponse>, TResArgs>;
@@ -937,20 +950,36 @@ export const methodDescriptors = {
       serializeJson: (value: GetRecentBlockHashResponse) => JSON.stringify(encodeJson_19(value)),
     },
   },
-  getQuotesStream: {
-    methodName: "GetQuotesStream",
+  getBlockStream: {
+    methodName: "GetBlockStream",
     service: { serviceName: "api.Api" },
     requestStream: false,
     responseStream: true,
     requestType: {
       serializeBinary: encodeBinary_54,
       deserializeBinary: decodeBinary_54,
-      serializeJson: (value: GetQuotesStreamRequest) => JSON.stringify(encodeJson_54(value)),
+      serializeJson: (value: GetBlockStreamRequest) => JSON.stringify(encodeJson_54(value)),
     },
     responseType: {
       serializeBinary: encodeBinary_55,
       deserializeBinary: decodeBinary_55,
-      serializeJson: (value: GetQuotesStreamResponse) => JSON.stringify(encodeJson_55(value)),
+      serializeJson: (value: GetBlockStreamResponse) => JSON.stringify(encodeJson_55(value)),
+    },
+  },
+  getQuotesStream: {
+    methodName: "GetQuotesStream",
+    service: { serviceName: "api.Api" },
+    requestStream: false,
+    responseStream: true,
+    requestType: {
+      serializeBinary: encodeBinary_56,
+      deserializeBinary: decodeBinary_56,
+      serializeJson: (value: GetQuotesStreamRequest) => JSON.stringify(encodeJson_56(value)),
+    },
+    responseType: {
+      serializeBinary: encodeBinary_57,
+      deserializeBinary: decodeBinary_57,
+      serializeJson: (value: GetQuotesStreamResponse) => JSON.stringify(encodeJson_57(value)),
     },
   },
   getPoolReservesStream: {
@@ -959,14 +988,14 @@ export const methodDescriptors = {
     requestStream: false,
     responseStream: true,
     requestType: {
-      serializeBinary: encodeBinary_56,
-      deserializeBinary: decodeBinary_56,
-      serializeJson: (value: GetPoolReservesStreamRequest) => JSON.stringify(encodeJson_56(value)),
+      serializeBinary: encodeBinary_58,
+      deserializeBinary: decodeBinary_58,
+      serializeJson: (value: GetPoolReservesStreamRequest) => JSON.stringify(encodeJson_58(value)),
     },
     responseType: {
-      serializeBinary: encodeBinary_57,
-      deserializeBinary: decodeBinary_57,
-      serializeJson: (value: GetPoolReservesStreamResponse) => JSON.stringify(encodeJson_57(value)),
+      serializeBinary: encodeBinary_59,
+      deserializeBinary: decodeBinary_59,
+      serializeJson: (value: GetPoolReservesStreamResponse) => JSON.stringify(encodeJson_59(value)),
     },
   },
   getPricesStream: {
@@ -975,14 +1004,14 @@ export const methodDescriptors = {
     requestStream: false,
     responseStream: true,
     requestType: {
-      serializeBinary: encodeBinary_58,
-      deserializeBinary: decodeBinary_58,
-      serializeJson: (value: GetPricesStreamRequest) => JSON.stringify(encodeJson_58(value)),
+      serializeBinary: encodeBinary_60,
+      deserializeBinary: decodeBinary_60,
+      serializeJson: (value: GetPricesStreamRequest) => JSON.stringify(encodeJson_60(value)),
     },
     responseType: {
-      serializeBinary: encodeBinary_59,
-      deserializeBinary: decodeBinary_59,
-      serializeJson: (value: GetPricesStreamResponse) => JSON.stringify(encodeJson_59(value)),
+      serializeBinary: encodeBinary_61,
+      deserializeBinary: decodeBinary_61,
+      serializeJson: (value: GetPricesStreamResponse) => JSON.stringify(encodeJson_61(value)),
     },
   },
   getSwapsStream: {
@@ -991,14 +1020,14 @@ export const methodDescriptors = {
     requestStream: false,
     responseStream: true,
     requestType: {
-      serializeBinary: encodeBinary_60,
-      deserializeBinary: decodeBinary_60,
-      serializeJson: (value: GetSwapsStreamRequest) => JSON.stringify(encodeJson_60(value)),
+      serializeBinary: encodeBinary_62,
+      deserializeBinary: decodeBinary_62,
+      serializeJson: (value: GetSwapsStreamRequest) => JSON.stringify(encodeJson_62(value)),
     },
     responseType: {
-      serializeBinary: encodeBinary_61,
-      deserializeBinary: decodeBinary_61,
-      serializeJson: (value: GetSwapsStreamResponse) => JSON.stringify(encodeJson_61(value)),
+      serializeBinary: encodeBinary_63,
+      deserializeBinary: decodeBinary_63,
+      serializeJson: (value: GetSwapsStreamResponse) => JSON.stringify(encodeJson_63(value)),
     },
   },
 } as const;
