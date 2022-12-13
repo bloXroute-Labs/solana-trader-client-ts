@@ -290,6 +290,14 @@ async function doAmmStreams(provider: BaseProvider) {
     await callGetQuotesStream(provider)
     console.info(" ")
     console.info(" ")
+
+    await callGetRecentBlockHashStream(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetBlockStream(provider)
+    console.info(" ")
+    console.info(" ")
 }
 
 async function doLifecycle(provider: BaseProvider) {
@@ -705,6 +713,42 @@ async function callGetQuotesStream(provider: BaseProvider) {
         }
     } catch (error) {
         console.error("Failed to retrieve USDC quote for 1 SOL on Raydium", error)
+    }
+}
+
+async function callGetBlockStream(provider: BaseProvider) {
+    try {
+        console.info("Subscribing for block updates")
+        const resp = await provider.getBlockStream({ limit: 5 })
+
+        let count = 0
+        for await (const update of resp) {
+            console.info(update)
+            count++
+            if (count == 5) {
+                break
+            }
+        }
+    } catch (error) {
+        console.error("Failed to retrieve block updates", error)
+    }
+}
+
+async function callGetRecentBlockHashStream(provider: BaseProvider) {
+    try {
+        console.info("Subscribing for block hash updates")
+        const resp = await provider.getRecentBlockHashStream({ limit: 5 })
+
+        let count = 0
+        for await (const update of resp) {
+            console.info(update)
+            count++
+            if (count == 5) {
+                break
+            }
+        }
+    } catch (error) {
+        console.error("Failed to retrieve block hash updates", error)
     }
 }
 

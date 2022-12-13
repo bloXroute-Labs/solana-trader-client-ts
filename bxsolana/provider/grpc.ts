@@ -57,6 +57,8 @@ import {
     GetPricesStreamResponse,
     GetSwapsStreamRequest,
     GetSwapsStreamResponse,
+    GetBlockStreamRequest,
+    GetBlockStreamResponse,
 } from "../proto/messages/api/index.js"
 import { createServiceClient, Service } from "../proto/services/api/Api.js"
 import { BaseProvider } from "./base.js"
@@ -229,15 +231,7 @@ export class GrpcProvider extends BaseProvider {
         return this.client.getSwapsStream(request)
     }
 
-    cancelGetQuotesStream = async (): Promise<boolean> => {
-        throw new Error("Not implemented")
-    }
-
-    cancelGetRecentBlockHashStream = async (): Promise<boolean> => {
-        throw new Error("Not implemented")
-    }
-
-    cancelGetPoolReservesStream = async (): Promise<boolean> => {
-        throw new Error("Not implemented")
+    getBlockStream(request: GetBlockStreamRequest): Promise<AsyncGenerator<GetBlockStreamResponse>> {
+        return this.client.getBlockStream(request)
     }
 }

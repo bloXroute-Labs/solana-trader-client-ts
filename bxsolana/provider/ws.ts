@@ -57,6 +57,8 @@ import {
     GetSwapsStreamResponse,
     GetPricesStreamRequest,
     GetPricesStreamResponse,
+    GetBlockStreamRequest,
+    GetBlockStreamResponse,
 } from "../proto/messages/api/index.js"
 import { BaseProvider } from "./base.js"
 import config from "../../utils/config.js"
