@@ -85,6 +85,9 @@ export class WsProvider extends BaseProvider {
         super()
         this.wsConnection = new RpcWsConnection(address)
         this.address = address
+        this.connect().then(r => {
+            console.info("yay!")
+        })
     }
 
     async connect() {

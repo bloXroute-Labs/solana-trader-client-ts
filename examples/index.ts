@@ -142,6 +142,8 @@ async function ws() {
         provider = new WsProvider(LOCAL_API_WS)
     }
 
+    await provider.connect()
+
     console.info(" ----  WS Requests  ----")
     await doRequests(provider)
     console.info(" ----  WS Amm Requests  ----")
