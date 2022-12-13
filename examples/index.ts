@@ -162,9 +162,6 @@ async function ws() {
     }
 
     console.info(" ----  WS Streams  ----")
-    await doStreams(provider)
-    await cancelWsStreams(provider)
-
     return
 }
 
