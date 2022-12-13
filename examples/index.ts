@@ -144,10 +144,10 @@ async function ws() {
 
     console.info(" ----  WS Requests  ----")
     await doRequests(provider)
+    console.info(" ----  WS Amm Requests  ----")
+    await doAmmRequests(provider)
 
     if (process.env.RUN_LIFECYCLE === "true") {
-        console.info(" ----  WS Amm Requests  ----")
-        await doAmmRequests(provider)
         console.info(" ----  WS Streams  ----")
         await doStreams(provider)
         console.info(" ----  WS Amm Streams  ----")
