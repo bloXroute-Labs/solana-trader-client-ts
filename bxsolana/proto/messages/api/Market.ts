@@ -4,10 +4,10 @@ import {
   num2name,
 } from "./MarketStatus.js";
 import {
-  Type as MarketProgram,
+  Type as Project,
   name2num as name2num_1,
   num2name as num2name_1,
-} from "./MarketProgram.js";
+} from "./Project.js";
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -39,7 +39,7 @@ export declare namespace $.api {
     quotedMint: string;
     baseDecimals: string;
     quoteDecimals: string;
-    program: MarketProgram;
+    project: Project;
   }
 }
 export type Type = $.api.Market;
@@ -53,7 +53,7 @@ export function getDefaultValue(): $.api.Market {
     quotedMint: "",
     baseDecimals: "0",
     quoteDecimals: "0",
-    program: "MP_SERUM",
+    project: "P_UNKNOWN",
   };
 }
 
@@ -73,7 +73,7 @@ export function encodeJson(value: $.api.Market): unknown {
   if (value.quotedMint !== undefined) result.quotedMint = tsValueToJsonValueFns.string(value.quotedMint);
   if (value.baseDecimals !== undefined) result.baseDecimals = tsValueToJsonValueFns.int64(value.baseDecimals);
   if (value.quoteDecimals !== undefined) result.quoteDecimals = tsValueToJsonValueFns.int64(value.quoteDecimals);
-  if (value.program !== undefined) result.program = tsValueToJsonValueFns.enum(value.program);
+  if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
   return result;
 }
 
@@ -86,7 +86,7 @@ export function decodeJson(value: any): $.api.Market {
   if (value.quotedMint !== undefined) result.quotedMint = jsonValueToTsValueFns.string(value.quotedMint);
   if (value.baseDecimals !== undefined) result.baseDecimals = jsonValueToTsValueFns.int64(value.baseDecimals);
   if (value.quoteDecimals !== undefined) result.quoteDecimals = jsonValueToTsValueFns.int64(value.quoteDecimals);
-  if (value.program !== undefined) result.program = jsonValueToTsValueFns.enum(value.program) as MarketProgram;
+  if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
   return result;
 }
 
@@ -134,8 +134,8 @@ export function encodeBinary(value: $.api.Market): Uint8Array {
       [7, tsValueToWireValueFns.int64(tsValue)],
     );
   }
-  if (value.program !== undefined) {
-    const tsValue = value.program;
+  if (value.project !== undefined) {
+    const tsValue = value.project;
     result.push(
       [8, { type: WireType.Varint as const, value: new Long(name2num_1[tsValue as keyof typeof name2num_1]) }],
     );
@@ -201,7 +201,7 @@ export function decodeBinary(binary: Uint8Array): $.api.Market {
     if (wireValue === undefined) break field;
     const value = wireValue.type === WireType.Varint ? num2name_1[wireValue.value[0] as keyof typeof num2name_1] : undefined;
     if (value === undefined) break field;
-    result.program = value;
+    result.project = value;
   }
   return result;
 }

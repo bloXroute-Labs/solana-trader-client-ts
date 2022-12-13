@@ -4,10 +4,10 @@ import {
   num2name,
 } from "./Side.js";
 import {
-  Type as MarketProgram,
+  Type as Project,
   name2num as name2num_1,
   num2name as num2name_1,
-} from "./MarketProgram.js";
+} from "./Project.js";
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -37,7 +37,7 @@ export declare namespace $.api {
     marketAddress: string;
     ownerAddress: string;
     openOrdersAddress: string;
-    program: MarketProgram;
+    project: Project;
   }
 }
 export type Type = $.api.PostCancelOrderRequest;
@@ -49,7 +49,7 @@ export function getDefaultValue(): $.api.PostCancelOrderRequest {
     marketAddress: "",
     ownerAddress: "",
     openOrdersAddress: "",
-    program: "MP_SERUM",
+    project: "P_UNKNOWN",
   };
 }
 
@@ -67,7 +67,7 @@ export function encodeJson(value: $.api.PostCancelOrderRequest): unknown {
   if (value.marketAddress !== undefined) result.marketAddress = tsValueToJsonValueFns.string(value.marketAddress);
   if (value.ownerAddress !== undefined) result.ownerAddress = tsValueToJsonValueFns.string(value.ownerAddress);
   if (value.openOrdersAddress !== undefined) result.openOrdersAddress = tsValueToJsonValueFns.string(value.openOrdersAddress);
-  if (value.program !== undefined) result.program = tsValueToJsonValueFns.enum(value.program);
+  if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
   return result;
 }
 
@@ -78,7 +78,7 @@ export function decodeJson(value: any): $.api.PostCancelOrderRequest {
   if (value.marketAddress !== undefined) result.marketAddress = jsonValueToTsValueFns.string(value.marketAddress);
   if (value.ownerAddress !== undefined) result.ownerAddress = jsonValueToTsValueFns.string(value.ownerAddress);
   if (value.openOrdersAddress !== undefined) result.openOrdersAddress = jsonValueToTsValueFns.string(value.openOrdersAddress);
-  if (value.program !== undefined) result.program = jsonValueToTsValueFns.enum(value.program) as MarketProgram;
+  if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
   return result;
 }
 
@@ -114,8 +114,8 @@ export function encodeBinary(value: $.api.PostCancelOrderRequest): Uint8Array {
       [5, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.program !== undefined) {
-    const tsValue = value.program;
+  if (value.project !== undefined) {
+    const tsValue = value.project;
     result.push(
       [6, { type: WireType.Varint as const, value: new Long(name2num_1[tsValue as keyof typeof name2num_1]) }],
     );
@@ -167,7 +167,7 @@ export function decodeBinary(binary: Uint8Array): $.api.PostCancelOrderRequest {
     if (wireValue === undefined) break field;
     const value = wireValue.type === WireType.Varint ? num2name_1[wireValue.value[0] as keyof typeof num2name_1] : undefined;
     if (value === undefined) break field;
-    result.program = value;
+    result.project = value;
   }
   return result;
 }

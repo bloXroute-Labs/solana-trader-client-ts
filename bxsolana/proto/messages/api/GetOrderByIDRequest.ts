@@ -1,8 +1,8 @@
 import {
-  Type as MarketProgram,
+  Type as Project,
   name2num,
   num2name,
-} from "./MarketProgram.js";
+} from "./Project.js";
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -29,7 +29,7 @@ export declare namespace $.api {
   export type GetOrderByIDRequest = {
     orderID: string;
     market: string;
-    program: MarketProgram;
+    project: Project;
   }
 }
 export type Type = $.api.GetOrderByIDRequest;
@@ -38,7 +38,7 @@ export function getDefaultValue(): $.api.GetOrderByIDRequest {
   return {
     orderID: "",
     market: "",
-    program: "MP_SERUM",
+    project: "P_UNKNOWN",
   };
 }
 
@@ -53,7 +53,7 @@ export function encodeJson(value: $.api.GetOrderByIDRequest): unknown {
   const result: any = {};
   if (value.orderID !== undefined) result.orderID = tsValueToJsonValueFns.string(value.orderID);
   if (value.market !== undefined) result.market = tsValueToJsonValueFns.string(value.market);
-  if (value.program !== undefined) result.program = tsValueToJsonValueFns.enum(value.program);
+  if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
   return result;
 }
 
@@ -61,7 +61,7 @@ export function decodeJson(value: any): $.api.GetOrderByIDRequest {
   const result = getDefaultValue();
   if (value.orderID !== undefined) result.orderID = jsonValueToTsValueFns.string(value.orderID);
   if (value.market !== undefined) result.market = jsonValueToTsValueFns.string(value.market);
-  if (value.program !== undefined) result.program = jsonValueToTsValueFns.enum(value.program) as MarketProgram;
+  if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
   return result;
 }
 
@@ -79,8 +79,8 @@ export function encodeBinary(value: $.api.GetOrderByIDRequest): Uint8Array {
       [2, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.program !== undefined) {
-    const tsValue = value.program;
+  if (value.project !== undefined) {
+    const tsValue = value.project;
     result.push(
       [3, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
     );
@@ -111,7 +111,7 @@ export function decodeBinary(binary: Uint8Array): $.api.GetOrderByIDRequest {
     if (wireValue === undefined) break field;
     const value = wireValue.type === WireType.Varint ? num2name[wireValue.value[0] as keyof typeof num2name] : undefined;
     if (value === undefined) break field;
-    result.program = value;
+    result.project = value;
   }
   return result;
 }

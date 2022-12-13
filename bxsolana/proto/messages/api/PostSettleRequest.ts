@@ -1,8 +1,8 @@
 import {
-  Type as MarketProgram,
+  Type as Project,
   name2num,
   num2name,
-} from "./MarketProgram.js";
+} from "./Project.js";
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -32,7 +32,7 @@ export declare namespace $.api {
     baseTokenWallet: string;
     quoteTokenWallet: string;
     openOrdersAddress: string;
-    program: MarketProgram;
+    project: Project;
   }
 }
 export type Type = $.api.PostSettleRequest;
@@ -44,7 +44,7 @@ export function getDefaultValue(): $.api.PostSettleRequest {
     baseTokenWallet: "",
     quoteTokenWallet: "",
     openOrdersAddress: "",
-    program: "MP_SERUM",
+    project: "P_UNKNOWN",
   };
 }
 
@@ -62,7 +62,7 @@ export function encodeJson(value: $.api.PostSettleRequest): unknown {
   if (value.baseTokenWallet !== undefined) result.baseTokenWallet = tsValueToJsonValueFns.string(value.baseTokenWallet);
   if (value.quoteTokenWallet !== undefined) result.quoteTokenWallet = tsValueToJsonValueFns.string(value.quoteTokenWallet);
   if (value.openOrdersAddress !== undefined) result.openOrdersAddress = tsValueToJsonValueFns.string(value.openOrdersAddress);
-  if (value.program !== undefined) result.program = tsValueToJsonValueFns.enum(value.program);
+  if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
   return result;
 }
 
@@ -73,7 +73,7 @@ export function decodeJson(value: any): $.api.PostSettleRequest {
   if (value.baseTokenWallet !== undefined) result.baseTokenWallet = jsonValueToTsValueFns.string(value.baseTokenWallet);
   if (value.quoteTokenWallet !== undefined) result.quoteTokenWallet = jsonValueToTsValueFns.string(value.quoteTokenWallet);
   if (value.openOrdersAddress !== undefined) result.openOrdersAddress = jsonValueToTsValueFns.string(value.openOrdersAddress);
-  if (value.program !== undefined) result.program = jsonValueToTsValueFns.enum(value.program) as MarketProgram;
+  if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
   return result;
 }
 
@@ -109,8 +109,8 @@ export function encodeBinary(value: $.api.PostSettleRequest): Uint8Array {
       [5, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.program !== undefined) {
-    const tsValue = value.program;
+  if (value.project !== undefined) {
+    const tsValue = value.project;
     result.push(
       [6, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
     );
@@ -162,7 +162,7 @@ export function decodeBinary(binary: Uint8Array): $.api.PostSettleRequest {
     if (wireValue === undefined) break field;
     const value = wireValue.type === WireType.Varint ? num2name[wireValue.value[0] as keyof typeof num2name] : undefined;
     if (value === undefined) break field;
-    result.program = value;
+    result.project = value;
   }
   return result;
 }

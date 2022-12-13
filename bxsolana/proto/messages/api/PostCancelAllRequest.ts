@@ -1,8 +1,8 @@
 import {
-  Type as MarketProgram,
+  Type as Project,
   name2num,
   num2name,
-} from "./MarketProgram.js";
+} from "./Project.js";
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -30,7 +30,7 @@ export declare namespace $.api {
     market: string;
     ownerAddress: string;
     openOrdersAddresses: string[];
-    program: MarketProgram;
+    project: Project;
   }
 }
 export type Type = $.api.PostCancelAllRequest;
@@ -40,7 +40,7 @@ export function getDefaultValue(): $.api.PostCancelAllRequest {
     market: "",
     ownerAddress: "",
     openOrdersAddresses: [],
-    program: "MP_SERUM",
+    project: "P_UNKNOWN",
   };
 }
 
@@ -56,7 +56,7 @@ export function encodeJson(value: $.api.PostCancelAllRequest): unknown {
   if (value.market !== undefined) result.market = tsValueToJsonValueFns.string(value.market);
   if (value.ownerAddress !== undefined) result.ownerAddress = tsValueToJsonValueFns.string(value.ownerAddress);
   result.openOrdersAddresses = value.openOrdersAddresses.map(value => tsValueToJsonValueFns.string(value));
-  if (value.program !== undefined) result.program = tsValueToJsonValueFns.enum(value.program);
+  if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
   return result;
 }
 
@@ -65,7 +65,7 @@ export function decodeJson(value: any): $.api.PostCancelAllRequest {
   if (value.market !== undefined) result.market = jsonValueToTsValueFns.string(value.market);
   if (value.ownerAddress !== undefined) result.ownerAddress = jsonValueToTsValueFns.string(value.ownerAddress);
   result.openOrdersAddresses = value.openOrdersAddresses?.map((value: any) => jsonValueToTsValueFns.string(value)) ?? [];
-  if (value.program !== undefined) result.program = jsonValueToTsValueFns.enum(value.program) as MarketProgram;
+  if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
   return result;
 }
 
@@ -88,8 +88,8 @@ export function encodeBinary(value: $.api.PostCancelAllRequest): Uint8Array {
       [3, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.program !== undefined) {
-    const tsValue = value.program;
+  if (value.project !== undefined) {
+    const tsValue = value.project;
     result.push(
       [4, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
     );
@@ -126,7 +126,7 @@ export function decodeBinary(binary: Uint8Array): $.api.PostCancelAllRequest {
     if (wireValue === undefined) break field;
     const value = wireValue.type === WireType.Varint ? num2name[wireValue.value[0] as keyof typeof num2name] : undefined;
     if (value === undefined) break field;
-    result.program = value;
+    result.project = value;
   }
   return result;
 }

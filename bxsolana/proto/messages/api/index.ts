@@ -2,7 +2,6 @@ export type { Type as GetMarketsRequest } from "./GetMarketsRequest.js";
 export type { Type as GetMarketsResponse } from "./GetMarketsResponse.js";
 export type { Type as Market } from "./Market.js";
 export type { Type as MarketStatus } from "./MarketStatus.js";
-export type { Type as MarketProgram } from "./MarketProgram.js";
 export type { Type as GetTickersRequest } from "./GetTickersRequest.js";
 export type { Type as GetTickersResponse } from "./GetTickersResponse.js";
 export type { Type as Ticker } from "./Ticker.js";

@@ -4,10 +4,10 @@ import {
   num2name,
 } from "./Step.js";
 import {
-  Type as MarketProgram,
+  Type as Project,
   name2num as name2num_1,
   num2name as num2name_1,
-} from "./MarketProgram.js";
+} from "./Project.js";
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -35,7 +35,7 @@ export declare namespace $.api {
     market: string;
     depth: number;
     step: Step;
-    program: MarketProgram;
+    project: Project;
   }
 }
 export type Type = $.api.GetMarketDepthRequest;
@@ -45,7 +45,7 @@ export function getDefaultValue(): $.api.GetMarketDepthRequest {
     market: "",
     depth: 0,
     step: "STEP0",
-    program: "MP_SERUM",
+    project: "P_UNKNOWN",
   };
 }
 
@@ -61,7 +61,7 @@ export function encodeJson(value: $.api.GetMarketDepthRequest): unknown {
   if (value.market !== undefined) result.market = tsValueToJsonValueFns.string(value.market);
   if (value.depth !== undefined) result.depth = tsValueToJsonValueFns.int32(value.depth);
   if (value.step !== undefined) result.step = tsValueToJsonValueFns.enum(value.step);
-  if (value.program !== undefined) result.program = tsValueToJsonValueFns.enum(value.program);
+  if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
   return result;
 }
 
@@ -70,7 +70,7 @@ export function decodeJson(value: any): $.api.GetMarketDepthRequest {
   if (value.market !== undefined) result.market = jsonValueToTsValueFns.string(value.market);
   if (value.depth !== undefined) result.depth = jsonValueToTsValueFns.int32(value.depth);
   if (value.step !== undefined) result.step = jsonValueToTsValueFns.enum(value.step) as Step;
-  if (value.program !== undefined) result.program = jsonValueToTsValueFns.enum(value.program) as MarketProgram;
+  if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
   return result;
 }
 
@@ -94,8 +94,8 @@ export function encodeBinary(value: $.api.GetMarketDepthRequest): Uint8Array {
       [3, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
     );
   }
-  if (value.program !== undefined) {
-    const tsValue = value.program;
+  if (value.project !== undefined) {
+    const tsValue = value.project;
     result.push(
       [4, { type: WireType.Varint as const, value: new Long(name2num_1[tsValue as keyof typeof name2num_1]) }],
     );
@@ -133,7 +133,7 @@ export function decodeBinary(binary: Uint8Array): $.api.GetMarketDepthRequest {
     if (wireValue === undefined) break field;
     const value = wireValue.type === WireType.Varint ? num2name_1[wireValue.value[0] as keyof typeof num2name_1] : undefined;
     if (value === undefined) break field;
-    result.program = value;
+    result.project = value;
   }
   return result;
 }
