@@ -8,8 +8,6 @@ Provides a Typescript SDK for bloXroute's Solana Trader API.
 npm i @bloxroute/solana-trader-client-ts
 ```
 
-Full repo installation via NPM is expected to be supported soon.
-
 ## Usage
 
 This library supports HTTP, websockets, and GRPC interfaces. 
