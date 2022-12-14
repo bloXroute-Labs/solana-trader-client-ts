@@ -82,7 +82,7 @@ export class WsProvider extends BaseProvider {
 
     // countToSubscriptionID is going to be a map from the number in the above map (i.e 3 if GetOrderbooksStream is
     // called 3 times) to the subscription id. This will be used to manage cancellations
-    private countToSubscriptionID: Map<number, string> = new Map()
+    // private countToSubscriptionID: Map<number, string> = new Map()
 
     constructor(address: string = MAINNET_API_WS) {
         super()
@@ -226,9 +226,9 @@ export class WsProvider extends BaseProvider {
         const countToSubscriptionID = this.streamToCountMap.get(streamName)
 
         if (countToSubscriptionID) {
-            this.countToSubscriptionID.forEach((value: string, key: number) => {
+            countToSubscriptionID.forEach((value: string, key: number) => {
                 if (key === streamNumber) {
-                    this.countToSubscriptionID.delete(key)
+                    countToSubscriptionID.delete(key)
                     return this.wsConnection.unsubscribe(value)
                 }
             })
@@ -272,7 +272,7 @@ export class WsProvider extends BaseProvider {
 
         if (countToSubscriptionID) {
             countToSubscriptionID.forEach((value: string, key: number) => {
-                this.countToSubscriptionID.delete(key)
+                countToSubscriptionID.delete(key)
                 retValues.push(this.wsConnection.unsubscribe(value))
             })
         } else {
