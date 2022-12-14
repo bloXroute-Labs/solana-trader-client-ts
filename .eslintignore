@@ -1,4 +1,4 @@
 node_modules
 dist
 bxsolana/proto
-solana-trader-proto/js/ffi/proto/api_grpc_pb.js
+solana-trader-proto/

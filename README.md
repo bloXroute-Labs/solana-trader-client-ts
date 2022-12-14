@@ -8,8 +8,6 @@ Provides a Typescript SDK for bloXroute's Solana Trader API.
 npm i @bloxroute/solana-trader-client-ts
 ```
 
-Full repo installation via NPM is expected to be supported soon.
-
 ## Usage
 
 This library supports HTTP, websockets, and GRPC interfaces. 
@@ -90,7 +88,7 @@ $ npm run proto
 We use `np` to publish new releases to npm. To make a new release, in the project directory use:
 
 ```
-$ np --no-2fa
+$ npm run release
 ```
 
 Follow the menu items to select a version for the release (major, minor, patch). 

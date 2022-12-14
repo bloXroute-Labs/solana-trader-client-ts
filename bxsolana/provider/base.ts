@@ -292,7 +292,6 @@ export abstract class BaseProvider implements Api {
         return this.signAndSubmitTxs(res.transactions, submitStrategy, skipPreFlight)
     }
 
-    // eslint-disable-next-line
     private signAndSubmitTx(
         transactionMessage: TransactionMessage | undefined,
         skipPreFlight: boolean,
