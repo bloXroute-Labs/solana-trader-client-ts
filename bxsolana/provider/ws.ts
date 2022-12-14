@@ -131,9 +131,9 @@ export class WsProvider extends BaseProvider {
         return await this.wsConnection.call("GetAccountBalance", request)
     }
 
-    manageGetStreamMaps = async (streamName: string, subscriptionID: string) => {
+    private manageGetStreamMaps = async (streamName: string, subscriptionID: string) => {
         let count: number
-        if (this.streamToCountMap.size === 0) {
+        if (!(streamName in this.streamToCountMap)) {
             count = 1
             const countToSubscriptionID = new Map()
             countToSubscriptionID.set(count, subscriptionID)
@@ -222,7 +222,7 @@ export class WsProvider extends BaseProvider {
     // can cancel 1, or 2. If a nonvalid cancellation number is sent as an input, the promise will be rejected with a
     // false boolean
 
-    cancelStreamByCount = async (streamName: string, streamNumber: number): Promise<boolean> => {
+    private cancelStreamByCount = async (streamName: string, streamNumber: number): Promise<boolean> => {
         const countToSubscriptionID = this.streamToCountMap.get(streamName)
 
         if (countToSubscriptionID) {
@@ -265,7 +265,7 @@ export class WsProvider extends BaseProvider {
         return this.cancelStreamByCount("GetPoolReservesStream", streamNumber)
     }
 
-    cancelAllStreams = async (streamName: string): Promise<Awaited<boolean>[]> => {
+    private cancelAllStreams = async (streamName: string): Promise<boolean[]> => {
         const retValues: Promise<boolean>[] = []
 
         const countToSubscriptionID = this.streamToCountMap.get(streamName)
@@ -277,7 +277,7 @@ export class WsProvider extends BaseProvider {
             })
         } else {
             retValues.push(Promise.reject())
-            return Promise.all(retValues)
+            return Promise.reject(new Error("no streams open"))
         }
 
         return Promise.all(retValues)

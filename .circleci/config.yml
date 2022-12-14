@@ -66,8 +66,6 @@ jobs:
             export WALLET_PUBLIC_KEY=$PUBLIC_KEY
             export API_ENV="testnet"
             export RUN_LIFECYCLE="false"
-            echo $AUTH_HEADER
-            echo $WALLET_PUBLIC_KEY
             npm start
           no_output_timeout: 30m
 
