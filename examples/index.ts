@@ -64,8 +64,11 @@ function getRandom() {
 }
 
 async function run() {
+    console.info("---- STARTING HTTP TESTS ----")
     await http()
+    console.info("---- STARTING GRPC TESTS ----")
     await grpc()
+    console.info("---- STARTING WS TESTS ----")
     await ws()
     process.exit(0)
 }
@@ -140,12 +143,14 @@ async function ws() {
         provider = new WsProvider(LOCAL_API_WS)
     }
 
+    await provider.connect()
+
     console.info(" ----  WS Requests  ----")
     await doRequests(provider)
+    console.info(" ----  WS Amm Requests  ----")
+    await doAmmRequests(provider)
 
     if (process.env.RUN_LIFECYCLE === "true") {
-        console.info(" ----  WS Amm Requests  ----")
-        await doAmmRequests(provider)
         console.info(" ----  WS Streams  ----")
         await doStreams(provider)
         console.info(" ----  WS Amm Streams  ----")
@@ -247,6 +252,25 @@ async function doStreams(provider: BaseProvider) {
     console.info(" ")
 
     await callGetTradesStream(provider)
+    console.info(" ")
+    console.info(" ")
+
+    console.info("cancelling streams")
+}
+
+async function cancelWsStreams(provider: BaseProvider) {
+    console.info("Cancelling orderbooks stream")
+    await provider.cancelAllGetOrderbooksStream()
+    console.info(" ")
+    console.info(" ")
+
+    console.info("Cancelling get tickers stream")
+    await provider.cancelAllGetOrderbooksStream()
+    console.info(" ")
+    console.info(" ")
+
+    console.info("Cancelling trades stream")
+    await provider.cancelAllGetTradesStream()
     console.info(" ")
     console.info(" ")
 }
@@ -618,7 +642,7 @@ async function callGetTradesStream(provider: BaseProvider) {
         for await (const tr of req) {
             console.info(tr)
             count++
-            if (count == 5) {
+            if (count == 1) {
                 break
             }
         }

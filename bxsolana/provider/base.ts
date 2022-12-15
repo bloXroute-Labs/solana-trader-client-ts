@@ -173,6 +173,65 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
+    // these following cancel functions are only used by the websocket provider. Streams are supported by websockets or
+    // by GRPC calls, but the cancellation for GRPC streams is handled on the server side.
+
+    cancelAllGetOrderbooksStream = async (): Promise<Awaited<boolean>[]> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetOrderbooksStreamByCount = async (streamNumber: number): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelAllGetTradesStream = async (): Promise<Awaited<boolean>[]> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetTradesStreamByCount = async (streamNumber: number): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelAllGetTickersStream = async (): Promise<Awaited<boolean>[]> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetTickersStreamByCount = async (streamNumber: number): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelAllGetOrderStatusStream = async (): Promise<Awaited<boolean>[]> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetOrderStatusStreamByCount = async (streamNumber: number): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelAllGetRecentBlockhashStream = async (): Promise<Awaited<boolean>[]> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetRecentBlockhashStreamByCount = async (streamNumber: number): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelAllGetQuotesStream = async (): Promise<Awaited<boolean>[]> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetQuotesStreamByCount = async (streamNumber: number): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelAllGetPoolReservesStream = async (): Promise<Awaited<boolean>[]> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetPoolReservesStreamByCount = async (streamNumber: number): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
     async submitOrder(request: PostOrderRequest, skipPreFlight = false): Promise<SubmitTransactionResponse> {
         const res = await this.postOrder(request)
 
