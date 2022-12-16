@@ -26,49 +26,48 @@ import {
 } from "../../runtime/wire/deserialize.js";
 
 export declare namespace $.api {
-  export type GetMarketDepthRequest = {
-    market: string;
+  export type GetMarketDepthsRequest = {
+    markets: string[];
     limit: number;
     project: Project;
   }
 }
-export type Type = $.api.GetMarketDepthRequest;
+export type Type = $.api.GetMarketDepthsRequest;
 
-export function getDefaultValue(): $.api.GetMarketDepthRequest {
+export function getDefaultValue(): $.api.GetMarketDepthsRequest {
   return {
-    market: "",
+    markets: [],
     limit: 0,
     project: "P_UNKNOWN",
   };
 }
 
-export function createValue(partialValue: Partial<$.api.GetMarketDepthRequest>): $.api.GetMarketDepthRequest {
+export function createValue(partialValue: Partial<$.api.GetMarketDepthsRequest>): $.api.GetMarketDepthsRequest {
   return {
     ...getDefaultValue(),
     ...partialValue,
   };
 }
 
-export function encodeJson(value: $.api.GetMarketDepthRequest): unknown {
+export function encodeJson(value: $.api.GetMarketDepthsRequest): unknown {
   const result: any = {};
-  if (value.market !== undefined) result.market = tsValueToJsonValueFns.string(value.market);
+  result.markets = value.markets.map(value => tsValueToJsonValueFns.string(value));
   if (value.limit !== undefined) result.limit = tsValueToJsonValueFns.uint32(value.limit);
   if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
   return result;
 }
 
-export function decodeJson(value: any): $.api.GetMarketDepthRequest {
+export function decodeJson(value: any): $.api.GetMarketDepthsRequest {
   const result = getDefaultValue();
-  if (value.market !== undefined) result.market = jsonValueToTsValueFns.string(value.market);
+  result.markets = value.markets?.map((value: any) => jsonValueToTsValueFns.string(value)) ?? [];
   if (value.limit !== undefined) result.limit = jsonValueToTsValueFns.uint32(value.limit);
   if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
   return result;
 }
 
-export function encodeBinary(value: $.api.GetMarketDepthRequest): Uint8Array {
+export function encodeBinary(value: $.api.GetMarketDepthsRequest): Uint8Array {
   const result: WireMessage = [];
-  if (value.market !== undefined) {
-    const tsValue = value.market;
+  for (const tsValue of value.markets) {
     result.push(
       [1, tsValueToWireValueFns.string(tsValue)],
     );
@@ -88,16 +87,15 @@ export function encodeBinary(value: $.api.GetMarketDepthRequest): Uint8Array {
   return serialize(result);
 }
 
-export function decodeBinary(binary: Uint8Array): $.api.GetMarketDepthRequest {
+export function decodeBinary(binary: Uint8Array): $.api.GetMarketDepthsRequest {
   const result = getDefaultValue();
   const wireMessage = deserialize(binary);
   const wireFields = new Map(wireMessage);
-  field: {
-    const wireValue = wireFields.get(1);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.string(wireValue);
-    if (value === undefined) break field;
-    result.market = value;
+  collection: {
+    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 1).map(([, wireValue]) => wireValue);
+    const value = wireValues.map((wireValue) => wireValueToTsValueFns.string(wireValue)).filter(x => x !== undefined);
+    if (!value.length) break collection;
+    result.markets = value as any;
   }
   field: {
     const wireValue = wireFields.get(2);

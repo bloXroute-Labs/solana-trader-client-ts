@@ -36,6 +36,7 @@
     "@solana/web3.js": "^1.47.3",
     "bs58": "^5.0.0",
     "dotenv": "^16.0.1",
+    "esbuild": "^0.16.7",
     "google-protobuf": "^3.20.1",
     "node-fetch": "^3.2.6",
     "np": "^6.0.0",

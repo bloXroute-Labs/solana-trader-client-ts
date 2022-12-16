@@ -3,7 +3,7 @@ import {
     GetAccountBalanceResponse,
     GetKlineRequest,
     GetKlineResponse,
-    GetMarketDepthStreamResponse,
+    GetMarketDepthsStreamResponse,
     GetMarketsRequest,
     GetMarketsResponse,
     GetOpenOrdersRequest,
@@ -23,6 +23,8 @@ import {
     GetTradesResponse,
     GetTradesStreamResponse,
     GetUnsettledRequest,
+    GetMarketDepthRequest,
+    GetMarketDepthResponse,
     GetUnsettledResponse,
     PostCancelAllRequest,
     PostCancelAllResponse,
@@ -153,6 +155,10 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
+    getMarketDepth(request: GetMarketDepthRequest): Promise<GetMarketDepthResponse> {
+        throw new Error("Not implemented")
+    }
+
     getOrderbooksStream(request: GetOrderbooksRequest): Promise<AsyncGenerator<GetOrderbooksStreamResponse>> {
         throw new Error("Not implemented")
     }
@@ -161,7 +167,7 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    getMarketDepthStream(request: GetMarketsRequest): Promise<AsyncGenerator<GetMarketDepthStreamResponse>> {
+    getMarketDepthsStream(request: GetMarketsRequest): Promise<AsyncGenerator<GetMarketDepthsStreamResponse>> {
         throw new Error("Not implemented")
     }
 
