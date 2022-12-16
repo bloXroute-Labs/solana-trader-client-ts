@@ -1,12 +1,7 @@
 import {
-  Type as Step,
+  Type as Project,
   name2num,
   num2name,
-} from "./Step.js";
-import {
-  Type as Project,
-  name2num as name2num_1,
-  num2name as num2name_1,
 } from "./Project.js";
 import {
   tsValueToJsonValueFns,
@@ -33,8 +28,7 @@ import {
 export declare namespace $.api {
   export type GetMarketDepthRequest = {
     market: string;
-    depth: number;
-    step: Step;
+    limit: number;
     project: Project;
   }
 }
@@ -43,8 +37,7 @@ export type Type = $.api.GetMarketDepthRequest;
 export function getDefaultValue(): $.api.GetMarketDepthRequest {
   return {
     market: "",
-    depth: 0,
-    step: "STEP0",
+    limit: 0,
     project: "P_UNKNOWN",
   };
 }
@@ -59,8 +52,7 @@ export function createValue(partialValue: Partial<$.api.GetMarketDepthRequest>):
 export function encodeJson(value: $.api.GetMarketDepthRequest): unknown {
   const result: any = {};
   if (value.market !== undefined) result.market = tsValueToJsonValueFns.string(value.market);
-  if (value.depth !== undefined) result.depth = tsValueToJsonValueFns.int32(value.depth);
-  if (value.step !== undefined) result.step = tsValueToJsonValueFns.enum(value.step);
+  if (value.limit !== undefined) result.limit = tsValueToJsonValueFns.uint32(value.limit);
   if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
   return result;
 }
@@ -68,8 +60,7 @@ export function encodeJson(value: $.api.GetMarketDepthRequest): unknown {
 export function decodeJson(value: any): $.api.GetMarketDepthRequest {
   const result = getDefaultValue();
   if (value.market !== undefined) result.market = jsonValueToTsValueFns.string(value.market);
-  if (value.depth !== undefined) result.depth = jsonValueToTsValueFns.int32(value.depth);
-  if (value.step !== undefined) result.step = jsonValueToTsValueFns.enum(value.step) as Step;
+  if (value.limit !== undefined) result.limit = jsonValueToTsValueFns.uint32(value.limit);
   if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
   return result;
 }
@@ -82,22 +73,16 @@ export function encodeBinary(value: $.api.GetMarketDepthRequest): Uint8Array {
       [1, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.depth !== undefined) {
-    const tsValue = value.depth;
+  if (value.limit !== undefined) {
+    const tsValue = value.limit;
     result.push(
-      [2, tsValueToWireValueFns.int32(tsValue)],
-    );
-  }
-  if (value.step !== undefined) {
-    const tsValue = value.step;
-    result.push(
-      [3, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
+      [2, tsValueToWireValueFns.uint32(tsValue)],
     );
   }
   if (value.project !== undefined) {
     const tsValue = value.project;
     result.push(
-      [4, { type: WireType.Varint as const, value: new Long(name2num_1[tsValue as keyof typeof name2num_1]) }],
+      [3, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
     );
   }
   return serialize(result);
@@ -117,21 +102,14 @@ export function decodeBinary(binary: Uint8Array): $.api.GetMarketDepthRequest {
   field: {
     const wireValue = wireFields.get(2);
     if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.int32(wireValue);
+    const value = wireValueToTsValueFns.uint32(wireValue);
     if (value === undefined) break field;
-    result.depth = value;
+    result.limit = value;
   }
   field: {
     const wireValue = wireFields.get(3);
     if (wireValue === undefined) break field;
     const value = wireValue.type === WireType.Varint ? num2name[wireValue.value[0] as keyof typeof num2name] : undefined;
-    if (value === undefined) break field;
-    result.step = value;
-  }
-  field: {
-    const wireValue = wireFields.get(4);
-    if (wireValue === undefined) break field;
-    const value = wireValue.type === WireType.Varint ? num2name_1[wireValue.value[0] as keyof typeof num2name_1] : undefined;
     if (value === undefined) break field;
     result.project = value;
   }
