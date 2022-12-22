@@ -163,6 +163,14 @@ export class WsProvider extends BaseProvider {
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
+    getSwapsStream = async (request: GetSwapsStreamRequest): Promise<AsyncGenerator<GetSwapsStreamResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe("GetSwapsStream", request)
+
+        this.manageGetStreamMaps("GetSwapsStream", subscriptionId)
+
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
+    }
+
     getTickersStream = async (request: GetTickersRequest): Promise<AsyncGenerator<GetTickersStreamResponse>> => {
         const subscriptionId = await this.wsConnection.subscribe("GetTickersStream", request)
 
@@ -241,6 +249,10 @@ export class WsProvider extends BaseProvider {
         return this.cancelStreamByCount("GetOrderbooksStream", streamNumber)
     }
 
+    cancelGetSwapsStreamByCount = async (streamNumber: number): Promise<boolean> => {
+        return this.cancelStreamByCount("GetSwapsStream", streamNumber)
+    }
+
     cancelGetTickersStreamByCount = async (streamNumber: number): Promise<boolean> => {
         return this.cancelStreamByCount("GetTickersStream", streamNumber)
     }
@@ -285,6 +297,10 @@ export class WsProvider extends BaseProvider {
 
     cancelAllGetOrderbooksStream = async (): Promise<Awaited<boolean>[]> => {
         return this.cancelAllStreams("GetOrderbooksStream")
+    }
+
+    cancelAllGetSwapsStream = async (): Promise<Awaited<boolean>[]> => {
+        return this.cancelAllStreams("GetSwapsStream")
     }
 
     cancelAllGetTickersStream = async (): Promise<Awaited<boolean>[]> => {
