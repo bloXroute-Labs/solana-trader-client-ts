@@ -662,7 +662,7 @@ async function callGetTradesStream(provider: BaseProvider) {
 async function callGetSwapsStream(provider: BaseProvider) {
     try {
         console.info("Subscribing for swap updates of RAY/SOL market")
-        const req = await provider.getSwapsStream({ projects: ["P_RAYDIUM"], pools: ["AVs9TA4nWDzfPJE9gGVNJMVhcQy3V9PGazuz33BfG2RA"], includeFailed: true })
+        const req = await provider.getSwapsStream({ projects:["P_RAYDIUM"], pools:["AVs9TA4nWDzfPJE9gGVNJMVhcQy3V9PGazuz33BfG2RA"], includeFailed: true })
 
         let count = 0
         for await (const tr of req) {
