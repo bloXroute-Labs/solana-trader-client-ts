@@ -144,12 +144,10 @@ async function ws() {
     }
 
     await provider.connect()
-
     console.info(" ----  WS Requests  ----")
     await doRequests(provider)
     console.info(" ----  WS Amm Requests  ----")
     await doAmmRequests(provider)
-
     if (process.env.RUN_LIFECYCLE === "true") {
         console.info(" ----  WS Streams  ----")
         await doStreams(provider)
@@ -243,6 +241,10 @@ async function doAmmRequests(provider: BaseProvider) {
 }
 
 async function doStreams(provider: BaseProvider) {
+    await callGetSwapsStream(provider)
+    console.info(" ")
+    console.info(" ")
+
     await callGetOrderbookStream(provider)
     console.info(" ")
     console.info(" ")
@@ -259,6 +261,11 @@ async function doStreams(provider: BaseProvider) {
 }
 
 async function cancelWsStreams(provider: BaseProvider) {
+    console.info("Cancelling swaps stream")
+    await provider.cancelAllGetSwapsStream()
+    console.info(" ")
+    console.info(" ")
+
     console.info("Cancelling orderbooks stream")
     await provider.cancelAllGetOrderbooksStream()
     console.info(" ")
@@ -648,6 +655,28 @@ async function callGetTradesStream(provider: BaseProvider) {
         }
     } catch (error) {
         console.error("Failed to retrieve trade for market SOL/USDC", error)
+    }
+}
+
+async function callGetSwapsStream(provider: BaseProvider) {
+    try {
+        console.info("Subscribing for swap updates of RAY/SOL market")
+        const req = await provider.getSwapsStream({
+            projects: ["P_RAYDIUM"],
+            pools: ["AVs9TA4nWDzfPJE9gGVNJMVhcQy3V9PGazuz33BfG2RA"],
+            includeFailed: true,
+        })
+
+        let count = 0
+        for await (const tr of req) {
+            console.info(tr)
+            count++
+            if (count == 1) {
+                break
+            }
+        }
+    } catch (error) {
+        console.error("Failed to retrieve swap for market RAY/SOL", error)
     }
 }
 

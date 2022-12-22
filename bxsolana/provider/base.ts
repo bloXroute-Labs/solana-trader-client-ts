@@ -186,7 +186,15 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
+    cancelAllGetSwapsStream = async (): Promise<Awaited<boolean>[]> => {
+        throw new Error("Not implemented")
+    }
+
     cancelGetOrderbooksStreamByCount = async (streamNumber: number): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetSwapsStreamByCount = async (streamNumber: number): Promise<boolean> => {
         throw new Error("Not implemented")
     }
 
