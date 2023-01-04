@@ -16,8 +16,8 @@ First, you need to set `AUTH_HEADER` in your .env file to be able to authenticat
 
 For any methods involving transaction creation you will need to provide your 
 Solana private key. You can provide this via the .env file - variable 
-`WALLET_SECRET_KEY`. Also, please set your `WALLET_PUBLIC_KEY` to your main SOL wallet address.
-See samples for more information. 
+`PRIVATE_KEY`. See samples for more information. 
+
 A general note on this: methods named `post*` (e.g. `postorder`) typically 
 do not sign/submit the transaction, only return the raw unsigned transaction. 
 This isn't very useful to most users (unless you want to write a signer in a 
@@ -42,8 +42,7 @@ a proper `.env` file looks like something like this.
 
 ```
 AUTH_HEADER="ZDIxYzE0NmItZWYxNi00ZmFmLTg5YWUtMzYwMTk4YzUyZmM4OjEwOWE5MzEzZDc2Yjg3M......................"
-WALLET_SECRET_KEY="3EhZ4Epe6QrcDKQRucdftv6vWXMnpTKDV4mekSPWZEcZnJV4huzesLHwASdVUzo......................"
-WALLET_PUBLIC_KEY="2JJQHAYdogfB1fE1ftcvFcsQAX................."
+PRIVATE_KEY="3EhZ4Epe6QrcDKQRucdftv6vWXMnpTKDV4mekSPWZEcZnJV4huzesLHwASdVUzo......................"
 ```
 
 ## Development

@@ -197,19 +197,19 @@ async function doRequests(provider: BaseProvider) {
     console.info(" ")
     console.info(" ")
 
-    await callSubmitOrder(provider)
+    await callPostOrder(provider)
     console.info(" ")
     console.info(" ")
 
     await delay(60000)
 
-    await callSubmitCancelByClientOrderID(provider)
+    await callPostCancelByClientOrderID(provider)
     console.info(" ")
     console.info(" ")
 
     await delay(60000)
 
-    await callSettleFunds(provider)
+    await callPostSettleFunds(provider)
     console.info(" ")
     console.info(" ")
 
@@ -779,6 +779,18 @@ async function callGetRecentBlockHashStream(provider: BaseProvider) {
 }
 
 //POST requests
+async function callPostOrder(provider: BaseProvider) {
+    try {
+        console.info("generating New Order transaction")
+        const clientOrderID = getRandom()
+        testOrder.clientOrderID = clientOrderID.toLocaleString("fullwide", { useGrouping: false })
+        const req = await provider.postOrder(testOrder)
+        console.info(req)
+    } catch (error) {
+        console.error("Failed to generate  a New Order transaction", error)
+    }
+}
+
 async function callSubmitOrder(provider: BaseProvider) {
     try {
         console.info("Generating and submitting a New Order transaction")
@@ -788,6 +800,22 @@ async function callSubmitOrder(provider: BaseProvider) {
         console.info(req)
     } catch (error) {
         console.error("Failed to generate and/or submit a New Order transaction", error)
+    }
+}
+
+async function callPostCancelByClientOrderID(provider: BaseProvider) {
+    try {
+        console.info("Generating and Cancel by Client Order ID transaction")
+        const req = await provider.postCancelByClientOrderID({
+            marketAddress: marketAddress,
+            ownerAddress: ownerAddress,
+            openOrdersAddress: openOrdersAddress,
+            clientOrderID: testOrder.clientOrderID,
+            project: "P_OPENBOOK",
+        })
+        console.info(req)
+    } catch (error) {
+        console.error("Failed to generate a Cancel by Client Order ID transaction", error)
     }
 }
 
@@ -804,6 +832,23 @@ async function callSubmitCancelByClientOrderID(provider: BaseProvider) {
         console.info(req)
     } catch (error) {
         console.error("Failed to generate and/or submit a Cancel by Client Order ID transaction", error)
+    }
+}
+
+async function callPostSettleFunds(provider: BaseProvider) {
+    try {
+        console.info("Generating a Settle transaction")
+        const req = await provider.postSettle({
+            market: marketAddress,
+            openOrdersAddress: openOrdersAddress,
+            baseTokenWallet: baseTokenWallet,
+            quoteTokenWallet: quoteTokenWallet,
+            ownerAddress: ownerAddress,
+            project: "P_OPENBOOK",
+        })
+        console.info(req)
+    } catch (error) {
+        console.error("Failed to generate a Settle transaction", error)
     }
 }
 
