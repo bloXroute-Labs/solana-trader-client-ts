@@ -17,6 +17,9 @@ jobs:
       - run:
           command: ts-node -v
           name: Check ts-node version to make sure it installed
+      - run:
+          command: npm run build
+          name: Check code can be built
       - persist_to_workspace:
           root: .
           paths:
