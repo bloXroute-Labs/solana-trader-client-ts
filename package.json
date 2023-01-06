@@ -1,6 +1,6 @@
 {
     "name": "@bloxroute/solana-trader-client-ts",
-    "version": "1.3.0",
+    "version": "1.3.1",
     "description": "Solana Trader API SDK",
     "main": "dist/index.js",
     "directories": {
@@ -63,7 +63,5 @@
         "prettier": "^2.7.1",
         "ts-proto": "^1.115.5"
     },
-    "peerDependencies": {
-
-    }
+    "peerDependencies": {}
 }
