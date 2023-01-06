@@ -1,5 +1,5 @@
-import { LOCAL_API_WS, MAINNET_API_WS } from "../utils/constants.js"
-import WebSocket, { Event } from "ws"
+import { MAINNET_API_WS } from "../utils/constants.js"
+import WebSocket from "isomorphic-ws"
 
 import {
     GetAccountBalanceRequest,

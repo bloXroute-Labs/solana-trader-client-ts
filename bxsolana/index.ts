@@ -1,5 +1,3 @@
-import "core-js"
-
 export { GrpcProvider } from "./provider/grpc"
 export { BaseProvider } from "./provider/base"
 export { HttpProvider } from "./provider/http"

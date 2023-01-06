@@ -1,5 +1,5 @@
 import config from "../utils/config.js"
-import WebSocket from "ws"
+import WebSocket from "isomorphic-ws"
 import { AsyncBlockingQueue } from "../utils/blockingqueue.js"
 
 // eslint-disable-next-line
