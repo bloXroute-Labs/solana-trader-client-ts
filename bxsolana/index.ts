@@ -17,12 +17,15 @@ export {
     TESTNET_API_WS,
 } from "./utils/constants"
 
-export { addMemo, addMemoToSerializedTxn, buildFullySignedTxn, createTraderAPIMemoInstruction } from "./utils/memo"
+export {
+    addMemo,
+    addMemoToSerializedTxn,
+    buildFullySignedTxn,
+    createTraderAPIMemoInstruction,
+} from "./utils/memo"
 
 export { default as config } from "./utils/config"
 
 export { signTx, signTxMessage } from "./utils/transaction"
 
-export * from "./proto/messages/api/index"
-
-export { Api } from "./proto/services/api/index"
+export * from "./proto/api_pb"

@@ -1,9 +1,12 @@
-import { LOCAL_API_WS, MAINNET_API_GRPC_HOST, MAINNET_API_GRPC_PORT, MAINNET_API_WS, TESTNET_API_WS } from "../utils/constants.js"
+import {MAINNET_API_GRPC_HOST, MAINNET_API_GRPC_PORT} from "../utils/constants.js"
 import * as grpc from "@grpc/grpc-js"
-import { CreateGrpcClientImplConfig, createGrpcClientImpl } from "@pbkit/grpc-client"
+import {Client} from "@grpc/grpc-js"
+import {createGrpcClientImpl, CreateGrpcClientImplConfig} from "@pbkit/grpc-client"
 import {
     GetAccountBalanceRequest,
     GetAccountBalanceResponse,
+    GetBlockStreamRequest,
+    GetBlockStreamResponse,
     GetMarketsRequest,
     GetMarketsResponse,
     GetOpenOrdersRequest,
@@ -14,8 +17,24 @@ import {
     GetOrderbooksStreamResponse,
     GetOrderStatusStreamRequest,
     GetOrderStatusStreamResponse,
+    GetPoolReservesStreamRequest,
+    GetPoolReservesStreamResponse,
+    GetPoolsRequest,
+    GetPoolsResponse,
+    GetPriceRequest,
+    GetPriceResponse,
+    GetPricesStreamRequest,
+    GetPricesStreamResponse,
+    GetQuotesRequest,
+    GetQuotesResponse,
+    GetQuotesStreamRequest,
+    GetQuotesStreamResponse,
+    GetRecentBlockHashRequest,
+    GetRecentBlockHashResponse,
     GetServerTimeRequest,
     GetServerTimeResponse,
+    GetSwapsStreamRequest,
+    GetSwapsStreamResponse,
     GetTickersRequest,
     GetTickersResponse,
     GetTickersStreamResponse,
@@ -34,38 +53,17 @@ import {
     PostReplaceOrderRequest,
     PostSettleRequest,
     PostSettleResponse,
-    PostSubmitRequest,
-    PostSubmitResponse,
     PostSubmitBatchRequest,
     PostSubmitBatchResponse,
-    GetPoolsRequest,
-    GetPoolsResponse,
-    GetPriceRequest,
-    GetRecentBlockHashRequest,
-    GetRecentBlockHashResponse,
-    TradeSwapRequest,
+    PostSubmitRequest,
+    PostSubmitResponse,
     RouteTradeSwapRequest,
+    TradeSwapRequest,
     TradeSwapResponse,
-    GetQuotesStreamRequest,
-    GetQuotesStreamResponse,
-    GetQuotesRequest,
-    GetQuotesResponse,
-    GetPoolReservesStreamRequest,
-    GetPoolReservesStreamResponse,
-    GetPriceResponse,
-    GetPricesStreamRequest,
-    GetPricesStreamResponse,
-    GetSwapsStreamRequest,
-    GetSwapsStreamResponse,
-    GetBlockStreamRequest,
-    GetBlockStreamResponse,
-} from "../proto/messages/api/index.js"
-import { createServiceClient, Service } from "../proto/services/api/Api.js"
-import { BaseProvider } from "./base.js"
-import { Client } from "@grpc/grpc-js"
-import { CallMetadataOptions } from "@grpc/grpc-js/src/call-credentials"
+} from "../proto/api_pb"
+import {BaseProvider} from "./base.js"
+import {CallMetadataOptions} from "@grpc/grpc-js/src/call-credentials"
 import config from "../utils/config.js"
-import { WsProvider } from "./ws"
 
 export class GrpcProvider extends BaseProvider {
     private client: Service

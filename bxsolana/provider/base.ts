@@ -1,21 +1,45 @@
 import {
     GetAccountBalanceRequest,
     GetAccountBalanceResponse,
+    GetBlockStreamRequest,
+    GetBlockStreamResponse,
     GetKlineRequest,
     GetKlineResponse,
+    GetMarketDepthRequest,
+    GetMarketDepthResponse,
     GetMarketDepthsStreamResponse,
     GetMarketsRequest,
     GetMarketsResponse,
     GetOpenOrdersRequest,
     GetOpenOrdersResponse,
+    GetOrderbookRequest,
     GetOrderbookResponse,
+    GetOrderbooksRequest,
     GetOrderbooksStreamResponse,
     GetOrderByIDRequest,
     GetOrderByIDResponse,
     GetOrdersRequest,
     GetOrdersResponse,
+    GetOrderStatusStreamRequest,
+    GetOrderStatusStreamResponse,
+    GetPoolReservesStreamRequest,
+    GetPoolReservesStreamResponse,
+    GetPoolsRequest,
+    GetPoolsResponse,
+    GetPriceRequest,
+    GetPriceResponse,
+    GetPricesStreamRequest,
+    GetPricesStreamResponse,
+    GetQuotesRequest,
+    GetQuotesResponse,
+    GetQuotesStreamRequest,
+    GetQuotesStreamResponse,
+    GetRecentBlockHashRequest,
+    GetRecentBlockHashResponse,
     GetServerTimeRequest,
     GetServerTimeResponse,
+    GetSwapsStreamRequest,
+    GetSwapsStreamResponse,
     GetTickersRequest,
     GetTickersResponse,
     GetTickersStreamResponse,
@@ -23,8 +47,6 @@ import {
     GetTradesResponse,
     GetTradesStreamResponse,
     GetUnsettledRequest,
-    GetMarketDepthRequest,
-    GetMarketDepthResponse,
     GetUnsettledResponse,
     PostCancelAllRequest,
     PostCancelAllResponse,
@@ -33,48 +55,29 @@ import {
     PostCancelOrderResponse,
     PostOrderRequest,
     PostOrderResponse,
+    PostReplaceOrderRequest,
     PostSettleRequest,
     PostSettleResponse,
-    PostSubmitRequest,
-    PostSubmitResponse,
-    GetOrderStatusStreamRequest,
-    GetOrderStatusStreamResponse,
-    GetOrderbooksRequest,
-    GetOrderbookRequest,
-    PostReplaceOrderRequest,
-    GetPoolsRequest,
-    GetPoolsResponse,
-    GetPoolReservesStreamResponse,
-    GetPriceResponse,
-    GetPriceRequest,
-    GetQuotesRequest,
-    GetQuotesResponse,
-    GetQuotesStreamRequest,
-    GetQuotesStreamResponse,
-    GetRecentBlockHashRequest,
-    GetRecentBlockHashResponse,
-    TradeSwapRequest,
-    TradeSwapResponse,
-    GetPoolReservesStreamRequest,
-    GetSwapsStreamRequest,
-    GetSwapsStreamResponse,
-    GetPricesStreamRequest,
-    RouteTradeSwapRequest,
-    GetPricesStreamResponse,
     PostSubmitBatchRequest,
     PostSubmitBatchResponse,
-    GetBlockStreamRequest,
-    GetBlockStreamResponse,
+    PostSubmitRequest,
     PostSubmitRequestEntry,
+    PostSubmitResponse,
+    RouteTradeSwapRequest,
     SubmitStrategy,
+    TradeSwapRequest,
+    TradeSwapResponse,
     TransactionMessage,
-} from "../proto/messages/api/index.js"
-import { Api } from "../proto/services/api/index.js"
-import { signTx, signTxMessage, SubmitTransactionResponse } from "../utils/transaction.js"
+} from "../proto/api_pb"
+import {
+    signTx,
+    signTxMessage,
+    SubmitTransactionResponse,
+} from "../utils/transaction.js"
 
 /* eslint-disable */
 
-export abstract class BaseProvider implements Api {
+export abstract class BaseProvider {
     abstract close(): void
 
     getMarkets(request: GetMarketsRequest): Promise<GetMarketsResponse> {
@@ -100,11 +103,15 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    getServerTime(request: GetServerTimeRequest): Promise<GetServerTimeResponse> {
+    getServerTime(
+        request: GetServerTimeRequest
+    ): Promise<GetServerTimeResponse> {
         throw new Error("Not implemented")
     }
 
-    getAccountBalance(request: GetAccountBalanceRequest): Promise<GetAccountBalanceResponse> {
+    getAccountBalance(
+        request: GetAccountBalanceRequest
+    ): Promise<GetAccountBalanceResponse> {
         throw new Error("Not implemented")
     }
 
@@ -117,15 +124,21 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    postCancelOrder(request: PostCancelOrderRequest): Promise<PostCancelOrderResponse> {
+    postCancelOrder(
+        request: PostCancelOrderRequest
+    ): Promise<PostCancelOrderResponse> {
         throw new Error("Not implemented")
     }
 
-    postCancelByClientOrderID(request: PostCancelByClientOrderIDRequest): Promise<PostCancelOrderResponse> {
+    postCancelByClientOrderID(
+        request: PostCancelByClientOrderIDRequest
+    ): Promise<PostCancelOrderResponse> {
         throw new Error("Not implemented")
     }
 
-    postCancelAll(request: PostCancelAllRequest): Promise<PostCancelAllResponse> {
+    postCancelAll(
+        request: PostCancelAllRequest
+    ): Promise<PostCancelAllResponse> {
         throw new Error("Not implemented")
     }
 
@@ -133,18 +146,24 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    postReplaceByClientOrderID(request: PostOrderRequest): Promise<PostOrderResponse> {
+    postReplaceByClientOrderID(
+        request: PostOrderRequest
+    ): Promise<PostOrderResponse> {
         throw new Error("Not implemented")
     }
 
-    postReplaceOrder(request: PostReplaceOrderRequest): Promise<PostOrderResponse> {
+    postReplaceOrder(
+        request: PostReplaceOrderRequest
+    ): Promise<PostOrderResponse> {
         throw new Error("Not implemented")
     }
 
     getOrders(request: GetOrdersRequest): Promise<GetOrdersResponse> {
         throw new Error("Not implemented")
     }
-    getOpenOrders(request: GetOpenOrdersRequest): Promise<GetOpenOrdersResponse> {
+    getOpenOrders(
+        request: GetOpenOrdersRequest
+    ): Promise<GetOpenOrdersResponse> {
         throw new Error("Not implemented")
     }
     getOrderByID(request: GetOrderByIDRequest): Promise<GetOrderByIDResponse> {
@@ -155,27 +174,39 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    getMarketDepth(request: GetMarketDepthRequest): Promise<GetMarketDepthResponse> {
+    getMarketDepth(
+        request: GetMarketDepthRequest
+    ): Promise<GetMarketDepthResponse> {
         throw new Error("Not implemented")
     }
 
-    getOrderbooksStream(request: GetOrderbooksRequest): Promise<AsyncGenerator<GetOrderbooksStreamResponse>> {
+    getOrderbooksStream(
+        request: GetOrderbooksRequest
+    ): Promise<AsyncGenerator<GetOrderbooksStreamResponse>> {
         throw new Error("Not implemented")
     }
 
-    getTickersStream(request: GetTickersRequest): Promise<AsyncGenerator<GetTickersStreamResponse>> {
+    getTickersStream(
+        request: GetTickersRequest
+    ): Promise<AsyncGenerator<GetTickersStreamResponse>> {
         throw new Error("Not implemented")
     }
 
-    getMarketDepthsStream(request: GetMarketsRequest): Promise<AsyncGenerator<GetMarketDepthsStreamResponse>> {
+    getMarketDepthsStream(
+        request: GetMarketsRequest
+    ): Promise<AsyncGenerator<GetMarketDepthsStreamResponse>> {
         throw new Error("Not implemented")
     }
 
-    getTradesStream(request: GetTradesRequest): Promise<AsyncGenerator<GetTradesStreamResponse>> {
+    getTradesStream(
+        request: GetTradesRequest
+    ): Promise<AsyncGenerator<GetTradesStreamResponse>> {
         throw new Error("Not implemented")
     }
 
-    getOrderStatusStream(request: GetOrderStatusStreamRequest): Promise<AsyncGenerator<GetOrderStatusStreamResponse>> {
+    getOrderStatusStream(
+        request: GetOrderStatusStreamRequest
+    ): Promise<AsyncGenerator<GetOrderStatusStreamResponse>> {
         throw new Error("Not implemented")
     }
 
@@ -190,11 +221,15 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    cancelGetOrderbooksStreamByCount = async (streamNumber: number): Promise<boolean> => {
+    cancelGetOrderbooksStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
         throw new Error("Not implemented")
     }
 
-    cancelGetSwapsStreamByCount = async (streamNumber: number): Promise<boolean> => {
+    cancelGetSwapsStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
         throw new Error("Not implemented")
     }
 
@@ -202,7 +237,9 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    cancelGetTradesStreamByCount = async (streamNumber: number): Promise<boolean> => {
+    cancelGetTradesStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
         throw new Error("Not implemented")
     }
 
@@ -210,7 +247,9 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    cancelGetTickersStreamByCount = async (streamNumber: number): Promise<boolean> => {
+    cancelGetTickersStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
         throw new Error("Not implemented")
     }
 
@@ -218,15 +257,21 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    cancelGetOrderStatusStreamByCount = async (streamNumber: number): Promise<boolean> => {
+    cancelGetOrderStatusStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
         throw new Error("Not implemented")
     }
 
-    cancelAllGetRecentBlockhashStream = async (): Promise<Awaited<boolean>[]> => {
+    cancelAllGetRecentBlockhashStream = async (): Promise<
+        Awaited<boolean>[]
+    > => {
         throw new Error("Not implemented")
     }
 
-    cancelGetRecentBlockhashStreamByCount = async (streamNumber: number): Promise<boolean> => {
+    cancelGetRecentBlockhashStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
         throw new Error("Not implemented")
     }
 
@@ -234,7 +279,9 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    cancelGetQuotesStreamByCount = async (streamNumber: number): Promise<boolean> => {
+    cancelGetQuotesStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
         throw new Error("Not implemented")
     }
 
@@ -242,58 +289,99 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    cancelGetPoolReservesStreamByCount = async (streamNumber: number): Promise<boolean> => {
+    cancelGetPoolReservesStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
         throw new Error("Not implemented")
     }
 
-    async submitOrder(request: PostOrderRequest, skipPreFlight = false): Promise<SubmitTransactionResponse> {
+    async submitOrder(
+        request: PostOrderRequest,
+        skipPreFlight = false
+    ): Promise<SubmitTransactionResponse> {
         const res = await this.postOrder(request)
 
-        const submitResponse = await this.signAndSubmitTx(res.transaction, skipPreFlight)
+        const submitResponse = await this.signAndSubmitTx(
+            res.getTransaction(),
+            skipPreFlight
+        )
 
-        return { signature: submitResponse.signature, openOrdersAccount: res.openOrdersAddress }
+        return {
+            signature: submitResponse.getSignature(),
+            openOrdersAccount: res.getOpenordersaddress(),
+        }
     }
 
-    async submitCancelOrder(request: PostCancelOrderRequest, skipPreFlight = false): Promise<PostSubmitResponse> {
+    async submitCancelOrder(
+        request: PostCancelOrderRequest,
+        skipPreFlight = false
+    ): Promise<PostSubmitResponse> {
         const res = await this.postCancelOrder(request)
 
-        return this.signAndSubmitTx(res.transaction, skipPreFlight)
+        return this.signAndSubmitTx(res.getTransaction(), skipPreFlight)
     }
 
-    async submitCancelOrderByClientOrderID(request: PostCancelByClientOrderIDRequest, skipPreFlight = true): Promise<PostSubmitResponse> {
+    async submitCancelOrderByClientOrderID(
+        request: PostCancelByClientOrderIDRequest,
+        skipPreFlight = true
+    ): Promise<PostSubmitResponse> {
         const res = await this.postCancelByClientOrderID(request)
 
-        return this.signAndSubmitTx(res.transaction, skipPreFlight)
+        return this.signAndSubmitTx(res.getTransaction(), skipPreFlight)
     }
 
-    async submitCancelAll(request: PostCancelAllRequest, skipPreFlight = true): Promise<PostSubmitBatchResponse> {
+    async submitCancelAll(
+        request: PostCancelAllRequest,
+        skipPreFlight = true
+    ): Promise<PostSubmitBatchResponse> {
         const res = await this.postCancelAll(request)
 
-        return this.signAndSubmitTxs(res.transactions, "P_SUBMIT_ALL", skipPreFlight)
+        return this.signAndSubmitTxs(
+            res.getTransactionsList(),
+            SubmitStrategy.P_SUBMIT_ALL,
+            skipPreFlight
+        )
     }
 
-    async submitSettle(request: PostSettleRequest, skipPreFlight = true): Promise<PostSubmitResponse> {
+    async submitSettle(
+        request: PostSettleRequest,
+        skipPreFlight = true
+    ): Promise<PostSubmitResponse> {
         const res = await this.postSettle(request)
 
-        return this.signAndSubmitTx(res.transaction, skipPreFlight)
+        return this.signAndSubmitTx(res.getTransaction(), skipPreFlight)
     }
 
-    async submitReplaceByClientOrderID(request: PostOrderRequest, skipPreFlight = true): Promise<PostSubmitResponse> {
+    async submitReplaceByClientOrderID(
+        request: PostOrderRequest,
+        skipPreFlight = true
+    ): Promise<PostSubmitResponse> {
         const res = await this.postReplaceByClientOrderID(request)
 
-        return this.signAndSubmitTx(res.transaction, skipPreFlight)
+        return this.signAndSubmitTx(res.getTransaction(), skipPreFlight)
     }
 
-    async submitReplaceOrder(request: PostReplaceOrderRequest, skipPreFlight = true): Promise<PostSubmitResponse> {
+    async submitReplaceOrder(
+        request: PostReplaceOrderRequest,
+        skipPreFlight = true
+    ): Promise<PostSubmitResponse> {
         const res = await this.postReplaceOrder(request)
 
-        return this.signAndSubmitTx(res.transaction, skipPreFlight)
+        return this.signAndSubmitTx(res.getTransaction(), skipPreFlight)
     }
 
-    async submitTradeSwap(request: TradeSwapRequest, submitStrategy: SubmitStrategy, skipPreFlight = true): Promise<PostSubmitBatchResponse> {
+    async submitTradeSwap(
+        request: TradeSwapRequest,
+        submitStrategy: SubmitStrategy,
+        skipPreFlight = true
+    ): Promise<PostSubmitBatchResponse> {
         const res = await this.postTradeSwap(request)
 
-        return this.signAndSubmitTxs(res.transactions, submitStrategy, skipPreFlight)
+        return this.signAndSubmitTxs(
+            res.getTransactionsList(),
+            submitStrategy,
+            skipPreFlight
+        )
     }
 
     async submitRouteTradeSwap(
@@ -303,7 +391,11 @@ export abstract class BaseProvider implements Api {
     ): Promise<PostSubmitBatchResponse> {
         const res = await this.postRouteTradeSwap(request)
 
-        return this.signAndSubmitTxs(res.transactions, submitStrategy, skipPreFlight)
+        return this.signAndSubmitTxs(
+            res.getTransactionsList(),
+            submitStrategy,
+            skipPreFlight
+        )
     }
 
     private signAndSubmitTx(
@@ -315,9 +407,16 @@ export abstract class BaseProvider implements Api {
             throw Error("transaction message was undefined")
         }
 
-        const signedTx = signTx(transactionMessage.content)
+        const signedTx = signTx(transactionMessage.getContent())
+        const request = new PostSubmitRequest()
+            .setTransaction(
+                new TransactionMessage()
+                    .setContent(signedTx.serialize().toString("base64"))
+                    .setIscleanup(isCleanup)
+            )
+            .setSkippreflight(skipPreFlight)
 
-        return this.postSubmit({ transaction: { content: signedTx.serialize().toString("base64"), isCleanup: isCleanup }, skipPreFlight })
+        return this.postSubmit(request)
     }
 
     private signAndSubmitTxs(
@@ -331,19 +430,23 @@ export abstract class BaseProvider implements Api {
 
         const entries = new Array<PostSubmitRequestEntry>()
         for (const transactionMessage of transactionMessages) {
-            entries.push({
-                transaction: signTxMessage(transactionMessage),
-                skipPreFlight: skipPreFlight,
-            })
+            entries.push(
+                new PostSubmitRequestEntry()
+                    .setTransaction(signTxMessage(transactionMessage))
+                    .setSkippreflight(skipPreFlight)
+            )
         }
 
-        return this.postSubmitBatch({
-            entries: entries,
-            SubmitStrategy: submitStrategy,
-        })
+        return this.postSubmitBatch(
+            new PostSubmitBatchRequest()
+                .setEntriesList(entries)
+                .setSubmitstrategy(submitStrategy)
+        )
     }
 
-    getPoolReservesStream(request: GetPoolReservesStreamRequest): Promise<AsyncGenerator<GetPoolReservesStreamResponse>> {
+    getPoolReservesStream(
+        request: GetPoolReservesStreamRequest
+    ): Promise<AsyncGenerator<GetPoolReservesStreamResponse>> {
         throw new Error("Not implemented")
     }
 
@@ -355,15 +458,21 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    getQuotesStream(request: GetQuotesStreamRequest): Promise<AsyncGenerator<GetQuotesStreamResponse>> {
+    getQuotesStream(
+        request: GetQuotesStreamRequest
+    ): Promise<AsyncGenerator<GetQuotesStreamResponse>> {
         throw new Error("Not implemented")
     }
 
-    getRecentBlockHash(request: GetRecentBlockHashRequest): Promise<GetRecentBlockHashResponse> {
+    getRecentBlockHash(
+        request: GetRecentBlockHashRequest
+    ): Promise<GetRecentBlockHashResponse> {
         throw new Error("Not implemented")
     }
 
-    getRecentBlockHashStream(request: GetRecentBlockHashRequest): Promise<AsyncGenerator<GetRecentBlockHashResponse>> {
+    getRecentBlockHashStream(
+        request: GetRecentBlockHashRequest
+    ): Promise<AsyncGenerator<GetRecentBlockHashResponse>> {
         throw new Error("Not implemented")
     }
 
@@ -371,23 +480,33 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    getSwapsStream(request: GetSwapsStreamRequest): Promise<AsyncGenerator<GetSwapsStreamResponse>> {
+    getSwapsStream(
+        request: GetSwapsStreamRequest
+    ): Promise<AsyncGenerator<GetSwapsStreamResponse>> {
         throw new Error("Not implemented")
     }
 
-    getPricesStream(request: GetPricesStreamRequest): Promise<AsyncGenerator<GetPricesStreamResponse>> {
+    getPricesStream(
+        request: GetPricesStreamRequest
+    ): Promise<AsyncGenerator<GetPricesStreamResponse>> {
         throw new Error("Not implemented")
     }
 
-    postRouteTradeSwap(request: RouteTradeSwapRequest): Promise<TradeSwapResponse> {
+    postRouteTradeSwap(
+        request: RouteTradeSwapRequest
+    ): Promise<TradeSwapResponse> {
         throw new Error("Not implemented")
     }
 
-    postSubmitBatch(request: PostSubmitBatchRequest): Promise<PostSubmitBatchResponse> {
+    postSubmitBatch(
+        request: PostSubmitBatchRequest
+    ): Promise<PostSubmitBatchResponse> {
         throw new Error("Not implemented")
     }
 
-    getBlockStream(request: GetBlockStreamRequest): Promise<AsyncGenerator<GetBlockStreamResponse>> {
+    getBlockStream(
+        request: GetBlockStreamRequest
+    ): Promise<AsyncGenerator<GetBlockStreamResponse>> {
         throw new Error("Method not implemented.")
     }
 }

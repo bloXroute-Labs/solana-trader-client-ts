@@ -1,4 +1,4 @@
-import { MAINNET_API_WS } from "../utils/constants.js"
+import {MAINNET_API_WS} from "../utils/constants.js"
 import WebSocket from "isomorphic-ws"
 
 import {
@@ -28,6 +28,8 @@ import {
     GetRecentBlockHashResponse,
     GetServerTimeRequest,
     GetServerTimeResponse,
+    GetSwapsStreamRequest,
+    GetSwapsStreamResponse,
     GetTickersRequest,
     GetTickersResponse,
     GetTickersStreamResponse,
@@ -48,21 +50,12 @@ import {
     PostSettleResponse,
     PostSubmitRequest,
     PostSubmitResponse,
-    PostSubmitBatchRequest,
-    PostSubmitBatchResponse,
-    TradeSwapRequest,
     RouteTradeSwapRequest,
+    TradeSwapRequest,
     TradeSwapResponse,
-    GetSwapsStreamRequest,
-    GetSwapsStreamResponse,
-    GetPricesStreamRequest,
-    GetPricesStreamResponse,
-    GetBlockStreamRequest,
-    GetBlockStreamResponse,
-} from "../proto/messages/api/index.js"
-import { BaseProvider } from "./base.js"
-import config from "../utils/config.js"
-import { RpcWsConnection } from "../ws/rpcclient.js"
+} from "../proto/api_pb"
+import {BaseProvider} from "./base.js"
+import {RpcWsConnection} from "../ws/rpcclient.js"
 
 // eslint-disable-next-line
 type Resolver = (result: any) => void
