@@ -1,4 +1,4 @@
-import {MAINNET_API_WS} from "../utils/constants.js"
+import { MAINNET_API_WS } from "../utils/constants.js"
 import WebSocket from "isomorphic-ws"
 
 import {
@@ -54,8 +54,8 @@ import {
     TradeSwapRequest,
     TradeSwapResponse,
 } from "../proto/api_pb"
-import {BaseProvider} from "./base.js"
-import {RpcWsConnection} from "../ws/rpcclient.js"
+import { BaseProvider } from "./base.js"
+import { RpcWsConnection } from "../ws/rpcclient.js"
 
 // eslint-disable-next-line
 type Resolver = (result: any) => void
@@ -92,7 +92,9 @@ export class WsProvider extends BaseProvider {
         this.wsConnection.close()
     }
 
-    async getOrderbook(request: GetOrderbookRequest): Promise<GetOrderbookResponse> {
+    async getOrderbook(
+        request: GetOrderbookRequest
+    ): Promise<GetOrderbookResponse> {
         return await this.wsConnection.call("GetOrderbook", request)
     }
 
@@ -108,23 +110,34 @@ export class WsProvider extends BaseProvider {
         return await this.wsConnection.call("GetTrades", request)
     }
 
-    async getServerTime(request: GetServerTimeRequest): Promise<GetServerTimeResponse> {
+    async getServerTime(
+        request: GetServerTimeRequest
+    ): Promise<GetServerTimeResponse> {
         return await this.wsConnection.call("GetServerTime", request)
     }
 
-    async getOpenOrders(request: GetOpenOrdersRequest): Promise<GetOpenOrdersResponse> {
+    async getOpenOrders(
+        request: GetOpenOrdersRequest
+    ): Promise<GetOpenOrdersResponse> {
         return await this.wsConnection.call("GetOpenOrders", request)
     }
 
-    async getUnsettled(request: GetUnsettledRequest): Promise<GetUnsettledResponse> {
+    async getUnsettled(
+        request: GetUnsettledRequest
+    ): Promise<GetUnsettledResponse> {
         return await this.wsConnection.call("GetUnsettled", request)
     }
 
-    async getAccountBalance(request: GetAccountBalanceRequest): Promise<GetAccountBalanceResponse> {
+    async getAccountBalance(
+        request: GetAccountBalanceRequest
+    ): Promise<GetAccountBalanceResponse> {
         return await this.wsConnection.call("GetAccountBalance", request)
     }
 
-    private manageGetStreamMaps = async (streamName: string, subscriptionID: string) => {
+    private manageGetStreamMaps = async (
+        streamName: string,
+        subscriptionID: string
+    ) => {
         let count: number
         if (!(streamName in this.streamToCountMap)) {
             count = 1
@@ -148,64 +161,104 @@ export class WsProvider extends BaseProvider {
     }
 
     //stream requests
-    getOrderbooksStream = async (request: GetOrderbooksRequest): Promise<AsyncGenerator<GetOrderbooksStreamResponse>> => {
-        const subscriptionId = await this.wsConnection.subscribe("GetOrderbooksStream", request)
+    getOrderbooksStream = async (
+        request: GetOrderbooksRequest
+    ): Promise<AsyncGenerator<GetOrderbooksStreamResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetOrderbooksStream",
+            request
+        )
 
         this.manageGetStreamMaps("GetOrderbooksStream", subscriptionId)
 
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
-    getSwapsStream = async (request: GetSwapsStreamRequest): Promise<AsyncGenerator<GetSwapsStreamResponse>> => {
-        const subscriptionId = await this.wsConnection.subscribe("GetSwapsStream", request)
+    getSwapsStream = async (
+        request: GetSwapsStreamRequest
+    ): Promise<AsyncGenerator<GetSwapsStreamResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetSwapsStream",
+            request
+        )
 
         this.manageGetStreamMaps("GetSwapsStream", subscriptionId)
 
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
-    getTickersStream = async (request: GetTickersRequest): Promise<AsyncGenerator<GetTickersStreamResponse>> => {
-        const subscriptionId = await this.wsConnection.subscribe("GetTickersStream", request)
+    getTickersStream = async (
+        request: GetTickersRequest
+    ): Promise<AsyncGenerator<GetTickersStreamResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetTickersStream",
+            request
+        )
 
         this.manageGetStreamMaps("GetTickersStream", subscriptionId)
 
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
-    getTradesStream = async (request: GetTradesRequest): Promise<AsyncGenerator<GetTradesStreamResponse>> => {
-        const subscriptionId = await this.wsConnection.subscribe("GetTradesStream", request)
+    getTradesStream = async (
+        request: GetTradesRequest
+    ): Promise<AsyncGenerator<GetTradesStreamResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetTradesStream",
+            request
+        )
 
         this.manageGetStreamMaps("GetTradesStream", subscriptionId)
 
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
-    getOrderStatusStream = async (request: GetOrderStatusStreamRequest): Promise<AsyncGenerator<GetOrderStatusStreamResponse>> => {
-        const subscriptionId = await this.wsConnection.subscribe("GetOrderStatusStream", request)
+    getOrderStatusStream = async (
+        request: GetOrderStatusStreamRequest
+    ): Promise<AsyncGenerator<GetOrderStatusStreamResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetOrderStatusStream",
+            request
+        )
 
         this.manageGetStreamMaps("GetOrderStatusStream", subscriptionId)
 
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
-    getRecentBlockHashStream = async (request: GetRecentBlockHashRequest): Promise<AsyncGenerator<GetRecentBlockHashResponse>> => {
-        const subscriptionId = await this.wsConnection.subscribe("GetRecentBlockHashStream", request)
+    getRecentBlockHashStream = async (
+        request: GetRecentBlockHashRequest
+    ): Promise<AsyncGenerator<GetRecentBlockHashResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetRecentBlockHashStream",
+            request
+        )
 
         this.manageGetStreamMaps("GetRecentBlockHashStream", subscriptionId)
 
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
-    getQuotesStream = async (request: GetQuotesStreamRequest): Promise<AsyncGenerator<GetQuotesStreamResponse>> => {
-        const subscriptionId = await this.wsConnection.subscribe("GetQuotesStream", request)
+    getQuotesStream = async (
+        request: GetQuotesStreamRequest
+    ): Promise<AsyncGenerator<GetQuotesStreamResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetQuotesStream",
+            request
+        )
 
         this.manageGetStreamMaps("GetQuotesStream", subscriptionId)
 
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
-    getPoolReservesStream = async (request: GetPoolReservesStreamRequest): Promise<AsyncGenerator<GetPoolReservesStreamResponse>> => {
-        const subscriptionId = await this.wsConnection.subscribe("GetPoolReservesStream", request)
+    getPoolReservesStream = async (
+        request: GetPoolReservesStreamRequest
+    ): Promise<AsyncGenerator<GetPoolReservesStreamResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetPoolReservesStream",
+            request
+        )
 
         this.manageGetStreamMaps("GetPoolReservesStream", subscriptionId)
 
@@ -223,7 +276,10 @@ export class WsProvider extends BaseProvider {
     // can cancel 1, or 2. If a nonvalid cancellation number is sent as an input, the promise will be rejected with a
     // false boolean
 
-    private cancelStreamByCount = async (streamName: string, streamNumber: number): Promise<boolean> => {
+    private cancelStreamByCount = async (
+        streamName: string,
+        streamNumber: number
+    ): Promise<boolean> => {
         const countToSubscriptionID = this.streamToCountMap.get(streamName)
 
         if (countToSubscriptionID) {
@@ -238,39 +294,63 @@ export class WsProvider extends BaseProvider {
         return false
     }
 
-    cancelGetOrderbooksStreamByCount = async (streamNumber: number): Promise<boolean> => {
+    cancelGetOrderbooksStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
         return this.cancelStreamByCount("GetOrderbooksStream", streamNumber)
     }
 
-    cancelGetSwapsStreamByCount = async (streamNumber: number): Promise<boolean> => {
+    cancelGetSwapsStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
         return this.cancelStreamByCount("GetSwapsStream", streamNumber)
     }
 
-    cancelGetTickersStreamByCount = async (streamNumber: number): Promise<boolean> => {
+    cancelGetTickersStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
         return this.cancelStreamByCount("GetTickersStream", streamNumber)
     }
 
-    cancelGetTradesStreamByCount = async (streamNumber: number): Promise<boolean> => {
+    cancelGetTradesStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
         return this.cancelStreamByCount("GetTradesStream", streamNumber)
     }
 
-    cancelGetOrderStatusStreamByCount = async (streamNumber: number): Promise<boolean> => {
+    cancelGetOrderStatusStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
         return this.cancelStreamByCount("GetOrderStatusStream", streamNumber)
     }
 
-    cancelGetRecentBlockhashStreamByCount = async (streamNumber: number): Promise<boolean> => {
-        return this.cancelStreamByCount("GetRecentBlockHashStream", streamNumber)
+    cancelGetRecentBlockhashStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
+        return this.cancelStreamByCount(
+            "GetRecentBlockHashStream",
+            streamNumber
+        )
     }
 
-    cancelGetQuotesStreamByCount = async (streamNumber: number): Promise<boolean> => {
-        return this.cancelStreamByCount("GetRecentBlockHashStream", streamNumber)
+    cancelGetQuotesStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
+        return this.cancelStreamByCount(
+            "GetRecentBlockHashStream",
+            streamNumber
+        )
     }
 
-    cancelGetPoolReservesStreamByCount = async (streamNumber: number): Promise<boolean> => {
+    cancelGetPoolReservesStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
         return this.cancelStreamByCount("GetPoolReservesStream", streamNumber)
     }
 
-    private cancelAllStreams = async (streamName: string): Promise<boolean[]> => {
+    private cancelAllStreams = async (
+        streamName: string
+    ): Promise<boolean[]> => {
         const retValues: Promise<boolean>[] = []
 
         const countToSubscriptionID = this.streamToCountMap.get(streamName)
@@ -308,7 +388,9 @@ export class WsProvider extends BaseProvider {
         return this.cancelAllStreams("GetOrderStatusStream")
     }
 
-    cancelAllGetRecentBlockhashStream = async (): Promise<Awaited<boolean>[]> => {
+    cancelAllGetRecentBlockhashStream = async (): Promise<
+        Awaited<boolean>[]
+    > => {
         return this.cancelAllStreams("GetRecentBlockHashStream")
     }
 
@@ -329,15 +411,21 @@ export class WsProvider extends BaseProvider {
         return this.wsConnection.call("PostSubmit", request)
     }
 
-    async postCancelOrder(request: PostCancelOrderRequest): Promise<PostCancelOrderResponse> {
+    async postCancelOrder(
+        request: PostCancelOrderRequest
+    ): Promise<PostCancelOrderResponse> {
         return this.wsConnection.call("PostCancelOrder", request)
     }
 
-    async postCancelByClientOrderID(request: PostCancelByClientOrderIDRequest): Promise<PostCancelOrderResponse> {
+    async postCancelByClientOrderID(
+        request: PostCancelByClientOrderIDRequest
+    ): Promise<PostCancelOrderResponse> {
         return this.wsConnection.call("PostCancelByClientOrderID", request)
     }
 
-    async postCancelAll(request: PostCancelAllRequest): Promise<PostCancelAllResponse> {
+    async postCancelAll(
+        request: PostCancelAllRequest
+    ): Promise<PostCancelAllResponse> {
         return this.wsConnection.call("PostCancelAll", request)
     }
 
@@ -345,11 +433,15 @@ export class WsProvider extends BaseProvider {
         return this.wsConnection.call("PostSettle", request)
     }
 
-    async postReplaceByClientOrderID(request: PostOrderRequest): Promise<PostOrderResponse> {
+    async postReplaceByClientOrderID(
+        request: PostOrderRequest
+    ): Promise<PostOrderResponse> {
         return this.wsConnection.call("postReplaceByClientOrderID", request)
     }
 
-    async postReplaceOrder(request: PostReplaceOrderRequest): Promise<PostOrderResponse> {
+    async postReplaceOrder(
+        request: PostReplaceOrderRequest
+    ): Promise<PostOrderResponse> {
         return this.wsConnection.call("postReplaceOrder", request)
     }
 
@@ -365,7 +457,9 @@ export class WsProvider extends BaseProvider {
         return this.wsConnection.call("GetQuotes", request)
     }
 
-    postRouteTradeSwap(request: RouteTradeSwapRequest): Promise<TradeSwapResponse> {
+    postRouteTradeSwap(
+        request: RouteTradeSwapRequest
+    ): Promise<TradeSwapResponse> {
         return this.wsConnection.call("PostRouteTradeSwap", request)
     }
 

@@ -41,11 +41,14 @@ export class RpcWsConnection {
         }
 
         socket.onmessage = (msg: unknown) => {
-            const { id, result, method, params } = JSON.parse((msg as MessageEvent<string>).data)
+            const { id, result, method, params } = JSON.parse(
+                (msg as MessageEvent<string>).data
+            )
 
             if (method === "subscribe") {
                 const { subscription, result } = params
-                const subscriptionResolver = this.subscriptionMap.get(subscription)
+                const subscriptionResolver =
+                    this.subscriptionMap.get(subscription)
                 if (subscriptionResolver) {
                     subscriptionResolver.update(result)
                 }
@@ -56,7 +59,9 @@ export class RpcWsConnection {
                     this.requestMap.delete(id)
                 } else {
                     this.close()
-                    throw new Error("received an non streaming message on websocket, closing socket")
+                    throw new Error(
+                        "received an non streaming message on websocket, closing socket"
+                    )
                 }
             }
         }
@@ -86,7 +91,10 @@ export class RpcWsConnection {
         return await callback
     }
 
-    _formWSRequest<T>(methodName: string, methodParams: T): { id: number; req: string } {
+    _formWSRequest<T>(
+        methodName: string,
+        methodParams: T
+    ): { id: number; req: string } {
         const id = ++this.requestId // iterating the request id by 1 makes it so that we have a unique request ID for each request
         return {
             req: JSON.stringify({
@@ -100,7 +108,10 @@ export class RpcWsConnection {
     }
 
     async subscribe<T>(streamName: string, streamParams: T): Promise<string> {
-        const subscriptionId = (await this.call("subscribe", [streamName, streamParams])) as string
+        const subscriptionId = (await this.call("subscribe", [
+            streamName,
+            streamParams,
+        ])) as string
 
         const queue = new AsyncBlockingQueue<unknown>()
         const update = (value: unknown) => {
@@ -140,7 +151,9 @@ export class RpcWsConnection {
         return this.subscriptionMap.delete(subscriptionId)
     }
 
-    async *subscribeToNotifications<T>(subscriptionID: string): AsyncGenerator<T> {
+    async *subscribeToNotifications<T>(
+        subscriptionID: string
+    ): AsyncGenerator<T> {
         const resolver = this.subscriptionMap.get(subscriptionID)
 
         if (!resolver) {

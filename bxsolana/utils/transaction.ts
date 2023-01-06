@@ -9,7 +9,9 @@ export function signTx(base64EncodedTx: string): Transaction {
     return tx
 }
 
-export function signTxMessage(txMessage: TransactionMessage): TransactionMessage {
+export function signTxMessage(
+    txMessage: TransactionMessage
+): TransactionMessage {
     const signedTx = signTx(txMessage.content)
     txMessage.content = txToBase64(signedTx)
     return txMessage

@@ -5,8 +5,26 @@ import {
     addMemoToSerializedTxn,
     BaseProvider,
     config,
+    GetAccountBalanceRequest,
+    GetBlockStreamRequest,
+    GetMarketsRequest,
     GetOpenOrdersRequest,
     GetOpenOrdersResponse,
+    GetOrderbookRequest,
+    GetOrderbooksRequest,
+    GetOrderStatusStreamRequest,
+    GetPoolReservesStreamRequest,
+    GetPoolsRequest,
+    GetPriceRequest,
+    GetPricesStreamRequest,
+    GetQuotesRequest,
+    GetQuotesStreamRequest,
+    GetRecentBlockHashRequest,
+    GetServerTimeRequest,
+    GetSwapsStreamRequest,
+    GetTickersRequest,
+    GetTradesRequest,
+    GetUnsettledRequest,
     GrpcProvider,
     HttpProvider,
     LOCAL_API_GRPC_HOST,
@@ -17,14 +35,27 @@ import {
     MAINNET_API_GRPC_PORT,
     MAINNET_API_HTTP,
     MAINNET_API_WS,
+    Order,
+    OrderStatus,
+    OrderType,
     PostCancelAllRequest,
+    PostCancelByClientOrderIDRequest,
     PostOrderRequest,
+    PostReplaceOrderRequest,
+    PostSettleRequest,
+    PostSubmitRequest,
     Project,
+    RouteStep,
+    RouteTradeSwapRequest,
+    Side,
+    SubmitStrategy,
     TESTNET_API_GRPC_HOST,
     TESTNET_API_GRPC_PORT,
     TESTNET_API_HTTP,
     TESTNET_API_WS,
     TokenPair,
+    TradeSwapRequest,
+    TransactionMessage,
     WsProvider,
 } from "../bxsolana"
 import { Keypair } from "@solana/web3.js"
@@ -36,18 +67,15 @@ const openOrdersAddress = "4zeos6Mg48sXGVE3XhdSeff72aLrSXayyzAM81QRegGz"
 const baseTokenWallet = config.WalletPublicKey
 const quoteTokenWallet = "4raJjCwLLqw8TciQXYruDEF4YhDkGwoEnwnAdwJSjcgv"
 
-const testOrder: PostOrderRequest = {
-    ownerAddress: ownerAddress,
-    payerAddress: payerAddress,
-    market: "SOLUSDC",
-    side: "S_ASK",
-    type: ["OT_LIMIT"],
-    amount: 0.1,
-    price: 200,
-    openOrdersAddress: "",
-    project: "P_UNKNOWN",
-    clientOrderID: "",
-}
+const testOrder = new PostOrderRequest()
+    .setOwneraddress(ownerAddress)
+    .setPayeraddress(payerAddress)
+    .setMarket("SOLUSDC")
+    .setSide(Side.S_ASK)
+    .setTypeList([OrderType.OT_LIMIT])
+    .setAmount(0.1)
+    .setPrice(200)
+    .setProject(Project.P_UNKNOWN)
 
 const crank_timeout_s = 60
 
@@ -103,11 +131,20 @@ async function grpc() {
     let provider: GrpcProvider
 
     if (process.env.API_ENV === "testnet") {
-        provider = new GrpcProvider(`${TESTNET_API_GRPC_HOST}:${TESTNET_API_GRPC_PORT}`, true)
+        provider = new GrpcProvider(
+            `${TESTNET_API_GRPC_HOST}:${TESTNET_API_GRPC_PORT}`,
+            true
+        )
     } else if (process.env.API_ENV === "mainnet") {
-        provider = new GrpcProvider(`${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`, true)
+        provider = new GrpcProvider(
+            `${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`,
+            true
+        )
     } else {
-        provider = new GrpcProvider(`${LOCAL_API_GRPC_HOST}:${LOCAL_API_GRPC_PORT}`, false)
+        provider = new GrpcProvider(
+            `${LOCAL_API_GRPC_HOST}:${LOCAL_API_GRPC_PORT}`,
+            false
+        )
     }
 
     console.info(" ----  GRPC Requests  ----")
@@ -309,14 +346,29 @@ async function doLifecycle(provider: BaseProvider) {
 
         await Promise.all([
             new Promise(async (resolve, reject) => {
-                const req = await provider.getOrderStatusStream({ market: mktAddress, project: "P_OPENBOOK", ownerAddress: testOrder.ownerAddress })
+                const req = await provider.getOrderStatusStream(
+                    new GetOrderStatusStreamRequest()
+                        .setMarket(mktAddress)
+                        .setProject(Project.P_OPENBOOK)
+                        .setOwneraddress(testOrder.getOwneraddress())
+                )
                 for await (const ob of req) {
-                    if (ob.orderInfo && ob.orderInfo.clientOrderID == testOrder.clientOrderID && ob.orderInfo.orderStatus == "OS_OPEN") {
-                        console.info(`order went to orderbook ('${ob.orderInfo.orderStatus}') successfully`)
+                    const orderInfo = ob.getOrderinfo()
+                    if (
+                        orderInfo &&
+                        orderInfo.getClientorderid() ==
+                            testOrder.getClientorderid() &&
+                        orderInfo.getOrderstatus() == OrderStatus.OS_OPEN
+                    ) {
+                        console.info(
+                            `order went to orderbook ('${orderInfo.getOrderstatus()}') successfully`
+                        )
                         return resolve(null)
                     } else {
                         console.error(`order failed to get into orderbook`)
-                        return reject(new Error("order failed to get into orderbook"))
+                        return reject(
+                            new Error("order failed to get into orderbook")
+                        )
                     }
                 }
             }),
@@ -335,20 +387,39 @@ async function doLifecycle(provider: BaseProvider) {
 
         await Promise.all([
             new Promise(async (resolve, reject) => {
-                const req = await provider.getOrderStatusStream({ market: mktAddress, project: "P_OPENBOOK", ownerAddress: testOrder.ownerAddress })
-                const clientOrderID = testOrder.clientOrderID
+                const req = await provider.getOrderStatusStream(
+                    new GetOrderStatusStreamRequest()
+                        .setMarket(mktAddress)
+                        .setProject(Project.P_OPENBOOK)
+                        .setOwneraddress(testOrder.getOwneraddress())
+                )
                 let oldCanceled = false
                 let newOpened = false
                 for await (const ob of req) {
-                    if (ob.orderInfo && ob.orderInfo.clientOrderID == clientOrderID && ob.orderInfo.orderStatus == "OS_CANCELLED") {
+                    const orderInfo = ob.getOrderinfo()
+                    if (
+                        orderInfo &&
+                        orderInfo.getClientorderid() ==
+                            testOrder.getClientorderid() &&
+                        orderInfo.getOrderstatus() == OrderStatus.OS_CANCELLED
+                    ) {
                         oldCanceled = true
-                        console.info(`order canceled ('${ob.orderInfo.orderStatus}') successfully`)
+                        console.info(
+                            `order canceled ('${orderInfo.getOrderstatus()}') successfully`
+                        )
                         if (oldCanceled && newOpened) {
                             return resolve(null)
                         }
-                    } else if (ob.orderInfo && ob.orderInfo.clientOrderID == testOrder.clientOrderID && ob.orderInfo.orderStatus == "OS_OPEN") {
+                    } else if (
+                        orderInfo &&
+                        orderInfo.getClientorderid() ==
+                            testOrder.getClientorderid() &&
+                        orderInfo.getOrderstatus() == OrderStatus.OS_OPEN
+                    ) {
                         newOpened = true
-                        console.info(`order went to orderbook ('${ob.orderInfo.orderStatus}') successfully`)
+                        console.info(
+                            `order went to orderbook ('${orderInfo.getOrderstatus()}') successfully`
+                        )
                         if (oldCanceled && newOpened) {
                             return resolve(null)
                         }
@@ -373,10 +444,23 @@ async function doLifecycle(provider: BaseProvider) {
 
         await Promise.all([
             new Promise(async (resolve, reject) => {
-                const req = await provider.getOrderStatusStream({ market: mktAddress, project: "P_OPENBOOK", ownerAddress: testOrder.ownerAddress })
+                const req = await provider.getOrderStatusStream(
+                    new GetOrderStatusStreamRequest()
+                        .setMarket(mktAddress)
+                        .setProject(Project.P_OPENBOOK)
+                        .setOwneraddress(testOrder.getOwneraddress())
+                )
                 for await (const ob of req) {
-                    if (ob.orderInfo && ob.orderInfo.clientOrderID == testOrder.clientOrderID && ob.orderInfo.orderStatus == "OS_CANCELLED") {
-                        console.info(`order canceled ('${ob.orderInfo.orderStatus}') successfully`)
+                    const orderInfo = ob.getOrderinfo()
+                    if (
+                        orderInfo &&
+                        orderInfo.getClientorderid() ==
+                            testOrder.getClientorderid() &&
+                        orderInfo.getOrderstatus() == OrderStatus.OS_CANCELLED
+                    ) {
+                        console.info(
+                            `order canceled ('${orderInfo.getOrderstatus()}') successfully`
+                        )
                         return resolve(null)
                     } else {
                         console.error(`order failed to cancel`)
@@ -443,68 +527,121 @@ async function doHttpLifecycle(provider: BaseProvider) {
 async function callGetOrderbook(provider: BaseProvider) {
     try {
         console.info("Retrieving orderbook for SOLUSDC market")
-        let req = await provider.getOrderbook({ market: "SOLUSDC", project: "P_OPENBOOK", limit: 5 })
+        let req = await provider.getOrderbook(
+            new GetOrderbookRequest()
+                .setMarket("SOLUSDC")
+                .setProject(Project.P_OPENBOOK)
+                .setLimit(5)
+        )
         console.info(req)
 
         console.info("Retrieving orderbook for SOL-USDC market")
-        req = await provider.getOrderbook({ market: "SOL-USDC", project: "P_OPENBOOK", limit: 5 })
+        req = await provider.getOrderbook(
+            new GetOrderbookRequest()
+                .setMarket("SOL-USDC")
+                .setProject(Project.P_OPENBOOK)
+                .setLimit(5)
+        )
         console.info(req)
     } catch (error) {
-        console.error("Failed to retrieve the orderbook for market SOL/USDC", error)
+        console.error(
+            "Failed to retrieve the orderbook for market SOL/USDC",
+            error
+        )
     }
 }
 
 async function submitTxWithMemo(provider: BaseProvider) {
     try {
         console.info("Retrieving recent blockHash")
-        const recentBlockhash = await provider.getRecentBlockHash({})
-        console.info(recentBlockhash.blockHash)
+        const recentBlockhash = await provider.getRecentBlockHash(
+            new GetRecentBlockHashRequest()
+        )
+        console.info(recentBlockhash.getBlockhash())
         const keypair = Keypair.fromSecretKey(config.WalletSecretKey)
-        const encodedTxn = addMemo([], "new memo by dev", recentBlockhash.blockHash, keypair.publicKey, keypair)
+        const encodedTxn = addMemo(
+            [],
+            "new memo by dev",
+            recentBlockhash.getBlockhash(),
+            keypair.publicKey,
+            keypair
+        )
         console.info("Submitting tx with one memo")
-        let response = await provider.postSubmit({
-            transaction: { content: encodedTxn, isCleanup: false },
-            skipPreFlight: true,
-        })
-        console.info(response.signature)
+        let response = await provider.postSubmit(
+            new PostSubmitRequest()
+                .setTransaction(
+                    new TransactionMessage()
+                        .setContent(encodedTxn)
+                        .setIscleanup(false)
+                )
+                .setSkippreflight(true)
+        )
+        console.info(response.getSignature())
 
-        const encodedTxn2 = addMemoToSerializedTxn(encodedTxn, "new memo by dev2", keypair.publicKey, keypair)
+        const encodedTxn2 = addMemoToSerializedTxn(
+            encodedTxn,
+            "new memo by dev2",
+            keypair.publicKey,
+            keypair
+        )
         console.info("Submitting tx with two memos")
-        response = await provider.postSubmit({
-            transaction: { content: encodedTxn2, isCleanup: false },
-            skipPreFlight: true,
-        })
-        console.info(response.signature)
+        response = await provider.postSubmit(
+            new PostSubmitRequest()
+                .setTransaction(
+                    new TransactionMessage()
+                        .setContent(encodedTxn2)
+                        .setIscleanup(false)
+                )
+                .setSkippreflight(true)
+        )
+        console.info(response.getSignature())
     } catch (error) {
-        console.error("Failed to retrieve the orderbook for market SOL/USDC", error)
+        console.error(
+            "Failed to retrieve the orderbook for market SOL/USDC",
+            error
+        )
     }
 }
 
 async function callGetMarkets(provider: BaseProvider) {
     try {
         console.info("Retrieving all supported markets")
-        const req = await provider.getMarkets({})
+        const req = await provider.getMarkets(new GetMarketsRequest())
         console.info(req)
     } catch (error) {
         console.error("Failed to retrieve the markets", error)
     }
 }
 
-async function callGetOpenOrders(provider: BaseProvider) {
+async function callGetOpenOrders(
+    provider: BaseProvider
+): Promise<Array<Order>> {
     try {
         console.info("Retrieving all open orders in SOLUSDC market")
-        const req = await provider.getOpenOrders({ market: "SOLUSDC", project: "P_OPENBOOK", address: ownerAddress, limit: 0, openOrdersAddress: "" })
+        const req = await provider.getOpenOrders(
+            new GetOpenOrdersRequest()
+                .setMarket("SOLUSDC")
+                .setProject(Project.P_OPENBOOK)
+                .setAddress(ownerAddress)
+                .setLimit(0)
+        )
         console.info(req)
-        return req.orders
+        return req.getOrdersList()
     } catch (error) {
         console.error("Failed to retrieve open orders", error)
+        throw error
     }
 }
 
 async function callGetUnsettled(provider: BaseProvider) {
     try {
         console.info("Retrieving unsettled funds in SOLUSDC market")
-        const req = await provider.getUnsettled({ market: "SOLUSDC", project: "P_OPENBOOK", ownerAddress: ownerAddress })
+        const req = await provider.getUnsettled(
+            new GetUnsettledRequest()
+                .setMarket("SOLUSDC")
+                .setProject(Project.P_OPENBOOK)
+                .setOwneraddress(ownerAddress)
+        )
         console.info(req)
     } catch (error) {
         console.error("Failed to retrieve the unsettled funds", error)
@@ -514,7 +651,11 @@ async function callGetUnsettled(provider: BaseProvider) {
 async function callGetAccountBalance(provider: BaseProvider) {
     try {
         console.info("Retrieving token balances")
-        const req = await provider.getAccountBalance({ ownerAddress: ownerAddress })
+        const [req] = await Promise.all([
+            provider.getAccountBalance(
+                new GetAccountBalanceRequest().setOwneraddress(ownerAddress)
+            ),
+        ])
         console.info(req)
     } catch (error) {
         console.error("Failed to retrieve the unsettled funds", error)
@@ -524,7 +665,12 @@ async function callGetAccountBalance(provider: BaseProvider) {
 async function callGetTrades(provider: BaseProvider) {
     try {
         console.info("Retrieving trades for SOL/USDC market ")
-        const req = await provider.getTrades({ market: "SOLUSDC", project: "P_OPENBOOK", limit: 5 })
+        const req = await provider.getTrades(
+            new GetTradesRequest()
+                .setMarket("SOLUSDC")
+                .setProject(Project.P_OPENBOOK)
+                .setLimit(5)
+        )
         console.info(req)
     } catch (error) {
         console.error("Failed to retrieve trades", error)
@@ -534,7 +680,11 @@ async function callGetTrades(provider: BaseProvider) {
 async function callGetTickers(provider: BaseProvider) {
     try {
         console.info("Retrieving tickers for SOL/USDC market ")
-        const req = await provider.getTickers({ market: "SOLUSDC", project: "P_OPENBOOK" })
+        const req = await provider.getTickers(
+            new GetTickersRequest()
+                .setMarket("SOLUSDC")
+                .setProject(Project.P_OPENBOOK)
+        )
         console.info(req)
     } catch (error) {
         console.error("Failed to retrieve tickers", error)
@@ -544,7 +694,7 @@ async function callGetTickers(provider: BaseProvider) {
 async function callGetServerTime(provider: BaseProvider) {
     try {
         console.info("Retrieving server time")
-        const req = await provider.getServerTime({})
+        const req = await provider.getServerTime(new GetServerTimeRequest())
         console.info(req)
     } catch (error) {
         console.error("Failed to retrieve server time", error)
@@ -554,7 +704,9 @@ async function callGetServerTime(provider: BaseProvider) {
 async function callGetPrices(provider: BaseProvider) {
     try {
         console.info("Retrieving price")
-        const resp = await provider.getPrice({ tokens: ["SOL", "USDC"] })
+        const resp = await provider.getPrice(
+            new GetPriceRequest().setTokensList(["SOL", "USDC"])
+        )
         console.info(resp)
     } catch (error) {
         console.error("Failed to retrieve server time", error)
@@ -564,7 +716,9 @@ async function callGetPrices(provider: BaseProvider) {
 async function callGetPools(provider: BaseProvider) {
     try {
         console.info("Retrieving pools")
-        const resp = await provider.getPools({ projects: ["P_RAYDIUM"] })
+        const resp = await provider.getPools(
+            new GetPoolsRequest().setProjectsList([Project.P_RAYDIUM])
+        )
         console.info(resp)
     } catch (error) {
         console.error("Failed to retrieve server time", error)
@@ -574,14 +728,15 @@ async function callGetPools(provider: BaseProvider) {
 async function callGetQuotes(provider: BaseProvider) {
     try {
         console.info("Retrieving quotes")
-        const resp = await provider.getQuotes({
-            inToken: "SOL",
-            outToken: "USDC",
-            inAmount: 1,
-            slippage: 5,
-            limit: 5,
-            projects: ["P_RAYDIUM", "P_JUPITER"],
-        })
+        const resp = await provider.getQuotes(
+            new GetQuotesRequest()
+                .setIntoken("SOL")
+                .setOuttoken("USDC")
+                .setInamount(1)
+                .setSlippage(5)
+                .setLimit(5)
+                .setProjectsList([Project.P_RAYDIUM, Project.P_JUPITER])
+        )
         console.info(resp)
     } catch (error) {
         console.error("Failed to retrieve quotes", error)
@@ -592,7 +747,12 @@ async function callGetQuotes(provider: BaseProvider) {
 async function callGetOrderbookStream(provider: BaseProvider) {
     try {
         console.info("Subscribing for orderbook updates of SOLUSDC market")
-        let req = await provider.getOrderbooksStream({ markets: ["SOLUSDC"], project: "P_OPENBOOK", limit: 5 })
+        let req = await provider.getOrderbooksStream(
+            new GetOrderbooksRequest()
+                .setMarketsList(["SOLUSDC"])
+                .setProject(Project.P_OPENBOOK)
+                .setLimit(5)
+        )
 
         let count = 0
         for await (const ob of req) {
@@ -606,7 +766,12 @@ async function callGetOrderbookStream(provider: BaseProvider) {
         console.info(" ")
 
         console.info("Subscribing for orderbook updates of SOLUSDC market")
-        req = await provider.getOrderbooksStream({ markets: ["SOL-USDC"], project: "P_OPENBOOK", limit: 5 })
+        req = await provider.getOrderbooksStream(
+            new GetOrderbooksRequest()
+                .setMarketsList(["SOL-USDC"])
+                .setProject(Project.P_OPENBOOK)
+                .setLimit(5)
+        )
 
         count = 0
         for await (const ob of req) {
@@ -617,14 +782,21 @@ async function callGetOrderbookStream(provider: BaseProvider) {
             }
         }
     } catch (error) {
-        console.error("Failed to retrieve orderbook updates for market SOL/USDC", error)
+        console.error(
+            "Failed to retrieve orderbook updates for market SOL/USDC",
+            error
+        )
     }
 }
 
 async function callGetTickersStream(provider: BaseProvider) {
     try {
         console.info("Subscribing for ticker updates of SOLUSDC market")
-        const req = await provider.getTickersStream({ market: "SOLUSDC", project: "P_OPENBOOK" })
+        const req = await provider.getTickersStream(
+            new GetTickersRequest()
+                .setMarket("SOLUSDC")
+                .setProject(Project.P_OPENBOOK)
+        )
 
         let count = 0
         for await (const tick of req) {
@@ -635,14 +807,22 @@ async function callGetTickersStream(provider: BaseProvider) {
             }
         }
     } catch (error) {
-        console.error("Failed to retrieve ticker updates for market SOL/USDC", error)
+        console.error(
+            "Failed to retrieve ticker updates for market SOL/USDC",
+            error
+        )
     }
 }
 
 async function callGetTradesStream(provider: BaseProvider) {
     try {
         console.info("Subscribing for trade updates of SOLUSDC market")
-        const req = await provider.getTradesStream({ market: "SOLUSDC", limit: 5, project: "P_OPENBOOK" })
+        const req = await provider.getTradesStream(
+            new GetTradesRequest()
+                .setMarket("SOLUSDC")
+                .setLimit(5)
+                .setProject(Project.P_OPENBOOK)
+        )
 
         let count = 0
         for await (const tr of req) {
@@ -660,11 +840,12 @@ async function callGetTradesStream(provider: BaseProvider) {
 async function callGetSwapsStream(provider: BaseProvider) {
     try {
         console.info("Subscribing for swap updates of RAY/SOL market")
-        const req = await provider.getSwapsStream({
-            projects: ["P_RAYDIUM"],
-            pools: ["AVs9TA4nWDzfPJE9gGVNJMVhcQy3V9PGazuz33BfG2RA"],
-            includeFailed: true,
-        })
+        const req = await provider.getSwapsStream(
+            new GetSwapsStreamRequest()
+                .setProjectsList([Project.P_RAYDIUM])
+                .setPoolsList(["AVs9TA4nWDzfPJE9gGVNJMVhcQy3V9PGazuz33BfG2RA"])
+                .setIncludefailed(true)
+        )
 
         let count = 0
         for await (const tr of req) {
@@ -681,11 +862,17 @@ async function callGetSwapsStream(provider: BaseProvider) {
 
 async function callGetPricesStream(provider: BaseProvider) {
     try {
-        console.info("Subscribing for prices updates of SOL and USDC on Raydium")
+        console.info(
+            "Subscribing for prices updates of SOL and USDC on Raydium"
+        )
 
-        const projects: Project[] = ["P_RAYDIUM", "P_JUPITER"]
+        const projects: Project[] = [Project.P_RAYDIUM, Project.P_JUPITER]
         const tokens: string[] = ["SOL", "USDC"]
-        const stream = await provider.getPricesStream({ projects: projects, tokens })
+        const stream = await provider.getPricesStream(
+            new GetPricesStreamRequest()
+                .setProjectsList(projects)
+                .setTokensList(tokens)
+        )
 
         let count = 0
         for await (const update of stream) {
@@ -696,7 +883,10 @@ async function callGetPricesStream(provider: BaseProvider) {
             }
         }
     } catch (error) {
-        console.error("Failed to retrieve prices updates for SOL and USDC on Raydium", error)
+        console.error(
+            "Failed to retrieve prices updates for SOL and USDC on Raydium",
+            error
+        )
     }
 }
 
@@ -704,8 +894,10 @@ async function callGetPoolsStream(provider: BaseProvider) {
     try {
         console.info("Subscribing for pool updates of Raydium")
 
-        const projects: Project[] = ["P_RAYDIUM"]
-        const stream = await provider.getPoolReservesStream({ projects: projects })
+        const projects: Project[] = [Project.P_RAYDIUM]
+        const stream = await provider.getPoolReservesStream(
+            new GetPoolReservesStreamRequest().setProjectsList(projects)
+        )
 
         let count = 0
         for await (const update of stream) {
@@ -724,9 +916,18 @@ async function callGetQuotesStream(provider: BaseProvider) {
     try {
         console.info("Subscribing for quote updates of SOLUSDC market")
 
-        const projects: Project[] = ["P_RAYDIUM"]
-        const tokenPairs: TokenPair[] = [{ inToken: "SOL", outToken: "USDC", inAmount: 1 }]
-        const stream = await provider.getQuotesStream({ projects: projects, tokenPairs: tokenPairs })
+        const projects: Project[] = [Project.P_RAYDIUM]
+        const tokenPairs: TokenPair[] = [
+            new TokenPair()
+                .setIntoken("SOL")
+                .setOuttoken("USDC")
+                .setInamount(1),
+        ]
+        const stream = await provider.getQuotesStream(
+            new GetQuotesStreamRequest()
+                .setProjectsList(projects)
+                .setTokenpairsList(tokenPairs)
+        )
 
         let count = 0
         for await (const update of stream) {
@@ -737,14 +938,17 @@ async function callGetQuotesStream(provider: BaseProvider) {
             }
         }
     } catch (error) {
-        console.error("Failed to retrieve USDC quote for 1 SOL on Raydium", error)
+        console.error(
+            "Failed to retrieve USDC quote for 1 SOL on Raydium",
+            error
+        )
     }
 }
 
 async function callGetBlockStream(provider: BaseProvider) {
     try {
         console.info("Subscribing for block updates")
-        const resp = await provider.getBlockStream({ limit: 5 })
+        const resp = await provider.getBlockStream(new GetBlockStreamRequest())
 
         let count = 0
         for await (const update of resp) {
@@ -762,7 +966,9 @@ async function callGetBlockStream(provider: BaseProvider) {
 async function callGetRecentBlockHashStream(provider: BaseProvider) {
     try {
         console.info("Subscribing for block hash updates")
-        const resp = await provider.getRecentBlockHashStream({ limit: 5 })
+        const resp = await provider.getRecentBlockHashStream(
+            new GetRecentBlockHashRequest()
+        )
 
         let count = 0
         for await (const update of resp) {
@@ -782,7 +988,7 @@ async function callPostOrder(provider: BaseProvider) {
     try {
         console.info("generating New Order transaction")
         const clientOrderID = getRandom()
-        testOrder.clientOrderID = clientOrderID.toLocaleString("fullwide", { useGrouping: false })
+        testOrder.setClientorderid(clientOrderID)
         const req = await provider.postOrder(testOrder)
         console.info(req)
     } catch (error) {
@@ -794,57 +1000,71 @@ async function callSubmitOrder(provider: BaseProvider) {
     try {
         console.info("Generating and submitting a New Order transaction")
         const clientOrderID = getRandom()
-        testOrder.clientOrderID = clientOrderID.toLocaleString("fullwide", { useGrouping: false })
+        testOrder.setClientorderid(clientOrderID)
         const req = await provider.submitOrder(testOrder)
         console.info(req)
     } catch (error) {
-        console.error("Failed to generate and/or submit a New Order transaction", error)
+        console.error(
+            "Failed to generate and/or submit a New Order transaction",
+            error
+        )
     }
 }
 
 async function callPostCancelByClientOrderID(provider: BaseProvider) {
     try {
         console.info("Generating and Cancel by Client Order ID transaction")
-        const req = await provider.postCancelByClientOrderID({
-            marketAddress: marketAddress,
-            ownerAddress: ownerAddress,
-            openOrdersAddress: openOrdersAddress,
-            clientOrderID: testOrder.clientOrderID,
-            project: "P_OPENBOOK",
-        })
+        const req = await provider.postCancelByClientOrderID(
+            new PostCancelByClientOrderIDRequest()
+                .setMarketaddress(marketAddress)
+                .setOwneraddress(ownerAddress)
+                .setOpenordersaddress(openOrdersAddress)
+                .setClientorderid(testOrder.getClientorderid())
+                .setProject(Project.P_OPENBOOK)
+        )
         console.info(req)
     } catch (error) {
-        console.error("Failed to generate a Cancel by Client Order ID transaction", error)
+        console.error(
+            "Failed to generate a Cancel by Client Order ID transaction",
+            error
+        )
     }
 }
 
 async function callSubmitCancelByClientOrderID(provider: BaseProvider) {
     try {
-        console.info("Generating and submitting a Cancel by Client Order ID transaction")
-        const req = await provider.submitCancelOrderByClientOrderID({
-            marketAddress: marketAddress,
-            ownerAddress: ownerAddress,
-            openOrdersAddress: openOrdersAddress,
-            clientOrderID: testOrder.clientOrderID,
-            project: "P_OPENBOOK",
-        })
+        console.info(
+            "Generating and submitting a Cancel by Client Order ID transaction"
+        )
+        const req = await provider.submitCancelOrderByClientOrderID(
+            new PostCancelByClientOrderIDRequest()
+                .setMarketaddress(marketAddress)
+                .setOwneraddress(ownerAddress)
+                .setOpenordersaddress(openOrdersAddress)
+                .setClientorderid(testOrder.getClientorderid())
+                .setProject(Project.P_OPENBOOK)
+        )
         console.info(req)
     } catch (error) {
-        console.error("Failed to generate and/or submit a Cancel by Client Order ID transaction", error)
+        console.error(
+            "Failed to generate and/or submit a Cancel by Client Order ID transaction",
+            error
+        )
     }
 }
 
 async function callPostSettleFunds(provider: BaseProvider) {
     try {
         console.info("Generating a Settle transaction")
-        const req = await provider.postSettle({
-            market: marketAddress,
-            openOrdersAddress: openOrdersAddress,
-            baseTokenWallet: baseTokenWallet,
-            quoteTokenWallet: quoteTokenWallet,
-            ownerAddress: ownerAddress,
-            project: "P_OPENBOOK",
-        })
+        const req = await provider.postSettle(
+            new PostSettleRequest()
+                .setMarket(marketAddress)
+                .setOpenordersaddress(openOrdersAddress)
+                .setBasetokenwallet(baseTokenWallet)
+                .setQuotetokenwallet(quoteTokenWallet)
+                .setOwneraddress(ownerAddress)
+                .setProject(Project.P_OPENBOOK)
+        )
         console.info(req)
     } catch (error) {
         console.error("Failed to generate a Settle transaction", error)
@@ -854,143 +1074,104 @@ async function callPostSettleFunds(provider: BaseProvider) {
 async function callSettleFunds(provider: BaseProvider) {
     try {
         console.info("Generating and submitting a Settle transaction")
-        const req = await provider.submitSettle({
-            market: marketAddress,
-            openOrdersAddress: openOrdersAddress,
-            baseTokenWallet: baseTokenWallet,
-            quoteTokenWallet: quoteTokenWallet,
-            ownerAddress: ownerAddress,
-            project: "P_OPENBOOK",
-        })
+        const req = await provider.submitSettle(
+            new PostSettleRequest()
+                .setMarket(marketAddress)
+                .setOpenordersaddress(openOrdersAddress)
+                .setBasetokenwallet(baseTokenWallet)
+                .setQuotetokenwallet(quoteTokenWallet)
+                .setOwneraddress(ownerAddress)
+                .setProject(Project.P_OPENBOOK)
+        )
         console.info(req)
     } catch (error) {
-        console.error("Failed to generate and/or submit a Settle transaction", error)
+        console.error(
+            "Failed to generate and/or submit a Settle transaction",
+            error
+        )
     }
 }
 
 async function callReplaceByClientOrderID(provider: BaseProvider) {
     try {
-        console.info("Generating and submitting a Cancel and Replace by Client Order ID transaction")
+        console.info(
+            "Generating and submitting a Cancel and Replace by Client Order ID transaction"
+        )
         const clientOrderID = getRandom()
-        testOrder.clientOrderID = clientOrderID.toLocaleString("fullwide", { useGrouping: false })
-        testOrder.price -= 1
+        testOrder.setClientorderid(clientOrderID)
+        testOrder.setPrice(testOrder.getPrice() - 1)
 
         const req = await provider.submitReplaceByClientOrderID(testOrder)
         console.info(req)
     } catch (error) {
-        console.error("Failed to generate and/or submit a Cancel by Client Order ID transaction", error)
-    }
-}
-
-async function callTradeSwap(provider: BaseProvider) {
-    try {
-        console.info("Submitting a trade swap")
-        const responses = await provider.submitTradeSwap(
-            {
-                ownerAddress: ownerAddress,
-                inToken: "USDC",
-                outToken: "SOL",
-                inAmount: 0.01,
-                slippage: 0.1,
-                project: "P_RAYDIUM",
-            },
-            "P_SUBMIT_ALL",
-            true
+        console.error(
+            "Failed to generate and/or submit a Cancel by Client Order ID transaction",
+            error
         )
-
-        for (const transaction of responses.transactions) {
-            console.info(transaction.signature)
-        }
-    } catch (error) {
-        console.error("Failed to generate and/or submit a trade swap", error)
-    }
-}
-
-async function callRouteTradeSwap(provider: BaseProvider) {
-    try {
-        console.info("Submitting a route trade swap")
-        const responses = await provider.submitRouteTradeSwap(
-            {
-                ownerAddress: ownerAddress,
-                steps: [
-                    {
-                        inToken: "FIDA",
-                        outToken: "RAY",
-                        inAmount: 0.01,
-                        outAmount: 0.007505,
-                        outAmountMin: 0.074,
-                    },
-                    {
-                        inToken: "RAY",
-                        outToken: "USDC",
-                        inAmount: 0.007505,
-                        outAmount: 0.004043,
-                        outAmountMin: 0.004,
-                    },
-                ],
-                project: "P_RAYDIUM",
-            },
-            "P_SUBMIT_ALL",
-            true
-        )
-
-        for (const transaction of responses.transactions) {
-            console.info(transaction.signature)
-        }
-    } catch (error) {
-        console.error("Failed to generate and/or submit a route trade swap", error)
     }
 }
 
 async function callReplaceOrder(provider: BaseProvider) {
     try {
-        console.info("Generating and submitting a Cancel and Replace by Client Order ID transaction")
-        const clientOrderID = getRandom()
-        testOrder.clientOrderID = clientOrderID.toLocaleString("fullwide", { useGrouping: false })
-        testOrder.price -= 1
+        console.info(
+            "Generating and submitting a Cancel and Replace by Client Order ID transaction"
+        )
+        const order = new PostReplaceOrderRequest()
+            .setOrderid("")
+            .setOwneraddress(ownerAddress)
+            .setPayeraddress(payerAddress)
+            .setMarket("SOLUSDC")
+            .setSide(Side.S_ASK)
+            .setTypeList([OrderType.OT_LIMIT])
+            .setAmount(0.1)
+            .setPrice(199)
+            .setProject(Project.P_UNKNOWN)
 
-        const req = await provider.submitReplaceOrder({ orderID: "", ...testOrder })
+        const req = await provider.submitReplaceOrder(order)
         console.info(req)
     } catch (error) {
-        console.error("Failed to generate and/or submit a Cancel by Client Order ID transaction", error)
+        console.error(
+            "Failed to generate and/or submit a Cancel by Client Order ID transaction",
+            error
+        )
     }
 }
 
 async function callCancelAll(provider: BaseProvider) {
     try {
         console.info("Generating and placing two orders")
-        const clientOrderID1 = getRandom().toLocaleString(`fullwide`, { useGrouping: false })
-        const clientOrderID2 = getRandom().toLocaleString(`fullwide`, { useGrouping: false })
+        const clientOrderID1 = getRandom()
+        const clientOrderID2 = getRandom()
 
         // placing orders
-        testOrder.clientOrderID = clientOrderID1
+        testOrder.setClientorderid(clientOrderID1)
         const resp1 = await provider.submitOrder(testOrder)
         console.info(`Order 1 placed ${resp1.signature}`)
 
-        testOrder.clientOrderID = clientOrderID2
+        testOrder.setClientorderid(clientOrderID2)
         const resp2 = await provider.submitOrder(testOrder)
         console.info(`Order 2 placed ${resp2.signature}`)
 
-        console.info(`\nWaiting ${crank_timeout_s}s for place orders to be cranked`)
+        console.info(
+            `\nWaiting ${crank_timeout_s}s for place orders to be cranked`
+        )
 
         // checking orders placed
-        const openOrdersRequest: GetOpenOrdersRequest = {
-            market: marketAddress,
-            limit: 0,
-            address: ownerAddress,
-            openOrdersAddress: "",
-            project: "P_OPENBOOK",
-        }
+        const openOrdersRequest = new GetOpenOrdersRequest()
+            .setMarket(marketAddress)
+            .setAddress(ownerAddress)
+            .setProject(Project.P_OPENBOOK)
 
         await delay(crank_timeout_s * 1000)
-        const openOrdersResponse1: GetOpenOrdersResponse = await provider.getOpenOrders(openOrdersRequest)
+        const openOrdersResponse1: GetOpenOrdersResponse =
+            await provider.getOpenOrders(openOrdersRequest)
 
         let found1 = false
         let found2 = false
-        for (const order of openOrdersResponse1.orders) {
-            if (order.clientOrderID === clientOrderID1) {
+        for (const order of openOrdersResponse1.getOrdersList()) {
+            if (order.getClientorderid() === clientOrderID1.toString()) {
                 found1 = true
-            } else if (order.clientOrderID === clientOrderID2) {
+            } else if (order.getClientorderid() === clientOrderID2.toString()) {
                 found2 = true
             }
         }
@@ -1002,28 +1183,39 @@ async function callCancelAll(provider: BaseProvider) {
         console.info("Both orders placed successfully\n")
 
         // cancelling orders
-        const cancelAllRequest: PostCancelAllRequest = {
-            market: marketAddress,
-            ownerAddress: ownerAddress,
-            openOrdersAddresses: [openOrdersAddress],
-            project: "P_OPENBOOK",
-        }
+        const cancelAllRequest = new PostCancelAllRequest()
+            .setMarket(marketAddress)
+            .setOwneraddress(ownerAddress)
+            .setOpenordersaddressesList([openOrdersAddress])
+            .setProject(Project.P_OPENBOOK)
         const response = await provider.submitCancelAll(cancelAllRequest)
 
         const signatures: string[] = []
-        for (const transaction of response.transactions) {
-            signatures.push(transaction.signature)
+        for (const transaction of response.getTransactionsList()) {
+            signatures.push(transaction.getSignature())
         }
 
-        console.info(`Cancelling all orders, response signatures(s): ${signatures.join(", ")}`)
-        console.info(`\nWaiting ${crank_timeout_s}s for cancel order(s) to be cranked`)
+        console.info(
+            `Cancelling all orders, response signatures(s): ${signatures.join(
+                ", "
+            )}`
+        )
+        console.info(
+            `\nWaiting ${crank_timeout_s}s for cancel order(s) to be cranked`
+        )
 
         // checking all orders cancelled
         await delay(crank_timeout_s * 1000)
-        const openOrdersResponse2 = await provider.getOpenOrders(openOrdersRequest)
+        const openOrdersResponse2 = await provider.getOpenOrders(
+            openOrdersRequest
+        )
 
-        if (openOrdersResponse2.orders.length !== 0) {
-            console.error(`${openOrdersResponse2.orders.length} orders not cancelled`)
+        if (openOrdersResponse2.getOrdersList().length !== 0) {
+            console.error(
+                `${
+                    openOrdersResponse2.getOrdersList().length
+                } orders not cancelled`
+            )
             return ""
         }
         console.info("Orders in orderbook cancelled")
@@ -1034,6 +1226,65 @@ async function callCancelAll(provider: BaseProvider) {
         console.info(" ")
     } catch (error) {
         console.error(error)
+    }
+}
+
+async function callTradeSwap(provider: BaseProvider) {
+    try {
+        console.info("Submitting a trade swap")
+        const responses = await provider.submitTradeSwap(
+            new TradeSwapRequest()
+                .setOwneraddress(ownerAddress)
+                .setIntoken("USDC")
+                .setOuttoken("SOL")
+                .setInamount(0.01)
+                .setSlippage(0.1)
+                .setProject(Project.P_RAYDIUM),
+            SubmitStrategy.P_SUBMIT_ALL,
+            true
+        )
+
+        for (const transaction of responses.getTransactionsList()) {
+            console.info(transaction.getSignature())
+        }
+    } catch (error) {
+        console.error("Failed to generate and/or submit a trade swap", error)
+    }
+}
+
+async function callRouteTradeSwap(provider: BaseProvider) {
+    try {
+        console.info("Submitting a route trade swap")
+        const responses = await provider.submitRouteTradeSwap(
+            new RouteTradeSwapRequest()
+                .setOwneraddress(ownerAddress)
+                .setStepsList([
+                    new RouteStep()
+                        .setIntoken("FIDA")
+                        .setOuttoken("RAY")
+                        .setInamount(0.01)
+                        .setOutamount(0.007505)
+                        .setOutamountmin(0.074),
+                    new RouteStep()
+                        .setIntoken("RAY")
+                        .setOuttoken("USDC")
+                        .setInamount(0.007505)
+                        .setOutamount(0.004043)
+                        .setOutamountmin(0.004),
+                ])
+                .setProject(Project.P_RAYDIUM),
+            SubmitStrategy.P_SUBMIT_ALL,
+            true
+        )
+
+        for (const transaction of responses.getTransactionsList()) {
+            console.info(transaction.getSignature())
+        }
+    } catch (error) {
+        console.error(
+            "Failed to generate and/or submit a route trade swap",
+            error
+        )
     }
 }
 
