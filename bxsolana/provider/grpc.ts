@@ -1,4 +1,4 @@
-import { LOCAL_API_WS, MAINNET_API_GRPC_HOST, MAINNET_API_GRPC_PORT, MAINNET_API_WS, TESTNET_API_WS } from "../../utils/constants.js"
+import { LOCAL_API_WS, MAINNET_API_GRPC_HOST, MAINNET_API_GRPC_PORT, MAINNET_API_WS, TESTNET_API_WS } from "../utils/constants.js"
 import * as grpc from "@grpc/grpc-js"
 import { CreateGrpcClientImplConfig, createGrpcClientImpl } from "@pbkit/grpc-client"
 import {
@@ -64,7 +64,7 @@ import { createServiceClient, Service } from "../proto/services/api/Api.js"
 import { BaseProvider } from "./base.js"
 import { Client } from "@grpc/grpc-js"
 import { CallMetadataOptions } from "@grpc/grpc-js/src/call-credentials"
-import config from "../../utils/config.js"
+import config from "../utils/config.js"
 import { WsProvider } from "./ws"
 
 export class GrpcProvider extends BaseProvider {

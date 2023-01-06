@@ -1,21 +1,14 @@
 #!/usr/bin/env node
 
-import { GrpcProvider } from "../bxsolana/provider/grpc.js"
-import { BaseProvider } from "../bxsolana/provider/base.js"
-import { HttpProvider } from "../bxsolana/provider/http.js"
-import { WsProvider } from "../bxsolana/provider/ws.js"
 import {
-    PostOrderRequest,
+    addMemo,
+    addMemoToSerializedTxn,
+    BaseProvider,
+    config,
     GetOpenOrdersRequest,
     GetOpenOrdersResponse,
-    PostCancelAllRequest,
-    TokenPair,
-    Project,
-} from "../bxsolana/proto/messages/api/index.js"
-import config from "../utils/config.js"
-import { addMemo, addMemoToSerializedTxn } from "../utils/memo.js"
-import { Keypair } from "@solana/web3.js"
-import {
+    GrpcProvider,
+    HttpProvider,
     LOCAL_API_GRPC_HOST,
     LOCAL_API_GRPC_PORT,
     LOCAL_API_HTTP,
@@ -24,11 +17,17 @@ import {
     MAINNET_API_GRPC_PORT,
     MAINNET_API_HTTP,
     MAINNET_API_WS,
+    PostCancelAllRequest,
+    PostOrderRequest,
+    Project,
     TESTNET_API_GRPC_HOST,
     TESTNET_API_GRPC_PORT,
     TESTNET_API_HTTP,
     TESTNET_API_WS,
-} from "../utils/constants.js"
+    TokenPair,
+    WsProvider,
+} from "../bxsolana"
+import { Keypair } from "@solana/web3.js"
 
 const marketAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"
 const ownerAddress = config.WalletPublicKey

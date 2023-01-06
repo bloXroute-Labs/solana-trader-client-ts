@@ -70,7 +70,7 @@ import {
     TransactionMessage,
 } from "../proto/messages/api/index.js"
 import { Api } from "../proto/services/api/index.js"
-import { signTx, signTxMessage, SubmitTransactionResponse } from "../../utils/transaction.js"
+import { signTx, signTxMessage, SubmitTransactionResponse } from "../utils/transaction.js"
 
 /* eslint-disable */
 

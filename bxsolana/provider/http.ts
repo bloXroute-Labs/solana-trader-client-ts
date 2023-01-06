@@ -1,4 +1,4 @@
-import { MAINNET_API_HTTP } from "../../utils/constants.js"
+import { MAINNET_API_HTTP } from "../utils/constants.js"
 import fetch from "node-fetch"
 import {
     GetAccountBalanceRequest,
@@ -44,8 +44,8 @@ import {
     GetQuotesResponse,
 } from "../proto/messages/api/index.js"
 import { BaseProvider } from "./base.js"
-import config from "../../utils/config.js"
-import { isRpcError, RpcError } from "../../utils/error.js"
+import config from "../utils/config.js"
+import { isRpcError, RpcError } from "../utils/error.js"
 
 export class HttpProvider extends BaseProvider {
     private baseUrl: string

@@ -1,4 +1,4 @@
-import { LOCAL_API_WS, MAINNET_API_WS } from "../../utils/constants.js"
+import { LOCAL_API_WS, MAINNET_API_WS } from "../utils/constants.js"
 import WebSocket, { Event } from "ws"
 
 import {
@@ -61,7 +61,7 @@ import {
     GetBlockStreamResponse,
 } from "../proto/messages/api/index.js"
 import { BaseProvider } from "./base.js"
-import config from "../../utils/config.js"
+import config from "../utils/config.js"
 import { RpcWsConnection } from "../ws/rpcclient.js"
 
 // eslint-disable-next-line

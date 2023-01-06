@@ -1,6 +1,6 @@
-import config from "../../utils/config.js"
+import config from "../utils/config.js"
 import WebSocket from "ws"
-import { AsyncBlockingQueue } from "../../utils/blockingqueue.js"
+import { AsyncBlockingQueue } from "../utils/blockingqueue.js"
 
 // eslint-disable-next-line
 type Resolver = (result: any) => void
