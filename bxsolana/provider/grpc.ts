@@ -5,10 +5,6 @@ import {
 import * as grpc from "@grpc/grpc-js"
 import { Client } from "@grpc/grpc-js"
 import {
-    createGrpcClientImpl,
-    CreateGrpcClientImplConfig,
-} from "@pbkit/grpc-client"
-import {
     GetAccountBalanceRequest,
     GetAccountBalanceResponse,
     GetBlockStreamRequest,
@@ -107,10 +103,10 @@ export class GrpcProvider extends BaseProvider {
 
         this.grpcClient = grpcClient
 
-        const configGrpc: CreateGrpcClientImplConfig = {
-            grpcJsClient: this.grpcClient,
-        }
-        const impl = createGrpcClientImpl(configGrpc)
+        // const configGrpc: CreateGrpcClientImplConfig = {
+        //     grpcJsClient: this.grpcClient,
+        // }
+        // const impl = createGrpcClientImpl(configGrpc)
     }
 
     close = () => {

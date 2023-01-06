@@ -1,6 +1,6 @@
 import { Keypair, Transaction } from "@solana/web3.js"
 import config from "./config.js"
-import { TransactionMessage } from "../proto/messages/api"
+import { TransactionMessage } from "../proto/api_pb";
 
 export function signTx(base64EncodedTx: string): Transaction {
     const tx = txFromBase64(base64EncodedTx)
@@ -12,8 +12,8 @@ export function signTx(base64EncodedTx: string): Transaction {
 export function signTxMessage(
     txMessage: TransactionMessage
 ): TransactionMessage {
-    const signedTx = signTx(txMessage.content)
-    txMessage.content = txToBase64(signedTx)
+    const signedTx = signTx(txMessage.getContent())
+    txMessage.setContent(txToBase64(signedTx))
     return txMessage
 }
 

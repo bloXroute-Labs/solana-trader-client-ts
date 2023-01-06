@@ -57,7 +57,7 @@ import {
     TradeSwapRequest,
     TransactionMessage,
     WsProvider,
-} from "../bxsolana"
+} from "../bxsolana/index"
 import { Keypair } from "@solana/web3.js"
 
 const marketAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"

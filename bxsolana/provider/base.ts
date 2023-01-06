@@ -69,6 +69,7 @@ import {
     TradeSwapResponse,
     TransactionMessage,
 } from "../proto/api_pb"
+
 import {
     signTx,
     signTxMessage,

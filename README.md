@@ -47,12 +47,6 @@ PRIVATE_KEY="3EhZ4Epe6QrcDKQRucdftv6vWXMnpTKDV4mekSPWZEcZnJV4huzesLHwASdVUzo....
 
 ## Development
 
-We use `pbkit/pbkit` to generate Typescript files from `.proto` definitions. You'll need to install their kit:
-
-```
-$ brew install pbkit/tap/pbkit
-```
-
 Clone the repo and install dependencies:
 ```
 $ git clone https://github.com/bloXroute-Labs/solana-trader-client-ts.git
@@ -80,10 +74,11 @@ $ npx husky install
 
 Regenerate protobuf definitions:
 ```
-$ npm run proto
+$ make proto
 ```
 
 ## How to Publish a new NPM release
+
 We use `np` to publish new releases to npm. To make a new release, in the project directory use:
 
 ```
