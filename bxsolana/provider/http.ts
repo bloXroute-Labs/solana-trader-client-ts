@@ -1,5 +1,5 @@
 import { MAINNET_API_HTTP } from "../utils/constants.js"
-import fetch from "node-fetch"
+import fetch, { Response } from "node-fetch"
 import {
     GetAccountBalanceRequest,
     GetAccountBalanceResponse,
@@ -62,56 +62,56 @@ export class HttpProvider extends BaseProvider {
     getOrderbook = (request: GetOrderbookRequest): Promise<GetOrderbookResponse> => {
         const path = `${this.baseUrl}/market/orderbooks/${request.market}?limit=${request.limit}&project=${request.project}`
         return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
-            return this.handleResponse<GetOrderbookResponse>(resp.json())
+            return this.handleResponse<GetOrderbookResponse>(resp)
         })
     }
 
     getMarkets(request: GetMarketsRequest): Promise<GetMarketsResponse> {
         const path = `${this.baseUrl}/market/markets`
         return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
-            return this.handleResponse<GetMarketsResponse>(resp.json())
+            return this.handleResponse<GetMarketsResponse>(resp)
         })
     }
 
     getTickers(request: GetTickersRequest): Promise<GetTickersResponse> {
         const path = `${this.baseUrl}/market/tickers/${request.market}?project=${request.project}`
         return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
-            return this.handleResponse<GetTickersResponse>(resp.json())
+            return this.handleResponse<GetTickersResponse>(resp)
         })
     }
 
     getTrades(request: GetTradesRequest): Promise<GetTradesResponse> {
         const path = `${this.baseUrl}/market/trades/${request.market}?limit=${request.limit}&project=${request.project}`
         return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
-            return this.handleResponse<GetTradesResponse>(resp.json())
+            return this.handleResponse<GetTradesResponse>(resp)
         })
     }
 
     getServerTime(request: GetServerTimeRequest): Promise<GetServerTimeResponse> {
         const path = `${this.baseUrl}/system/time`
         return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
-            return this.handleResponse<GetServerTimeResponse>(resp.json())
+            return this.handleResponse<GetServerTimeResponse>(resp)
         })
     }
 
     getOpenOrders(request: GetOpenOrdersRequest): Promise<GetOpenOrdersResponse> {
         const path = `${this.baseUrl}/trade/openorders/${request.market}?address=${request.address}&limit=${request.limit}&openOrdersAddress=${request.openOrdersAddress}&project=${request.project}`
         return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
-            return this.handleResponse<GetOpenOrdersResponse>(resp.json())
+            return this.handleResponse<GetOpenOrdersResponse>(resp)
         })
     }
 
     getUnsettled(request: GetUnsettledRequest): Promise<GetUnsettledResponse> {
         const path = `${this.baseUrl}/trade/unsettled/${request.market}?owner=${request.ownerAddress}&project=${request.project}`
         return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
-            return this.handleResponse<GetUnsettledResponse>(resp.json())
+            return this.handleResponse<GetUnsettledResponse>(resp)
         })
     }
 
     getAccountBalance(request: GetAccountBalanceRequest): Promise<GetAccountBalanceResponse> {
         const path = `${this.baseUrl}/account/balance`
         return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
-            return this.handleResponse<GetAccountBalanceResponse>(resp.json())
+            return this.handleResponse<GetAccountBalanceResponse>(resp)
         })
     }
 
@@ -122,7 +122,7 @@ export class HttpProvider extends BaseProvider {
             path += `?${args}`
         }
         return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
-            return this.handleResponse<GetPoolsResponse>(resp.json())
+            return this.handleResponse<GetPoolsResponse>(resp)
         })
     }
 
@@ -133,14 +133,14 @@ export class HttpProvider extends BaseProvider {
             path += `?${args}`
         }
         return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
-            return this.handleResponse<GetPriceResponse>(resp.json())
+            return this.handleResponse<GetPriceResponse>(resp)
         })
     }
 
     getRecentBlockHash(request: GetRecentBlockHashRequest): Promise<GetRecentBlockHashResponse> {
         const path = `${this.baseUrl}/system/blockhash`
         return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
-            return this.handleResponse<GetRecentBlockHashResponse>(resp.json())
+            return this.handleResponse<GetRecentBlockHashResponse>(resp)
         })
     }
 
@@ -151,7 +151,7 @@ export class HttpProvider extends BaseProvider {
         }
 
         return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
-            return this.handleResponse<GetQuotesResponse>(resp.json())
+            return this.handleResponse<GetQuotesResponse>(resp)
         })
     }
 
@@ -162,7 +162,7 @@ export class HttpProvider extends BaseProvider {
             body: JSON.stringify(request),
             headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
         }).then((resp) => {
-            return this.handleResponse<PostOrderResponse>(resp.json())
+            return this.handleResponse<PostOrderResponse>(resp)
         })
     }
 
@@ -173,7 +173,7 @@ export class HttpProvider extends BaseProvider {
             body: JSON.stringify(request),
             headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
         }).then((resp) => {
-            return this.handleResponse<TradeSwapResponse>(resp.json())
+            return this.handleResponse<TradeSwapResponse>(resp)
         })
     }
 
@@ -184,7 +184,7 @@ export class HttpProvider extends BaseProvider {
             body: JSON.stringify(request),
             headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
         }).then((resp) => {
-            return this.handleResponse<TradeSwapResponse>(resp.json())
+            return this.handleResponse<TradeSwapResponse>(resp)
         })
     }
 
@@ -195,7 +195,7 @@ export class HttpProvider extends BaseProvider {
             body: JSON.stringify(request),
             headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
         }).then((resp) => {
-            return this.handleResponse<PostSubmitResponse>(resp.json())
+            return this.handleResponse<PostSubmitResponse>(resp)
         })
     }
 
@@ -206,7 +206,7 @@ export class HttpProvider extends BaseProvider {
             body: JSON.stringify(request),
             headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
         }).then((resp) => {
-            return this.handleResponse<PostSubmitBatchResponse>(resp.json())
+            return this.handleResponse<PostSubmitBatchResponse>(resp)
         })
     }
 
@@ -217,7 +217,7 @@ export class HttpProvider extends BaseProvider {
             body: JSON.stringify(request),
             headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
         }).then((resp) => {
-            return this.handleResponse<PostCancelOrderResponse>(resp.json())
+            return this.handleResponse<PostCancelOrderResponse>(resp)
         })
     }
 
@@ -228,7 +228,7 @@ export class HttpProvider extends BaseProvider {
             body: JSON.stringify(request),
             headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
         }).then((resp) => {
-            return this.handleResponse<PostCancelOrderResponse>(resp.json())
+            return this.handleResponse<PostCancelOrderResponse>(resp)
         })
     }
 
@@ -239,7 +239,7 @@ export class HttpProvider extends BaseProvider {
             body: JSON.stringify(request),
             headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
         }).then((resp) => {
-            return this.handleResponse<PostCancelAllResponse>(resp.json())
+            return this.handleResponse<PostCancelAllResponse>(resp)
         })
     }
 
@@ -250,7 +250,7 @@ export class HttpProvider extends BaseProvider {
             body: JSON.stringify(request),
             headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
         }).then((resp) => {
-            return this.handleResponse<PostSettleResponse>(resp.json())
+            return this.handleResponse<PostSettleResponse>(resp)
         })
     }
 
@@ -261,7 +261,7 @@ export class HttpProvider extends BaseProvider {
             body: JSON.stringify(request),
             headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
         }).then((resp) => {
-            return this.handleResponse<PostOrderResponse>(resp.json())
+            return this.handleResponse<PostOrderResponse>(resp)
         })
     }
 
@@ -272,17 +272,20 @@ export class HttpProvider extends BaseProvider {
             body: JSON.stringify(request),
             headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
         }).then((resp) => {
-            return this.handleResponse<PostOrderResponse>(resp.json())
+            return this.handleResponse<PostOrderResponse>(resp)
         })
     }
 
-    async handleResponse<T>(response: Promise<unknown>): Promise<T> {
-        return response.then((json) => {
+    async handleResponse<T>(response: Response): Promise<T> {
+        try {
+            const json = await response.json()
             if (isRpcError(json)) {
                 return Promise.reject((json as RpcError).message)
             } else {
                 return Promise.resolve(json as unknown as T)
             }
-        })
+        } catch {
+            return Promise.reject(await response.text())
+        }
     }
 }
