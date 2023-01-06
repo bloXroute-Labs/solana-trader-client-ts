@@ -13,7 +13,7 @@
         "build": "npm run clean && esbuild bxsolana/index.ts --bundle --outfile=dist/index.js --sourcemap --minify --platform=node",
         "clean": "rm -rf dist",
         "test": "echo \"No test specified\"",
-        "release": "np --no-2fa --any-branch",
+        "release": "npm run build && np --no-2fa --any-branch",
         "start": "ts-node ./examples/index.ts",
         "lintCI": "eslint --max-warnings 0 .",
         "lint": "eslint --fix .",
