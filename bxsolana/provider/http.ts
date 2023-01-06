@@ -277,15 +277,16 @@ export class HttpProvider extends BaseProvider {
     }
 
     async handleResponse<T>(response: Response): Promise<T> {
+        const text = await response.text()
         try {
-            const json = await response.json()
+            const json = JSON.parse(text)
             if (isRpcError(json)) {
                 return Promise.reject((json as RpcError).message)
             } else {
                 return Promise.resolve(json as unknown as T)
             }
         } catch {
-            return Promise.reject(await response.text())
+            return Promise.reject(`error during request: ${text}`)
         }
     }
 }
