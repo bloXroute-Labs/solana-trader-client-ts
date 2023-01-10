@@ -3,7 +3,7 @@
         "module": "ESNext",
         "esModuleInterop": true,
         "target": "ESNext",
-        "moduleResolution": "Node",
+        "moduleResolution": "NodeNext",
         "outDir": "dist",
         "forceConsistentCasingInFileNames": true,
         "noFallthroughCasesInSwitch": true,
@@ -12,6 +12,7 @@
         "noImplicitAny": true,
         "useUnknownInCatchVariables": false,
         "inlineSourceMap": true,
+        "allowJs": true
     },
     "ts-node": {
         "esm": true
