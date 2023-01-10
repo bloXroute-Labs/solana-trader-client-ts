@@ -74,7 +74,7 @@ import {
     signTx,
     signTxMessage,
     SubmitTransactionResponse,
-} from "../utils/transaction.js"
+} from "../utils/transaction"
 
 /* eslint-disable */
 

@@ -1,5 +1,5 @@
 import { Keypair, Transaction } from "@solana/web3.js"
-import config from "./config.js"
+import config from "./config"
 import { TransactionMessage } from "../proto/api_pb"
 
 export function signTx(base64EncodedTx: string): Transaction {

@@ -1,6 +1,6 @@
-import config from "../utils/config.js"
+import config from "../utils/config"
 import WebSocket from "isomorphic-ws"
-import { AsyncBlockingQueue } from "../utils/blockingqueue.js"
+import { AsyncBlockingQueue } from "../utils/blockingqueue"
 
 // eslint-disable-next-line
 type Resolver = (result: any) => void
@@ -8,6 +8,9 @@ type SubscriptionResolver = {
     update: Resolver
     read: AsyncGenerator<unknown, void, unknown>
     cancel: (err: Error) => void
+}
+type MessageEvent<T> = {
+    data: T
 }
 
 export class RpcWsConnection {

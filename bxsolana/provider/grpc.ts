@@ -1,7 +1,7 @@
 import {
     MAINNET_API_GRPC_HOST,
     MAINNET_API_GRPC_PORT,
-} from "../utils/constants.js"
+} from "../utils/constants"
 import * as grpc from "@grpc/grpc-js"
 import { Client } from "@grpc/grpc-js"
 import {
@@ -63,9 +63,9 @@ import {
     TradeSwapRequest,
     TradeSwapResponse,
 } from "../proto/api_pb"
-import { BaseProvider } from "./base.js"
+import { BaseProvider } from "./base"
 import { CallMetadataOptions } from "@grpc/grpc-js/src/call-credentials"
-import config from "../utils/config.js"
+import config from "../utils/config"
 
 export class GrpcProvider extends BaseProvider {
     private client: any

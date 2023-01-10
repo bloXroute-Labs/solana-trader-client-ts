@@ -1,5 +1,4 @@
-import { MAINNET_API_HTTP } from "../utils/constants.js"
-import fetch, { Response } from "node-fetch"
+import { MAINNET_API_HTTP } from "../utils/constants"
 import {
     GetAccountBalanceRequest,
     GetAccountBalanceResponse,
@@ -43,9 +42,10 @@ import {
     GetQuotesRequest,
     GetQuotesResponse,
 } from "../proto/api_pb"
-import { BaseProvider } from "./base.js"
-import config from "../utils/config.js"
-import { isRpcError, RpcError } from "../utils/error.js"
+import { BaseProvider } from "./base"
+import config from "../utils/config"
+import { isRpcError, RpcError } from "../utils/error"
+import axios, {AxiosResponse} from "axios";
 
 export class HttpProvider extends BaseProvider {
     private baseUrl: string
@@ -60,12 +60,12 @@ export class HttpProvider extends BaseProvider {
     }
 
     getOrderbook = (
-        request: GetOrderbookRequest
+      request: GetOrderbookRequest
     ): Promise<GetOrderbookResponse> => {
         const path = `${
-            this.baseUrl
+          this.baseUrl
         }/market/orderbooks/${request.getMarket()}?limit=${request.getLimit()}&project=${request.getProject()}`
-        return fetch(path, {
+        return axios.get(path, {
             headers: { Authorization: config.AuthHeader },
         }).then((resp) => {
             return this.handleResponse<GetOrderbookResponse>(resp)
@@ -74,7 +74,7 @@ export class HttpProvider extends BaseProvider {
 
     getMarkets(request: GetMarketsRequest): Promise<GetMarketsResponse> {
         const path = `${this.baseUrl}/market/markets`
-        return fetch(path, {
+        return axios.get(path, {
             headers: { Authorization: config.AuthHeader },
         }).then((resp) => {
             return this.handleResponse<GetMarketsResponse>(resp)
@@ -83,9 +83,9 @@ export class HttpProvider extends BaseProvider {
 
     getTickers(request: GetTickersRequest): Promise<GetTickersResponse> {
         const path = `${
-            this.baseUrl
+          this.baseUrl
         }/market/tickers/${request.getMarket()}?project=${request.getProject()}`
-        return fetch(path, {
+        return axios.get(path, {
             headers: { Authorization: config.AuthHeader },
         }).then((resp) => {
             return this.handleResponse<GetTickersResponse>(resp)
@@ -94,9 +94,9 @@ export class HttpProvider extends BaseProvider {
 
     getTrades(request: GetTradesRequest): Promise<GetTradesResponse> {
         const path = `${
-            this.baseUrl
+          this.baseUrl
         }/market/trades/${request.getMarket()}?limit=${request.getLimit()}&project=${request.getProject()}`
-        return fetch(path, {
+        return axios.get(path, {
             headers: { Authorization: config.AuthHeader },
         }).then((resp) => {
             return this.handleResponse<GetTradesResponse>(resp)
@@ -104,10 +104,10 @@ export class HttpProvider extends BaseProvider {
     }
 
     getServerTime(
-        request: GetServerTimeRequest
+      request: GetServerTimeRequest
     ): Promise<GetServerTimeResponse> {
         const path = `${this.baseUrl}/system/time`
-        return fetch(path, {
+        return axios.get(path, {
             headers: { Authorization: config.AuthHeader },
         }).then((resp) => {
             return this.handleResponse<GetServerTimeResponse>(resp)
@@ -115,12 +115,12 @@ export class HttpProvider extends BaseProvider {
     }
 
     getOpenOrders(
-        request: GetOpenOrdersRequest
+      request: GetOpenOrdersRequest
     ): Promise<GetOpenOrdersResponse> {
         const path = `${
-            this.baseUrl
+          this.baseUrl
         }/trade/openorders/${request.getMarket()}?address=${request.getAddress()}&limit=${request.getLimit()}&openOrdersAddress=${request.getOpenordersaddress()}&project=${request.getProject()}`
-        return fetch(path, {
+        return axios.get(path, {
             headers: { Authorization: config.AuthHeader },
         }).then((resp) => {
             return this.handleResponse<GetOpenOrdersResponse>(resp)
@@ -129,9 +129,9 @@ export class HttpProvider extends BaseProvider {
 
     getUnsettled(request: GetUnsettledRequest): Promise<GetUnsettledResponse> {
         const path = `${
-            this.baseUrl
+          this.baseUrl
         }/trade/unsettled/${request.getMarket()}?owner=${request.getOwneraddress()}&project=${request.getProject()}`
-        return fetch(path, {
+        return axios.get(path, {
             headers: { Authorization: config.AuthHeader },
         }).then((resp) => {
             return this.handleResponse<GetUnsettledResponse>(resp)
@@ -139,10 +139,10 @@ export class HttpProvider extends BaseProvider {
     }
 
     getAccountBalance(
-        request: GetAccountBalanceRequest
+      request: GetAccountBalanceRequest
     ): Promise<GetAccountBalanceResponse> {
         const path = `${this.baseUrl}/account/balance`
-        return fetch(path, {
+        return axios.get(path, {
             headers: { Authorization: config.AuthHeader },
         }).then((resp) => {
             return this.handleResponse<GetAccountBalanceResponse>(resp)
@@ -152,13 +152,13 @@ export class HttpProvider extends BaseProvider {
     getPools(request: GetPoolsRequest): Promise<GetPoolsResponse> {
         let path = `${this.baseUrl}/market/pools`
         const args = request
-            .getProjectsList()
-            .map((v) => `projects=${v}`)
-            .join("&")
+          .getProjectsList()
+          .map((v) => `projects=${v}`)
+          .join("&")
         if (args != "") {
             path += `?${args}`
         }
-        return fetch(path, {
+        return axios.get(path, {
             headers: { Authorization: config.AuthHeader },
         }).then((resp) => {
             return this.handleResponse<GetPoolsResponse>(resp)
@@ -168,13 +168,13 @@ export class HttpProvider extends BaseProvider {
     getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
         let path = `${this.baseUrl}/market/price`
         const args = request
-            .getTokensList()
-            .map((v) => `tokens=${v}`)
-            .join("&")
+          .getTokensList()
+          .map((v) => `tokens=${v}`)
+          .join("&")
         if (args != "") {
             path += `?${args}`
         }
-        return fetch(path, {
+        return axios.get(path, {
             headers: { Authorization: config.AuthHeader },
         }).then((resp) => {
             return this.handleResponse<GetPriceResponse>(resp)
@@ -182,10 +182,10 @@ export class HttpProvider extends BaseProvider {
     }
 
     getRecentBlockHash(
-        request: GetRecentBlockHashRequest
+      request: GetRecentBlockHashRequest
     ): Promise<GetRecentBlockHashResponse> {
         const path = `${this.baseUrl}/system/blockhash`
-        return fetch(path, {
+        return axios.get(path, {
             headers: { Authorization: config.AuthHeader },
         }).then((resp) => {
             return this.handleResponse<GetRecentBlockHashResponse>(resp)
@@ -194,13 +194,13 @@ export class HttpProvider extends BaseProvider {
 
     getQuotes(request: GetQuotesRequest): Promise<GetQuotesResponse> {
         let path = `${
-            this.baseUrl
+          this.baseUrl
         }/market/quote?inToken=${request.getIntoken()}&outToken=${request.getOuttoken()}&inAmount=${request.getInamount()}&slippage=${request.getSlippage()}&limit=${request.getLimit()}`
         for (const project of request.getProjectsList()) {
             path += `&projects=${project}`
         }
 
-        return fetch(path, {
+        return axios.get(path, {
             headers: { Authorization: config.AuthHeader },
         }).then((resp) => {
             return this.handleResponse<GetQuotesResponse>(resp)
@@ -209,9 +209,10 @@ export class HttpProvider extends BaseProvider {
 
     postOrder(request: PostOrderRequest): Promise<PostOrderResponse> {
         const path = `${this.baseUrl}/trade/place`
-        return fetch(path, {
+        return axios({
+            url: path,
             method: "POST",
-            body: JSON.stringify(request),
+            data: request,
             headers: {
                 "Content-Type": "application/json",
                 Authorization: config.AuthHeader,
@@ -223,9 +224,10 @@ export class HttpProvider extends BaseProvider {
 
     postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
         const path = `${this.baseUrl}/trade/swap`
-        return fetch(path, {
+        return axios({
+            url: path,
             method: "POST",
-            body: JSON.stringify(request),
+            data: request,
             headers: {
                 "Content-Type": "application/json",
                 Authorization: config.AuthHeader,
@@ -236,12 +238,13 @@ export class HttpProvider extends BaseProvider {
     }
 
     postRouteTradeSwap(
-        request: RouteTradeSwapRequest
+      request: RouteTradeSwapRequest
     ): Promise<TradeSwapResponse> {
         const path = `${this.baseUrl}/trade/route-swap`
-        return fetch(path, {
+        return axios({
+            url: path,
             method: "POST",
-            body: JSON.stringify(request),
+            data: request,
             headers: {
                 "Content-Type": "application/json",
                 Authorization: config.AuthHeader,
@@ -253,9 +256,10 @@ export class HttpProvider extends BaseProvider {
 
     postSubmit(request: PostSubmitRequest): Promise<PostSubmitResponse> {
         const path = `${this.baseUrl}/trade/submit`
-        return fetch(path, {
+        return axios({
+            url: path,
             method: "POST",
-            body: JSON.stringify(request),
+            data: request,
             headers: {
                 "Content-Type": "application/json",
                 Authorization: config.AuthHeader,
@@ -266,12 +270,13 @@ export class HttpProvider extends BaseProvider {
     }
 
     postSubmitBatch(
-        request: PostSubmitBatchRequest
+      request: PostSubmitBatchRequest
     ): Promise<PostSubmitBatchResponse> {
         const path = `${this.baseUrl}/trade/submit-batch`
-        return fetch(path, {
+        return axios(path, {
             method: "POST",
-            body: JSON.stringify(request),
+            url: path,
+            data: request,
             headers: {
                 "Content-Type": "application/json",
                 Authorization: config.AuthHeader,
@@ -282,12 +287,13 @@ export class HttpProvider extends BaseProvider {
     }
 
     postCancelOrder(
-        request: PostCancelOrderRequest
+      request: PostCancelOrderRequest
     ): Promise<PostCancelOrderResponse> {
         const path = `${this.baseUrl}/trade/cancel`
-        return fetch(path, {
+        return axios({
             method: "POST",
-            body: JSON.stringify(request),
+            url: path,
+            data: request,
             headers: {
                 "Content-Type": "application/json",
                 Authorization: config.AuthHeader,
@@ -298,12 +304,13 @@ export class HttpProvider extends BaseProvider {
     }
 
     postCancelByClientOrderID(
-        request: PostCancelByClientOrderIDRequest
+      request: PostCancelByClientOrderIDRequest
     ): Promise<PostCancelOrderResponse> {
         const path = `${this.baseUrl}/trade/cancelbyid`
-        return fetch(path, {
+        return axios({
             method: "POST",
-            body: JSON.stringify(request),
+            url: path,
+            data: request,
             headers: {
                 "Content-Type": "application/json",
                 Authorization: config.AuthHeader,
@@ -314,12 +321,13 @@ export class HttpProvider extends BaseProvider {
     }
 
     postCancelAll(
-        request: PostCancelAllRequest
+      request: PostCancelAllRequest
     ): Promise<PostCancelAllResponse> {
         const path = `${this.baseUrl}/trade/cancelall`
-        return fetch(path, {
+        return axios(path, {
             method: "POST",
-            body: JSON.stringify(request),
+            url: path,
+            data: request,
             headers: {
                 "Content-Type": "application/json",
                 Authorization: config.AuthHeader,
@@ -331,9 +339,10 @@ export class HttpProvider extends BaseProvider {
 
     postSettle(request: PostSettleRequest): Promise<PostSettleResponse> {
         const path = `${this.baseUrl}/trade/settle`
-        return fetch(path, {
+        return axios({
             method: "POST",
-            body: JSON.stringify(request),
+            url: path,
+            data: request,
             headers: {
                 "Content-Type": "application/json",
                 Authorization: config.AuthHeader,
@@ -344,12 +353,13 @@ export class HttpProvider extends BaseProvider {
     }
 
     postReplaceByClientOrderID(
-        request: PostOrderRequest
+      request: PostOrderRequest
     ): Promise<PostOrderResponse> {
         const path = `${this.baseUrl}/trade/replacebyclientid`
-        return fetch(path, {
+        return axios({
             method: "POST",
-            body: JSON.stringify(request),
+            url: path,
+            data: request,
             headers: {
                 "Content-Type": "application/json",
                 Authorization: config.AuthHeader,
@@ -360,12 +370,13 @@ export class HttpProvider extends BaseProvider {
     }
 
     postReplaceOrder(
-        request: PostReplaceOrderRequest
+      request: PostReplaceOrderRequest
     ): Promise<PostOrderResponse> {
         const path = `${this.baseUrl}/trade/replace`
-        return fetch(path, {
+        return axios({
             method: "POST",
-            body: JSON.stringify(request),
+            url: path,
+            data: request,
             headers: {
                 "Content-Type": "application/json",
                 Authorization: config.AuthHeader,
@@ -375,17 +386,15 @@ export class HttpProvider extends BaseProvider {
         })
     }
 
-    async handleResponse<T>(response: Response): Promise<T> {
-        const text = await response.text()
-        try {
-            const json = JSON.parse(text)
-            if (isRpcError(json)) {
-                return Promise.reject((json as RpcError).message)
-            } else {
-                return Promise.resolve(json as unknown as T)
-            }
-        } catch {
-            return Promise.reject(`error during request: ${text}`)
+    async handleResponse<T>(response: AxiosResponse): Promise<T> {
+        if (response.status !== axios.HttpStatusCode.Ok) {
+            return Promise.reject(`error during request: ${response.data}`)
+        }
+
+        if (isRpcError(response)) {
+            return Promise.reject((response.data as RpcError).message)
+        } else {
+            return Promise.resolve(response as unknown as T)
         }
     }
 }

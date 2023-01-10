@@ -1,4 +1,4 @@
-import { MAINNET_API_WS } from "../utils/constants.js"
+import { MAINNET_API_WS } from "../utils/constants"
 import WebSocket from "isomorphic-ws"
 
 import {
@@ -54,11 +54,9 @@ import {
     TradeSwapRequest,
     TradeSwapResponse,
 } from "../proto/api_pb"
-import { BaseProvider } from "./base.js"
-import { RpcWsConnection } from "../ws/rpcclient.js"
+import { BaseProvider } from "./base"
+import { RpcWsConnection } from "../ws/rpcclient"
 
-// eslint-disable-next-line
-type Resolver = (result: any) => void
 export class WsProvider extends BaseProvider {
     private wsConnection: RpcWsConnection
 
