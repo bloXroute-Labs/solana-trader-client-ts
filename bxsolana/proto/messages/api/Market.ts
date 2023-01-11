@@ -2,33 +2,33 @@ import {
   Type as MarketStatus,
   name2num,
   num2name,
-} from "./MarketStatus.js";
+} from "./MarketStatus";
 import {
   Type as Project,
   name2num as name2num_1,
   num2name as num2name_1,
-} from "./Project.js";
+} from "./Project";
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
-} from "../../runtime/json/scalar.js";
+} from "../../runtime/json/scalar";
 import {
   WireMessage,
   WireType,
-} from "../../runtime/wire/index.js";
+} from "../../runtime/wire/index";
 import {
   default as serialize,
-} from "../../runtime/wire/serialize.js";
+} from "../../runtime/wire/serialize";
 import {
   tsValueToWireValueFns,
   wireValueToTsValueFns,
-} from "../../runtime/wire/scalar.js";
+} from "../../runtime/wire/scalar";
 import {
   default as Long,
-} from "../../runtime/Long.js";
+} from "../../runtime/Long";
 import {
   default as deserialize,
-} from "../../runtime/wire/deserialize.js";
+} from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
   export type Market = {

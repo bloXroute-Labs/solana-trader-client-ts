@@ -4,69 +4,69 @@ import {
   decodeJson as decodeJson_1,
   encodeBinary as encodeBinary_1,
   decodeBinary as decodeBinary_1,
-} from "./Info.js";
+} from "./Info";
 import {
   Type as Scheme,
   name2num,
   num2name,
-} from "./Scheme.js";
+} from "./Scheme";
 import {
   Type as Response,
   encodeJson as encodeJson_2,
   decodeJson as decodeJson_2,
   encodeBinary as encodeBinary_2,
   decodeBinary as decodeBinary_2,
-} from "./Response.js";
+} from "./Response";
 import {
   Type as SecurityDefinitions,
   encodeJson as encodeJson_3,
   decodeJson as decodeJson_3,
   encodeBinary as encodeBinary_3,
   decodeBinary as decodeBinary_3,
-} from "./SecurityDefinitions.js";
+} from "./SecurityDefinitions";
 import {
   Type as SecurityRequirement,
   encodeJson as encodeJson_4,
   decodeJson as decodeJson_4,
   encodeBinary as encodeBinary_4,
   decodeBinary as decodeBinary_4,
-} from "./SecurityRequirement.js";
+} from "./SecurityRequirement";
 import {
   Type as ExternalDocumentation,
   encodeJson as encodeJson_5,
   decodeJson as decodeJson_5,
   encodeBinary as encodeBinary_5,
   decodeBinary as decodeBinary_5,
-} from "./ExternalDocumentation.js";
+} from "./ExternalDocumentation";
 import {
   Type as Value,
   encodeJson as encodeJson_6,
   decodeJson as decodeJson_6,
   encodeBinary as encodeBinary_6,
   decodeBinary as decodeBinary_6,
-} from "../../../../google/protobuf/Value.js";
+} from "../../../../google/protobuf/Value";
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
-} from "../../../../../runtime/json/scalar.js";
+} from "../../../../../runtime/json/scalar";
 import {
   WireMessage,
   WireType,
-} from "../../../../../runtime/wire/index.js";
+} from "../../../../../runtime/wire/index";
 import {
   default as serialize,
-} from "../../../../../runtime/wire/serialize.js";
+} from "../../../../../runtime/wire/serialize";
 import {
   tsValueToWireValueFns,
   wireValueToTsValueFns,
   unpackFns,
-} from "../../../../../runtime/wire/scalar.js";
+} from "../../../../../runtime/wire/scalar";
 import {
   default as Long,
-} from "../../../../../runtime/Long.js";
+} from "../../../../../runtime/Long";
 import {
   default as deserialize,
-} from "../../../../../runtime/wire/deserialize.js";
+} from "../../../../../runtime/wire/deserialize";
 
 export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options {
   export type Swagger = {

@@ -1,12 +1,12 @@
 import {
   WireMessage,
-} from "../../runtime/wire/index.js";
+} from "../../runtime/wire/index";
 import {
   default as serialize,
-} from "../../runtime/wire/serialize.js";
+} from "../../runtime/wire/serialize";
 import {
   default as deserialize,
-} from "../../runtime/wire/deserialize.js";
+} from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
   export type GetRecentBlockHashRequest = {}

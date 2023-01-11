@@ -1,64 +1,87 @@
 {
-  "name": "@bloxroute/solana-trader-client-ts",
-  "version": "1.3.0",
-  "description": "Solana Trader API SDK",
-  "main": "index.ts",
-  "type": "module",
-  "directories": {
-    "example": "example"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "scripts": {
-    "test": "echo \"No test specified\"",
-    "release": "np --no-2fa --any-branch",
-    "start": "ts-node ./examples/index.ts",
-    "lintCI": "eslint --max-warnings 0 .",
-    "lint": "eslint --fix .",
-    "format": "prettier --config .prettierrc -l './**/*.ts' --write",
-    "formatCI": "prettier --config .prettierrc -l './**/*.ts'",
-    "proto": "pb gen ts --entry-path ./solana-trader-proto/proto --out-dir=./bxsolana/proto ./solana-trader-proto/proto/api.proto --ext-in-import='.js'"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/bloXroute-Labs/solana-trader-client-ts.git"
-  },
-  "author": "bloXroute",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/bloXroute-Labs/solana-trader-client-ts/issues"
-  },
-  "homepage": "https://github.com/bloXroute-Labs/solana-trader-client-ts#readme",
-  "dependencies": {
-    "@grpc/grpc-js": "^1.6.7",
-    "@pbkit/grpc-client": "^0.0.1",
-    "@solana/web3.js": "^1.47.3",
-    "bs58": "^5.0.0",
-    "dotenv": "^16.0.1",
-    "esbuild": "^0.16.7",
-    "google-protobuf": "^3.20.1",
-    "node-fetch": "^3.2.6",
-    "np": "^6.0.0",
-    "pbkit": "^0.0.53",
-    "ts-node": "^10.8.1",
-    "typescript": "^4.7.4",
-    "websocket-iterator": "^1.0.1",
-    "ws": "^8.8.0"
-  },
-  "devDependencies": {
-    "@protobuf-ts/plugin": "^2.7.0",
-    "@types/google-protobuf": "^3.15.6",
-    "@types/node": "^18.7.18",
-    "@types/node-fetch": "^2.6.2",
-    "@types/ws": "^8.5.3",
-    "@typescript-eslint/eslint-plugin": "^5.32.0",
-    "@typescript-eslint/parser": "^5.32.0",
-    "eslint": "^8.21.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "husky": "^8.0.1",
-    "prettier": "^2.7.1",
-    "ts-proto": "^1.115.5"
-  }
+    "name": "@bloxroute/solana-trader-client-ts",
+    "version": "1.3.8",
+    "description": "Solana Trader API SDK",
+    "type": "module",
+    "exports": {
+        ".": {
+            "types": {
+                "default": "./dist/index.d.ts"
+            },
+            "browser": {
+                "require": "./dist/browser/index.cjs",
+                "default": "./dist/browser/index.js"
+            },
+            "default": {
+                "require": "./dist/node/index.cjs",
+                "default": "./dist/node/index.js"
+            }
+        }
+    },
+    "main": "./dist/node/index.js",
+    "types": "./dist/index.d.ts",
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [
+        "./bxsolana/",
+        "./dist/",
+        "./examples/"
+    ],
+    "scripts": {
+        "start": "node --experimental-specifier-resolution=node --loader ts-node/esm ./examples/index.ts",
+        "test": "echo \"No test specified\"",
+        "build": "npm run esbuild && npm run types",
+        "clean": "rm -rf dist",
+        "esbuild": "node build.mjs",
+        "types": "tsc --emitDeclarationOnly",
+        "release": "npm run clean && npm run build && np --no-2fa --any-branch",
+        "lintCI": "eslint --max-warnings 0 .",
+        "lint": "eslint --fix .",
+        "format": "prettier --config .prettierrc -l './**/*.ts' --write",
+        "formatCI": "prettier --config .prettierrc -l './**/*.ts'",
+        "proto": "pb gen ts --entry-path ./solana-trader-proto/proto --out-dir=./bxsolana/proto ./solana-trader-proto/proto/api.proto --ext-in-import=' '"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/bloXroute-Labs/solana-trader-client-ts.git"
+    },
+    "author": "bloXroute",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/bloXroute-Labs/solana-trader-client-ts/issues"
+    },
+    "homepage": "https://github.com/bloXroute-Labs/solana-trader-client-ts#readme",
+    "dependencies": {
+        "@grpc/grpc-js": "^1.6.7",
+        "@pbkit/grpc-client": "^0.0.1",
+        "@solana/web3.js": "^1.47.3",
+        "axios": "1.1.2",
+        "bs58": "^5.0.0",
+        "dotenv": "^16.0.1",
+        "esbuild": "^0.16.7",
+        "google-protobuf": "^3.20.1",
+        "isomorphic-ws": "5.0.0",
+        "np": "^6.0.0",
+        "pbkit": "^0.0.53",
+        "ts-node": "^10.8.1",
+        "typescript": "^4.7.4",
+        "websocket-iterator": "^1.0.1",
+        "ws": "^8.8.0"
+    },
+    "devDependencies": {
+        "@protobuf-ts/plugin": "^2.7.0",
+        "@types/google-protobuf": "^3.15.6",
+        "@types/node": "^18.7.18",
+        "@types/ws": "^8.5.3",
+        "@typescript-eslint/eslint-plugin": "^5.32.0",
+        "@typescript-eslint/parser": "^5.32.0",
+        "esbuild": "0.16.14",
+        "eslint": "^8.21.0",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-plugin-prettier": "^4.2.1",
+        "husky": "^8.0.1",
+        "prettier": "^2.7.1",
+        "ts-proto": "^1.115.5"
+    }
 }

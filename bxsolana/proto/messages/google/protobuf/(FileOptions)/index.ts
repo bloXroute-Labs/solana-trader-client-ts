@@ -1,1 +1,1 @@
-export type { Type as OptimizeMode } from "./OptimizeMode.js";
+export type { Type as OptimizeMode } from "./OptimizeMode";

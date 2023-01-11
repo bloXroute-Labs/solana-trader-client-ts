@@ -1,6 +1,5 @@
-import config from "../../utils/config.js"
-import WebSocket from "ws"
-import { AsyncBlockingQueue } from "../../utils/blockingqueue.js"
+import WebSocket from "isomorphic-ws"
+import { AsyncBlockingQueue } from "../utils/blockingqueue"
 
 // eslint-disable-next-line
 type Resolver = (result: any) => void
@@ -9,10 +8,14 @@ type SubscriptionResolver = {
     read: AsyncGenerator<unknown, void, unknown>
     cancel: (err: Error) => void
 }
+type MessageEvent<T> = {
+    data: T
+}
 
 export class RpcWsConnection {
     private socket?: WebSocket
-    private address: string
+    private readonly address: string
+    private readonly authHeader: string
 
     private requestId = 1
     private requestMap: Map<number, Resolver> = new Map()
@@ -20,12 +23,13 @@ export class RpcWsConnection {
     // eslint-disable-next-line
     queue: AsyncBlockingQueue<any> = new AsyncBlockingQueue<any>()
 
-    constructor(address: string) {
+    constructor(address: string, authHeader: string) {
         this.address = address
+        this.authHeader = authHeader
     }
 
     async connect() {
-        const headers = { Authorization: config.AuthHeader }
+        const headers = { Authorization: this.authHeader }
         const socket = new WebSocket(this.address, {
             headers,
         })
@@ -41,11 +45,14 @@ export class RpcWsConnection {
         }
 
         socket.onmessage = (msg: unknown) => {
-            const { id, result, method, params } = JSON.parse((msg as MessageEvent<string>).data)
+            const { id, result, method, params } = JSON.parse(
+                (msg as MessageEvent<string>).data
+            )
 
             if (method === "subscribe") {
                 const { subscription, result } = params
-                const subscriptionResolver = this.subscriptionMap.get(subscription)
+                const subscriptionResolver =
+                    this.subscriptionMap.get(subscription)
                 if (subscriptionResolver) {
                     subscriptionResolver.update(result)
                 }
@@ -56,7 +63,9 @@ export class RpcWsConnection {
                     this.requestMap.delete(id)
                 } else {
                     this.close()
-                    throw new Error("received an non streaming message on websocket, closing socket")
+                    throw new Error(
+                        "received an non streaming message on websocket, closing socket"
+                    )
                 }
             }
         }
@@ -86,7 +95,10 @@ export class RpcWsConnection {
         return await callback
     }
 
-    _formWSRequest<T>(methodName: string, methodParams: T): { id: number; req: string } {
+    _formWSRequest<T>(
+        methodName: string,
+        methodParams: T
+    ): { id: number; req: string } {
         const id = ++this.requestId // iterating the request id by 1 makes it so that we have a unique request ID for each request
         return {
             req: JSON.stringify({
@@ -100,7 +112,10 @@ export class RpcWsConnection {
     }
 
     async subscribe<T>(streamName: string, streamParams: T): Promise<string> {
-        const subscriptionId = (await this.call("subscribe", [streamName, streamParams])) as string
+        const subscriptionId = (await this.call("subscribe", [
+            streamName,
+            streamParams,
+        ])) as string
 
         const queue = new AsyncBlockingQueue<unknown>()
         const update = (value: unknown) => {
@@ -140,7 +155,9 @@ export class RpcWsConnection {
         return this.subscriptionMap.delete(subscriptionId)
     }
 
-    async *subscribeToNotifications<T>(subscriptionID: string): AsyncGenerator<T> {
+    async *subscribeToNotifications<T>(
+        subscriptionID: string
+    ): AsyncGenerator<T> {
         const resolver = this.subscriptionMap.get(subscriptionID)
 
         if (!resolver) {

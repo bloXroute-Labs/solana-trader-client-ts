@@ -1,5 +1,4 @@
-import { MAINNET_API_HTTP } from "../../utils/constants.js"
-import fetch from "node-fetch"
+import { MAINNET_API_HTTP } from "../utils/constants"
 import {
     GetAccountBalanceRequest,
     GetAccountBalanceResponse,
@@ -13,6 +12,8 @@ import {
     GetPoolsResponse,
     GetPriceRequest,
     GetPriceResponse,
+    GetQuotesRequest,
+    GetQuotesResponse,
     GetRecentBlockHashRequest,
     GetRecentBlockHashResponse,
     GetServerTimeRequest,
@@ -33,25 +34,27 @@ import {
     PostReplaceOrderRequest,
     PostSettleRequest,
     PostSettleResponse,
-    PostSubmitRequest,
-    PostSubmitResponse,
     PostSubmitBatchRequest,
     PostSubmitBatchResponse,
-    TradeSwapRequest,
+    PostSubmitRequest,
+    PostSubmitResponse,
     RouteTradeSwapRequest,
+    TradeSwapRequest,
     TradeSwapResponse,
-    GetQuotesRequest,
-    GetQuotesResponse,
-} from "../proto/messages/api/index.js"
-import { BaseProvider } from "./base.js"
-import config from "../../utils/config.js"
-import { isRpcError, RpcError } from "../../utils/error.js"
+} from "../proto/messages/api"
+import { BaseProvider } from "./base"
+import { isRpcError, RpcError } from "../utils/error"
+import axios, { AxiosResponse } from "axios"
 
 export class HttpProvider extends BaseProvider {
     private baseUrl: string
 
-    constructor(address: string = MAINNET_API_HTTP) {
-        super()
+    constructor(
+        authHeader: string,
+        privateKey = "",
+        address: string = MAINNET_API_HTTP
+    ) {
+        super(authHeader, privateKey)
         this.baseUrl = address + "/api/v1"
     }
 
@@ -59,60 +62,100 @@ export class HttpProvider extends BaseProvider {
         //no need
     }
 
-    getOrderbook = (request: GetOrderbookRequest): Promise<GetOrderbookResponse> => {
+    getOrderbook = (
+        request: GetOrderbookRequest
+    ): Promise<GetOrderbookResponse> => {
         const path = `${this.baseUrl}/market/orderbooks/${request.market}?limit=${request.limit}&project=${request.project}`
-        return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
-            return this.handleResponse<GetOrderbookResponse>(resp.json())
-        })
+        return axios
+            .get(path, {
+                headers: { Authorization: this.authHeader },
+            })
+            .then((resp) => {
+                return this.handleResponse<GetOrderbookResponse>(resp)
+            })
     }
 
     getMarkets(request: GetMarketsRequest): Promise<GetMarketsResponse> {
         const path = `${this.baseUrl}/market/markets`
-        return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
-            return this.handleResponse<GetMarketsResponse>(resp.json())
-        })
+        return axios
+            .get(path, {
+                headers: { Authorization: this.authHeader },
+            })
+            .then((resp) => {
+                return this.handleResponse<GetMarketsResponse>(resp)
+            })
     }
 
     getTickers(request: GetTickersRequest): Promise<GetTickersResponse> {
         const path = `${this.baseUrl}/market/tickers/${request.market}?project=${request.project}`
-        return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
-            return this.handleResponse<GetTickersResponse>(resp.json())
-        })
+        return axios
+            .get(path, {
+                headers: { Authorization: this.authHeader },
+            })
+            .then((resp) => {
+                return this.handleResponse<GetTickersResponse>(resp)
+            })
     }
 
     getTrades(request: GetTradesRequest): Promise<GetTradesResponse> {
         const path = `${this.baseUrl}/market/trades/${request.market}?limit=${request.limit}&project=${request.project}`
-        return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
-            return this.handleResponse<GetTradesResponse>(resp.json())
-        })
+        return axios
+            .get(path, {
+                headers: { Authorization: this.authHeader },
+            })
+            .then((resp) => {
+                return this.handleResponse<GetTradesResponse>(resp)
+            })
     }
 
-    getServerTime(request: GetServerTimeRequest): Promise<GetServerTimeResponse> {
+    getServerTime(
+        request: GetServerTimeRequest
+    ): Promise<GetServerTimeResponse> {
         const path = `${this.baseUrl}/system/time`
-        return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
-            return this.handleResponse<GetServerTimeResponse>(resp.json())
-        })
+        return axios
+            .get(path, {
+                headers: { Authorization: this.authHeader },
+            })
+            .then((resp) => {
+                return this.handleResponse<GetServerTimeResponse>(resp)
+            })
     }
 
-    getOpenOrders(request: GetOpenOrdersRequest): Promise<GetOpenOrdersResponse> {
+    getOpenOrders(
+        request: GetOpenOrdersRequest
+    ): Promise<GetOpenOrdersResponse> {
         const path = `${this.baseUrl}/trade/openorders/${request.market}?address=${request.address}&limit=${request.limit}&openOrdersAddress=${request.openOrdersAddress}&project=${request.project}`
-        return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
-            return this.handleResponse<GetOpenOrdersResponse>(resp.json())
-        })
+        return axios
+            .get(path, {
+                headers: { Authorization: this.authHeader },
+            })
+            .then((resp) => {
+                return this.handleResponse<GetOpenOrdersResponse>(resp)
+            })
     }
 
     getUnsettled(request: GetUnsettledRequest): Promise<GetUnsettledResponse> {
-        const path = `${this.baseUrl}/trade/unsettled/${request.market}?owner=${request.ownerAddress}&project=${request.project}`
-        return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
-            return this.handleResponse<GetUnsettledResponse>(resp.json())
-        })
+        const path = `${this.baseUrl}/trade/unsettled/${request.market}?ownerAddress=${request.ownerAddress}&project=${request.project}`
+        return axios
+            .get(path, {
+                headers: { Authorization: this.authHeader },
+            })
+            .then((resp) => {
+                return this.handleResponse<GetUnsettledResponse>(resp)
+            })
     }
 
-    getAccountBalance(request: GetAccountBalanceRequest): Promise<GetAccountBalanceResponse> {
+    getAccountBalance(
+        request: GetAccountBalanceRequest
+    ): Promise<GetAccountBalanceResponse> {
         const path = `${this.baseUrl}/account/balance`
-        return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
-            return this.handleResponse<GetAccountBalanceResponse>(resp.json())
-        })
+        return axios
+            .get(path, {
+                headers: { Authorization: this.authHeader },
+            })
+            .then((resp) => {
+                return this.handleResponse<GetAccountBalanceResponse>(resp)
+            })
     }
 
     getPools(request: GetPoolsRequest): Promise<GetPoolsResponse> {
@@ -121,9 +164,13 @@ export class HttpProvider extends BaseProvider {
         if (args != "") {
             path += `?${args}`
         }
-        return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
-            return this.handleResponse<GetPoolsResponse>(resp.json())
-        })
+        return axios
+            .get(path, {
+                headers: { Authorization: this.authHeader },
+            })
+            .then((resp) => {
+                return this.handleResponse<GetPoolsResponse>(resp)
+            })
     }
 
     getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
@@ -132,16 +179,26 @@ export class HttpProvider extends BaseProvider {
         if (args != "") {
             path += `?${args}`
         }
-        return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
-            return this.handleResponse<GetPriceResponse>(resp.json())
-        })
+        return axios
+            .get(path, {
+                headers: { Authorization: this.authHeader },
+            })
+            .then((resp) => {
+                return this.handleResponse<GetPriceResponse>(resp)
+            })
     }
 
-    getRecentBlockHash(request: GetRecentBlockHashRequest): Promise<GetRecentBlockHashResponse> {
+    getRecentBlockHash(
+        request: GetRecentBlockHashRequest
+    ): Promise<GetRecentBlockHashResponse> {
         const path = `${this.baseUrl}/system/blockhash`
-        return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
-            return this.handleResponse<GetRecentBlockHashResponse>(resp.json())
-        })
+        return axios
+            .get(path, {
+                headers: { Authorization: this.authHeader },
+            })
+            .then((resp) => {
+                return this.handleResponse<GetRecentBlockHashResponse>(resp)
+            })
     }
 
     getQuotes(request: GetQuotesRequest): Promise<GetQuotesResponse> {
@@ -150,139 +207,203 @@ export class HttpProvider extends BaseProvider {
             path += `&projects=${project}`
         }
 
-        return fetch(path, { headers: { Authorization: config.AuthHeader } }).then((resp) => {
-            return this.handleResponse<GetQuotesResponse>(resp.json())
-        })
+        return axios
+            .get(path, {
+                headers: { Authorization: this.authHeader },
+            })
+            .then((resp) => {
+                return this.handleResponse<GetQuotesResponse>(resp)
+            })
     }
 
     postOrder(request: PostOrderRequest): Promise<PostOrderResponse> {
         const path = `${this.baseUrl}/trade/place`
-        return fetch(path, {
+        return axios({
+            url: path,
             method: "POST",
-            body: JSON.stringify(request),
-            headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
+            data: request,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: this.authHeader,
+            },
         }).then((resp) => {
-            return this.handleResponse<PostOrderResponse>(resp.json())
+            return this.handleResponse<PostOrderResponse>(resp)
         })
     }
 
     postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
         const path = `${this.baseUrl}/trade/swap`
-        return fetch(path, {
+        return axios({
+            url: path,
             method: "POST",
-            body: JSON.stringify(request),
-            headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
+            data: request,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: this.authHeader,
+            },
         }).then((resp) => {
-            return this.handleResponse<TradeSwapResponse>(resp.json())
+            return this.handleResponse<TradeSwapResponse>(resp)
         })
     }
 
-    postRouteTradeSwap(request: RouteTradeSwapRequest): Promise<TradeSwapResponse> {
+    postRouteTradeSwap(
+        request: RouteTradeSwapRequest
+    ): Promise<TradeSwapResponse> {
         const path = `${this.baseUrl}/trade/route-swap`
-        return fetch(path, {
+        return axios({
+            url: path,
             method: "POST",
-            body: JSON.stringify(request),
-            headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
+            data: request,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: this.authHeader,
+            },
         }).then((resp) => {
-            return this.handleResponse<TradeSwapResponse>(resp.json())
+            return this.handleResponse<TradeSwapResponse>(resp)
         })
     }
 
     postSubmit(request: PostSubmitRequest): Promise<PostSubmitResponse> {
         const path = `${this.baseUrl}/trade/submit`
-        return fetch(path, {
+        return axios({
+            url: path,
             method: "POST",
-            body: JSON.stringify(request),
-            headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
+            data: request,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: this.authHeader,
+            },
         }).then((resp) => {
-            return this.handleResponse<PostSubmitResponse>(resp.json())
+            return this.handleResponse<PostSubmitResponse>(resp)
         })
     }
 
-    postSubmitBatch(request: PostSubmitBatchRequest): Promise<PostSubmitBatchResponse> {
+    postSubmitBatch(
+        request: PostSubmitBatchRequest
+    ): Promise<PostSubmitBatchResponse> {
         const path = `${this.baseUrl}/trade/submit-batch`
-        return fetch(path, {
+        return axios(path, {
             method: "POST",
-            body: JSON.stringify(request),
-            headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
+            url: path,
+            data: request,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: this.authHeader,
+            },
         }).then((resp) => {
-            return this.handleResponse<PostSubmitBatchResponse>(resp.json())
+            return this.handleResponse<PostSubmitBatchResponse>(resp)
         })
     }
 
-    postCancelOrder(request: PostCancelOrderRequest): Promise<PostCancelOrderResponse> {
+    postCancelOrder(
+        request: PostCancelOrderRequest
+    ): Promise<PostCancelOrderResponse> {
         const path = `${this.baseUrl}/trade/cancel`
-        return fetch(path, {
+        return axios({
             method: "POST",
-            body: JSON.stringify(request),
-            headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
+            url: path,
+            data: request,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: this.authHeader,
+            },
         }).then((resp) => {
-            return this.handleResponse<PostCancelOrderResponse>(resp.json())
+            return this.handleResponse<PostCancelOrderResponse>(resp)
         })
     }
 
-    postCancelByClientOrderID(request: PostCancelByClientOrderIDRequest): Promise<PostCancelOrderResponse> {
+    postCancelByClientOrderID(
+        request: PostCancelByClientOrderIDRequest
+    ): Promise<PostCancelOrderResponse> {
         const path = `${this.baseUrl}/trade/cancelbyid`
-        return fetch(path, {
+        return axios({
             method: "POST",
-            body: JSON.stringify(request),
-            headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
+            url: path,
+            data: request,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: this.authHeader,
+            },
         }).then((resp) => {
-            return this.handleResponse<PostCancelOrderResponse>(resp.json())
+            return this.handleResponse<PostCancelOrderResponse>(resp)
         })
     }
 
-    postCancelAll(request: PostCancelAllRequest): Promise<PostCancelAllResponse> {
+    postCancelAll(
+        request: PostCancelAllRequest
+    ): Promise<PostCancelAllResponse> {
         const path = `${this.baseUrl}/trade/cancelall`
-        return fetch(path, {
+        return axios(path, {
             method: "POST",
-            body: JSON.stringify(request),
-            headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
+            url: path,
+            data: request,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: this.authHeader,
+            },
         }).then((resp) => {
-            return this.handleResponse<PostCancelAllResponse>(resp.json())
+            return this.handleResponse<PostCancelAllResponse>(resp)
         })
     }
 
     postSettle(request: PostSettleRequest): Promise<PostSettleResponse> {
         const path = `${this.baseUrl}/trade/settle`
-        return fetch(path, {
+        return axios({
             method: "POST",
-            body: JSON.stringify(request),
-            headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
+            url: path,
+            data: request,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: this.authHeader,
+            },
         }).then((resp) => {
-            return this.handleResponse<PostSettleResponse>(resp.json())
+            return this.handleResponse<PostSettleResponse>(resp)
         })
     }
 
-    postReplaceByClientOrderID(request: PostOrderRequest): Promise<PostOrderResponse> {
+    postReplaceByClientOrderID(
+        request: PostOrderRequest
+    ): Promise<PostOrderResponse> {
         const path = `${this.baseUrl}/trade/replacebyclientid`
-        return fetch(path, {
+        return axios({
             method: "POST",
-            body: JSON.stringify(request),
-            headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
+            url: path,
+            data: request,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: this.authHeader,
+            },
         }).then((resp) => {
-            return this.handleResponse<PostOrderResponse>(resp.json())
+            return this.handleResponse<PostOrderResponse>(resp)
         })
     }
 
-    postReplaceOrder(request: PostReplaceOrderRequest): Promise<PostOrderResponse> {
+    postReplaceOrder(
+        request: PostReplaceOrderRequest
+    ): Promise<PostOrderResponse> {
         const path = `${this.baseUrl}/trade/replace`
-        return fetch(path, {
+        return axios({
             method: "POST",
-            body: JSON.stringify(request),
-            headers: { "Content-Type": "application/json", Authorization: config.AuthHeader },
+            url: path,
+            data: request,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: this.authHeader,
+            },
         }).then((resp) => {
-            return this.handleResponse<PostOrderResponse>(resp.json())
+            return this.handleResponse<PostOrderResponse>(resp)
         })
     }
 
-    async handleResponse<T>(response: Promise<unknown>): Promise<T> {
-        return response.then((json) => {
-            if (isRpcError(json)) {
-                return Promise.reject((json as RpcError).message)
-            } else {
-                return Promise.resolve(json as unknown as T)
-            }
-        })
+    async handleResponse<T>(response: AxiosResponse): Promise<T> {
+        if (response.status !== 200) {
+            return Promise.reject(`error during request: ${response.data}`)
+        }
+
+        if (isRpcError(response)) {
+            return Promise.reject((response.data as RpcError).message)
+        } else {
+            return Promise.resolve(response.data as unknown as T)
+        }
     }
 }

@@ -1,16 +1,20 @@
 import { Keypair, Transaction } from "@solana/web3.js"
-import config from "./config.js"
-import { TransactionMessage } from "../bxsolana/proto/messages/api"
+import { TransactionMessage } from "../proto/messages/api"
 
-export function signTx(base64EncodedTx: string): Transaction {
+export function signTx(
+    base64EncodedTx: string,
+    privateKey: Keypair
+): Transaction {
     const tx = txFromBase64(base64EncodedTx)
-    const pair: Keypair = Keypair.fromSecretKey(config.WalletSecretKey)
-    tx.partialSign(pair)
+    tx.partialSign(privateKey)
     return tx
 }
 
-export function signTxMessage(txMessage: TransactionMessage): TransactionMessage {
-    const signedTx = signTx(txMessage.content)
+export function signTxMessage(
+    txMessage: TransactionMessage,
+    privateKey: Keypair
+): TransactionMessage {
+    const signedTx = signTx(txMessage.content, privateKey)
     txMessage.content = txToBase64(signedTx)
     return txMessage
 }

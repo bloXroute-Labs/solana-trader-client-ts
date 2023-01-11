@@ -1,4 +1,4 @@
-import Long from "../Long.js";
+import Long from "../Long";
 
 export function encode(value: number | Long): Uint8Array {
   const result: number[] = [];

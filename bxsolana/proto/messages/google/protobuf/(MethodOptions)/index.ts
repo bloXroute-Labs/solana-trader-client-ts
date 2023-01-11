@@ -1,1 +1,1 @@
-export type { Type as IdempotencyLevel } from "./IdempotencyLevel.js";
+export type { Type as IdempotencyLevel } from "./IdempotencyLevel";

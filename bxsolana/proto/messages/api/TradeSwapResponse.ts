@@ -2,49 +2,49 @@ import {
   Type as Project,
   name2num,
   num2name,
-} from "./Project.js";
+} from "./Project";
 import {
   Type as TransactionMessage,
   encodeJson as encodeJson_1,
   decodeJson as decodeJson_1,
   encodeBinary as encodeBinary_1,
   decodeBinary as decodeBinary_1,
-} from "./TransactionMessage.js";
+} from "./TransactionMessage";
 import {
   Type as PriceImpactPercent,
   encodeJson as encodeJson_2,
   decodeJson as decodeJson_2,
   encodeBinary as encodeBinary_2,
   decodeBinary as decodeBinary_2,
-} from "../common/PriceImpactPercent.js";
+} from "../common/PriceImpactPercent";
 import {
   Type as Fee,
   encodeJson as encodeJson_3,
   decodeJson as decodeJson_3,
   encodeBinary as encodeBinary_3,
   decodeBinary as decodeBinary_3,
-} from "../common/Fee.js";
+} from "../common/Fee";
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
-} from "../../runtime/json/scalar.js";
+} from "../../runtime/json/scalar";
 import {
   WireMessage,
   WireType,
-} from "../../runtime/wire/index.js";
+} from "../../runtime/wire/index";
 import {
   default as serialize,
-} from "../../runtime/wire/serialize.js";
+} from "../../runtime/wire/serialize";
 import {
   default as Long,
-} from "../../runtime/Long.js";
+} from "../../runtime/Long";
 import {
   tsValueToWireValueFns,
   wireValueToTsValueFns,
-} from "../../runtime/wire/scalar.js";
+} from "../../runtime/wire/scalar";
 import {
   default as deserialize,
-} from "../../runtime/wire/deserialize.js";
+} from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
   export type TradeSwapResponse = {

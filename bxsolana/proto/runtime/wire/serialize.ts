@@ -1,5 +1,5 @@
-import { WireMessage, WireType } from "./index.js";
-import { encode } from "./varint.js";
+import { WireMessage, WireType } from "./index";
+import { encode } from "./varint";
 
 export default function serialize(wireMessage: WireMessage): Uint8Array {
   const result: Uint8Array[] = [];

@@ -1,5 +1,5 @@
-import { createEventBuffer } from "./async/event-buffer.js";
-import { defer } from "./async/observer.js";
+import { createEventBuffer } from "./async/event-buffer";
+import { defer } from "./async/observer";
 
 export type Method<
   TMetadata = any,

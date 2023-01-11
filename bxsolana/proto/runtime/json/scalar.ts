@@ -1,4 +1,4 @@
-import { encode as base64Encode, decode as base64Decode } from "../base64.js";
+import { encode as base64Encode, decode as base64Decode } from "../base64";
 
 type TsValueToJsonValue<T> = (tsValue: T) => unknown;
 type JsonValueToTsValue<T> = (jsonValue: any) => T;
