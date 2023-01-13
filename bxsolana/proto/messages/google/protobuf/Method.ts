@@ -4,33 +4,33 @@ import {
   decodeJson as decodeJson_1,
   encodeBinary as encodeBinary_1,
   decodeBinary as decodeBinary_1,
-} from "./Option.js";
+} from "./Option";
 import {
   Type as Syntax,
   name2num,
   num2name,
-} from "./Syntax.js";
+} from "./Syntax";
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
-} from "../../../runtime/json/scalar.js";
+} from "../../../runtime/json/scalar";
 import {
   WireMessage,
   WireType,
-} from "../../../runtime/wire/index.js";
+} from "../../../runtime/wire/index";
 import {
   default as serialize,
-} from "../../../runtime/wire/serialize.js";
+} from "../../../runtime/wire/serialize";
 import {
   tsValueToWireValueFns,
   wireValueToTsValueFns,
-} from "../../../runtime/wire/scalar.js";
+} from "../../../runtime/wire/scalar";
 import {
   default as Long,
-} from "../../../runtime/Long.js";
+} from "../../../runtime/Long";
 import {
   default as deserialize,
-} from "../../../runtime/wire/deserialize.js";
+} from "../../../runtime/wire/deserialize";
 
 export declare namespace $.google.protobuf {
   export type Method = {

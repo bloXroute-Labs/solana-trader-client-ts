@@ -1,7 +1,7 @@
-import * as api from "./api/index.js";
-import * as common from "./common/index.js";
-import * as grpc from "./grpc/index.js";
-import * as google from "./google/index.js";
+import * as api from "./api/index";
+import * as common from "./common/index";
+import * as grpc from "./grpc/index";
+import * as google from "./google/index";
 export type {
   api,
   common,

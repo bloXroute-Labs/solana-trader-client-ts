@@ -2,52 +2,52 @@ import {
   Type as Type_1,
   name2num,
   num2name,
-} from "./(SecurityScheme)/Type.js";
+} from "./(SecurityScheme)/Type";
 import {
   Type as In,
   name2num as name2num_1,
   num2name as num2name_1,
-} from "./(SecurityScheme)/In.js";
+} from "./(SecurityScheme)/In";
 import {
   Type as Flow,
   name2num as name2num_2,
   num2name as num2name_2,
-} from "./(SecurityScheme)/Flow.js";
+} from "./(SecurityScheme)/Flow";
 import {
   Type as Scopes,
   encodeJson as encodeJson_1,
   decodeJson as decodeJson_1,
   encodeBinary as encodeBinary_1,
   decodeBinary as decodeBinary_1,
-} from "./Scopes.js";
+} from "./Scopes";
 import {
   Type as Value,
   encodeJson as encodeJson_2,
   decodeJson as decodeJson_2,
   encodeBinary as encodeBinary_2,
   decodeBinary as decodeBinary_2,
-} from "../../../../google/protobuf/Value.js";
+} from "../../../../google/protobuf/Value";
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
-} from "../../../../../runtime/json/scalar.js";
+} from "../../../../../runtime/json/scalar";
 import {
   WireMessage,
   WireType,
-} from "../../../../../runtime/wire/index.js";
+} from "../../../../../runtime/wire/index";
 import {
   default as serialize,
-} from "../../../../../runtime/wire/serialize.js";
+} from "../../../../../runtime/wire/serialize";
 import {
   default as Long,
-} from "../../../../../runtime/Long.js";
+} from "../../../../../runtime/Long";
 import {
   tsValueToWireValueFns,
   wireValueToTsValueFns,
-} from "../../../../../runtime/wire/scalar.js";
+} from "../../../../../runtime/wire/scalar";
 import {
   default as deserialize,
-} from "../../../../../runtime/wire/deserialize.js";
+} from "../../../../../runtime/wire/deserialize";
 
 export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options {
   export type SecurityScheme = {

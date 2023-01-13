@@ -4,39 +4,39 @@ import {
   decodeJson as decodeJson_1,
   encodeBinary as encodeBinary_1,
   decodeBinary as decodeBinary_1,
-} from "./Schema.js";
+} from "./Schema";
 import {
   Type as Header,
   encodeJson as encodeJson_2,
   decodeJson as decodeJson_2,
   encodeBinary as encodeBinary_2,
   decodeBinary as decodeBinary_2,
-} from "./Header.js";
+} from "./Header";
 import {
   Type as Value,
   encodeJson as encodeJson_3,
   decodeJson as decodeJson_3,
   encodeBinary as encodeBinary_3,
   decodeBinary as decodeBinary_3,
-} from "../../../../google/protobuf/Value.js";
+} from "../../../../google/protobuf/Value";
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
-} from "../../../../../runtime/json/scalar.js";
+} from "../../../../../runtime/json/scalar";
 import {
   WireMessage,
   WireType,
-} from "../../../../../runtime/wire/index.js";
+} from "../../../../../runtime/wire/index";
 import {
   default as serialize,
-} from "../../../../../runtime/wire/serialize.js";
+} from "../../../../../runtime/wire/serialize";
 import {
   tsValueToWireValueFns,
   wireValueToTsValueFns,
-} from "../../../../../runtime/wire/scalar.js";
+} from "../../../../../runtime/wire/scalar";
 import {
   default as deserialize,
-} from "../../../../../runtime/wire/deserialize.js";
+} from "../../../../../runtime/wire/deserialize";
 
 export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options {
   export type Response = {

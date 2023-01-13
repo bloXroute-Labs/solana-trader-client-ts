@@ -1,4 +1,4 @@
-import { defer, Deferred } from "./observer.js";
+import { defer, Deferred } from "./observer";
 
 export interface EventBuffer<T> {
   push(value: T): void;

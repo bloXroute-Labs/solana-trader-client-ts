@@ -1,9 +1,9 @@
-import type { RpcClientImpl } from "./rpc.js";
+import type { RpcClientImpl } from "./rpc";
 import {
   createEventEmitter,
   EventEmitter,
   Off,
-} from "./async/event-emitter.js";
+} from "./async/event-emitter";
 
 export const devtoolsKey = "@pbkit/devtools";
 

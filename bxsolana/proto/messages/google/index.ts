@@ -1,5 +1,5 @@
-import * as protobuf from "./protobuf/index.js";
-import * as api from "./api/index.js";
+import * as protobuf from "./protobuf/index";
+import * as api from "./api/index";
 export type {
   protobuf,
   api,

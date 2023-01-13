@@ -4,40 +4,40 @@ import {
   decodeJson as decodeJson_1,
   encodeBinary as encodeBinary_1,
   decodeBinary as decodeBinary_1,
-} from "./Struct.js";
+} from "./Struct";
 import {
   Type as ListValue,
   encodeJson as encodeJson_2,
   decodeJson as decodeJson_2,
   encodeBinary as encodeBinary_2,
   decodeBinary as decodeBinary_2,
-} from "./ListValue.js";
+} from "./ListValue";
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
-} from "../../../runtime/json/scalar.js";
+} from "../../../runtime/json/scalar";
 import {
   WireMessage,
   WireType,
   Field,
-} from "../../../runtime/wire/index.js";
+} from "../../../runtime/wire/index";
 import {
   default as serialize,
-} from "../../../runtime/wire/serialize.js";
+} from "../../../runtime/wire/serialize";
 import {
   default as Long,
-} from "../../../runtime/Long.js";
+} from "../../../runtime/Long";
 import {
   name2num,
   num2name,
-} from "./NullValue.js";
+} from "./NullValue";
 import {
   tsValueToWireValueFns,
   wireValueToTsValueFns,
-} from "../../../runtime/wire/scalar.js";
+} from "../../../runtime/wire/scalar";
 import {
   default as deserialize,
-} from "../../../runtime/wire/deserialize.js";
+} from "../../../runtime/wire/deserialize";
 
 export declare namespace $.google.protobuf {
   export type Value = {

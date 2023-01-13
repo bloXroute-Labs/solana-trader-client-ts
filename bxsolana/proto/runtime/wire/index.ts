@@ -1,4 +1,4 @@
-import Long from "../Long.js";
+import Long from "../Long";
 
 export type WireMessage = [FieldNumber, Field][];
 export type FieldNumber = number;

@@ -1,1 +1,1 @@
-export type { Service as Api } from "./Api.js";
+export type { Service as Api } from "./Api";

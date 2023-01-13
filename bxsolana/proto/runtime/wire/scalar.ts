@@ -1,8 +1,8 @@
-import Long from "../Long.js";
-import { decode as decodeVarint, encode as encodeVarint } from "./varint.js";
-import { decode as decodeZigzag, encode as encodeZigzag } from "./zigzag.js";
-import { concat } from "./serialize.js";
-import { Field, LengthDelimited, WireType } from "./index.js";
+import Long from "../Long";
+import { decode as decodeVarint, encode as encodeVarint } from "./varint";
+import { decode as decodeZigzag, encode as encodeZigzag } from "./zigzag";
+import { concat } from "./serialize";
+import { Field, LengthDelimited, WireType } from "./index";
 
 type WireValueToTsValue<T> = (wireValue: Field) => T | undefined;
 type TsValueToWireValue<T> = (tsValue: T) => Field;

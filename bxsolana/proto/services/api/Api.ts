@@ -2,417 +2,417 @@ import {
   RpcReturnType,
   RpcClientImpl,
   MethodDescriptor,
-} from "../../runtime/rpc.js";
+} from "../../runtime/rpc";
 import {
   Type as GetPriceRequest,
   encodeBinary,
   decodeBinary,
   encodeJson,
-} from "../../messages/api/GetPriceRequest.js";
+} from "../../messages/api/GetPriceRequest";
 import {
   Type as GetPriceResponse,
   encodeBinary as encodeBinary_1,
   decodeBinary as decodeBinary_1,
   encodeJson as encodeJson_1,
-} from "../../messages/api/GetPriceResponse.js";
+} from "../../messages/api/GetPriceResponse";
 import {
   Type as GetMarketsRequest,
   encodeBinary as encodeBinary_2,
   decodeBinary as decodeBinary_2,
   encodeJson as encodeJson_2,
-} from "../../messages/api/GetMarketsRequest.js";
+} from "../../messages/api/GetMarketsRequest";
 import {
   Type as GetMarketsResponse,
   encodeBinary as encodeBinary_3,
   decodeBinary as decodeBinary_3,
   encodeJson as encodeJson_3,
-} from "../../messages/api/GetMarketsResponse.js";
+} from "../../messages/api/GetMarketsResponse";
 import {
   Type as GetPoolsRequest,
   encodeBinary as encodeBinary_4,
   decodeBinary as decodeBinary_4,
   encodeJson as encodeJson_4,
-} from "../../messages/api/GetPoolsRequest.js";
+} from "../../messages/api/GetPoolsRequest";
 import {
   Type as GetPoolsResponse,
   encodeBinary as encodeBinary_5,
   decodeBinary as decodeBinary_5,
   encodeJson as encodeJson_5,
-} from "../../messages/api/GetPoolsResponse.js";
+} from "../../messages/api/GetPoolsResponse";
 import {
   Type as GetTickersRequest,
   encodeBinary as encodeBinary_6,
   decodeBinary as decodeBinary_6,
   encodeJson as encodeJson_6,
-} from "../../messages/api/GetTickersRequest.js";
+} from "../../messages/api/GetTickersRequest";
 import {
   Type as GetTickersResponse,
   encodeBinary as encodeBinary_7,
   decodeBinary as decodeBinary_7,
   encodeJson as encodeJson_7,
-} from "../../messages/api/GetTickersResponse.js";
+} from "../../messages/api/GetTickersResponse";
 import {
   Type as GetKlineRequest,
   encodeBinary as encodeBinary_8,
   decodeBinary as decodeBinary_8,
   encodeJson as encodeJson_8,
-} from "../../messages/api/GetKlineRequest.js";
+} from "../../messages/api/GetKlineRequest";
 import {
   Type as GetKlineResponse,
   encodeBinary as encodeBinary_9,
   decodeBinary as decodeBinary_9,
   encodeJson as encodeJson_9,
-} from "../../messages/api/GetKlineResponse.js";
+} from "../../messages/api/GetKlineResponse";
 import {
   Type as GetOrderbookRequest,
   encodeBinary as encodeBinary_10,
   decodeBinary as decodeBinary_10,
   encodeJson as encodeJson_10,
-} from "../../messages/api/GetOrderbookRequest.js";
+} from "../../messages/api/GetOrderbookRequest";
 import {
   Type as GetOrderbookResponse,
   encodeBinary as encodeBinary_11,
   decodeBinary as decodeBinary_11,
   encodeJson as encodeJson_11,
-} from "../../messages/api/GetOrderbookResponse.js";
+} from "../../messages/api/GetOrderbookResponse";
 import {
   Type as GetMarketDepthRequest,
   encodeBinary as encodeBinary_12,
   decodeBinary as decodeBinary_12,
   encodeJson as encodeJson_12,
-} from "../../messages/api/GetMarketDepthRequest.js";
+} from "../../messages/api/GetMarketDepthRequest";
 import {
   Type as GetMarketDepthResponse,
   encodeBinary as encodeBinary_13,
   decodeBinary as decodeBinary_13,
   encodeJson as encodeJson_13,
-} from "../../messages/api/GetMarketDepthResponse.js";
+} from "../../messages/api/GetMarketDepthResponse";
 import {
   Type as GetTradesRequest,
   encodeBinary as encodeBinary_14,
   decodeBinary as decodeBinary_14,
   encodeJson as encodeJson_14,
-} from "../../messages/api/GetTradesRequest.js";
+} from "../../messages/api/GetTradesRequest";
 import {
   Type as GetTradesResponse,
   encodeBinary as encodeBinary_15,
   decodeBinary as decodeBinary_15,
   encodeJson as encodeJson_15,
-} from "../../messages/api/GetTradesResponse.js";
+} from "../../messages/api/GetTradesResponse";
 import {
   Type as GetQuotesRequest,
   encodeBinary as encodeBinary_16,
   decodeBinary as decodeBinary_16,
   encodeJson as encodeJson_16,
-} from "../../messages/api/GetQuotesRequest.js";
+} from "../../messages/api/GetQuotesRequest";
 import {
   Type as GetQuotesResponse,
   encodeBinary as encodeBinary_17,
   decodeBinary as decodeBinary_17,
   encodeJson as encodeJson_17,
-} from "../../messages/api/GetQuotesResponse.js";
+} from "../../messages/api/GetQuotesResponse";
 import {
   Type as GetServerTimeRequest,
   encodeBinary as encodeBinary_18,
   decodeBinary as decodeBinary_18,
   encodeJson as encodeJson_18,
-} from "../../messages/api/GetServerTimeRequest.js";
+} from "../../messages/api/GetServerTimeRequest";
 import {
   Type as GetServerTimeResponse,
   encodeBinary as encodeBinary_19,
   decodeBinary as decodeBinary_19,
   encodeJson as encodeJson_19,
-} from "../../messages/api/GetServerTimeResponse.js";
+} from "../../messages/api/GetServerTimeResponse";
 import {
   Type as GetRecentBlockHashRequest,
   encodeBinary as encodeBinary_20,
   decodeBinary as decodeBinary_20,
   encodeJson as encodeJson_20,
-} from "../../messages/api/GetRecentBlockHashRequest.js";
+} from "../../messages/api/GetRecentBlockHashRequest";
 import {
   Type as GetRecentBlockHashResponse,
   encodeBinary as encodeBinary_21,
   decodeBinary as decodeBinary_21,
   encodeJson as encodeJson_21,
-} from "../../messages/api/GetRecentBlockHashResponse.js";
+} from "../../messages/api/GetRecentBlockHashResponse";
 import {
   Type as GetAccountBalanceRequest,
   encodeBinary as encodeBinary_22,
   decodeBinary as decodeBinary_22,
   encodeJson as encodeJson_22,
-} from "../../messages/api/GetAccountBalanceRequest.js";
+} from "../../messages/api/GetAccountBalanceRequest";
 import {
   Type as GetAccountBalanceResponse,
   encodeBinary as encodeBinary_23,
   decodeBinary as decodeBinary_23,
   encodeJson as encodeJson_23,
-} from "../../messages/api/GetAccountBalanceResponse.js";
+} from "../../messages/api/GetAccountBalanceResponse";
 import {
   Type as PostOrderRequest,
   encodeBinary as encodeBinary_24,
   decodeBinary as decodeBinary_24,
   encodeJson as encodeJson_24,
-} from "../../messages/api/PostOrderRequest.js";
+} from "../../messages/api/PostOrderRequest";
 import {
   Type as PostOrderResponse,
   encodeBinary as encodeBinary_25,
   decodeBinary as decodeBinary_25,
   encodeJson as encodeJson_25,
-} from "../../messages/api/PostOrderResponse.js";
+} from "../../messages/api/PostOrderResponse";
 import {
   Type as PostSubmitRequest,
   encodeBinary as encodeBinary_26,
   decodeBinary as decodeBinary_26,
   encodeJson as encodeJson_26,
-} from "../../messages/api/PostSubmitRequest.js";
+} from "../../messages/api/PostSubmitRequest";
 import {
   Type as PostSubmitResponse,
   encodeBinary as encodeBinary_27,
   decodeBinary as decodeBinary_27,
   encodeJson as encodeJson_27,
-} from "../../messages/api/PostSubmitResponse.js";
+} from "../../messages/api/PostSubmitResponse";
 import {
   Type as PostSubmitBatchRequest,
   encodeBinary as encodeBinary_28,
   decodeBinary as decodeBinary_28,
   encodeJson as encodeJson_28,
-} from "../../messages/api/PostSubmitBatchRequest.js";
+} from "../../messages/api/PostSubmitBatchRequest";
 import {
   Type as PostSubmitBatchResponse,
   encodeBinary as encodeBinary_29,
   decodeBinary as decodeBinary_29,
   encodeJson as encodeJson_29,
-} from "../../messages/api/PostSubmitBatchResponse.js";
+} from "../../messages/api/PostSubmitBatchResponse";
 import {
   Type as PostCancelOrderRequest,
   encodeBinary as encodeBinary_30,
   decodeBinary as decodeBinary_30,
   encodeJson as encodeJson_30,
-} from "../../messages/api/PostCancelOrderRequest.js";
+} from "../../messages/api/PostCancelOrderRequest";
 import {
   Type as PostCancelOrderResponse,
   encodeBinary as encodeBinary_31,
   decodeBinary as decodeBinary_31,
   encodeJson as encodeJson_31,
-} from "../../messages/api/PostCancelOrderResponse.js";
+} from "../../messages/api/PostCancelOrderResponse";
 import {
   Type as PostCancelByClientOrderIDRequest,
   encodeBinary as encodeBinary_32,
   decodeBinary as decodeBinary_32,
   encodeJson as encodeJson_32,
-} from "../../messages/api/PostCancelByClientOrderIDRequest.js";
+} from "../../messages/api/PostCancelByClientOrderIDRequest";
 import {
   Type as PostCancelAllRequest,
   encodeBinary as encodeBinary_33,
   decodeBinary as decodeBinary_33,
   encodeJson as encodeJson_33,
-} from "../../messages/api/PostCancelAllRequest.js";
+} from "../../messages/api/PostCancelAllRequest";
 import {
   Type as PostCancelAllResponse,
   encodeBinary as encodeBinary_34,
   decodeBinary as decodeBinary_34,
   encodeJson as encodeJson_34,
-} from "../../messages/api/PostCancelAllResponse.js";
+} from "../../messages/api/PostCancelAllResponse";
 import {
   Type as PostReplaceOrderRequest,
   encodeBinary as encodeBinary_35,
   decodeBinary as decodeBinary_35,
   encodeJson as encodeJson_35,
-} from "../../messages/api/PostReplaceOrderRequest.js";
+} from "../../messages/api/PostReplaceOrderRequest";
 import {
   Type as PostSettleRequest,
   encodeBinary as encodeBinary_36,
   decodeBinary as decodeBinary_36,
   encodeJson as encodeJson_36,
-} from "../../messages/api/PostSettleRequest.js";
+} from "../../messages/api/PostSettleRequest";
 import {
   Type as PostSettleResponse,
   encodeBinary as encodeBinary_37,
   decodeBinary as decodeBinary_37,
   encodeJson as encodeJson_37,
-} from "../../messages/api/PostSettleResponse.js";
+} from "../../messages/api/PostSettleResponse";
 import {
   Type as TradeSwapRequest,
   encodeBinary as encodeBinary_38,
   decodeBinary as decodeBinary_38,
   encodeJson as encodeJson_38,
-} from "../../messages/api/TradeSwapRequest.js";
+} from "../../messages/api/TradeSwapRequest";
 import {
   Type as TradeSwapResponse,
   encodeBinary as encodeBinary_39,
   decodeBinary as decodeBinary_39,
   encodeJson as encodeJson_39,
-} from "../../messages/api/TradeSwapResponse.js";
+} from "../../messages/api/TradeSwapResponse";
 import {
   Type as GetOrdersRequest,
   encodeBinary as encodeBinary_40,
   decodeBinary as decodeBinary_40,
   encodeJson as encodeJson_40,
-} from "../../messages/api/GetOrdersRequest.js";
+} from "../../messages/api/GetOrdersRequest";
 import {
   Type as GetOrdersResponse,
   encodeBinary as encodeBinary_41,
   decodeBinary as decodeBinary_41,
   encodeJson as encodeJson_41,
-} from "../../messages/api/GetOrdersResponse.js";
+} from "../../messages/api/GetOrdersResponse";
 import {
   Type as GetOpenOrdersRequest,
   encodeBinary as encodeBinary_42,
   decodeBinary as decodeBinary_42,
   encodeJson as encodeJson_42,
-} from "../../messages/api/GetOpenOrdersRequest.js";
+} from "../../messages/api/GetOpenOrdersRequest";
 import {
   Type as GetOpenOrdersResponse,
   encodeBinary as encodeBinary_43,
   decodeBinary as decodeBinary_43,
   encodeJson as encodeJson_43,
-} from "../../messages/api/GetOpenOrdersResponse.js";
+} from "../../messages/api/GetOpenOrdersResponse";
 import {
   Type as GetOrderByIDRequest,
   encodeBinary as encodeBinary_44,
   decodeBinary as decodeBinary_44,
   encodeJson as encodeJson_44,
-} from "../../messages/api/GetOrderByIDRequest.js";
+} from "../../messages/api/GetOrderByIDRequest";
 import {
   Type as GetOrderByIDResponse,
   encodeBinary as encodeBinary_45,
   decodeBinary as decodeBinary_45,
   encodeJson as encodeJson_45,
-} from "../../messages/api/GetOrderByIDResponse.js";
+} from "../../messages/api/GetOrderByIDResponse";
 import {
   Type as GetUnsettledRequest,
   encodeBinary as encodeBinary_46,
   decodeBinary as decodeBinary_46,
   encodeJson as encodeJson_46,
-} from "../../messages/api/GetUnsettledRequest.js";
+} from "../../messages/api/GetUnsettledRequest";
 import {
   Type as GetUnsettledResponse,
   encodeBinary as encodeBinary_47,
   decodeBinary as decodeBinary_47,
   encodeJson as encodeJson_47,
-} from "../../messages/api/GetUnsettledResponse.js";
+} from "../../messages/api/GetUnsettledResponse";
 import {
   Type as RouteTradeSwapRequest,
   encodeBinary as encodeBinary_48,
   decodeBinary as decodeBinary_48,
   encodeJson as encodeJson_48,
-} from "../../messages/api/RouteTradeSwapRequest.js";
+} from "../../messages/api/RouteTradeSwapRequest";
 import {
   Type as GetOrderbooksRequest,
   encodeBinary as encodeBinary_49,
   decodeBinary as decodeBinary_49,
   encodeJson as encodeJson_49,
-} from "../../messages/api/GetOrderbooksRequest.js";
+} from "../../messages/api/GetOrderbooksRequest";
 import {
   Type as GetOrderbooksStreamResponse,
   encodeBinary as encodeBinary_50,
   decodeBinary as decodeBinary_50,
   encodeJson as encodeJson_50,
-} from "../../messages/api/GetOrderbooksStreamResponse.js";
+} from "../../messages/api/GetOrderbooksStreamResponse";
 import {
   Type as GetMarketDepthsRequest,
   encodeBinary as encodeBinary_51,
   decodeBinary as decodeBinary_51,
   encodeJson as encodeJson_51,
-} from "../../messages/api/GetMarketDepthsRequest.js";
+} from "../../messages/api/GetMarketDepthsRequest";
 import {
   Type as GetMarketDepthsStreamResponse,
   encodeBinary as encodeBinary_52,
   decodeBinary as decodeBinary_52,
   encodeJson as encodeJson_52,
-} from "../../messages/api/GetMarketDepthsStreamResponse.js";
+} from "../../messages/api/GetMarketDepthsStreamResponse";
 import {
   Type as GetTickersStreamResponse,
   encodeBinary as encodeBinary_53,
   decodeBinary as decodeBinary_53,
   encodeJson as encodeJson_53,
-} from "../../messages/api/GetTickersStreamResponse.js";
+} from "../../messages/api/GetTickersStreamResponse";
 import {
   Type as GetTradesStreamResponse,
   encodeBinary as encodeBinary_54,
   decodeBinary as decodeBinary_54,
   encodeJson as encodeJson_54,
-} from "../../messages/api/GetTradesStreamResponse.js";
+} from "../../messages/api/GetTradesStreamResponse";
 import {
   Type as GetOrderStatusStreamRequest,
   encodeBinary as encodeBinary_55,
   decodeBinary as decodeBinary_55,
   encodeJson as encodeJson_55,
-} from "../../messages/api/GetOrderStatusStreamRequest.js";
+} from "../../messages/api/GetOrderStatusStreamRequest";
 import {
   Type as GetOrderStatusStreamResponse,
   encodeBinary as encodeBinary_56,
   decodeBinary as decodeBinary_56,
   encodeJson as encodeJson_56,
-} from "../../messages/api/GetOrderStatusStreamResponse.js";
+} from "../../messages/api/GetOrderStatusStreamResponse";
 import {
   Type as GetBlockStreamRequest,
   encodeBinary as encodeBinary_57,
   decodeBinary as decodeBinary_57,
   encodeJson as encodeJson_57,
-} from "../../messages/api/GetBlockStreamRequest.js";
+} from "../../messages/api/GetBlockStreamRequest";
 import {
   Type as GetBlockStreamResponse,
   encodeBinary as encodeBinary_58,
   decodeBinary as decodeBinary_58,
   encodeJson as encodeJson_58,
-} from "../../messages/api/GetBlockStreamResponse.js";
+} from "../../messages/api/GetBlockStreamResponse";
 import {
   Type as GetQuotesStreamRequest,
   encodeBinary as encodeBinary_59,
   decodeBinary as decodeBinary_59,
   encodeJson as encodeJson_59,
-} from "../../messages/api/GetQuotesStreamRequest.js";
+} from "../../messages/api/GetQuotesStreamRequest";
 import {
   Type as GetQuotesStreamResponse,
   encodeBinary as encodeBinary_60,
   decodeBinary as decodeBinary_60,
   encodeJson as encodeJson_60,
-} from "../../messages/api/GetQuotesStreamResponse.js";
+} from "../../messages/api/GetQuotesStreamResponse";
 import {
   Type as GetPoolReservesStreamRequest,
   encodeBinary as encodeBinary_61,
   decodeBinary as decodeBinary_61,
   encodeJson as encodeJson_61,
-} from "../../messages/api/GetPoolReservesStreamRequest.js";
+} from "../../messages/api/GetPoolReservesStreamRequest";
 import {
   Type as GetPoolReservesStreamResponse,
   encodeBinary as encodeBinary_62,
   decodeBinary as decodeBinary_62,
   encodeJson as encodeJson_62,
-} from "../../messages/api/GetPoolReservesStreamResponse.js";
+} from "../../messages/api/GetPoolReservesStreamResponse";
 import {
   Type as GetPricesStreamRequest,
   encodeBinary as encodeBinary_63,
   decodeBinary as decodeBinary_63,
   encodeJson as encodeJson_63,
-} from "../../messages/api/GetPricesStreamRequest.js";
+} from "../../messages/api/GetPricesStreamRequest";
 import {
   Type as GetPricesStreamResponse,
   encodeBinary as encodeBinary_64,
   decodeBinary as decodeBinary_64,
   encodeJson as encodeJson_64,
-} from "../../messages/api/GetPricesStreamResponse.js";
+} from "../../messages/api/GetPricesStreamResponse";
 import {
   Type as GetSwapsStreamRequest,
   encodeBinary as encodeBinary_65,
   decodeBinary as decodeBinary_65,
   encodeJson as encodeJson_65,
-} from "../../messages/api/GetSwapsStreamRequest.js";
+} from "../../messages/api/GetSwapsStreamRequest";
 import {
   Type as GetSwapsStreamResponse,
   encodeBinary as encodeBinary_66,
   decodeBinary as decodeBinary_66,
   encodeJson as encodeJson_66,
-} from "../../messages/api/GetSwapsStreamResponse.js";
+} from "../../messages/api/GetSwapsStreamResponse";
 import {
   fromSingle,
   first,
-} from "../../runtime/async/async-generator.js";
+} from "../../runtime/async/async-generator";
 import {
   wrapRpcClientImpl,
   getDevtoolsConfig,
-} from "../../runtime/client-devtools.js";
+} from "../../runtime/client-devtools";
 
 export interface Service<TReqArgs extends any[] = [], TResArgs extends any[] = []> {
   getPrice(request: GetPriceRequest, ...args: TReqArgs): RpcReturnType<Promise<GetPriceResponse>, TResArgs>;

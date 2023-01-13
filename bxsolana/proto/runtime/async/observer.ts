@@ -1,4 +1,4 @@
-import { removeItem } from "../array.js";
+import { removeItem } from "../array";
 
 export interface Observer<T> {
   next(value: T): void;

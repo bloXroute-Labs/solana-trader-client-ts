@@ -1,6 +1,6 @@
-import Long from "../Long.js";
-import { WireMessage, WireType } from "./index.js";
-import { decode } from "./varint.js";
+import Long from "../Long";
+import { WireMessage, WireType } from "./index";
+import { decode } from "./varint";
 
 export default function deserialize(uint8array: Uint8Array): WireMessage {
   let idx = 0;

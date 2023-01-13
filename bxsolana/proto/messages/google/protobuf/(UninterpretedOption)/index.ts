@@ -1,1 +1,1 @@
-export type { Type as NamePart } from "./NamePart.js";
+export type { Type as NamePart } from "./NamePart";

@@ -4,39 +4,39 @@ import {
   decodeJson as decodeJson_1,
   encodeBinary as encodeBinary_1,
   decodeBinary as decodeBinary_1,
-} from "./EnumValueDescriptorProto.js";
+} from "./EnumValueDescriptorProto";
 import {
   Type as EnumOptions,
   encodeJson as encodeJson_2,
   decodeJson as decodeJson_2,
   encodeBinary as encodeBinary_2,
   decodeBinary as decodeBinary_2,
-} from "./EnumOptions.js";
+} from "./EnumOptions";
 import {
   Type as EnumReservedRange,
   encodeJson as encodeJson_3,
   decodeJson as decodeJson_3,
   encodeBinary as encodeBinary_3,
   decodeBinary as decodeBinary_3,
-} from "./(EnumDescriptorProto)/EnumReservedRange.js";
+} from "./(EnumDescriptorProto)/EnumReservedRange";
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
-} from "../../../runtime/json/scalar.js";
+} from "../../../runtime/json/scalar";
 import {
   WireMessage,
   WireType,
-} from "../../../runtime/wire/index.js";
+} from "../../../runtime/wire/index";
 import {
   default as serialize,
-} from "../../../runtime/wire/serialize.js";
+} from "../../../runtime/wire/serialize";
 import {
   tsValueToWireValueFns,
   wireValueToTsValueFns,
-} from "../../../runtime/wire/scalar.js";
+} from "../../../runtime/wire/scalar";
 import {
   default as deserialize,
-} from "../../../runtime/wire/deserialize.js";
+} from "../../../runtime/wire/deserialize";
 
 export declare namespace $.google.protobuf {
   export type EnumDescriptorProto = {

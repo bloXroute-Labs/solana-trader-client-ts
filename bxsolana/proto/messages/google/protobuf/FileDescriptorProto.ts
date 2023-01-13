@@ -4,61 +4,61 @@ import {
   decodeJson as decodeJson_1,
   encodeBinary as encodeBinary_1,
   decodeBinary as decodeBinary_1,
-} from "./DescriptorProto.js";
+} from "./DescriptorProto";
 import {
   Type as EnumDescriptorProto,
   encodeJson as encodeJson_2,
   decodeJson as decodeJson_2,
   encodeBinary as encodeBinary_2,
   decodeBinary as decodeBinary_2,
-} from "./EnumDescriptorProto.js";
+} from "./EnumDescriptorProto";
 import {
   Type as ServiceDescriptorProto,
   encodeJson as encodeJson_3,
   decodeJson as decodeJson_3,
   encodeBinary as encodeBinary_3,
   decodeBinary as decodeBinary_3,
-} from "./ServiceDescriptorProto.js";
+} from "./ServiceDescriptorProto";
 import {
   Type as FieldDescriptorProto,
   encodeJson as encodeJson_4,
   decodeJson as decodeJson_4,
   encodeBinary as encodeBinary_4,
   decodeBinary as decodeBinary_4,
-} from "./FieldDescriptorProto.js";
+} from "./FieldDescriptorProto";
 import {
   Type as FileOptions,
   encodeJson as encodeJson_5,
   decodeJson as decodeJson_5,
   encodeBinary as encodeBinary_5,
   decodeBinary as decodeBinary_5,
-} from "./FileOptions.js";
+} from "./FileOptions";
 import {
   Type as SourceCodeInfo,
   encodeJson as encodeJson_6,
   decodeJson as decodeJson_6,
   encodeBinary as encodeBinary_6,
   decodeBinary as decodeBinary_6,
-} from "./SourceCodeInfo.js";
+} from "./SourceCodeInfo";
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
-} from "../../../runtime/json/scalar.js";
+} from "../../../runtime/json/scalar";
 import {
   WireMessage,
   WireType,
-} from "../../../runtime/wire/index.js";
+} from "../../../runtime/wire/index";
 import {
   default as serialize,
-} from "../../../runtime/wire/serialize.js";
+} from "../../../runtime/wire/serialize";
 import {
   tsValueToWireValueFns,
   wireValueToTsValueFns,
   unpackFns,
-} from "../../../runtime/wire/scalar.js";
+} from "../../../runtime/wire/scalar";
 import {
   default as deserialize,
-} from "../../../runtime/wire/deserialize.js";
+} from "../../../runtime/wire/deserialize";
 
 export declare namespace $.google.protobuf {
   export type FileDescriptorProto = {

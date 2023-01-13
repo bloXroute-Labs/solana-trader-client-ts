@@ -10,7 +10,7 @@ npm i @bloxroute/solana-trader-client-ts
 
 ## Usage
 
-This library supports HTTP, websockets, and GRPC interfaces. 
+This library supports HTTP, websockets, and GRPC interfaces. NOTE: GRPC is not available in browser. See https://yuku.takahashi.coffee/blog/2019/01/grpc-proxy-for-grpc-web
 
 First, you need to set `AUTH_HEADER` in your .env file to be able to authenticate properly.
 

@@ -1,4 +1,4 @@
-import Long from "../Long.js";
+import Long from "../Long";
 
 export function encode<T extends number | Long>(value: T): T {
   if (value instanceof Long) {

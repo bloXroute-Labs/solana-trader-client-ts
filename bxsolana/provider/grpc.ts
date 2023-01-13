@@ -1,9 +1,18 @@
-import { LOCAL_API_WS, MAINNET_API_GRPC_HOST, MAINNET_API_GRPC_PORT, MAINNET_API_WS, TESTNET_API_WS } from "../../utils/constants.js"
+import {
+    MAINNET_API_GRPC_HOST,
+    MAINNET_API_GRPC_PORT,
+} from "../utils/constants"
 import * as grpc from "@grpc/grpc-js"
-import { CreateGrpcClientImplConfig, createGrpcClientImpl } from "@pbkit/grpc-client"
+import { Client } from "@grpc/grpc-js"
+import {
+    createGrpcClientImpl,
+    CreateGrpcClientImplConfig,
+} from "@pbkit/grpc-client"
 import {
     GetAccountBalanceRequest,
     GetAccountBalanceResponse,
+    GetBlockStreamRequest,
+    GetBlockStreamResponse,
     GetMarketsRequest,
     GetMarketsResponse,
     GetOpenOrdersRequest,
@@ -14,8 +23,24 @@ import {
     GetOrderbooksStreamResponse,
     GetOrderStatusStreamRequest,
     GetOrderStatusStreamResponse,
+    GetPoolReservesStreamRequest,
+    GetPoolReservesStreamResponse,
+    GetPoolsRequest,
+    GetPoolsResponse,
+    GetPriceRequest,
+    GetPriceResponse,
+    GetPricesStreamRequest,
+    GetPricesStreamResponse,
+    GetQuotesRequest,
+    GetQuotesResponse,
+    GetQuotesStreamRequest,
+    GetQuotesStreamResponse,
+    GetRecentBlockHashRequest,
+    GetRecentBlockHashResponse,
     GetServerTimeRequest,
     GetServerTimeResponse,
+    GetSwapsStreamRequest,
+    GetSwapsStreamResponse,
     GetTickersRequest,
     GetTickersResponse,
     GetTickersStreamResponse,
@@ -34,67 +59,83 @@ import {
     PostReplaceOrderRequest,
     PostSettleRequest,
     PostSettleResponse,
-    PostSubmitRequest,
-    PostSubmitResponse,
     PostSubmitBatchRequest,
     PostSubmitBatchResponse,
-    GetPoolsRequest,
-    GetPoolsResponse,
-    GetPriceRequest,
-    GetRecentBlockHashRequest,
-    GetRecentBlockHashResponse,
-    TradeSwapRequest,
+    PostSubmitRequest,
+    PostSubmitResponse,
     RouteTradeSwapRequest,
+    TradeSwapRequest,
     TradeSwapResponse,
-    GetQuotesStreamRequest,
-    GetQuotesStreamResponse,
-    GetQuotesRequest,
-    GetQuotesResponse,
-    GetPoolReservesStreamRequest,
-    GetPoolReservesStreamResponse,
-    GetPriceResponse,
-    GetPricesStreamRequest,
-    GetPricesStreamResponse,
-    GetSwapsStreamRequest,
-    GetSwapsStreamResponse,
-    GetBlockStreamRequest,
-    GetBlockStreamResponse,
-} from "../proto/messages/api/index.js"
-import { createServiceClient, Service } from "../proto/services/api/Api.js"
-import { BaseProvider } from "./base.js"
-import { Client } from "@grpc/grpc-js"
-import { CallMetadataOptions } from "@grpc/grpc-js/src/call-credentials"
-import config from "../../utils/config.js"
-import { WsProvider } from "./ws"
+} from "../proto/messages/api"
+import { createServiceClient, Service } from "../proto/services/api/Api"
+import { BaseProvider } from "./base"
+import { CallMetadataOptions } from "@grpc/grpc-js/build/src/call-credentials"
+import { ConnectionOptions } from "tls"
+
+// built-in grpc.credentials.createInsecure() doesn't allow composition
+class insecureChannel extends grpc.ChannelCredentials {
+    constructor(callCredentials?: grpc.CallCredentials) {
+        super(callCredentials)
+    }
+
+    compose(callCredentials: grpc.CallCredentials) {
+        const combinedCallCredentials =
+            this.callCredentials.compose(callCredentials)
+        return new insecureChannel(combinedCallCredentials)
+    }
+
+    _getConnectionOptions(): ConnectionOptions | null {
+        return null
+    }
+    _isSecure(): boolean {
+        return false
+    }
+    _equals(other: grpc.ChannelCredentials): boolean {
+        return other instanceof insecureChannel
+    }
+}
 
 export class GrpcProvider extends BaseProvider {
     private client: Service
     private grpcClient: Client
 
-    constructor(address = `${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`, useTls: boolean) {
-        super()
-        const metaCallback = (options: CallMetadataOptions, cb: (err: Error | null, metadata?: grpc.Metadata) => void) => {
+    constructor(
+        authHeader: string,
+        privateKey = "",
+        address = `${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`,
+        useTls: boolean
+    ) {
+        super(authHeader, privateKey)
+        const metaCallback = (
+            options: CallMetadataOptions,
+            cb: (err: Error | null, metadata?: grpc.Metadata) => void
+        ) => {
             const meta = new grpc.Metadata()
-            meta.add("Authorization", config.AuthHeader)
+            meta.add("Authorization", authHeader)
             cb(null, meta)
         }
 
-        let grpcClient: Client
+        let credentials: grpc.ChannelCredentials
 
         if (!useTls) {
             // testnet or local
-            grpcClient = new Client(address, grpc.credentials.createInsecure())
+            credentials = grpc.credentials.combineChannelCredentials(
+                new insecureChannel(),
+                grpc.credentials.createFromMetadataGenerator(metaCallback)
+            )
         } else {
             // mainnet
-            grpcClient = new Client(
-                address,
-                grpc.credentials.combineChannelCredentials(grpc.credentials.createSsl(), grpc.credentials.createFromMetadataGenerator(metaCallback))
+            credentials = grpc.credentials.combineChannelCredentials(
+                grpc.credentials.createSsl(),
+                grpc.credentials.createFromMetadataGenerator(metaCallback)
             )
         }
 
-        this.grpcClient = grpcClient
+        this.grpcClient = new Client(address, credentials)
 
-        const configGrpc: CreateGrpcClientImplConfig = { grpcJsClient: this.grpcClient }
+        const configGrpc: CreateGrpcClientImplConfig = {
+            grpcJsClient: this.grpcClient,
+        }
         const impl = createGrpcClientImpl(configGrpc)
         this.client = createServiceClient(impl)
     }
@@ -103,8 +144,9 @@ export class GrpcProvider extends BaseProvider {
         this.grpcClient.close()
     }
 
-    //Unary requests
-    getOrderbook = (request: GetOrderbookRequest): Promise<GetOrderbookResponse> => {
+    getOrderbook = (
+        request: GetOrderbookRequest
+    ): Promise<GetOrderbookResponse> => {
         return this.client.getOrderbook(request)
     }
 
@@ -120,11 +162,15 @@ export class GrpcProvider extends BaseProvider {
         return this.client.getTrades(request)
     }
 
-    getServerTime(request: GetServerTimeRequest): Promise<GetServerTimeResponse> {
+    getServerTime(
+        request: GetServerTimeRequest
+    ): Promise<GetServerTimeResponse> {
         return this.client.getServerTime(request)
     }
 
-    getOpenOrders(request: GetOpenOrdersRequest): Promise<GetOpenOrdersResponse> {
+    getOpenOrders(
+        request: GetOpenOrdersRequest
+    ): Promise<GetOpenOrdersResponse> {
         return this.client.getOpenOrders(request)
     }
 
@@ -132,28 +178,12 @@ export class GrpcProvider extends BaseProvider {
         return this.client.getUnsettled(request)
     }
 
-    getAccountBalance(request: GetAccountBalanceRequest): Promise<GetAccountBalanceResponse> {
+    getAccountBalance(
+        request: GetAccountBalanceRequest
+    ): Promise<GetAccountBalanceResponse> {
         return this.client.getAccountBalance(request)
     }
 
-    //stream requests
-    getOrderbooksStream = (request: GetOrderbooksRequest): Promise<AsyncGenerator<GetOrderbooksStreamResponse>> => {
-        return this.client.getOrderbooksStream(request)
-    }
-
-    getTickersStream(request: GetTickersRequest): Promise<AsyncGenerator<GetTickersStreamResponse>> {
-        return this.client.getTickersStream(request)
-    }
-
-    getTradesStream(request: GetTradesRequest): Promise<AsyncGenerator<GetTradesStreamResponse>> {
-        return this.client.getTradesStream(request)
-    }
-
-    getOrderStatusStream(request: GetOrderStatusStreamRequest): Promise<AsyncGenerator<GetOrderStatusStreamResponse>> {
-        return this.client.getOrderStatusStream(request)
-    }
-
-    //POST requests
     postOrder(request: PostOrderRequest): Promise<PostOrderResponse> {
         return this.client.postOrder(request)
     }
@@ -162,19 +192,27 @@ export class GrpcProvider extends BaseProvider {
         return this.client.postSubmit(request)
     }
 
-    postSubmitBatch(request: PostSubmitBatchRequest): Promise<PostSubmitBatchResponse> {
+    postSubmitBatch(
+        request: PostSubmitBatchRequest
+    ): Promise<PostSubmitBatchResponse> {
         return this.client.postSubmitBatch(request)
     }
 
-    postCancelOrder(request: PostCancelOrderRequest): Promise<PostCancelOrderResponse> {
+    postCancelOrder(
+        request: PostCancelOrderRequest
+    ): Promise<PostCancelOrderResponse> {
         return this.client.postCancelOrder(request)
     }
 
-    postCancelByClientOrderID(request: PostCancelByClientOrderIDRequest): Promise<PostCancelOrderResponse> {
+    postCancelByClientOrderID(
+        request: PostCancelByClientOrderIDRequest
+    ): Promise<PostCancelOrderResponse> {
         return this.client.postCancelByClientOrderID(request)
     }
 
-    postCancelAll(request: PostCancelAllRequest): Promise<PostCancelAllResponse> {
+    postCancelAll(
+        request: PostCancelAllRequest
+    ): Promise<PostCancelAllResponse> {
         return this.client.postCancelAll(request)
     }
 
@@ -182,24 +220,25 @@ export class GrpcProvider extends BaseProvider {
         return this.client.postSettle(request)
     }
 
-    postReplaceByClientOrderID(request: PostOrderRequest): Promise<PostOrderResponse> {
+    postReplaceByClientOrderID(
+        request: PostOrderRequest
+    ): Promise<PostOrderResponse> {
         return this.client.postReplaceByClientOrderID(request)
     }
 
-    postReplaceOrder(request: PostReplaceOrderRequest): Promise<PostOrderResponse> {
+    postReplaceOrder(
+        request: PostReplaceOrderRequest
+    ): Promise<PostOrderResponse> {
         return this.client.postReplaceOrder(request)
     }
 
-    getRecentBlockHashStream(request: GetRecentBlockHashRequest): Promise<AsyncGenerator<GetRecentBlockHashResponse>> {
-        return this.client.getRecentBlockHashStream(request)
-    }
-
-    // Amm
     getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
         return this.client.getPrice(request)
     }
 
-    getPricesStream(request: GetPricesStreamRequest): Promise<AsyncGenerator<GetPricesStreamResponse>> {
+    getPricesStream(
+        request: GetPricesStreamRequest
+    ): Promise<AsyncGenerator<GetPricesStreamResponse>> {
         return this.client.getPricesStream(request)
     }
 
@@ -207,31 +246,71 @@ export class GrpcProvider extends BaseProvider {
         return this.client.getPools(request)
     }
 
-    getPoolReservesStream(request: GetPoolReservesStreamRequest): Promise<AsyncGenerator<GetPoolReservesStreamResponse>> {
-        return this.client.getPoolReservesStream(request)
-    }
-
     getQuotes(request: GetQuotesRequest): Promise<GetQuotesResponse> {
         return this.client.getQuotes(request)
-    }
-
-    getQuotesStream(request: GetQuotesStreamRequest): Promise<AsyncGenerator<GetQuotesStreamResponse>> {
-        return this.client.getQuotesStream(request)
     }
 
     postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
         return this.client.postTradeSwap(request)
     }
 
-    postRouteTradeSwap(request: RouteTradeSwapRequest): Promise<TradeSwapResponse> {
+    postRouteTradeSwap(
+        request: RouteTradeSwapRequest
+    ): Promise<TradeSwapResponse> {
         return this.client.postRouteTradeSwap(request)
     }
 
-    getSwapsStream(request: GetSwapsStreamRequest): Promise<AsyncGenerator<GetSwapsStreamResponse>> {
+    // streams
+    getOrderbooksStream = (
+        request: GetOrderbooksRequest
+    ): Promise<AsyncGenerator<GetOrderbooksStreamResponse>> => {
+        return this.client.getOrderbooksStream(request)
+    }
+
+    getTickersStream(
+        request: GetTickersRequest
+    ): Promise<AsyncGenerator<GetTickersStreamResponse>> {
+        return this.client.getTickersStream(request)
+    }
+
+    getTradesStream(
+        request: GetTradesRequest
+    ): Promise<AsyncGenerator<GetTradesStreamResponse>> {
+        return this.client.getTradesStream(request)
+    }
+
+    getOrderStatusStream(
+        request: GetOrderStatusStreamRequest
+    ): Promise<AsyncGenerator<GetOrderStatusStreamResponse>> {
+        return this.client.getOrderStatusStream(request)
+    }
+    getPoolReservesStream(
+        request: GetPoolReservesStreamRequest
+    ): Promise<AsyncGenerator<GetPoolReservesStreamResponse>> {
+        return this.client.getPoolReservesStream(request)
+    }
+
+    getQuotesStream(
+        request: GetQuotesStreamRequest
+    ): Promise<AsyncGenerator<GetQuotesStreamResponse>> {
+        return this.client.getQuotesStream(request)
+    }
+
+    getRecentBlockHashStream(
+        request: GetRecentBlockHashRequest
+    ): Promise<AsyncGenerator<GetRecentBlockHashResponse>> {
+        return this.client.getRecentBlockHashStream(request)
+    }
+
+    getSwapsStream(
+        request: GetSwapsStreamRequest
+    ): Promise<AsyncGenerator<GetSwapsStreamResponse>> {
         return this.client.getSwapsStream(request)
     }
 
-    getBlockStream(request: GetBlockStreamRequest): Promise<AsyncGenerator<GetBlockStreamResponse>> {
+    getBlockStream(
+        request: GetBlockStreamRequest
+    ): Promise<AsyncGenerator<GetBlockStreamResponse>> {
         return this.client.getBlockStream(request)
     }
 }
