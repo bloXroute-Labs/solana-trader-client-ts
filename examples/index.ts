@@ -35,8 +35,9 @@ import {
 } from "../bxsolana/utils/constants"
 import { AxiosRequestConfig } from "axios"
 
-// if longer examples (streams, placing and canceling transactions, etc. should be run)
+// if longer examples (placing and canceling transactions, etc. should be run)
 const runLongExamples = process.env.RUN_LIFECYCLE === "true"
+const runStreams = process.env.RUN_STREAMS === "true"
 
 const config = loadFromEnv()
 
@@ -170,11 +171,14 @@ async function grpc() {
     console.info(" ----  GRPC Amm Requests  ----")
     await doAmmRequests(provider)
 
-    if (runLongExamples) {
+    if (runStreams) {
         console.info(" ----  GRPC Streams  ----")
         await doStreams(provider)
         console.info(" ----  GRPC Amm Streams  ----")
         await doAmmStreams(provider)
+    }
+
+    if (runLongExamples) {
         console.info(" ----  GRPC Cancel All  ----")
         await callCancelAll(provider)
         console.info(" ----  GRPC Lifecycle  ----")
@@ -214,11 +218,14 @@ async function ws() {
     console.info(" ----  WS Amm Requests  ----")
     await doAmmRequests(provider)
 
-    if (runLongExamples) {
+    if (runStreams) {
         console.info(" ----  WS Streams  ----")
         await doStreams(provider)
         console.info(" ----  WS Amm Streams  ----")
         await doAmmStreams(provider)
+    }
+
+    if (runLongExamples) {
         console.info(" ----  WS Cancel All  ----")
         await callCancelAll(provider)
         console.info(" ----  WS Lifecycle  ----")
@@ -299,10 +306,6 @@ async function doAmmRequests(provider: BaseProvider) {
 }
 
 async function doStreams(provider: BaseProvider) {
-    await callGetSwapsStream(provider)
-    console.info(" ")
-    console.info(" ")
-
     await callGetOrderbookStream(provider)
     console.info(" ")
     console.info(" ")
@@ -311,11 +314,19 @@ async function doStreams(provider: BaseProvider) {
     console.info(" ")
     console.info(" ")
 
-    await callGetTradesStream(provider)
+    if (runLongExamples) {
+        await callGetTradesStream(provider)
+        console.info(" ")
+        console.info(" ")
+    }
+
+    await callGetRecentBlockHashStream(provider)
     console.info(" ")
     console.info(" ")
 
-    console.info("cancelling streams")
+    await callGetBlockStream(provider)
+    console.info(" ")
+    console.info(" ")
 }
 
 async function cancelWsStreams(provider: BaseProvider) {
@@ -353,13 +364,11 @@ async function doAmmStreams(provider: BaseProvider) {
     console.info(" ")
     console.info(" ")
 
-    await callGetRecentBlockHashStream(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callGetBlockStream(provider)
-    console.info(" ")
-    console.info(" ")
+    if (runLongExamples) {
+        await callGetSwapsStream(provider)
+        console.info(" ")
+        console.info(" ")
+    }
 }
 
 async function doLifecycle(provider: BaseProvider) {
