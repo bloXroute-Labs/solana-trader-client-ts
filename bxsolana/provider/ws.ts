@@ -77,7 +77,7 @@ export class WsProvider extends BaseProvider {
         address: string = MAINNET_API_WS
     ) {
         super(authHeader, privateKey)
-        this.wsConnection = new RpcWsConnection(authHeader, address)
+        this.wsConnection = new RpcWsConnection(address, authHeader)
         this.address = address
     }
 

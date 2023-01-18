@@ -22,7 +22,7 @@ export class AsyncBlockingQueue<T> {
         resolve(t)
     }
 
-    dequeue() {
+    dequeue(): Promise<T> {
         if (!this._promises.length) this._add()
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const promise = this._promises.shift()!
