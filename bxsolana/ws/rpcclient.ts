@@ -3,6 +3,10 @@ import { AsyncBlockingQueue } from "../utils/blockingqueue"
 
 // eslint-disable-next-line
 type Resolver = (result: any) => void
+type ResolveReject = {
+    resolve: Resolver
+    reject: Resolver
+}
 type SubscriptionResolver = {
     update: Resolver
     read: AsyncGenerator<unknown, void, unknown>
@@ -18,7 +22,7 @@ export class RpcWsConnection {
     private readonly authHeader: string
 
     private requestId = 1
-    private requestMap: Map<number, Resolver> = new Map()
+    private requestMap: Map<number, ResolveReject> = new Map()
     private subscriptionMap: Map<string, SubscriptionResolver> = new Map()
     // eslint-disable-next-line
     queue: AsyncBlockingQueue<any> = new AsyncBlockingQueue<any>()
@@ -45,7 +49,7 @@ export class RpcWsConnection {
         }
 
         socket.onmessage = (msg: unknown) => {
-            const { id, result, method, params } = JSON.parse(
+            const { id, result, method, params, error } = JSON.parse(
                 (msg as MessageEvent<string>).data
             )
 
@@ -57,9 +61,14 @@ export class RpcWsConnection {
                     subscriptionResolver.update(result)
                 }
             } else if (!method) {
-                const resolver = this.requestMap.get(id)
-                if (resolver) {
-                    resolver(result)
+                const rr = this.requestMap.get(id)
+                if (rr != null) {
+                    const { resolve, reject } = rr
+                    if (error == null) {
+                        resolve(result)
+                    } else {
+                        reject(error)
+                    }
                     this.requestMap.delete(id)
                 } else {
                     this.close()
@@ -90,9 +99,11 @@ export class RpcWsConnection {
         this.socket.send(req)
 
         const callback = new Promise<R>((resolve, reject) => {
-            this.requestMap.set(id, resolve)
+            this.requestMap.set(id, { resolve, reject })
         })
-        return await callback
+        return await callback.catch(({ message, data }) => {
+            throw new Error(`RPC error: [${message}] ${data}`)
+        })
     }
 
     _formWSRequest<T>(
@@ -127,9 +138,6 @@ export class RpcWsConnection {
             while (!queue.isBlocked()) {
                 {
                     const value = queue.dequeue()
-                    if (value instanceof Error) {
-                        throw value
-                    }
                     yield value
                 }
             }

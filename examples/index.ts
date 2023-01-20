@@ -817,7 +817,7 @@ async function callGetQuotesStream(provider: BaseProvider) {
 
 async function callGetBlockStream(provider: BaseProvider) {
     console.info("Subscribing for block updates")
-    const resp = await provider.getBlockStream({ limit: 5 })
+    const resp = await provider.getBlockStream({})
 
     let count = 0
     for await (const update of resp) {
@@ -831,7 +831,7 @@ async function callGetBlockStream(provider: BaseProvider) {
 
 async function callGetRecentBlockHashStream(provider: BaseProvider) {
     console.info("Subscribing for block hash updates")
-    const resp = await provider.getRecentBlockHashStream({ limit: 5 })
+    const resp = await provider.getRecentBlockHashStream({})
 
     let count = 0
     for await (const update of resp) {

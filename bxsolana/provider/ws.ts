@@ -3,6 +3,8 @@ import { MAINNET_API_WS } from "../utils/constants"
 import {
     GetAccountBalanceRequest,
     GetAccountBalanceResponse,
+    GetBlockStreamRequest,
+    GetBlockStreamResponse,
     GetMarketsRequest,
     GetMarketsResponse,
     GetOpenOrdersRequest,
@@ -233,7 +235,18 @@ export class WsProvider extends BaseProvider {
         )
 
         this.manageGetStreamMaps("GetPoolReservesStream", subscriptionId)
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
+    }
 
+    getBlockStream = async (
+        request: GetBlockStreamRequest
+    ): Promise<AsyncGenerator<GetBlockStreamResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetBlockStream",
+            request
+        )
+
+        this.manageGetStreamMaps("GetBlockStream", subscriptionId)
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
