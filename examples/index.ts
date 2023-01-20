@@ -360,10 +360,6 @@ async function doAmmStreams(provider: BaseProvider) {
     console.info(" ")
     console.info(" ")
 
-    await callGetQuotesStream(provider)
-    console.info(" ")
-    console.info(" ")
-
     if (runLongExamples) {
         await callGetSwapsStream(provider)
         console.info(" ")
@@ -788,28 +784,6 @@ async function callGetPoolsStream(provider: BaseProvider) {
         console.info(update)
         count++
         if (count == 3) {
-            break
-        }
-    }
-}
-
-async function callGetQuotesStream(provider: BaseProvider) {
-    console.info("Subscribing for quote updates of SOLUSDC market")
-
-    const projects: Project[] = ["P_RAYDIUM"]
-    const tokenPairs: TokenPair[] = [
-        { inToken: "SOL", outToken: "USDC", inAmount: 1 },
-    ]
-    const stream = await provider.getQuotesStream({
-        projects: projects,
-        tokenPairs: tokenPairs,
-    })
-
-    let count = 0
-    for await (const update of stream) {
-        console.info(update)
-        count++
-        if (count == 2) {
             break
         }
     }
