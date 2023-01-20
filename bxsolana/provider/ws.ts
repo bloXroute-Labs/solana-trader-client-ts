@@ -21,6 +21,8 @@ import {
     GetPoolsResponse,
     GetPriceRequest,
     GetPriceResponse,
+    GetPricesStreamRequest,
+    GetPricesStreamResponse,
     GetQuotesRequest,
     GetQuotesResponse,
     GetQuotesStreamRequest,
@@ -210,6 +212,18 @@ export class WsProvider extends BaseProvider {
 
         this.manageGetStreamMaps("GetRecentBlockHashStream", subscriptionId)
 
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
+    }
+
+    getPricesStream = async (
+        request: GetPricesStreamRequest
+    ): Promise<AsyncGenerator<GetPricesStreamResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetPricesStream",
+            request
+        )
+
+        this.manageGetStreamMaps("getPricesStream", subscriptionId)
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
