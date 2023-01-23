@@ -103,7 +103,11 @@ export class GrpcProvider extends BaseProvider {
         authHeader: string,
         privateKey = "",
         address = `${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`,
-        useTls: boolean
+        useTls: boolean,
+        options: grpc.ClientOptions = {
+            "grpc.keepalive_time_ms": 10000, // 10s keep alive so connection isn't closed from lack of activity
+            "grpc.keepalive_timeout_ms": 5000, // 5s allowance for keepalive to respond
+        }
     ) {
         super(authHeader, privateKey)
         const metaCallback = (
@@ -131,7 +135,7 @@ export class GrpcProvider extends BaseProvider {
             )
         }
 
-        this.grpcClient = new Client(address, credentials)
+        this.grpcClient = new Client(address, credentials, options)
 
         const configGrpc: CreateGrpcClientImplConfig = {
             grpcJsClient: this.grpcClient,

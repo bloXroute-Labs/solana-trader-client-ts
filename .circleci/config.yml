@@ -64,6 +64,8 @@ jobs:
             export AUTH_HEADER=$AUTH_HEADER_TESTNET
             export API_ENV="testnet"
             export RUN_LIFECYCLE="false"
+            export RUN_STREAMS="true"
+            unset PRIVATE_KEY
             npm start
           no_output_timeout: 30m
 
@@ -79,6 +81,8 @@ jobs:
             export AUTH_HEADER=$AUTH_HEADER_MAINNET
             export API_ENV="mainnet"
             export RUN_LIFECYCLE="false"
+            export RUN_STREAMS="true"
+            unset PRIVATE_KEY
             npm start
           no_output_timeout: 30m
 

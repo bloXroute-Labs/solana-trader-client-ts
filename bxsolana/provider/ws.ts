@@ -3,6 +3,8 @@ import { MAINNET_API_WS } from "../utils/constants"
 import {
     GetAccountBalanceRequest,
     GetAccountBalanceResponse,
+    GetBlockStreamRequest,
+    GetBlockStreamResponse,
     GetMarketsRequest,
     GetMarketsResponse,
     GetOpenOrdersRequest,
@@ -19,6 +21,8 @@ import {
     GetPoolsResponse,
     GetPriceRequest,
     GetPriceResponse,
+    GetPricesStreamRequest,
+    GetPricesStreamResponse,
     GetQuotesRequest,
     GetQuotesResponse,
     GetQuotesStreamRequest,
@@ -77,7 +81,7 @@ export class WsProvider extends BaseProvider {
         address: string = MAINNET_API_WS
     ) {
         super(authHeader, privateKey)
-        this.wsConnection = new RpcWsConnection(authHeader, address)
+        this.wsConnection = new RpcWsConnection(address, authHeader)
         this.address = address
     }
 
@@ -211,6 +215,18 @@ export class WsProvider extends BaseProvider {
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
+    getPricesStream = async (
+        request: GetPricesStreamRequest
+    ): Promise<AsyncGenerator<GetPricesStreamResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetPricesStream",
+            request
+        )
+
+        this.manageGetStreamMaps("getPricesStream", subscriptionId)
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
+    }
+
     getQuotesStream = async (
         request: GetQuotesStreamRequest
     ): Promise<AsyncGenerator<GetQuotesStreamResponse>> => {
@@ -233,7 +249,18 @@ export class WsProvider extends BaseProvider {
         )
 
         this.manageGetStreamMaps("GetPoolReservesStream", subscriptionId)
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
+    }
 
+    getBlockStream = async (
+        request: GetBlockStreamRequest
+    ): Promise<AsyncGenerator<GetBlockStreamResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetBlockStream",
+            request
+        )
+
+        this.manageGetStreamMaps("GetBlockStream", subscriptionId)
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
