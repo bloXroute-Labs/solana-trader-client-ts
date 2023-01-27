@@ -77,6 +77,7 @@ function getRandom() {
 }
 
 async function run() {
+    console.info("test")
     console.info("---- STARTING HTTP TESTS ----")
     await http()
     console.info("---- STARTING GRPC TESTS ----")
