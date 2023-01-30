@@ -127,6 +127,9 @@ jobs:
 
 workflows:
   build_and_test:
+    when:
+      not:
+        equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
     jobs:
       - build
       - lint:
@@ -149,13 +152,8 @@ workflows:
           requires:
             - build
   nightly:
-    triggers:
-      - schedule:
-          cron: "0 0 * * *"
-          filters:
-            branches:
-              only:
-                - develop
+    when:
+      equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
     jobs:
       - build
       - lint:
