@@ -84,7 +84,6 @@ jobs:
       - run:
           name: mainnet
           command: |
-            exit 1
             export AUTH_HEADER=$AUTH_HEADER_MAINNET
             export API_ENV="mainnet"
             export RUN_LIFECYCLE="false"
@@ -93,7 +92,7 @@ jobs:
             npm start
           no_output_timeout: 30m
       - slack/notify:
-#          branch_pattern: develop
+          branch_pattern: develop
           custom: |
             {
               "text": "solana-trader-client-ts Build failed [develop]",
