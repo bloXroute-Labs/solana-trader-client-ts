@@ -950,8 +950,9 @@ async function callPostRouteTradeSwap(provider: BaseProvider) {
                     label: "Raydium",
                 },
                 inToken: "FIDA",
+                // RAY token address
                 // can be omitted if project.id is specified
-                outToken: "RAY",
+                outToken: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
                 inAmount: 0.01,
                 outAmount: 0.007505,
                 outAmountMin: 0.074,
@@ -961,7 +962,7 @@ async function callPostRouteTradeSwap(provider: BaseProvider) {
                     id: "",
                     label: "Raydium",
                 },
-                inToken: "RAY",
+                inToken: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
                 outToken: "USDC",
                 inAmount: 0.007505,
                 outAmount: 0.004043,
@@ -980,13 +981,13 @@ async function callSubmitRouteTradeSwap(provider: BaseProvider) {
             steps: [
                 {
                     inToken: "FIDA",
-                    outToken: "RAY",
+                    outToken: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
                     inAmount: 0.01,
                     outAmount: 0.007505,
                     outAmountMin: 0.074,
                 },
                 {
-                    inToken: "RAY",
+                    inToken: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
                     outToken: "USDC",
                     inAmount: 0.007505,
                     outAmount: 0.004043,
