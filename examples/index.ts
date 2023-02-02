@@ -575,28 +575,21 @@ async function callGetOrderbook(provider: BaseProvider) {
 }
 
 async function callGetMarketDepth(provider: BaseProvider) {
-    try {
-        console.info("Retrieving market depth data for SOLUSDC market")
-        let req = await provider.getMarketDepth({
-            market: "SOLUSDC",
-            project: "P_OPENBOOK",
-            limit: 5,
-        })
-        console.info(req)
+    console.info("Retrieving market depth data for SOLUSDC market")
+    let req = await provider.getMarketDepth({
+        market: "SOLUSDC",
+        project: "P_OPENBOOK",
+        limit: 5,
+    })
+    console.info(req)
 
-        console.info("Retrieving market depth data for SOL-USDC market")
-        req = await provider.getMarketDepth({
-            market: "SOL-USDC",
-            project: "P_OPENBOOK",
-            limit: 5,
-        })
-        console.info(req)
-    } catch (error) {
-        console.error(
-            "Failed to retrieve the market depth data for market SOL/USDC",
-            error
-        )
-    }
+    console.info("Retrieving market depth data for SOL-USDC market")
+    req = await provider.getMarketDepth({
+        market: "SOL-USDC",
+        project: "P_OPENBOOK",
+        limit: 5,
+    })
+    console.info(req)
 }
 
 async function callGetMarkets(provider: BaseProvider) {
@@ -735,49 +728,38 @@ async function callGetOrderbookStream(provider: BaseProvider) {
 }
 
 async function callGetMarketDepthStream(provider: BaseProvider) {
-    try {
-        console.info(
-            "Subscribing for market depth data updates of SOLUSDC market"
-        )
-        let req = await provider.getMarketDepthsStream({
-            markets: ["SOLUSDC"],
-            project: "P_OPENBOOK",
-            limit: 5,
-        })
+    console.info("Subscribing for market depth data updates of SOLUSDC market")
+    let req = await provider.getMarketDepthsStream({
+        markets: ["SOLUSDC"],
+        project: "P_OPENBOOK",
+        limit: 5,
+    })
 
-        let count = 0
-        for await (const ob of req) {
-            console.info(ob)
-            count++
-            if (count == 5) {
-                break
-            }
+    let count = 0
+    for await (const ob of req) {
+        console.info(ob)
+        count++
+        if (count == 5) {
+            break
         }
-        console.info(" ")
-        console.info(" ")
+    }
+    console.info(" ")
+    console.info(" ")
 
-        console.info(
-            "Subscribing for market depth data updates of SOLUSDC market"
-        )
-        req = await provider.getMarketDepthsStream({
-            markets: ["SOL-USDC"],
-            project: "P_OPENBOOK",
-            limit: 5,
-        })
+    console.info("Subscribing for market depth data updates of SOLUSDC market")
+    req = await provider.getMarketDepthsStream({
+        markets: ["SOL-USDC"],
+        project: "P_OPENBOOK",
+        limit: 5,
+    })
 
-        count = 0
-        for await (const ob of req) {
-            console.info(ob)
-            count++
-            if (count == 5) {
-                break
-            }
+    count = 0
+    for await (const ob of req) {
+        console.info(ob)
+        count++
+        if (count == 5) {
+            break
         }
-    } catch (error) {
-        console.error(
-            "Failed to retrieve market depth data updates for market SOL/USDC",
-            error
-        )
     }
 }
 
