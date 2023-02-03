@@ -23,6 +23,10 @@ import {
     GetOrderbooksStreamResponse,
     GetOrderStatusStreamRequest,
     GetOrderStatusStreamResponse,
+    GetPerpOrderbookRequest,
+    GetPerpOrderbookResponse,
+    GetPerpOrderbooksRequest,
+    GetPerpOrderbooksStreamResponse,
     GetPoolReservesStreamRequest,
     GetPoolReservesStreamResponse,
     GetPoolsRequest,
@@ -71,6 +75,7 @@ import { createServiceClient, Service } from "../proto/services/api/Api"
 import { BaseProvider } from "./base"
 import { CallMetadataOptions } from "@grpc/grpc-js/build/src/call-credentials"
 import { ConnectionOptions } from "tls"
+import { RpcReturnType } from "../proto/runtime/rpc"
 
 // built-in grpc.credentials.createInsecure() doesn't allow composition
 class insecureChannel extends grpc.ChannelCredentials {
@@ -264,6 +269,12 @@ export class GrpcProvider extends BaseProvider {
         return this.client.postRouteTradeSwap(request)
     }
 
+    getPerpOrderbook(
+        request: GetPerpOrderbookRequest
+    ): RpcReturnType<Promise<GetPerpOrderbookResponse>, []> {
+        return this.client.getPerpOrderbook(request)
+    }
+
     // streams
     getOrderbooksStream = (
         request: GetOrderbooksRequest
@@ -316,5 +327,11 @@ export class GrpcProvider extends BaseProvider {
         request: GetBlockStreamRequest
     ): Promise<AsyncGenerator<GetBlockStreamResponse>> {
         return this.client.getBlockStream(request)
+    }
+
+    getPerpOrderbooksStream = (
+        request: GetPerpOrderbooksRequest
+    ): Promise<AsyncGenerator<GetPerpOrderbooksStreamResponse>> => {
+        return this.client.getPerpOrderbooksStream(request)
     }
 }

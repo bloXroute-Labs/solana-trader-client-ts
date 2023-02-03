@@ -15,6 +15,10 @@ import {
     GetOrderbooksStreamResponse,
     GetOrderStatusStreamRequest,
     GetOrderStatusStreamResponse,
+    GetPerpOrderbookRequest,
+    GetPerpOrderbookResponse,
+    GetPerpOrderbooksRequest,
+    GetPerpOrderbooksStreamResponse,
     GetPoolReservesStreamRequest,
     GetPoolReservesStreamResponse,
     GetPoolsRequest,
@@ -136,6 +140,12 @@ export class WsProvider extends BaseProvider {
         return await this.wsConnection.call("GetAccountBalance", request)
     }
 
+    async getPerpOrderbook(
+        request: GetPerpOrderbookRequest
+    ): Promise<GetPerpOrderbookResponse> {
+        return await this.wsConnection.call("getPerpOrderbook", request)
+    }
+
     //stream requests
     getOrderbooksStream = async (
         request: GetOrderbooksRequest
@@ -146,6 +156,19 @@ export class WsProvider extends BaseProvider {
         )
 
         this.manageGetStreamMaps("GetOrderbooksStream", subscriptionId)
+
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
+    }
+
+    getPerpOrderbooksStream = async (
+        request: GetPerpOrderbooksRequest
+    ): Promise<AsyncGenerator<GetPerpOrderbooksStreamResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetPerpOrderbooksStream",
+            request
+        )
+
+        this.manageGetStreamMaps("GetPerpOrderbooksStream", subscriptionId)
 
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
