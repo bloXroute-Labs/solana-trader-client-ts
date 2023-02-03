@@ -121,13 +121,13 @@ async function http() {
     console.info(" ----  HTTP Amm Requests  ----")
     await doAmmRequests(provider)
 
-    if (runLongExamples) {
+   /* if (runLongExamples) {
         console.info(" ----  HTTP Lifecycle  ----")
         await doHttpLifecycle(provider)
         console.info(" ----  HTTP Cancel All  ----")
         await callCancelAll(provider)
         console.info(" ")
-    }
+    }*/
 
     return
 }
@@ -178,13 +178,13 @@ async function grpc() {
         await doAmmStreams(provider)
     }
 
-    if (runLongExamples) {
+    /*if (runLongExamples) {
         console.info(" ----  GRPC Cancel All  ----")
         await callCancelAll(provider)
         console.info(" ----  GRPC Lifecycle  ----")
         await doLifecycle(provider)
         console.info(" ")
-    }
+    }*/
 
     return
 }
@@ -225,13 +225,13 @@ async function ws() {
         await doAmmStreams(provider)
     }
 
-    if (runLongExamples) {
+    /*if (runLongExamples) {
         console.info(" ----  WS Cancel All  ----")
         await callCancelAll(provider)
         console.info(" ----  WS Lifecycle  ----")
         await doLifecycle(provider)
         console.info(" ")
-    }
+    }*/
 
     return
 }
@@ -281,6 +281,11 @@ async function doOrderbookRequests(provider: BaseProvider) {
     await callPostSettleFunds(provider)
     console.info(" ")
     console.info(" ")
+
+    // Drift
+    await callGetPerpOrderbook(provider)
+    console.info(" ")
+    console.info(" ")
 }
 
 async function doAmmRequests(provider: BaseProvider) {
@@ -325,6 +330,10 @@ async function doStreams(provider: BaseProvider) {
     console.info(" ")
 
     await callGetBlockStream(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetPerpOrderbookStream(provider)
     console.info(" ")
     console.info(" ")
 }
@@ -661,6 +670,16 @@ async function callGetQuotes(provider: BaseProvider) {
     console.info(resp)
 }
 
+async function callGetPerpOrderbook(provider: BaseProvider) {
+    console.info("Retrieving orderbook for SOL-PERP market")
+    const req = await provider.getPerpOrderbook({
+        market: "SOL-PERP",
+        project: "P_DRIFT",
+        limit: 5,
+    })
+    console.info(req)
+}
+
 // streaming requests
 async function callGetOrderbookStream(provider: BaseProvider) {
     console.info("Subscribing for orderbook updates of SOLUSDC market")
@@ -815,6 +834,27 @@ async function callGetRecentBlockHashStream(provider: BaseProvider) {
             break
         }
     }
+}
+
+// Drift
+async function callGetPerpOrderbookStream(provider: BaseProvider) {
+    console.info("Subscribing for orderbook updates of SOL-PERP market")
+    const req = await provider.getPerpOrderbooksStream({
+        markets: ["SOL-PEPR"],
+        project: "P_DRIFT",
+        limit: 5,
+    })
+
+    let count = 0
+    for await (const ob of req) {
+        console.info(ob)
+        count++
+        if (count == 5) {
+            break
+        }
+    }
+    console.info(" ")
+    console.info(" ")
 }
 
 // POST requests

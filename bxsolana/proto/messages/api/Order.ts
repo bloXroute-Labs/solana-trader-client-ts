@@ -7,7 +7,7 @@ import {
   Type as OrderType,
   name2num as name2num_1,
   num2name as num2name_1,
-} from "./OrderType";
+} from "../common/OrderType";
 import {
   Type as Timestamp,
   encodeJson as encodeJson_1,
@@ -39,7 +39,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type Order = {
+  export interface Order {
     orderID: string;
     market: string;
     side: Side;

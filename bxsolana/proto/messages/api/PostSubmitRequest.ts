@@ -25,7 +25,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type PostSubmitRequest = {
+  export interface PostSubmitRequest {
     transaction?: TransactionMessage;
     skipPreFlight: boolean;
   }

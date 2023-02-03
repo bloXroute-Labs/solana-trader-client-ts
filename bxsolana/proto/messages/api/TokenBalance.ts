@@ -17,7 +17,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type TokenBalance = {
+  export interface TokenBalance {
     symbol: string;
     address: string;
     walletAmount: number;

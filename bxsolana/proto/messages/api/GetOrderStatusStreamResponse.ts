@@ -25,7 +25,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type GetOrderStatusStreamResponse = {
+  export interface GetOrderStatusStreamResponse {
     slot: string;
     orderInfo?: GetOrderStatusResponse;
   }

@@ -17,7 +17,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type TransactionMessage = {
+  export interface TransactionMessage {
     content: string;
     isCleanup: boolean;
   }

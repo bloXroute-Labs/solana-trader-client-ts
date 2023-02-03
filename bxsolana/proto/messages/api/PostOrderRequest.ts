@@ -7,7 +7,7 @@ import {
   Type as OrderType,
   name2num as name2num_1,
   num2name as num2name_1,
-} from "./OrderType";
+} from "../common/OrderType";
 import {
   Type as Project,
   name2num as name2num_2,
@@ -37,7 +37,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type PostOrderRequest = {
+  export interface PostOrderRequest {
     ownerAddress: string;
     payerAddress: string;
     market: string;

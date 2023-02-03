@@ -26,7 +26,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type Trade = {
+  export interface Trade {
     side: Side;
     size: number;
     fillPrice: number;

@@ -38,7 +38,7 @@ import {
 } from "../../../runtime/wire/deserialize";
 
 export declare namespace $.google.protobuf {
-  export type Field = {
+  export interface Field {
     kind: Kind;
     cardinality: Cardinality;
     number: number;

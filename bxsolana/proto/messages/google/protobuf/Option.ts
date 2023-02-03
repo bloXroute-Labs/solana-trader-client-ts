@@ -25,7 +25,7 @@ import {
 } from "../../../runtime/wire/deserialize";
 
 export declare namespace $.google.protobuf {
-  export type Option = {
+  export interface Option {
     name: string;
     value?: Any;
   }

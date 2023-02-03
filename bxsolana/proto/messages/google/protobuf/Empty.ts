@@ -9,7 +9,7 @@ import {
 } from "../../../runtime/wire/deserialize";
 
 export declare namespace $.google.protobuf {
-  export type Empty = {}
+  export interface Empty {}
 }
 export type Type = $.google.protobuf.Empty;
 

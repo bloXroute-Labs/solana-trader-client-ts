@@ -26,7 +26,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type GetMarketDepthsRequest = {
+  export interface GetMarketDepthsRequest {
     markets: string[];
     limit: number;
     project: Project;
