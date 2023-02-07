@@ -43,6 +43,8 @@ import {
     RouteTradeSwapRequest,
     TradeSwapRequest,
     TradeSwapResponse,
+    GetMarketDepthRequest,
+    GetMarketDepthResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -79,6 +81,13 @@ export class HttpProvider extends BaseProvider {
     ): Promise<GetOrderbookResponse> => {
         const path = `${this.baseUrl}/market/orderbooks/${request.market}?limit=${request.limit}&project=${request.project}`
         return this.get<GetOrderbookResponse>(path)
+    }
+
+    getMarketDepth(
+        request: GetMarketDepthRequest
+    ): Promise<GetMarketDepthResponse> {
+        const path = `${this.baseUrl}/market/depth/${request.market}?limit=${request.limit}&project=${request.project}`
+        return this.get<GetMarketDepthResponse>(path)
     }
 
     getMarkets(request: GetMarketsRequest): Promise<GetMarketsResponse> {

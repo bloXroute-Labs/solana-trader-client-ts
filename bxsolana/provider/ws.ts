@@ -62,6 +62,10 @@ import {
     RouteTradeSwapRequest,
     TradeSwapRequest,
     TradeSwapResponse,
+    GetMarketDepthRequest,
+    GetMarketDepthResponse,
+    GetMarketDepthsRequest,
+    GetMarketDepthsStreamResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -102,6 +106,12 @@ export class WsProvider extends BaseProvider {
         request: GetOrderbookRequest
     ): Promise<GetOrderbookResponse> {
         return await this.wsConnection.call("GetOrderbook", request)
+    }
+
+    async getMarketDepth(
+        request: GetMarketDepthRequest
+    ): Promise<GetMarketDepthResponse> {
+        return await this.wsConnection.call("GetMarketDepth", request)
     }
 
     async getMarkets(request: GetMarketsRequest): Promise<GetMarketsResponse> {
@@ -169,6 +179,19 @@ export class WsProvider extends BaseProvider {
         )
 
         this.manageGetStreamMaps("GetPerpOrderbooksStream", subscriptionId)
+
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
+    }
+
+    getMarketDepthsStream = async (
+        request: GetMarketDepthsRequest
+    ): Promise<AsyncGenerator<GetMarketDepthsStreamResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetMarketDepthsStream",
+            request
+        )
+
+        this.manageGetStreamMaps("GetMarketDepthsStream", subscriptionId)
 
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }

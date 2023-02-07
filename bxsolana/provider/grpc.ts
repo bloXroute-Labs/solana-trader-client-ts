@@ -13,6 +13,10 @@ import {
     GetAccountBalanceResponse,
     GetBlockStreamRequest,
     GetBlockStreamResponse,
+    GetMarketDepthRequest,
+    GetMarketDepthResponse,
+    GetMarketDepthsRequest,
+    GetMarketDepthsStreamResponse,
     GetMarketsRequest,
     GetMarketsResponse,
     GetOpenOrdersRequest,
@@ -159,6 +163,12 @@ export class GrpcProvider extends BaseProvider {
         return this.client.getOrderbook(request)
     }
 
+    getMarketDepth(
+        request: GetMarketDepthRequest
+    ): Promise<GetMarketDepthResponse> {
+        return this.client.getMarketDepth(request)
+    }
+
     getMarkets = (request: GetMarketsRequest): Promise<GetMarketsResponse> => {
         return this.client.getMarkets(request)
     }
@@ -280,6 +290,12 @@ export class GrpcProvider extends BaseProvider {
         request: GetOrderbooksRequest
     ): Promise<AsyncGenerator<GetOrderbooksStreamResponse>> => {
         return this.client.getOrderbooksStream(request)
+    }
+
+    getMarketDepthsStream = (
+        request: GetMarketDepthsRequest
+    ): Promise<AsyncGenerator<GetMarketDepthsStreamResponse>> => {
+        return this.client.getMarketDepthsStream(request)
     }
 
     getTickersStream(

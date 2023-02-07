@@ -241,8 +241,11 @@ async function doOrderbookRequests(provider: BaseProvider) {
     console.info(" ")
     console.info(" ")
 
-    await callGetMarkets(provider)
+    await callGetMarketDepth(provider)
+    console.info(" ")
+    console.info(" ")
 
+    await callGetMarkets(provider)
     console.info(" ")
     console.info(" ")
 
@@ -312,6 +315,14 @@ async function doAmmRequests(provider: BaseProvider) {
 
 async function doStreams(provider: BaseProvider) {
     await callGetOrderbookStream(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetMarketDepthStream(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetMarketDepthStream(provider)
     console.info(" ")
     console.info(" ")
 
@@ -572,6 +583,24 @@ async function callGetOrderbook(provider: BaseProvider) {
     console.info(req)
 }
 
+async function callGetMarketDepth(provider: BaseProvider) {
+    console.info("Retrieving market depth data for SOLUSDC market")
+    let req = await provider.getMarketDepth({
+        market: "SOLUSDC",
+        project: "P_OPENBOOK",
+        limit: 5,
+    })
+    console.info(req)
+
+    console.info("Retrieving market depth data for SOL-USDC market")
+    req = await provider.getMarketDepth({
+        market: "SOL-USDC",
+        project: "P_OPENBOOK",
+        limit: 5,
+    })
+    console.info(req)
+}
+
 async function callGetMarkets(provider: BaseProvider) {
     console.info("Retrieving all supported markets")
     const req = await provider.getMarkets({})
@@ -702,6 +731,42 @@ async function callGetOrderbookStream(provider: BaseProvider) {
 
     console.info("Subscribing for orderbook updates of SOLUSDC market")
     req = await provider.getOrderbooksStream({
+        markets: ["SOL-USDC"],
+        project: "P_OPENBOOK",
+        limit: 5,
+    })
+
+    count = 0
+    for await (const ob of req) {
+        console.info(ob)
+        count++
+        if (count == 5) {
+            break
+        }
+    }
+}
+
+async function callGetMarketDepthStream(provider: BaseProvider) {
+    console.info("Subscribing for market depth data updates of SOLUSDC market")
+    let req = await provider.getMarketDepthsStream({
+        markets: ["SOLUSDC"],
+        project: "P_OPENBOOK",
+        limit: 5,
+    })
+
+    let count = 0
+    for await (const ob of req) {
+        console.info(ob)
+        count++
+        if (count == 5) {
+            break
+        }
+    }
+    console.info(" ")
+    console.info(" ")
+
+    console.info("Subscribing for market depth data updates of SOLUSDC market")
+    req = await provider.getMarketDepthsStream({
         markets: ["SOL-USDC"],
         project: "P_OPENBOOK",
         limit: 5,
