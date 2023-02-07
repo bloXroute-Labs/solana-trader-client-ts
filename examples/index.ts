@@ -322,10 +322,6 @@ async function doStreams(provider: BaseProvider) {
     console.info(" ")
     console.info(" ")
 
-    await callGetMarketDepthStream(provider)
-    console.info(" ")
-    console.info(" ")
-
     await callGetTickersStream(provider)
     console.info(" ")
     console.info(" ")
@@ -905,9 +901,9 @@ async function callGetRecentBlockHashStream(provider: BaseProvider) {
 async function callGetPerpOrderbookStream(provider: BaseProvider) {
     console.info("Subscribing for orderbook updates of SOL-PERP market")
     const req = await provider.getPerpOrderbooksStream({
-        markets: ["SOL-PEPR"],
+        markets: ["SOL-PERP"],
         project: "P_DRIFT",
-        limit: 5,
+        limit: 0,
     })
 
     let count = 0

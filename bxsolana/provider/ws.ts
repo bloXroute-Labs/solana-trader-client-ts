@@ -153,7 +153,7 @@ export class WsProvider extends BaseProvider {
     async getPerpOrderbook(
         request: GetPerpOrderbookRequest
     ): Promise<GetPerpOrderbookResponse> {
-        return await this.wsConnection.call("getPerpOrderbook", request)
+        return await this.wsConnection.call("GetPerpOrderbook", request)
     }
 
     //stream requests
