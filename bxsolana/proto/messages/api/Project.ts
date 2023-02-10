@@ -5,7 +5,8 @@ export declare namespace $.api {
     | "P_JUPITER"
     | "P_RAYDIUM"
     | "P_SERUM"
-    | "P_OPENBOOK";
+    | "P_OPENBOOK"
+    | "P_DRIFT";
 }
 export type Type = $.api.Project;
 
@@ -16,6 +17,7 @@ export const num2name = {
   3: "P_RAYDIUM",
   4: "P_SERUM",
   5: "P_OPENBOOK",
+  6: "P_DRIFT",
 } as const;
 
 export const name2num = {
@@ -25,4 +27,5 @@ export const name2num = {
   P_RAYDIUM: 3,
   P_SERUM: 4,
   P_OPENBOOK: 5,
+  P_DRIFT: 6,
 } as const;

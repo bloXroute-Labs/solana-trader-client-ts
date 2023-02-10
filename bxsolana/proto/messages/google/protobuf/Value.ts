@@ -40,7 +40,7 @@ import {
 } from "../../../runtime/wire/deserialize";
 
 export declare namespace $.google.protobuf {
-  export type Value = {
+  export interface Value {
     kind?: (
       | { field: "nullValue", value: null }
       | { field: "numberValue", value: number }

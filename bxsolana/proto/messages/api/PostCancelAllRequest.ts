@@ -26,7 +26,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type PostCancelAllRequest = {
+  export interface PostCancelAllRequest {
     market: string;
     ownerAddress: string;
     openOrdersAddresses: string[];

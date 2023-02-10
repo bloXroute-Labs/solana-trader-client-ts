@@ -39,7 +39,7 @@ import {
 } from "../../../runtime/wire/deserialize";
 
 export declare namespace $.google.protobuf {
-  export type EnumDescriptorProto = {
+  export interface EnumDescriptorProto {
     name?: string;
     value: EnumValueDescriptorProto[];
     options?: EnumOptions;

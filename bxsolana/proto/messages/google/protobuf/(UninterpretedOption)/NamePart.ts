@@ -17,7 +17,7 @@ import {
 } from "../../../../runtime/wire/deserialize";
 
 export declare namespace $.google.protobuf.UninterpretedOption {
-  export type NamePart = {
+  export interface NamePart {
     namePart: string;
     isExtension: boolean;
   }

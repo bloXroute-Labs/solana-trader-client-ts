@@ -26,7 +26,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.common {
-  export type PriceImpactPercent = {
+  export interface PriceImpactPercent {
     percent: number;
     infinity: Infinity;
   }

@@ -284,6 +284,11 @@ async function doOrderbookRequests(provider: BaseProvider) {
     await callPostSettleFunds(provider)
     console.info(" ")
     console.info(" ")
+
+    // Drift
+    await callGetPerpOrderbook(provider)
+    console.info(" ")
+    console.info(" ")
 }
 
 async function doAmmRequests(provider: BaseProvider) {
@@ -317,10 +322,6 @@ async function doStreams(provider: BaseProvider) {
     console.info(" ")
     console.info(" ")
 
-    await callGetMarketDepthStream(provider)
-    console.info(" ")
-    console.info(" ")
-
     await callGetTickersStream(provider)
     console.info(" ")
     console.info(" ")
@@ -336,6 +337,10 @@ async function doStreams(provider: BaseProvider) {
     console.info(" ")
 
     await callGetBlockStream(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetPerpOrderbookStream(provider)
     console.info(" ")
     console.info(" ")
 }
@@ -690,6 +695,16 @@ async function callGetQuotes(provider: BaseProvider) {
     console.info(resp)
 }
 
+async function callGetPerpOrderbook(provider: BaseProvider) {
+    console.info("Retrieving orderbook for SOL-PERP market")
+    const req = await provider.getPerpOrderbook({
+        market: "SOL-PERP",
+        project: "P_DRIFT",
+        limit: 5,
+    })
+    console.info(req)
+}
+
 // streaming requests
 async function callGetOrderbookStream(provider: BaseProvider) {
     console.info("Subscribing for orderbook updates of SOLUSDC market")
@@ -880,6 +895,27 @@ async function callGetRecentBlockHashStream(provider: BaseProvider) {
             break
         }
     }
+}
+
+// Drift
+async function callGetPerpOrderbookStream(provider: BaseProvider) {
+    console.info("Subscribing for orderbook updates of SOL-PERP market")
+    const req = await provider.getPerpOrderbooksStream({
+        markets: ["SOL-PERP"],
+        project: "P_DRIFT",
+        limit: 0,
+    })
+
+    let count = 0
+    for await (const ob of req) {
+        console.info(ob)
+        count++
+        if (count == 5) {
+            break
+        }
+    }
+    console.info(" ")
+    console.info(" ")
 }
 
 // POST requests

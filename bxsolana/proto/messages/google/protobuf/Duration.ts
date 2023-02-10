@@ -17,7 +17,7 @@ import {
 } from "../../../runtime/wire/deserialize";
 
 export declare namespace $.google.protobuf {
-  export type Duration = {
+  export interface Duration {
     seconds: string;
     nanos: number;
   }

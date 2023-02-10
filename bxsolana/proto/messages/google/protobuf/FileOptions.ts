@@ -33,7 +33,7 @@ import {
 } from "../../../runtime/wire/deserialize";
 
 export declare namespace $.google.protobuf {
-  export type FileOptions = {
+  export interface FileOptions {
     javaPackage?: string;
     javaOuterClassname?: string;
     optimizeFor?: OptimizeMode;
@@ -42,7 +42,6 @@ export declare namespace $.google.protobuf {
     ccGenericServices?: boolean;
     javaGenericServices?: boolean;
     pyGenericServices?: boolean;
-    /** @deprecated */
     javaGenerateEqualsAndHash?: boolean;
     deprecated?: boolean;
     javaStringCheckUtf8?: boolean;

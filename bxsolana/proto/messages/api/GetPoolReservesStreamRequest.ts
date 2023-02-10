@@ -25,7 +25,7 @@ import {
 } from "../../runtime/wire/scalar";
 
 export declare namespace $.api {
-  export type GetPoolReservesStreamRequest = {
+  export interface GetPoolReservesStreamRequest {
     projects: Project[];
   }
 }

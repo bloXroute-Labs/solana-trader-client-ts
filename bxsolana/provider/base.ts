@@ -68,6 +68,30 @@ import {
     TradeSwapRequest,
     TradeSwapResponse,
     TransactionMessage,
+    CreateUserRequest,
+    CreateUserResponse,
+    GetNewPerpOrdersStreamRequest,
+    GetNewPerpOrdersStreamResponse,
+    GetOpenPerpOrdersRequest,
+    GetOpenPerpOrdersResponse,
+    GetPerpOrderbookRequest,
+    GetPerpOrderbookResponse,
+    GetPerpOrderbooksRequest,
+    GetPerpOrderbooksStreamResponse,
+    GetPerpPositionsRequest,
+    GetPerpPositionsResponse,
+    GetPerpTradesStreamRequest,
+    GetPerpTradesStreamResponse,
+    GetUserRequest,
+    GetUserResponse,
+    PostClosePerpPositionsRequest,
+    PostClosePerpPositionsResponse,
+    PostDepositCollateralRequest,
+    PostDepositCollateralResponse,
+    PostPerpOrderRequest,
+    PostPerpOrderResponse,
+    PostWithdrawCollateralRequest,
+    PostWithdrawCollateralResponse,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -77,6 +101,7 @@ import {
 } from "../utils/transaction"
 import { Keypair } from "@solana/web3.js"
 import base58 from "bs58"
+import { RpcReturnType } from "../proto/runtime/rpc"
 
 /* eslint-disable */
 
@@ -89,6 +114,76 @@ export abstract class BaseProvider implements Api {
         if (privateKey) {
             this.privateKey = Keypair.fromSecretKey(base58.decode(privateKey))
         }
+    }
+
+    postPerpOrder(
+        request: PostPerpOrderRequest
+    ): RpcReturnType<Promise<PostPerpOrderResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    getPerpPositions(
+        request: GetPerpPositionsRequest
+    ): RpcReturnType<Promise<GetPerpPositionsResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    getOpenPerpOrders(
+        request: GetOpenPerpOrdersRequest
+    ): RpcReturnType<Promise<GetOpenPerpOrdersResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    postClosePerpPositions(
+        request: PostClosePerpPositionsRequest
+    ): RpcReturnType<Promise<PostClosePerpPositionsResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    getPerpOrderbook(
+        request: GetPerpOrderbookRequest
+    ): RpcReturnType<Promise<GetPerpOrderbookResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    createUser(
+        request: CreateUserRequest
+    ): RpcReturnType<Promise<CreateUserResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    getUser(
+        request: GetUserRequest
+    ): RpcReturnType<Promise<GetUserResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    postDepositCollateral(
+        request: PostDepositCollateralRequest
+    ): RpcReturnType<Promise<PostDepositCollateralResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    postWithdrawCollateral(
+        request: PostWithdrawCollateralRequest
+    ): RpcReturnType<Promise<PostWithdrawCollateralResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    getPerpOrderbooksStream(
+        request: GetPerpOrderbooksRequest
+    ): RpcReturnType<
+        AsyncGenerator<GetPerpOrderbooksStreamResponse, any, unknown>,
+        []
+    > {
+        throw new Error("Method not implemented.")
+    }
+    getNewPerpOrdersStream(
+        request: GetNewPerpOrdersStreamRequest
+    ): RpcReturnType<
+        AsyncGenerator<GetNewPerpOrdersStreamResponse, any, unknown>,
+        []
+    > {
+        throw new Error("Method not implemented.")
+    }
+    getPerpTradesStream(
+        request: GetPerpTradesStreamRequest
+    ): RpcReturnType<
+        AsyncGenerator<GetPerpTradesStreamResponse, any, unknown>,
+        []
+    > {
+        throw new Error("Method not implemented.")
     }
 
     abstract close(): void

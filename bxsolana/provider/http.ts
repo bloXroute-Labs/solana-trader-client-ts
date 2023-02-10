@@ -8,6 +8,8 @@ import {
     GetOpenOrdersResponse,
     GetOrderbookRequest,
     GetOrderbookResponse,
+    GetPerpOrderbookRequest,
+    GetPerpOrderbookResponse,
     GetPoolsRequest,
     GetPoolsResponse,
     GetPriceRequest,
@@ -247,6 +249,13 @@ export class HttpProvider extends BaseProvider {
             path,
             request
         )
+    }
+
+    getPerpOrderbook = (
+        request: GetPerpOrderbookRequest
+    ): Promise<GetPerpOrderbookResponse> => {
+        const path = `${this.baseUrl}/trade/perp/${request.market}?limit=${request.limit}&project=${request.project}`
+        return this.get<GetPerpOrderbookResponse>(path)
     }
 
     private async get<T>(path: string): Promise<T> {
