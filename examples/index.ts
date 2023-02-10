@@ -121,13 +121,13 @@ async function http() {
     console.info(" ----  HTTP Amm Requests  ----")
     await doAmmRequests(provider)
 
-    /* if (runLongExamples) {
+     if (runLongExamples) {
         console.info(" ----  HTTP Lifecycle  ----")
         await doHttpLifecycle(provider)
         console.info(" ----  HTTP Cancel All  ----")
         await callCancelAll(provider)
         console.info(" ")
-    }*/
+    }
 
     return
 }
