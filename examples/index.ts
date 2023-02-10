@@ -178,13 +178,13 @@ async function grpc() {
         await doAmmStreams(provider)
     }
 
-    /*if (runLongExamples) {
+    if (runLongExamples) {
         console.info(" ----  GRPC Cancel All  ----")
         await callCancelAll(provider)
         console.info(" ----  GRPC Lifecycle  ----")
         await doLifecycle(provider)
         console.info(" ")
-    }*/
+    }
 
     return
 }
@@ -225,13 +225,13 @@ async function ws() {
         await doAmmStreams(provider)
     }
 
-    /*if (runLongExamples) {
+    if (runLongExamples) {
         console.info(" ----  WS Cancel All  ----")
         await callCancelAll(provider)
         console.info(" ----  WS Lifecycle  ----")
         await doLifecycle(provider)
         console.info(" ")
-    }*/
+    }
 
     return
 }
