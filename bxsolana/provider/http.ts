@@ -52,7 +52,9 @@ import {
     GetUserResponse,
     GetUserRequest,
     PostDepositCollateralRequest,
-    PostDepositCollateralResponse, PostWithdrawCollateralRequest, PostWithdrawCollateralResponse
+    PostDepositCollateralResponse,
+    PostWithdrawCollateralRequest,
+    PostWithdrawCollateralResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -63,8 +65,9 @@ import axios, {
 } from "axios"
 import {
     PostCancelPerpOrderRequest,
-    PostCancelPerpOrderResponse, PostCreateUserRequest,
-    PostCreateUserResponse
+    PostCancelPerpOrderResponse,
+    PostCreateUserRequest,
+    PostCreateUserResponse,
 } from "../../solana-trader-proto/js/ffi/proto/api_pb"
 
 export class HttpProvider extends BaseProvider {
@@ -264,7 +267,9 @@ export class HttpProvider extends BaseProvider {
         )
     }
 
-    getOpenPerpOrders(request: GetOpenPerpOrdersRequest): Promise<GetOpenPerpOrdersResponse> {
+    getOpenPerpOrders(
+        request: GetOpenPerpOrdersRequest
+    ): Promise<GetOpenPerpOrdersResponse> {
         let path = `${this.baseUrl}/trade/perp/open-orders?ownerAddress=${request.ownerAddress}&accountAddress=${request.accountAddress}&project=${request.project}`
         const args = request.contracts.map((v) => `contracts=${v}`).join("&")
         if (args != "") {
@@ -273,41 +278,70 @@ export class HttpProvider extends BaseProvider {
         return this.get<GetOpenPerpOrdersResponse>(path)
     }
 
-    postCancelPerpOrder(request: PostCancelPerpOrderRequest): Promise<PostCancelPerpOrderResponse>{
+    postCancelPerpOrder(
+        request: PostCancelPerpOrderRequest
+    ): Promise<PostCancelPerpOrderResponse> {
         const path = `${this.baseUrl}/trade/perp/cancelbyid`
-        return this.post<PostCancelPerpOrderRequest, PostCancelPerpOrderResponse>(path, request)
+        return this.post<
+            PostCancelPerpOrderRequest,
+            PostCancelPerpOrderResponse
+        >(path, request)
     }
 
     // TODO update proto
-    postCancelPerpOrders(request: PostCancelPerpOrderRequest): Promise<PostCancelPerpOrderResponse>{
+    postCancelPerpOrders(
+        request: PostCancelPerpOrderRequest
+    ): Promise<PostCancelPerpOrderResponse> {
         const path = `${this.baseUrl}/trade/perp/cancel`
-        return this.post<PostCancelPerpOrderRequest, PostCancelPerpOrderResponse>(path, request)
+        return this.post<
+            PostCancelPerpOrderRequest,
+            PostCancelPerpOrderResponse
+        >(path, request)
     }
 
-    postClosePerpPositions(request: PostClosePerpPositionsRequest): Promise<PostClosePerpPositionsResponse>{
+    postClosePerpPositions(
+        request: PostClosePerpPositionsRequest
+    ): Promise<PostClosePerpPositionsResponse> {
         const path = `${this.baseUrl}/trade/perp/close`
-        return this.post<PostClosePerpPositionsRequest, PostClosePerpPositionsResponse>(path, request)
+        return this.post<
+            PostClosePerpPositionsRequest,
+            PostClosePerpPositionsResponse
+        >(path, request)
     }
 
-    postCreateUser(request: PostCreateUserRequest): Promise<PostCreateUserResponse>{
+    postCreateUser(
+        request: PostCreateUserRequest
+    ): Promise<PostCreateUserResponse> {
         const path = `${this.baseUrl}/trade/user`
-        return this.post<PostCreateUserRequest, PostCreateUserResponse>(path, request)
+        return this.post<PostCreateUserRequest, PostCreateUserResponse>(
+            path,
+            request
+        )
     }
 
-    getUser(request: GetUserRequest): Promise<GetUserResponse>{
+    getUser(request: GetUserRequest): Promise<GetUserResponse> {
         const path = `${this.baseUrl}/trade/user?ownerAddress=${request.ownerAddress}&project=${request.project}`
         return this.get<GetUserResponse>(path)
     }
 
-    postDepositCollateral(request: PostDepositCollateralRequest): Promise<PostDepositCollateralResponse>{
+    postDepositCollateral(
+        request: PostDepositCollateralRequest
+    ): Promise<PostDepositCollateralResponse> {
         const path = `${this.baseUrl}/trade/perp/collateral/deposit`
-        return this.post<PostDepositCollateralRequest, PostDepositCollateralResponse>(path, request)
+        return this.post<
+            PostDepositCollateralRequest,
+            PostDepositCollateralResponse
+        >(path, request)
     }
 
-    postWithdrawCollateral(request: PostWithdrawCollateralRequest): Promise<PostWithdrawCollateralResponse>{
+    postWithdrawCollateral(
+        request: PostWithdrawCollateralRequest
+    ): Promise<PostWithdrawCollateralResponse> {
         const path = `${this.baseUrl}/trade/perp/collateral/withdraw`
-        return this.post<PostWithdrawCollateralRequest, PostWithdrawCollateralResponse>(path, request)
-
+        return this.post<
+            PostWithdrawCollateralRequest,
+            PostWithdrawCollateralResponse
+        >(path, request)
     }
 
     getPerpOrderbook = (

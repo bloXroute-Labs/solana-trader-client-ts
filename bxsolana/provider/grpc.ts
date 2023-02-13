@@ -26,7 +26,9 @@ import {
     GetOrderbookRequest,
     GetOrderbookResponse,
     GetOrderbooksRequest,
-    GetOrderbooksStreamResponse, GetOrdersRequest, GetOrdersResponse,
+    GetOrderbooksStreamResponse,
+    GetOrdersRequest,
+    GetOrdersResponse,
     GetOrderStatusStreamRequest,
     GetOrderStatusStreamResponse,
     GetPerpOrderbookRequest,
@@ -68,7 +70,8 @@ import {
     PostCancelOrderResponse,
     PostClosePerpPositionsRequest,
     PostClosePerpPositionsResponse,
-    PostDepositCollateralRequest, PostDepositCollateralResponse,
+    PostDepositCollateralRequest,
+    PostDepositCollateralResponse,
     PostOrderRequest,
     PostOrderResponse,
     PostReplaceOrderRequest,
@@ -77,10 +80,12 @@ import {
     PostSubmitBatchRequest,
     PostSubmitBatchResponse,
     PostSubmitRequest,
-    PostSubmitResponse, PostWithdrawCollateralRequest, PostWithdrawCollateralResponse,
+    PostSubmitResponse,
+    PostWithdrawCollateralRequest,
+    PostWithdrawCollateralResponse,
     RouteTradeSwapRequest,
     TradeSwapRequest,
-    TradeSwapResponse
+    TradeSwapResponse,
 } from "../proto/messages/api"
 import { createServiceClient, Service } from "../proto/services/api/Api"
 import { BaseProvider } from "./base"
@@ -90,7 +95,8 @@ import { RpcReturnType } from "../proto/runtime/rpc"
 import {
     PostCancelPerpOrderRequest,
     PostCancelPerpOrderResponse,
-    PostCreateUserRequest, PostCreateUserResponse
+    PostCreateUserRequest,
+    PostCreateUserResponse,
 } from "../../solana-trader-proto/js/ffi/proto/api_pb"
 
 // built-in grpc.credentials.createInsecure() doesn't allow composition
@@ -290,31 +296,43 @@ export class GrpcProvider extends BaseProvider {
     ): Promise<TradeSwapResponse> {
         return this.client.postRouteTradeSwap(request)
     }
-    getOpenPerpOrders(request: GetOpenPerpOrdersRequest): Promise<GetOpenPerpOrdersResponse> {
+    getOpenPerpOrders(
+        request: GetOpenPerpOrdersRequest
+    ): Promise<GetOpenPerpOrdersResponse> {
         return this.client.getOpenPerpOrders(request)
     }
 
-    postCancelPerpOrder(request: PostCancelPerpOrderRequest): Promise<PostCancelPerpOrderResponse>{
+    postCancelPerpOrder(
+        request: PostCancelPerpOrderRequest
+    ): Promise<PostCancelPerpOrderResponse> {
         return this.client.postCancelPerpOrder(request)
     }
 
-    postClosePerpPositions(request: PostClosePerpPositionsRequest): Promise<PostClosePerpPositionsResponse>{
+    postClosePerpPositions(
+        request: PostClosePerpPositionsRequest
+    ): Promise<PostClosePerpPositionsResponse> {
         return this.client.postClosePerpPositions(request)
     }
 
-    postCreateUser(request: PostCreateUserRequest): Promise<PostCreateUserResponse>{
+    postCreateUser(
+        request: PostCreateUserRequest
+    ): Promise<PostCreateUserResponse> {
         return this.client.postCreateUser(request)
     }
 
-    getUser(request: GetUserRequest): Promise<GetUserResponse>{
+    getUser(request: GetUserRequest): Promise<GetUserResponse> {
         return this.client.getUser(request)
     }
 
-    postDepositCollateral(request: PostDepositCollateralRequest): Promise<PostDepositCollateralResponse>{
+    postDepositCollateral(
+        request: PostDepositCollateralRequest
+    ): Promise<PostDepositCollateralResponse> {
         return this.client.postDepositCollateral(request)
     }
 
-    postWithdrawCollateral(request: PostWithdrawCollateralRequest): Promise<PostWithdrawCollateralResponse>{
+    postWithdrawCollateral(
+        request: PostWithdrawCollateralRequest
+    ): Promise<PostWithdrawCollateralResponse> {
         return this.client.postWithdrawCollateral(request)
     }
 
