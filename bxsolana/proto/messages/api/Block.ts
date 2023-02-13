@@ -17,7 +17,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface Block {
+  export type Block = {
     slot: string;
     hash: string;
     time: string;

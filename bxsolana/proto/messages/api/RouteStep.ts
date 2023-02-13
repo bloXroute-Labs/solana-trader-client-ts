@@ -25,7 +25,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface RouteStep {
+  export type RouteStep = {
     inToken: string;
     inAmount: number;
     outToken: string;

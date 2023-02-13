@@ -17,7 +17,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface PostDepositCollateralResponse {
+  export type PostDepositCollateralResponse = {
     transaction: string;
   }
 }

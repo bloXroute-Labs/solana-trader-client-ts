@@ -66,9 +66,22 @@ import {
     GetMarketDepthResponse,
     GetMarketDepthsRequest,
     GetMarketDepthsStreamResponse,
+    GetOpenPerpOrdersRequest,
+    GetOpenPerpOrdersResponse,
+    PostClosePerpPositionsResponse,
+    PostClosePerpPositionsRequest,
+    GetUserResponse,
+    GetUserRequest,
+    PostDepositCollateralRequest,
+    PostDepositCollateralResponse, PostWithdrawCollateralResponse, PostWithdrawCollateralRequest
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
+import {
+    PostCancelPerpOrderRequest,
+    PostCancelPerpOrderResponse, PostCreateUserRequest,
+    PostCreateUserResponse
+} from "../../solana-trader-proto/js/ffi/proto/api_pb"
 
 export class WsProvider extends BaseProvider {
     private wsConnection: RpcWsConnection
@@ -379,6 +392,35 @@ export class WsProvider extends BaseProvider {
 
     async getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
         return this.wsConnection.call("GetPrice", request)
+    }
+
+
+    async getOpenPerpOrders(request: GetOpenPerpOrdersRequest): Promise<GetOpenPerpOrdersResponse> {
+        return await this.wsConnection.call("GetOpenPerpOrders", request)
+    }
+
+    async postCancelPerpOrder(request: PostCancelPerpOrderRequest): Promise<PostCancelPerpOrderResponse>{
+        return await this.wsConnection.call("PostCancelPerpOrder", request)
+    }
+
+    async postClosePerpPositions(request: PostClosePerpPositionsRequest): Promise<PostClosePerpPositionsResponse>{
+        return await this.wsConnection.call("PostClosePerpPositions", request)
+    }
+
+    async postCreateUser(request: PostCreateUserRequest): Promise<PostCreateUserResponse>{
+        return await this.wsConnection.call("PostCreateUser", request)
+    }
+
+    async getUser(request: GetUserRequest): Promise<GetUserResponse>{
+        return await this.wsConnection.call("GetUser", request)
+    }
+
+    async postDepositCollateral(request: PostDepositCollateralRequest): Promise<PostDepositCollateralResponse>{
+        return await this.wsConnection.call("PostDepositCollateral", request)
+    }
+
+    async postWithdrawCollateral(request: PostWithdrawCollateralRequest): Promise<PostWithdrawCollateralResponse>{
+        return await this.wsConnection.call("PostWithdrawCollateral", request)
     }
 
     cancelGetOrderbooksStreamByCount = async (

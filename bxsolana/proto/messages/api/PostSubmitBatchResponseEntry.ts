@@ -17,7 +17,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface PostSubmitBatchResponseEntry {
+  export type PostSubmitBatchResponseEntry = {
     signature: string;
     error: string;
     submitted: boolean;

@@ -9,7 +9,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface GetMarketsRequest {}
+  export type GetMarketsRequest = {}
 }
 export type Type = $.api.GetMarketsRequest;
 

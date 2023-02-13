@@ -17,7 +17,7 @@ import {
 } from "../../../runtime/wire/deserialize";
 
 export declare namespace $.google.protobuf {
-  export interface BoolValue {
+  export type BoolValue = {
     value: boolean;
   }
 }

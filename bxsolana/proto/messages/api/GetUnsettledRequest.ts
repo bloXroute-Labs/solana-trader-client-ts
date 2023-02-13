@@ -26,7 +26,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface GetUnsettledRequest {
+  export type GetUnsettledRequest = {
     market: string;
     ownerAddress: string;
     project: Project;

@@ -20,7 +20,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface PostCancelAllResponse {
+  export type PostCancelAllResponse = {
     transactions: TransactionMessage[];
   }
 }
