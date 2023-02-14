@@ -24,18 +24,7 @@ import {
     TESTNET_API_GRPC_PORT,
     TESTNET_API_HTTP,
     TESTNET_API_WS,
-    TokenPair,
     WsProvider,
-    GetOpenPerpOrdersRequest,
-    GetOpenPerpOrdersResponse,
-    PostClosePerpPositionsRequest,
-    PostClosePerpPositionsResponse,
-    GetUserRequest,
-    GetUserResponse,
-    PostDepositCollateralRequest,
-    PostDepositCollateralResponse,
-    PostWithdrawCollateralRequest,
-    PostWithdrawCollateralResponse,
 } from "../bxsolana"
 import { Keypair } from "@solana/web3.js"
 import base58 from "bs58"
