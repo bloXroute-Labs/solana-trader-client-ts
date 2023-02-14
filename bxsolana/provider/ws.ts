@@ -76,15 +76,15 @@ import {
     PostDepositCollateralResponse,
     PostWithdrawCollateralResponse,
     PostWithdrawCollateralRequest,
-} from "../proto/messages/api"
-import { BaseProvider } from "./base"
-import { RpcWsConnection } from "../ws/rpcclient"
-import {
     PostCancelPerpOrderRequest,
     PostCancelPerpOrderResponse,
     PostCreateUserRequest,
     PostCreateUserResponse,
-} from "../../solana-trader-proto/js/ffi/proto/api_pb"
+    PostCancelPerpOrdersRequest,
+    PostCancelPerpOrdersResponse
+} from "../proto/messages/api"
+import { BaseProvider } from "./base"
+import { RpcWsConnection } from "../ws/rpcclient"
 
 export class WsProvider extends BaseProvider {
     private wsConnection: RpcWsConnection
@@ -407,6 +407,12 @@ export class WsProvider extends BaseProvider {
         request: PostCancelPerpOrderRequest
     ): Promise<PostCancelPerpOrderResponse> {
         return await this.wsConnection.call("PostCancelPerpOrder", request)
+    }
+
+    async postCancelPerpOrders(
+        request: PostCancelPerpOrdersRequest
+    ): Promise<PostCancelPerpOrdersResponse> {
+        return await this.wsConnection.call("PostCancelPerpOrders", request)
     }
 
     async postClosePerpPositions(

@@ -57,6 +57,10 @@ import {
     PostWithdrawCollateralResponse,
     PostCancelPerpOrdersResponse,
     PostCancelPerpOrdersRequest,
+    PostCancelPerpOrderRequest,
+    PostCancelPerpOrderResponse,
+    PostCreateUserRequest,
+    PostCreateUserResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -65,12 +69,6 @@ import axios, {
     AxiosResponse,
     RawAxiosRequestHeaders,
 } from "axios"
-import {
-    PostCancelPerpOrderRequest,
-    PostCancelPerpOrderResponse,
-    PostCreateUserRequest,
-    PostCreateUserResponse,
-} from "../../solana-trader-proto/js/ffi/proto/api_pb"
 
 export class HttpProvider extends BaseProvider {
     private readonly baseUrl: string

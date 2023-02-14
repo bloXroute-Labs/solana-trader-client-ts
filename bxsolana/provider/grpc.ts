@@ -86,18 +86,18 @@ import {
     RouteTradeSwapRequest,
     TradeSwapRequest,
     TradeSwapResponse,
+    PostCancelPerpOrderRequest,
+    PostCancelPerpOrderResponse,
+    PostCreateUserRequest,
+    PostCreateUserResponse,
+    PostCancelPerpOrdersRequest,
+    PostCancelPerpOrdersResponse
 } from "../proto/messages/api"
 import { createServiceClient, Service } from "../proto/services/api/Api"
 import { BaseProvider } from "./base"
 import { CallMetadataOptions } from "@grpc/grpc-js/build/src/call-credentials"
 import { ConnectionOptions } from "tls"
 import { RpcReturnType } from "../proto/runtime/rpc"
-import {
-    PostCancelPerpOrderRequest,
-    PostCancelPerpOrderResponse,
-    PostCreateUserRequest,
-    PostCreateUserResponse,
-} from "../../solana-trader-proto/js/ffi/proto/api_pb"
 
 // built-in grpc.credentials.createInsecure() doesn't allow composition
 class insecureChannel extends grpc.ChannelCredentials {
@@ -306,6 +306,12 @@ export class GrpcProvider extends BaseProvider {
         request: PostCancelPerpOrderRequest
     ): Promise<PostCancelPerpOrderResponse> {
         return this.client.postCancelPerpOrder(request)
+    }
+
+    postCancelPerpOrders(
+        request: PostCancelPerpOrdersRequest
+    ): Promise<PostCancelPerpOrdersResponse> {
+        return this.client.postCancelPerpOrders(request)
     }
 
     postClosePerpPositions(
