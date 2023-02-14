@@ -766,7 +766,7 @@ async function callPostCancelPerpOrder(provider: BaseProvider) {
         clientOrderID: "1",
         ownerAddress: ownerAddress,
         project: "P_DRIFT",
-        contract: "SOL-PERP",
+        contract: "SOL_PERP",
     })
 
     console.info(req)
@@ -777,7 +777,7 @@ async function callPostCancelPerpOrders(provider: BaseProvider) {
     const req = await provider.postCancelPerpOrders({
         ownerAddress: ownerAddress,
         project: "P_DRIFT",
-        contract: "SOL-PERP",
+        contract: "SOL_PERP",
     })
 
     console.info(req)
