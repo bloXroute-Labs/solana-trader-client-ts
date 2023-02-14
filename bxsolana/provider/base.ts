@@ -68,8 +68,6 @@ import {
     TradeSwapRequest,
     TradeSwapResponse,
     TransactionMessage,
-    CreateUserRequest,
-    CreateUserResponse,
     GetNewPerpOrdersStreamRequest,
     GetNewPerpOrdersStreamResponse,
     GetOpenPerpOrdersRequest,
