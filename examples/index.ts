@@ -116,6 +116,8 @@ async function http() {
     }
 
     console.info(" ----  HTTP Requests  ----")
+    await runPerpRequests(provider)
+
     await doOrderbookRequests(provider)
     console.info(" ----  HTTP Amm Requests  ----")
     await doAmmRequests(provider)
@@ -235,6 +237,40 @@ async function ws() {
     return
 }
 
+async function runPerpRequests(provider: BaseProvider) {
+    await callGetOpenPerpOrders(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostCancelPerpOrder(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostCancelPerpOrders(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostClosePerpPositions(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostCreateUser(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetUser(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostDepositCollateral(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostWithdrawCollateral(provider)
+    console.info(" ")
+    console.info(" ")
+}
+
 async function doOrderbookRequests(provider: BaseProvider) {
     await callGetOrderbook(provider)
     console.info(" ")
@@ -286,38 +322,6 @@ async function doOrderbookRequests(provider: BaseProvider) {
 
     // Drift
     await callGetPerpOrderbook(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callGetOpenPerpOrders(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callPostCancelPerpOrder(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callPostCancelPerpOrders(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callPostClosePerpPositions(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callPostCreateUser(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callGetUser(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callPostDepositCollateral(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callPostWithdrawCollateral(provider)
     console.info(" ")
     console.info(" ")
 }
@@ -751,8 +755,8 @@ async function callGetOpenPerpOrders(provider: BaseProvider) {
 async function callPostCancelPerpOrder(provider: BaseProvider) {
     console.info("canceling perp order")
     const req = await provider.postCancelPerpOrder({
-        orderID: "1",
-        clientOrderID: "1",
+        orderID: "0",
+        clientOrderID: "12",
         ownerAddress: ownerAddress,
         project: "P_DRIFT",
         contract: "SOL_PERP",
