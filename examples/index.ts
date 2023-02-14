@@ -44,14 +44,6 @@ import {
     DEVNET_API_GRPC_PORT,
 } from "../bxsolana/utils/constants"
 import { AxiosRequestConfig } from "axios"
-import {
-    PostCancelPerpOrderRequest,
-    PostCancelPerpOrderResponse,
-    PostCreateUserRequest,
-    PostCreateUserResponse,
-} from "../solana-trader-proto/js/ffi/proto/api_pb"
-import { Type as PerpContract } from "../bxsolana/proto/messages/common/PerpContract"
-import { common } from "../bxsolana/proto/messages"
 
 // if longer examples (placing and canceling transactions, etc. should be run)
 const runLongExamples = process.env.RUN_LIFECYCLE === "true"
