@@ -56,7 +56,7 @@ import {
     PostWithdrawCollateralRequest,
     PostWithdrawCollateralResponse,
     PostCancelPerpOrdersResponse,
-    PostCancelPerpOrdersRequest
+    PostCancelPerpOrdersRequest,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"

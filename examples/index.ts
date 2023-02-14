@@ -33,7 +33,9 @@ import {
     GetUserRequest,
     GetUserResponse,
     PostDepositCollateralRequest,
-    PostDepositCollateralResponse, PostWithdrawCollateralRequest, PostWithdrawCollateralResponse
+    PostDepositCollateralResponse,
+    PostWithdrawCollateralRequest,
+    PostWithdrawCollateralResponse,
 } from "../bxsolana"
 import { Keypair } from "@solana/web3.js"
 import base58 from "bs58"
@@ -45,7 +47,8 @@ import { AxiosRequestConfig } from "axios"
 import {
     PostCancelPerpOrderRequest,
     PostCancelPerpOrderResponse,
-    PostCreateUserRequest, PostCreateUserResponse
+    PostCreateUserRequest,
+    PostCreateUserResponse,
 } from "../solana-trader-proto/js/ffi/proto/api_pb"
 import { Type as PerpContract } from "../bxsolana/proto/messages/common/PerpContract"
 import { common } from "../bxsolana/proto/messages"
@@ -336,7 +339,6 @@ async function doOrderbookRequests(provider: BaseProvider) {
     await callPostWithdrawCollateral(provider)
     console.info(" ")
     console.info(" ")
-
 }
 
 async function doAmmRequests(provider: BaseProvider) {
@@ -838,8 +840,6 @@ async function callPostWithdrawCollateral(provider: BaseProvider) {
     })
     console.info(req)
 }
-
-
 
 // streaming requests
 async function callGetOrderbookStream(provider: BaseProvider) {
