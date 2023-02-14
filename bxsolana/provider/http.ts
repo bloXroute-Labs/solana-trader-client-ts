@@ -54,7 +54,7 @@ import {
     PostDepositCollateralRequest,
     PostDepositCollateralResponse,
     PostWithdrawCollateralRequest,
-    PostWithdrawCollateralResponse,
+    PostWithdrawCollateralResponse, PostCancelPerpOrdersResponse, PostCancelPerpOrdersRequest
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -288,14 +288,13 @@ export class HttpProvider extends BaseProvider {
         >(path, request)
     }
 
-    // TODO update proto
     postCancelPerpOrders(
-        request: PostCancelPerpOrderRequest
-    ): Promise<PostCancelPerpOrderResponse> {
+        request: PostCancelPerpOrdersRequest
+    ): Promise<PostCancelPerpOrdersResponse> {
         const path = `${this.baseUrl}/trade/perp/cancel`
         return this.post<
-            PostCancelPerpOrderRequest,
-            PostCancelPerpOrderResponse
+            PostCancelPerpOrdersRequest,
+            PostCancelPerpOrdersResponse
         >(path, request)
     }
 
