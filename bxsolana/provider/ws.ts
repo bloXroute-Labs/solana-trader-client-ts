@@ -81,7 +81,7 @@ import {
     PostCreateUserRequest,
     PostCreateUserResponse,
     PostCancelPerpOrdersRequest,
-    PostCancelPerpOrdersResponse
+    PostCancelPerpOrdersResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"

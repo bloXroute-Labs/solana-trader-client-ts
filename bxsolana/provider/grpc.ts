@@ -91,7 +91,7 @@ import {
     PostCreateUserRequest,
     PostCreateUserResponse,
     PostCancelPerpOrdersRequest,
-    PostCancelPerpOrdersResponse
+    PostCancelPerpOrdersResponse,
 } from "../proto/messages/api"
 import { createServiceClient, Service } from "../proto/services/api/Api"
 import { BaseProvider } from "./base"
