@@ -54,7 +54,9 @@ import {
     PostDepositCollateralRequest,
     PostDepositCollateralResponse,
     PostWithdrawCollateralRequest,
-    PostWithdrawCollateralResponse, PostCancelPerpOrdersResponse, PostCancelPerpOrdersRequest
+    PostWithdrawCollateralResponse,
+    PostCancelPerpOrdersResponse,
+    PostCancelPerpOrdersRequest
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"

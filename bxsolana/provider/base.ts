@@ -92,6 +92,10 @@ import {
     PostPerpOrderResponse,
     PostWithdrawCollateralRequest,
     PostWithdrawCollateralResponse,
+    PostCancelPerpOrderRequest,
+    PostCancelPerpOrderResponse,
+    PostCancelPerpOrdersRequest,
+    PostCancelPerpOrdersResponse, PostCreateUserRequest, PostCreateUserResponse
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -131,6 +135,16 @@ export abstract class BaseProvider implements Api {
     ): RpcReturnType<Promise<GetOpenPerpOrdersResponse>, []> {
         throw new Error("Method not implemented.")
     }
+    postCancelPerpOrder(
+        request: PostCancelPerpOrderRequest
+    ): RpcReturnType<Promise<PostCancelPerpOrderResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    postCancelPerpOrders(
+        request: PostCancelPerpOrdersRequest
+    ): RpcReturnType<Promise<PostCancelPerpOrdersResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
     postClosePerpPositions(
         request: PostClosePerpPositionsRequest
     ): RpcReturnType<Promise<PostClosePerpPositionsResponse>, []> {
@@ -141,9 +155,9 @@ export abstract class BaseProvider implements Api {
     ): RpcReturnType<Promise<GetPerpOrderbookResponse>, []> {
         throw new Error("Method not implemented.")
     }
-    createUser(
-        request: CreateUserRequest
-    ): RpcReturnType<Promise<CreateUserResponse>, []> {
+    postCreateUser(
+        request: PostCreateUserRequest
+    ): RpcReturnType<Promise<PostCreateUserResponse>, []> {
         throw new Error("Method not implemented.")
     }
     getUser(
