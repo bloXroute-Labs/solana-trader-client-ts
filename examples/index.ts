@@ -61,8 +61,8 @@ const testOrder: PostOrderRequest = {
 }
 
 const transactionWaitTimeS = 60
-const httpTimeout = 4000
-const httpLongTimeout = 10_000
+const httpTimeout = 10_000
+const httpLongTimeout = 20_000
 
 function delay(milliseconds: number) {
     return new Promise((resolve) => setTimeout(resolve, milliseconds))
