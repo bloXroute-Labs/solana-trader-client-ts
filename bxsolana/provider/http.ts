@@ -275,6 +275,7 @@ export class HttpProvider extends BaseProvider {
         if (args != "") {
             path += `&${args}`
         }
+        console.log("getOpenPerpOrders : " + path)
         return this.get<GetOpenPerpOrdersResponse>(path)
     }
 
