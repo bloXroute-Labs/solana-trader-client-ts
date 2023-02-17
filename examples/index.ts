@@ -741,7 +741,7 @@ async function callGetPerpOrderbook(provider: BaseProvider) {
 }
 
 async function callGetOpenPerpOrders(provider: BaseProvider) {
-    console.info("get open perp orders for SOL-PERP market")
+    console.info("get open perp orders for SOL_PERP market")
     const req = await provider.getOpenPerpOrders({
         ownerAddress: ownerAddress,
         accountAddress: "",
