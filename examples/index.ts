@@ -788,11 +788,15 @@ async function callPostClosePerpPositions(provider: BaseProvider) {
 
 async function callPostCreateUser(provider: BaseProvider) {
     console.info("creating user")
-    const req = await provider.postCreateUser({
-        ownerAddress: ownerAddress,
-        project: "P_DRIFT",
-    })
-    console.info(req)
+    try {
+        const req = await provider.postCreateUser({
+            ownerAddress: ownerAddress,
+            project: "P_DRIFT",
+        })
+        console.info(req)
+    } catch (err) {
+        console.info(err)
+    }
 }
 
 async function callGetUser(provider: BaseProvider) {
