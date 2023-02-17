@@ -407,11 +407,11 @@ async function doAmmStreams(provider: BaseProvider) {
     console.info(" ")
     console.info(" ")
 
-    await callGetPoolsStream(provider)
-    console.info(" ")
-    console.info(" ")
-
     if (runLongExamples) {
+        await callGetPoolsStream(provider)
+        console.info(" ")
+        console.info(" ")
+
         await callGetSwapsStream(provider)
         console.info(" ")
         console.info(" ")
