@@ -26,6 +26,7 @@ import {
     TESTNET_API_WS,
     TokenPair,
     WsProvider,
+    RouteStep,
 } from "../bxsolana"
 import { Keypair } from "@solana/web3.js"
 import base58 from "bs58"
@@ -77,12 +78,12 @@ function getRandom() {
 }
 
 async function run() {
-    console.info("---- STARTING HTTP TESTS ----")
-    await http()
+    // console.info("---- STARTING HTTP TESTS ----")
+    // await http()
     console.info("---- STARTING GRPC TESTS ----")
     await grpc()
-    console.info("---- STARTING WS TESTS ----")
-    await ws()
+    // console.info("---- STARTING WS TESTS ----")
+    // await ws()
 }
 
 async function http() {
@@ -90,7 +91,7 @@ async function http() {
 
     // http provider uses Axios under the hood, so any Axios config can be included here
     const requestConfig: AxiosRequestConfig = {
-        timeout: httpTimeout,
+        timeout: httpTimeout*2,
     }
 
     if (process.env.API_ENV === "testnet") {
@@ -116,18 +117,18 @@ async function http() {
         )
     }
 
-    console.info(" ----  HTTP Requests  ----")
-    await doOrderbookRequests(provider)
+    // console.info(" ----  HTTP Requests  ----")
+    // await doOrderbookRequests(provider)
     console.info(" ----  HTTP Amm Requests  ----")
     await doAmmRequests(provider)
 
-    if (runLongExamples) {
-        console.info(" ----  HTTP Lifecycle  ----")
-        await doHttpLifecycle(provider)
-        console.info(" ----  HTTP Cancel All  ----")
-        await callCancelAll(provider)
-        console.info(" ")
-    }
+    // if (runLongExamples) {
+    //     console.info(" ----  HTTP Lifecycle  ----")
+    //     await doHttpLifecycle(provider)
+    //     console.info(" ----  HTTP Cancel All  ----")
+    //     await callCancelAll(provider)
+    //     console.info(" ")
+    // }
 
     return
 }
@@ -165,26 +166,28 @@ async function grpc() {
         )
     }
 
-    console.info(" ----  GRPC Requests  ----")
-    await doOrderbookRequests(provider)
+    // console.info(" ----  GRPC Requests  ----")
+    // await doOrderbookRequests(provider)
 
     console.info(" ----  GRPC Amm Requests  ----")
     await doAmmRequests(provider)
 
-    if (runStreams) {
-        console.info(" ----  GRPC Streams  ----")
-        await doStreams(provider)
-        console.info(" ----  GRPC Amm Streams  ----")
-        await doAmmStreams(provider)
-    }
+    await doLifecycle(provider)
+    console.info(" ")
+    // if (runStreams) {
+    //     console.info(" ----  GRPC Streams  ----")
+    //     await doStreams(provider)
+    //     console.info(" ----  GRPC Amm Streams  ----")
+    //     await doAmmStreams(provider)
+    // }
 
-    if (runLongExamples) {
-        console.info(" ----  GRPC Cancel All  ----")
-        await callCancelAll(provider)
-        console.info(" ----  GRPC Lifecycle  ----")
-        await doLifecycle(provider)
-        console.info(" ")
-    }
+    // if (runLongExamples) {
+    //     console.info(" ----  GRPC Cancel All  ----")
+    //     await callCancelAll(provider)
+    //     console.info(" ----  GRPC Lifecycle  ----")
+    //     await doLifecycle(provider)
+    //     console.info(" ")
+    // }
 
     return
 }
@@ -292,25 +295,27 @@ async function doOrderbookRequests(provider: BaseProvider) {
 }
 
 async function doAmmRequests(provider: BaseProvider) {
-    await callGetPrices(provider)
+    // await callGetPrices(provider)
+    // console.info(" ")
+    // console.info(" ")
+
+    // await callGetPools(provider)
+    // console.info(" ")
+    // console.info(" ")
+
+    // await callGetQuotes(provider)
+    // console.info(" ")
+    // console.info(" ")
+
+    // await callPostTradeSwap(provider)
+    // console.info(" ")
+    // console.info(" ")
+
+    await callSubmitRouteTradeSwap(provider)
     console.info(" ")
     console.info(" ")
 
-    await callGetPools(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callGetQuotes(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callPostTradeSwap(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callPostRouteTradeSwap(provider)
-    console.info(" ")
-    console.info(" ")
+   await  doLifecycle(provider)
 }
 
 async function doStreams(provider: BaseProvider) {
@@ -1070,32 +1075,33 @@ async function callPostRouteTradeSwap(provider: BaseProvider) {
                 outAmountMin: 0.004,
             },
         ],
-        project: "P_RAYDIUM",
+        project: "P_JUPITER",
     })
     console.info(response)
 }
 async function callSubmitRouteTradeSwap(provider: BaseProvider) {
     console.info("Submitting a route trade swap")
+
+    const quotes = await provider.getQuotes({
+        inToken: "USDC", outToken: "USDT", inAmount: 0.1, slippage: 0.1,
+        limit: 0,
+        projects: ["P_JUPITER"]
+    })
+
+    const steps:RouteStep[] = []
+
+    for (let i = 0; i < quotes.quotes[0].routes[0].steps.length; i++) {
+        const step = quotes.quotes[0].routes[0].steps[i];
+
+        steps.push({inToken: step.inToken, outToken : step.outToken, inAmount: step.inAmount, outAmount: step.outAmount, outAmountMin: step.outAmountMin, project: step.project})
+        
+    }
+
     const responses = await provider.submitRouteTradeSwap(
         {
             ownerAddress: ownerAddress,
-            steps: [
-                {
-                    inToken: "FIDA",
-                    outToken: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
-                    inAmount: 0.01,
-                    outAmount: 0.007505,
-                    outAmountMin: 0.074,
-                },
-                {
-                    inToken: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
-                    outToken: "USDC",
-                    inAmount: 0.007505,
-                    outAmount: 0.004043,
-                    outAmountMin: 0.004,
-                },
-            ],
-            project: "P_RAYDIUM",
+            steps: steps,
+            project: "P_JUPITER",
         },
         "P_SUBMIT_ALL",
         true

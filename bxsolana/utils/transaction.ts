@@ -1,12 +1,12 @@
-import { Keypair, Transaction } from "@solana/web3.js"
+import { Keypair, Transaction, VersionedTransaction } from "@solana/web3.js"
 import { TransactionMessage } from "../proto/messages/api"
 
 export function signTx(
     base64EncodedTx: string,
     privateKey: Keypair
-): Transaction {
+): VersionedTransaction {
     const tx = txFromBase64(base64EncodedTx)
-    tx.partialSign(privateKey)
+    tx.sign([privateKey])
     return tx
 }
 
@@ -24,12 +24,14 @@ export type SubmitTransactionResponse = {
     openOrdersAccount: string
 }
 
-function txFromBase64(base64EncodedTx: string): Transaction {
+function txFromBase64(base64EncodedTx: string): VersionedTransaction {
     const buff = Buffer.from(base64EncodedTx, "base64")
-    return Transaction.from(buff)
+    const transaction = VersionedTransaction.deserialize(buff);
+    return transaction
 }
 
-function txToBase64(transaction: Transaction): string {
-    const buff = transaction.serialize()
+export function txToBase64(transaction: VersionedTransaction): string {
+    const serializedTransaztionBytes = transaction.serialize()
+    const buff = Buffer.from(serializedTransaztionBytes)
     return buff.toString("base64")
 }
