@@ -91,7 +91,7 @@ async function http() {
 
     // http provider uses Axios under the hood, so any Axios config can be included here
     const requestConfig: AxiosRequestConfig = {
-        timeout: httpTimeout*2,
+        timeout: httpTimeout * 2,
     }
 
     if (process.env.API_ENV === "testnet") {
@@ -315,7 +315,7 @@ async function doAmmRequests(provider: BaseProvider) {
     console.info(" ")
     console.info(" ")
 
-   await  doLifecycle(provider)
+    await doLifecycle(provider)
 }
 
 async function doStreams(provider: BaseProvider) {
@@ -1083,18 +1083,27 @@ async function callSubmitRouteTradeSwap(provider: BaseProvider) {
     console.info("Submitting a route trade swap")
 
     const quotes = await provider.getQuotes({
-        inToken: "USDC", outToken: "USDT", inAmount: 0.1, slippage: 0.1,
+        inToken: "USDC",
+        outToken: "USDT",
+        inAmount: 0.1,
+        slippage: 0.1,
         limit: 0,
-        projects: ["P_JUPITER"]
+        projects: ["P_JUPITER"],
     })
 
-    const steps:RouteStep[] = []
+    const steps: RouteStep[] = []
 
     for (let i = 0; i < quotes.quotes[0].routes[0].steps.length; i++) {
-        const step = quotes.quotes[0].routes[0].steps[i];
+        const step = quotes.quotes[0].routes[0].steps[i]
 
-        steps.push({inToken: step.inToken, outToken : step.outToken, inAmount: step.inAmount, outAmount: step.outAmount, outAmountMin: step.outAmountMin, project: step.project})
-        
+        steps.push({
+            inToken: step.inToken,
+            outToken: step.outToken,
+            inAmount: step.inAmount,
+            outAmount: step.outAmount,
+            outAmountMin: step.outAmountMin,
+            project: step.project,
+        })
     }
 
     const responses = await provider.submitRouteTradeSwap(
