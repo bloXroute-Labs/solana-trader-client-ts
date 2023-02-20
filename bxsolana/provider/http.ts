@@ -254,7 +254,7 @@ export class HttpProvider extends BaseProvider {
     getPerpOrderbook = (
         request: GetPerpOrderbookRequest
     ): Promise<GetPerpOrderbookResponse> => {
-        const path = `${this.baseUrl}/trade/perp/${request.market}?limit=${request.limit}&project=${request.project}`
+        const path = `${this.baseUrl}/market/perp/orderbook${request.market}?limit=${request.limit}&project=${request.project}`
         return this.get<GetPerpOrderbookResponse>(path)
     }
 
