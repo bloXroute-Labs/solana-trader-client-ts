@@ -375,7 +375,7 @@ async function doStreams(provider: BaseProvider) {
     console.info(" ")
     console.info(" ")
 
-    await callGetPerpOrderbookStream(provider)
+    // await callGetPerpOrderbookStream(provider)
     console.info(" ")
     console.info(" ")
 }
