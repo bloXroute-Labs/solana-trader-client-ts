@@ -731,13 +731,17 @@ async function callGetQuotes(provider: BaseProvider) {
 }
 
 async function callGetPerpOrderbook(provider: BaseProvider) {
-    console.info("Retrieving orderbook for SOL-PERP market")
-    const req = await provider.getPerpOrderbook({
-        market: "SOL-PERP",
-        project: "P_DRIFT",
-        limit: 5,
-    })
-    console.info(req)
+    try {
+        console.info("Retrieving orderbook for SOL-PERP market")
+        const req = await provider.getPerpOrderbook({
+            market: "SOL-PERP",
+            project: "P_DRIFT",
+            limit: 5,
+        })
+        console.info(req)
+    } catch (e) {
+        console.info(e)
+    }
 }
 
 async function callGetOpenPerpOrders(provider: BaseProvider) {
