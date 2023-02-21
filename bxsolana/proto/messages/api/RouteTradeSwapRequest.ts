@@ -33,7 +33,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface RouteTradeSwapRequest {
+  export type RouteTradeSwapRequest = {
     project: Project;
     ownerAddress: string;
     steps: RouteStep[];

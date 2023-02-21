@@ -17,7 +17,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface ProjectPool {
+  export type ProjectPool = {
     pool: string;
     poolAddress: string;
     token1Reserves: string;

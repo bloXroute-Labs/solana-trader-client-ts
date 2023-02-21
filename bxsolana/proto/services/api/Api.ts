@@ -334,220 +334,244 @@ import {
   encodeJson as encodeJson_54,
 } from "../../messages/api/GetOpenPerpOrdersResponse";
 import {
-  Type as PostClosePerpPositionsRequest,
+  Type as PostCancelPerpOrdersRequest,
   encodeBinary as encodeBinary_55,
   decodeBinary as decodeBinary_55,
   encodeJson as encodeJson_55,
-} from "../../messages/api/PostClosePerpPositionsRequest";
+} from "../../messages/api/PostCancelPerpOrdersRequest";
 import {
-  Type as PostClosePerpPositionsResponse,
+  Type as PostCancelPerpOrdersResponse,
   encodeBinary as encodeBinary_56,
   decodeBinary as decodeBinary_56,
   encodeJson as encodeJson_56,
-} from "../../messages/api/PostClosePerpPositionsResponse";
+} from "../../messages/api/PostCancelPerpOrdersResponse";
 import {
-  Type as GetPerpOrderbookRequest,
+  Type as PostCancelPerpOrderRequest,
   encodeBinary as encodeBinary_57,
   decodeBinary as decodeBinary_57,
   encodeJson as encodeJson_57,
-} from "../../messages/api/GetPerpOrderbookRequest";
+} from "../../messages/api/PostCancelPerpOrderRequest";
 import {
-  Type as GetPerpOrderbookResponse,
+  Type as PostCancelPerpOrderResponse,
   encodeBinary as encodeBinary_58,
   decodeBinary as decodeBinary_58,
   encodeJson as encodeJson_58,
-} from "../../messages/api/GetPerpOrderbookResponse";
+} from "../../messages/api/PostCancelPerpOrderResponse";
 import {
-  Type as CreateUserRequest,
+  Type as PostClosePerpPositionsRequest,
   encodeBinary as encodeBinary_59,
   decodeBinary as decodeBinary_59,
   encodeJson as encodeJson_59,
-} from "../../messages/api/CreateUserRequest";
+} from "../../messages/api/PostClosePerpPositionsRequest";
 import {
-  Type as CreateUserResponse,
+  Type as PostClosePerpPositionsResponse,
   encodeBinary as encodeBinary_60,
   decodeBinary as decodeBinary_60,
   encodeJson as encodeJson_60,
-} from "../../messages/api/CreateUserResponse";
+} from "../../messages/api/PostClosePerpPositionsResponse";
 import {
-  Type as GetUserRequest,
+  Type as GetPerpOrderbookRequest,
   encodeBinary as encodeBinary_61,
   decodeBinary as decodeBinary_61,
   encodeJson as encodeJson_61,
-} from "../../messages/api/GetUserRequest";
+} from "../../messages/api/GetPerpOrderbookRequest";
 import {
-  Type as GetUserResponse,
+  Type as GetPerpOrderbookResponse,
   encodeBinary as encodeBinary_62,
   decodeBinary as decodeBinary_62,
   encodeJson as encodeJson_62,
-} from "../../messages/api/GetUserResponse";
+} from "../../messages/api/GetPerpOrderbookResponse";
 import {
-  Type as PostDepositCollateralRequest,
+  Type as PostCreateUserRequest,
   encodeBinary as encodeBinary_63,
   decodeBinary as decodeBinary_63,
   encodeJson as encodeJson_63,
-} from "../../messages/api/PostDepositCollateralRequest";
+} from "../../messages/api/PostCreateUserRequest";
 import {
-  Type as PostDepositCollateralResponse,
+  Type as PostCreateUserResponse,
   encodeBinary as encodeBinary_64,
   decodeBinary as decodeBinary_64,
   encodeJson as encodeJson_64,
-} from "../../messages/api/PostDepositCollateralResponse";
+} from "../../messages/api/PostCreateUserResponse";
 import {
-  Type as PostWithdrawCollateralRequest,
+  Type as GetUserRequest,
   encodeBinary as encodeBinary_65,
   decodeBinary as decodeBinary_65,
   encodeJson as encodeJson_65,
-} from "../../messages/api/PostWithdrawCollateralRequest";
+} from "../../messages/api/GetUserRequest";
 import {
-  Type as PostWithdrawCollateralResponse,
+  Type as GetUserResponse,
   encodeBinary as encodeBinary_66,
   decodeBinary as decodeBinary_66,
   encodeJson as encodeJson_66,
-} from "../../messages/api/PostWithdrawCollateralResponse";
+} from "../../messages/api/GetUserResponse";
 import {
-  Type as GetOrderbooksRequest,
+  Type as PostDepositCollateralRequest,
   encodeBinary as encodeBinary_67,
   decodeBinary as decodeBinary_67,
   encodeJson as encodeJson_67,
-} from "../../messages/api/GetOrderbooksRequest";
+} from "../../messages/api/PostDepositCollateralRequest";
 import {
-  Type as GetOrderbooksStreamResponse,
+  Type as PostDepositCollateralResponse,
   encodeBinary as encodeBinary_68,
   decodeBinary as decodeBinary_68,
   encodeJson as encodeJson_68,
-} from "../../messages/api/GetOrderbooksStreamResponse";
+} from "../../messages/api/PostDepositCollateralResponse";
 import {
-  Type as GetMarketDepthsRequest,
+  Type as PostWithdrawCollateralRequest,
   encodeBinary as encodeBinary_69,
   decodeBinary as decodeBinary_69,
   encodeJson as encodeJson_69,
-} from "../../messages/api/GetMarketDepthsRequest";
+} from "../../messages/api/PostWithdrawCollateralRequest";
 import {
-  Type as GetMarketDepthsStreamResponse,
+  Type as PostWithdrawCollateralResponse,
   encodeBinary as encodeBinary_70,
   decodeBinary as decodeBinary_70,
   encodeJson as encodeJson_70,
-} from "../../messages/api/GetMarketDepthsStreamResponse";
+} from "../../messages/api/PostWithdrawCollateralResponse";
 import {
-  Type as GetTickersStreamResponse,
+  Type as GetOrderbooksRequest,
   encodeBinary as encodeBinary_71,
   decodeBinary as decodeBinary_71,
   encodeJson as encodeJson_71,
-} from "../../messages/api/GetTickersStreamResponse";
+} from "../../messages/api/GetOrderbooksRequest";
 import {
-  Type as GetTradesStreamResponse,
+  Type as GetOrderbooksStreamResponse,
   encodeBinary as encodeBinary_72,
   decodeBinary as decodeBinary_72,
   encodeJson as encodeJson_72,
-} from "../../messages/api/GetTradesStreamResponse";
+} from "../../messages/api/GetOrderbooksStreamResponse";
 import {
-  Type as GetOrderStatusStreamRequest,
+  Type as GetMarketDepthsRequest,
   encodeBinary as encodeBinary_73,
   decodeBinary as decodeBinary_73,
   encodeJson as encodeJson_73,
-} from "../../messages/api/GetOrderStatusStreamRequest";
+} from "../../messages/api/GetMarketDepthsRequest";
 import {
-  Type as GetOrderStatusStreamResponse,
+  Type as GetMarketDepthsStreamResponse,
   encodeBinary as encodeBinary_74,
   decodeBinary as decodeBinary_74,
   encodeJson as encodeJson_74,
-} from "../../messages/api/GetOrderStatusStreamResponse";
+} from "../../messages/api/GetMarketDepthsStreamResponse";
 import {
-  Type as GetBlockStreamRequest,
+  Type as GetTickersStreamResponse,
   encodeBinary as encodeBinary_75,
   decodeBinary as decodeBinary_75,
   encodeJson as encodeJson_75,
-} from "../../messages/api/GetBlockStreamRequest";
+} from "../../messages/api/GetTickersStreamResponse";
 import {
-  Type as GetBlockStreamResponse,
+  Type as GetTradesStreamResponse,
   encodeBinary as encodeBinary_76,
   decodeBinary as decodeBinary_76,
   encodeJson as encodeJson_76,
-} from "../../messages/api/GetBlockStreamResponse";
+} from "../../messages/api/GetTradesStreamResponse";
 import {
-  Type as GetQuotesStreamRequest,
+  Type as GetOrderStatusStreamRequest,
   encodeBinary as encodeBinary_77,
   decodeBinary as decodeBinary_77,
   encodeJson as encodeJson_77,
-} from "../../messages/api/GetQuotesStreamRequest";
+} from "../../messages/api/GetOrderStatusStreamRequest";
 import {
-  Type as GetQuotesStreamResponse,
+  Type as GetOrderStatusStreamResponse,
   encodeBinary as encodeBinary_78,
   decodeBinary as decodeBinary_78,
   encodeJson as encodeJson_78,
-} from "../../messages/api/GetQuotesStreamResponse";
+} from "../../messages/api/GetOrderStatusStreamResponse";
 import {
-  Type as GetPoolReservesStreamRequest,
+  Type as GetBlockStreamRequest,
   encodeBinary as encodeBinary_79,
   decodeBinary as decodeBinary_79,
   encodeJson as encodeJson_79,
-} from "../../messages/api/GetPoolReservesStreamRequest";
+} from "../../messages/api/GetBlockStreamRequest";
 import {
-  Type as GetPoolReservesStreamResponse,
+  Type as GetBlockStreamResponse,
   encodeBinary as encodeBinary_80,
   decodeBinary as decodeBinary_80,
   encodeJson as encodeJson_80,
-} from "../../messages/api/GetPoolReservesStreamResponse";
+} from "../../messages/api/GetBlockStreamResponse";
 import {
-  Type as GetPricesStreamRequest,
+  Type as GetQuotesStreamRequest,
   encodeBinary as encodeBinary_81,
   decodeBinary as decodeBinary_81,
   encodeJson as encodeJson_81,
-} from "../../messages/api/GetPricesStreamRequest";
+} from "../../messages/api/GetQuotesStreamRequest";
 import {
-  Type as GetPricesStreamResponse,
+  Type as GetQuotesStreamResponse,
   encodeBinary as encodeBinary_82,
   decodeBinary as decodeBinary_82,
   encodeJson as encodeJson_82,
-} from "../../messages/api/GetPricesStreamResponse";
+} from "../../messages/api/GetQuotesStreamResponse";
 import {
-  Type as GetSwapsStreamRequest,
+  Type as GetPoolReservesStreamRequest,
   encodeBinary as encodeBinary_83,
   decodeBinary as decodeBinary_83,
   encodeJson as encodeJson_83,
-} from "../../messages/api/GetSwapsStreamRequest";
+} from "../../messages/api/GetPoolReservesStreamRequest";
 import {
-  Type as GetSwapsStreamResponse,
+  Type as GetPoolReservesStreamResponse,
   encodeBinary as encodeBinary_84,
   decodeBinary as decodeBinary_84,
   encodeJson as encodeJson_84,
-} from "../../messages/api/GetSwapsStreamResponse";
+} from "../../messages/api/GetPoolReservesStreamResponse";
 import {
-  Type as GetPerpOrderbooksRequest,
+  Type as GetPricesStreamRequest,
   encodeBinary as encodeBinary_85,
   decodeBinary as decodeBinary_85,
   encodeJson as encodeJson_85,
-} from "../../messages/api/GetPerpOrderbooksRequest";
+} from "../../messages/api/GetPricesStreamRequest";
 import {
-  Type as GetPerpOrderbooksStreamResponse,
+  Type as GetPricesStreamResponse,
   encodeBinary as encodeBinary_86,
   decodeBinary as decodeBinary_86,
   encodeJson as encodeJson_86,
-} from "../../messages/api/GetPerpOrderbooksStreamResponse";
+} from "../../messages/api/GetPricesStreamResponse";
 import {
-  Type as GetNewPerpOrdersStreamRequest,
+  Type as GetSwapsStreamRequest,
   encodeBinary as encodeBinary_87,
   decodeBinary as decodeBinary_87,
   encodeJson as encodeJson_87,
-} from "../../messages/api/GetNewPerpOrdersStreamRequest";
+} from "../../messages/api/GetSwapsStreamRequest";
 import {
-  Type as GetNewPerpOrdersStreamResponse,
+  Type as GetSwapsStreamResponse,
   encodeBinary as encodeBinary_88,
   decodeBinary as decodeBinary_88,
   encodeJson as encodeJson_88,
-} from "../../messages/api/GetNewPerpOrdersStreamResponse";
+} from "../../messages/api/GetSwapsStreamResponse";
 import {
-  Type as GetPerpTradesStreamRequest,
+  Type as GetPerpOrderbooksRequest,
   encodeBinary as encodeBinary_89,
   decodeBinary as decodeBinary_89,
   encodeJson as encodeJson_89,
-} from "../../messages/api/GetPerpTradesStreamRequest";
+} from "../../messages/api/GetPerpOrderbooksRequest";
 import {
-  Type as GetPerpTradesStreamResponse,
+  Type as GetPerpOrderbooksStreamResponse,
   encodeBinary as encodeBinary_90,
   decodeBinary as decodeBinary_90,
   encodeJson as encodeJson_90,
+} from "../../messages/api/GetPerpOrderbooksStreamResponse";
+import {
+  Type as GetNewPerpOrdersStreamRequest,
+  encodeBinary as encodeBinary_91,
+  decodeBinary as decodeBinary_91,
+  encodeJson as encodeJson_91,
+} from "../../messages/api/GetNewPerpOrdersStreamRequest";
+import {
+  Type as GetNewPerpOrdersStreamResponse,
+  encodeBinary as encodeBinary_92,
+  decodeBinary as decodeBinary_92,
+  encodeJson as encodeJson_92,
+} from "../../messages/api/GetNewPerpOrdersStreamResponse";
+import {
+  Type as GetPerpTradesStreamRequest,
+  encodeBinary as encodeBinary_93,
+  decodeBinary as decodeBinary_93,
+  encodeJson as encodeJson_93,
+} from "../../messages/api/GetPerpTradesStreamRequest";
+import {
+  Type as GetPerpTradesStreamResponse,
+  encodeBinary as encodeBinary_94,
+  decodeBinary as decodeBinary_94,
+  encodeJson as encodeJson_94,
 } from "../../messages/api/GetPerpTradesStreamResponse";
 import {
   fromSingle,
@@ -589,9 +613,11 @@ export interface Service<TReqArgs extends any[] = [], TResArgs extends any[] = [
   postPerpOrder(request: PostPerpOrderRequest, ...args: TReqArgs): RpcReturnType<Promise<PostPerpOrderResponse>, TResArgs>;
   getPerpPositions(request: GetPerpPositionsRequest, ...args: TReqArgs): RpcReturnType<Promise<GetPerpPositionsResponse>, TResArgs>;
   getOpenPerpOrders(request: GetOpenPerpOrdersRequest, ...args: TReqArgs): RpcReturnType<Promise<GetOpenPerpOrdersResponse>, TResArgs>;
+  postCancelPerpOrders(request: PostCancelPerpOrdersRequest, ...args: TReqArgs): RpcReturnType<Promise<PostCancelPerpOrdersResponse>, TResArgs>;
+  postCancelPerpOrder(request: PostCancelPerpOrderRequest, ...args: TReqArgs): RpcReturnType<Promise<PostCancelPerpOrderResponse>, TResArgs>;
   postClosePerpPositions(request: PostClosePerpPositionsRequest, ...args: TReqArgs): RpcReturnType<Promise<PostClosePerpPositionsResponse>, TResArgs>;
   getPerpOrderbook(request: GetPerpOrderbookRequest, ...args: TReqArgs): RpcReturnType<Promise<GetPerpOrderbookResponse>, TResArgs>;
-  createUser(request: CreateUserRequest, ...args: TReqArgs): RpcReturnType<Promise<CreateUserResponse>, TResArgs>;
+  postCreateUser(request: PostCreateUserRequest, ...args: TReqArgs): RpcReturnType<Promise<PostCreateUserResponse>, TResArgs>;
   getUser(request: GetUserRequest, ...args: TReqArgs): RpcReturnType<Promise<GetUserResponse>, TResArgs>;
   postDepositCollateral(request: PostDepositCollateralRequest, ...args: TReqArgs): RpcReturnType<Promise<PostDepositCollateralResponse>, TResArgs>;
   postWithdrawCollateral(request: PostWithdrawCollateralRequest, ...args: TReqArgs): RpcReturnType<Promise<PostWithdrawCollateralResponse>, TResArgs>;
@@ -1093,20 +1119,52 @@ export const methodDescriptors = {
       serializeJson: (value: GetOpenPerpOrdersResponse) => JSON.stringify(encodeJson_54(value)),
     },
   },
-  postClosePerpPositions: {
-    methodName: "PostClosePerpPositions",
+  postCancelPerpOrders: {
+    methodName: "PostCancelPerpOrders",
     service: { serviceName: "api.Api" },
     requestStream: false,
     responseStream: false,
     requestType: {
       serializeBinary: encodeBinary_55,
       deserializeBinary: decodeBinary_55,
-      serializeJson: (value: PostClosePerpPositionsRequest) => JSON.stringify(encodeJson_55(value)),
+      serializeJson: (value: PostCancelPerpOrdersRequest) => JSON.stringify(encodeJson_55(value)),
     },
     responseType: {
       serializeBinary: encodeBinary_56,
       deserializeBinary: decodeBinary_56,
-      serializeJson: (value: PostClosePerpPositionsResponse) => JSON.stringify(encodeJson_56(value)),
+      serializeJson: (value: PostCancelPerpOrdersResponse) => JSON.stringify(encodeJson_56(value)),
+    },
+  },
+  postCancelPerpOrder: {
+    methodName: "PostCancelPerpOrder",
+    service: { serviceName: "api.Api" },
+    requestStream: false,
+    responseStream: false,
+    requestType: {
+      serializeBinary: encodeBinary_57,
+      deserializeBinary: decodeBinary_57,
+      serializeJson: (value: PostCancelPerpOrderRequest) => JSON.stringify(encodeJson_57(value)),
+    },
+    responseType: {
+      serializeBinary: encodeBinary_58,
+      deserializeBinary: decodeBinary_58,
+      serializeJson: (value: PostCancelPerpOrderResponse) => JSON.stringify(encodeJson_58(value)),
+    },
+  },
+  postClosePerpPositions: {
+    methodName: "PostClosePerpPositions",
+    service: { serviceName: "api.Api" },
+    requestStream: false,
+    responseStream: false,
+    requestType: {
+      serializeBinary: encodeBinary_59,
+      deserializeBinary: decodeBinary_59,
+      serializeJson: (value: PostClosePerpPositionsRequest) => JSON.stringify(encodeJson_59(value)),
+    },
+    responseType: {
+      serializeBinary: encodeBinary_60,
+      deserializeBinary: decodeBinary_60,
+      serializeJson: (value: PostClosePerpPositionsResponse) => JSON.stringify(encodeJson_60(value)),
     },
   },
   getPerpOrderbook: {
@@ -1115,30 +1173,30 @@ export const methodDescriptors = {
     requestStream: false,
     responseStream: false,
     requestType: {
-      serializeBinary: encodeBinary_57,
-      deserializeBinary: decodeBinary_57,
-      serializeJson: (value: GetPerpOrderbookRequest) => JSON.stringify(encodeJson_57(value)),
+      serializeBinary: encodeBinary_61,
+      deserializeBinary: decodeBinary_61,
+      serializeJson: (value: GetPerpOrderbookRequest) => JSON.stringify(encodeJson_61(value)),
     },
     responseType: {
-      serializeBinary: encodeBinary_58,
-      deserializeBinary: decodeBinary_58,
-      serializeJson: (value: GetPerpOrderbookResponse) => JSON.stringify(encodeJson_58(value)),
+      serializeBinary: encodeBinary_62,
+      deserializeBinary: decodeBinary_62,
+      serializeJson: (value: GetPerpOrderbookResponse) => JSON.stringify(encodeJson_62(value)),
     },
   },
-  createUser: {
-    methodName: "CreateUser",
+  postCreateUser: {
+    methodName: "PostCreateUser",
     service: { serviceName: "api.Api" },
     requestStream: false,
     responseStream: false,
     requestType: {
-      serializeBinary: encodeBinary_59,
-      deserializeBinary: decodeBinary_59,
-      serializeJson: (value: CreateUserRequest) => JSON.stringify(encodeJson_59(value)),
+      serializeBinary: encodeBinary_63,
+      deserializeBinary: decodeBinary_63,
+      serializeJson: (value: PostCreateUserRequest) => JSON.stringify(encodeJson_63(value)),
     },
     responseType: {
-      serializeBinary: encodeBinary_60,
-      deserializeBinary: decodeBinary_60,
-      serializeJson: (value: CreateUserResponse) => JSON.stringify(encodeJson_60(value)),
+      serializeBinary: encodeBinary_64,
+      deserializeBinary: decodeBinary_64,
+      serializeJson: (value: PostCreateUserResponse) => JSON.stringify(encodeJson_64(value)),
     },
   },
   getUser: {
@@ -1147,14 +1205,14 @@ export const methodDescriptors = {
     requestStream: false,
     responseStream: false,
     requestType: {
-      serializeBinary: encodeBinary_61,
-      deserializeBinary: decodeBinary_61,
-      serializeJson: (value: GetUserRequest) => JSON.stringify(encodeJson_61(value)),
+      serializeBinary: encodeBinary_65,
+      deserializeBinary: decodeBinary_65,
+      serializeJson: (value: GetUserRequest) => JSON.stringify(encodeJson_65(value)),
     },
     responseType: {
-      serializeBinary: encodeBinary_62,
-      deserializeBinary: decodeBinary_62,
-      serializeJson: (value: GetUserResponse) => JSON.stringify(encodeJson_62(value)),
+      serializeBinary: encodeBinary_66,
+      deserializeBinary: decodeBinary_66,
+      serializeJson: (value: GetUserResponse) => JSON.stringify(encodeJson_66(value)),
     },
   },
   postDepositCollateral: {
@@ -1163,14 +1221,14 @@ export const methodDescriptors = {
     requestStream: false,
     responseStream: false,
     requestType: {
-      serializeBinary: encodeBinary_63,
-      deserializeBinary: decodeBinary_63,
-      serializeJson: (value: PostDepositCollateralRequest) => JSON.stringify(encodeJson_63(value)),
+      serializeBinary: encodeBinary_67,
+      deserializeBinary: decodeBinary_67,
+      serializeJson: (value: PostDepositCollateralRequest) => JSON.stringify(encodeJson_67(value)),
     },
     responseType: {
-      serializeBinary: encodeBinary_64,
-      deserializeBinary: decodeBinary_64,
-      serializeJson: (value: PostDepositCollateralResponse) => JSON.stringify(encodeJson_64(value)),
+      serializeBinary: encodeBinary_68,
+      deserializeBinary: decodeBinary_68,
+      serializeJson: (value: PostDepositCollateralResponse) => JSON.stringify(encodeJson_68(value)),
     },
   },
   postWithdrawCollateral: {
@@ -1179,14 +1237,14 @@ export const methodDescriptors = {
     requestStream: false,
     responseStream: false,
     requestType: {
-      serializeBinary: encodeBinary_65,
-      deserializeBinary: decodeBinary_65,
-      serializeJson: (value: PostWithdrawCollateralRequest) => JSON.stringify(encodeJson_65(value)),
+      serializeBinary: encodeBinary_69,
+      deserializeBinary: decodeBinary_69,
+      serializeJson: (value: PostWithdrawCollateralRequest) => JSON.stringify(encodeJson_69(value)),
     },
     responseType: {
-      serializeBinary: encodeBinary_66,
-      deserializeBinary: decodeBinary_66,
-      serializeJson: (value: PostWithdrawCollateralResponse) => JSON.stringify(encodeJson_66(value)),
+      serializeBinary: encodeBinary_70,
+      deserializeBinary: decodeBinary_70,
+      serializeJson: (value: PostWithdrawCollateralResponse) => JSON.stringify(encodeJson_70(value)),
     },
   },
   getOrderbooksStream: {
@@ -1195,14 +1253,14 @@ export const methodDescriptors = {
     requestStream: false,
     responseStream: true,
     requestType: {
-      serializeBinary: encodeBinary_67,
-      deserializeBinary: decodeBinary_67,
-      serializeJson: (value: GetOrderbooksRequest) => JSON.stringify(encodeJson_67(value)),
+      serializeBinary: encodeBinary_71,
+      deserializeBinary: decodeBinary_71,
+      serializeJson: (value: GetOrderbooksRequest) => JSON.stringify(encodeJson_71(value)),
     },
     responseType: {
-      serializeBinary: encodeBinary_68,
-      deserializeBinary: decodeBinary_68,
-      serializeJson: (value: GetOrderbooksStreamResponse) => JSON.stringify(encodeJson_68(value)),
+      serializeBinary: encodeBinary_72,
+      deserializeBinary: decodeBinary_72,
+      serializeJson: (value: GetOrderbooksStreamResponse) => JSON.stringify(encodeJson_72(value)),
     },
   },
   getMarketDepthsStream: {
@@ -1211,14 +1269,14 @@ export const methodDescriptors = {
     requestStream: false,
     responseStream: true,
     requestType: {
-      serializeBinary: encodeBinary_69,
-      deserializeBinary: decodeBinary_69,
-      serializeJson: (value: GetMarketDepthsRequest) => JSON.stringify(encodeJson_69(value)),
+      serializeBinary: encodeBinary_73,
+      deserializeBinary: decodeBinary_73,
+      serializeJson: (value: GetMarketDepthsRequest) => JSON.stringify(encodeJson_73(value)),
     },
     responseType: {
-      serializeBinary: encodeBinary_70,
-      deserializeBinary: decodeBinary_70,
-      serializeJson: (value: GetMarketDepthsStreamResponse) => JSON.stringify(encodeJson_70(value)),
+      serializeBinary: encodeBinary_74,
+      deserializeBinary: decodeBinary_74,
+      serializeJson: (value: GetMarketDepthsStreamResponse) => JSON.stringify(encodeJson_74(value)),
     },
   },
   getTickersStream: {
@@ -1232,9 +1290,9 @@ export const methodDescriptors = {
       serializeJson: (value: GetTickersRequest) => JSON.stringify(encodeJson_6(value)),
     },
     responseType: {
-      serializeBinary: encodeBinary_71,
-      deserializeBinary: decodeBinary_71,
-      serializeJson: (value: GetTickersStreamResponse) => JSON.stringify(encodeJson_71(value)),
+      serializeBinary: encodeBinary_75,
+      deserializeBinary: decodeBinary_75,
+      serializeJson: (value: GetTickersStreamResponse) => JSON.stringify(encodeJson_75(value)),
     },
   },
   getTradesStream: {
@@ -1248,9 +1306,9 @@ export const methodDescriptors = {
       serializeJson: (value: GetTradesRequest) => JSON.stringify(encodeJson_14(value)),
     },
     responseType: {
-      serializeBinary: encodeBinary_72,
-      deserializeBinary: decodeBinary_72,
-      serializeJson: (value: GetTradesStreamResponse) => JSON.stringify(encodeJson_72(value)),
+      serializeBinary: encodeBinary_76,
+      deserializeBinary: decodeBinary_76,
+      serializeJson: (value: GetTradesStreamResponse) => JSON.stringify(encodeJson_76(value)),
     },
   },
   getOrderStatusStream: {
@@ -1259,14 +1317,14 @@ export const methodDescriptors = {
     requestStream: false,
     responseStream: true,
     requestType: {
-      serializeBinary: encodeBinary_73,
-      deserializeBinary: decodeBinary_73,
-      serializeJson: (value: GetOrderStatusStreamRequest) => JSON.stringify(encodeJson_73(value)),
+      serializeBinary: encodeBinary_77,
+      deserializeBinary: decodeBinary_77,
+      serializeJson: (value: GetOrderStatusStreamRequest) => JSON.stringify(encodeJson_77(value)),
     },
     responseType: {
-      serializeBinary: encodeBinary_74,
-      deserializeBinary: decodeBinary_74,
-      serializeJson: (value: GetOrderStatusStreamResponse) => JSON.stringify(encodeJson_74(value)),
+      serializeBinary: encodeBinary_78,
+      deserializeBinary: decodeBinary_78,
+      serializeJson: (value: GetOrderStatusStreamResponse) => JSON.stringify(encodeJson_78(value)),
     },
   },
   getRecentBlockHashStream: {
@@ -1291,14 +1349,14 @@ export const methodDescriptors = {
     requestStream: false,
     responseStream: true,
     requestType: {
-      serializeBinary: encodeBinary_75,
-      deserializeBinary: decodeBinary_75,
-      serializeJson: (value: GetBlockStreamRequest) => JSON.stringify(encodeJson_75(value)),
+      serializeBinary: encodeBinary_79,
+      deserializeBinary: decodeBinary_79,
+      serializeJson: (value: GetBlockStreamRequest) => JSON.stringify(encodeJson_79(value)),
     },
     responseType: {
-      serializeBinary: encodeBinary_76,
-      deserializeBinary: decodeBinary_76,
-      serializeJson: (value: GetBlockStreamResponse) => JSON.stringify(encodeJson_76(value)),
+      serializeBinary: encodeBinary_80,
+      deserializeBinary: decodeBinary_80,
+      serializeJson: (value: GetBlockStreamResponse) => JSON.stringify(encodeJson_80(value)),
     },
   },
   getQuotesStream: {
@@ -1307,14 +1365,14 @@ export const methodDescriptors = {
     requestStream: false,
     responseStream: true,
     requestType: {
-      serializeBinary: encodeBinary_77,
-      deserializeBinary: decodeBinary_77,
-      serializeJson: (value: GetQuotesStreamRequest) => JSON.stringify(encodeJson_77(value)),
+      serializeBinary: encodeBinary_81,
+      deserializeBinary: decodeBinary_81,
+      serializeJson: (value: GetQuotesStreamRequest) => JSON.stringify(encodeJson_81(value)),
     },
     responseType: {
-      serializeBinary: encodeBinary_78,
-      deserializeBinary: decodeBinary_78,
-      serializeJson: (value: GetQuotesStreamResponse) => JSON.stringify(encodeJson_78(value)),
+      serializeBinary: encodeBinary_82,
+      deserializeBinary: decodeBinary_82,
+      serializeJson: (value: GetQuotesStreamResponse) => JSON.stringify(encodeJson_82(value)),
     },
   },
   getPoolReservesStream: {
@@ -1323,14 +1381,14 @@ export const methodDescriptors = {
     requestStream: false,
     responseStream: true,
     requestType: {
-      serializeBinary: encodeBinary_79,
-      deserializeBinary: decodeBinary_79,
-      serializeJson: (value: GetPoolReservesStreamRequest) => JSON.stringify(encodeJson_79(value)),
+      serializeBinary: encodeBinary_83,
+      deserializeBinary: decodeBinary_83,
+      serializeJson: (value: GetPoolReservesStreamRequest) => JSON.stringify(encodeJson_83(value)),
     },
     responseType: {
-      serializeBinary: encodeBinary_80,
-      deserializeBinary: decodeBinary_80,
-      serializeJson: (value: GetPoolReservesStreamResponse) => JSON.stringify(encodeJson_80(value)),
+      serializeBinary: encodeBinary_84,
+      deserializeBinary: decodeBinary_84,
+      serializeJson: (value: GetPoolReservesStreamResponse) => JSON.stringify(encodeJson_84(value)),
     },
   },
   getPricesStream: {
@@ -1339,14 +1397,14 @@ export const methodDescriptors = {
     requestStream: false,
     responseStream: true,
     requestType: {
-      serializeBinary: encodeBinary_81,
-      deserializeBinary: decodeBinary_81,
-      serializeJson: (value: GetPricesStreamRequest) => JSON.stringify(encodeJson_81(value)),
+      serializeBinary: encodeBinary_85,
+      deserializeBinary: decodeBinary_85,
+      serializeJson: (value: GetPricesStreamRequest) => JSON.stringify(encodeJson_85(value)),
     },
     responseType: {
-      serializeBinary: encodeBinary_82,
-      deserializeBinary: decodeBinary_82,
-      serializeJson: (value: GetPricesStreamResponse) => JSON.stringify(encodeJson_82(value)),
+      serializeBinary: encodeBinary_86,
+      deserializeBinary: decodeBinary_86,
+      serializeJson: (value: GetPricesStreamResponse) => JSON.stringify(encodeJson_86(value)),
     },
   },
   getSwapsStream: {
@@ -1355,14 +1413,14 @@ export const methodDescriptors = {
     requestStream: false,
     responseStream: true,
     requestType: {
-      serializeBinary: encodeBinary_83,
-      deserializeBinary: decodeBinary_83,
-      serializeJson: (value: GetSwapsStreamRequest) => JSON.stringify(encodeJson_83(value)),
+      serializeBinary: encodeBinary_87,
+      deserializeBinary: decodeBinary_87,
+      serializeJson: (value: GetSwapsStreamRequest) => JSON.stringify(encodeJson_87(value)),
     },
     responseType: {
-      serializeBinary: encodeBinary_84,
-      deserializeBinary: decodeBinary_84,
-      serializeJson: (value: GetSwapsStreamResponse) => JSON.stringify(encodeJson_84(value)),
+      serializeBinary: encodeBinary_88,
+      deserializeBinary: decodeBinary_88,
+      serializeJson: (value: GetSwapsStreamResponse) => JSON.stringify(encodeJson_88(value)),
     },
   },
   getPerpOrderbooksStream: {
@@ -1371,14 +1429,14 @@ export const methodDescriptors = {
     requestStream: false,
     responseStream: true,
     requestType: {
-      serializeBinary: encodeBinary_85,
-      deserializeBinary: decodeBinary_85,
-      serializeJson: (value: GetPerpOrderbooksRequest) => JSON.stringify(encodeJson_85(value)),
+      serializeBinary: encodeBinary_89,
+      deserializeBinary: decodeBinary_89,
+      serializeJson: (value: GetPerpOrderbooksRequest) => JSON.stringify(encodeJson_89(value)),
     },
     responseType: {
-      serializeBinary: encodeBinary_86,
-      deserializeBinary: decodeBinary_86,
-      serializeJson: (value: GetPerpOrderbooksStreamResponse) => JSON.stringify(encodeJson_86(value)),
+      serializeBinary: encodeBinary_90,
+      deserializeBinary: decodeBinary_90,
+      serializeJson: (value: GetPerpOrderbooksStreamResponse) => JSON.stringify(encodeJson_90(value)),
     },
   },
   getNewPerpOrdersStream: {
@@ -1387,14 +1445,14 @@ export const methodDescriptors = {
     requestStream: false,
     responseStream: true,
     requestType: {
-      serializeBinary: encodeBinary_87,
-      deserializeBinary: decodeBinary_87,
-      serializeJson: (value: GetNewPerpOrdersStreamRequest) => JSON.stringify(encodeJson_87(value)),
+      serializeBinary: encodeBinary_91,
+      deserializeBinary: decodeBinary_91,
+      serializeJson: (value: GetNewPerpOrdersStreamRequest) => JSON.stringify(encodeJson_91(value)),
     },
     responseType: {
-      serializeBinary: encodeBinary_88,
-      deserializeBinary: decodeBinary_88,
-      serializeJson: (value: GetNewPerpOrdersStreamResponse) => JSON.stringify(encodeJson_88(value)),
+      serializeBinary: encodeBinary_92,
+      deserializeBinary: decodeBinary_92,
+      serializeJson: (value: GetNewPerpOrdersStreamResponse) => JSON.stringify(encodeJson_92(value)),
     },
   },
   getPerpTradesStream: {
@@ -1403,14 +1461,14 @@ export const methodDescriptors = {
     requestStream: false,
     responseStream: true,
     requestType: {
-      serializeBinary: encodeBinary_89,
-      deserializeBinary: decodeBinary_89,
-      serializeJson: (value: GetPerpTradesStreamRequest) => JSON.stringify(encodeJson_89(value)),
+      serializeBinary: encodeBinary_93,
+      deserializeBinary: decodeBinary_93,
+      serializeJson: (value: GetPerpTradesStreamRequest) => JSON.stringify(encodeJson_93(value)),
     },
     responseType: {
-      serializeBinary: encodeBinary_90,
-      deserializeBinary: decodeBinary_90,
-      serializeJson: (value: GetPerpTradesStreamResponse) => JSON.stringify(encodeJson_90(value)),
+      serializeBinary: encodeBinary_94,
+      deserializeBinary: decodeBinary_94,
+      serializeJson: (value: GetPerpTradesStreamResponse) => JSON.stringify(encodeJson_94(value)),
     },
   },
 } as const;

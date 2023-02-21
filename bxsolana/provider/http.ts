@@ -45,6 +45,22 @@ import {
     TradeSwapResponse,
     GetMarketDepthRequest,
     GetMarketDepthResponse,
+    GetOpenPerpOrdersRequest,
+    GetOpenPerpOrdersResponse,
+    PostClosePerpPositionsRequest,
+    PostClosePerpPositionsResponse,
+    GetUserResponse,
+    GetUserRequest,
+    PostDepositCollateralRequest,
+    PostDepositCollateralResponse,
+    PostWithdrawCollateralRequest,
+    PostWithdrawCollateralResponse,
+    PostCancelPerpOrdersResponse,
+    PostCancelPerpOrdersRequest,
+    PostCancelPerpOrderRequest,
+    PostCancelPerpOrderResponse,
+    PostCreateUserRequest,
+    PostCreateUserResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -251,10 +267,87 @@ export class HttpProvider extends BaseProvider {
         )
     }
 
+    getOpenPerpOrders(
+        request: GetOpenPerpOrdersRequest
+    ): Promise<GetOpenPerpOrdersResponse> {
+        let path = `${this.baseUrl}/trade/perp/open-orders?ownerAddress=${request.ownerAddress}&accountAddress=${request.accountAddress}&project=${request.project}`
+        const args = request.contracts.map((v) => `contracts=${v}`).join("&")
+        if (args != "") {
+            path += `&${args}`
+        }
+        console.log("getOpenPerpOrders : " + path)
+        return this.get<GetOpenPerpOrdersResponse>(path)
+    }
+
+    postCancelPerpOrder(
+        request: PostCancelPerpOrderRequest
+    ): Promise<PostCancelPerpOrderResponse> {
+        const path = `${this.baseUrl}/trade/perp/cancelbyid`
+        return this.post<
+            PostCancelPerpOrderRequest,
+            PostCancelPerpOrderResponse
+        >(path, request)
+    }
+
+    postCancelPerpOrders(
+        request: PostCancelPerpOrdersRequest
+    ): Promise<PostCancelPerpOrdersResponse> {
+        const path = `${this.baseUrl}/trade/perp/cancel`
+        return this.post<
+            PostCancelPerpOrdersRequest,
+            PostCancelPerpOrdersResponse
+        >(path, request)
+    }
+
+    postClosePerpPositions(
+        request: PostClosePerpPositionsRequest
+    ): Promise<PostClosePerpPositionsResponse> {
+        const path = `${this.baseUrl}/trade/perp/close`
+        return this.post<
+            PostClosePerpPositionsRequest,
+            PostClosePerpPositionsResponse
+        >(path, request)
+    }
+
+    postCreateUser(
+        request: PostCreateUserRequest
+    ): Promise<PostCreateUserResponse> {
+        const path = `${this.baseUrl}/trade/user`
+        return this.post<PostCreateUserRequest, PostCreateUserResponse>(
+            path,
+            request
+        )
+    }
+
+    getUser(request: GetUserRequest): Promise<GetUserResponse> {
+        const path = `${this.baseUrl}/trade/user?ownerAddress=${request.ownerAddress}&project=${request.project}`
+        return this.get<GetUserResponse>(path)
+    }
+
+    postDepositCollateral(
+        request: PostDepositCollateralRequest
+    ): Promise<PostDepositCollateralResponse> {
+        const path = `${this.baseUrl}/trade/perp/collateral/deposit`
+        return this.post<
+            PostDepositCollateralRequest,
+            PostDepositCollateralResponse
+        >(path, request)
+    }
+
+    postWithdrawCollateral(
+        request: PostWithdrawCollateralRequest
+    ): Promise<PostWithdrawCollateralResponse> {
+        const path = `${this.baseUrl}/trade/perp/collateral/withdraw`
+        return this.post<
+            PostWithdrawCollateralRequest,
+            PostWithdrawCollateralResponse
+        >(path, request)
+    }
+
     getPerpOrderbook = (
         request: GetPerpOrderbookRequest
     ): Promise<GetPerpOrderbookResponse> => {
-        const path = `${this.baseUrl}/trade/perp/${request.market}?limit=${request.limit}&project=${request.project}`
+        const path = `${this.baseUrl}/market/perp/orderbook/${request.market}?limit=${request.limit}&project=${request.project}`
         return this.get<GetPerpOrderbookResponse>(path)
     }
 

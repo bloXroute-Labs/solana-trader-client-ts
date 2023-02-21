@@ -31,7 +31,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface GetNewPerpOrdersStreamResponse {
+  export type GetNewPerpOrdersStreamResponse = {
     market: string;
     marketIndex: number;
     side: PerpPositionSide;

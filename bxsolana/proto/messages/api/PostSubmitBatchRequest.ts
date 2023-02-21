@@ -29,7 +29,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface PostSubmitBatchRequest {
+  export type PostSubmitBatchRequest = {
     entries: PostSubmitRequestEntry[];
     SubmitStrategy: SubmitStrategy;
   }

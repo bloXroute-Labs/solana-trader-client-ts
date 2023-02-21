@@ -26,7 +26,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface PostSettleRequest {
+  export type PostSettleRequest = {
     ownerAddress: string;
     market: string;
     baseTokenWallet: string;

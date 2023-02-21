@@ -29,7 +29,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface ProjectQuote {
+  export type ProjectQuote = {
     project: Project;
     routes: QuoteRoute[];
   }

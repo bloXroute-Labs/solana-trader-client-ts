@@ -17,7 +17,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface GetRecentBlockHashResponse {
+  export type GetRecentBlockHashResponse = {
     blockHash: string;
   }
 }

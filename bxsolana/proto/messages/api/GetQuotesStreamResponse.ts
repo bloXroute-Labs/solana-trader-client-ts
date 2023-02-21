@@ -25,7 +25,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface GetQuotesStreamResponse {
+  export type GetQuotesStreamResponse = {
     slot: string;
     quote?: GetQuotesStreamUpdate;
   }

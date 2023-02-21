@@ -21,10 +21,14 @@ import {
     GetMarketsResponse,
     GetOpenOrdersRequest,
     GetOpenOrdersResponse,
+    GetOpenPerpOrdersRequest,
+    GetOpenPerpOrdersResponse,
     GetOrderbookRequest,
     GetOrderbookResponse,
     GetOrderbooksRequest,
     GetOrderbooksStreamResponse,
+    GetOrdersRequest,
+    GetOrdersResponse,
     GetOrderStatusStreamRequest,
     GetOrderStatusStreamResponse,
     GetPerpOrderbookRequest,
@@ -57,11 +61,17 @@ import {
     GetTradesStreamResponse,
     GetUnsettledRequest,
     GetUnsettledResponse,
+    GetUserRequest,
+    GetUserResponse,
     PostCancelAllRequest,
     PostCancelAllResponse,
     PostCancelByClientOrderIDRequest,
     PostCancelOrderRequest,
     PostCancelOrderResponse,
+    PostClosePerpPositionsRequest,
+    PostClosePerpPositionsResponse,
+    PostDepositCollateralRequest,
+    PostDepositCollateralResponse,
     PostOrderRequest,
     PostOrderResponse,
     PostReplaceOrderRequest,
@@ -71,9 +81,17 @@ import {
     PostSubmitBatchResponse,
     PostSubmitRequest,
     PostSubmitResponse,
+    PostWithdrawCollateralRequest,
+    PostWithdrawCollateralResponse,
     RouteTradeSwapRequest,
     TradeSwapRequest,
     TradeSwapResponse,
+    PostCancelPerpOrderRequest,
+    PostCancelPerpOrderResponse,
+    PostCreateUserRequest,
+    PostCreateUserResponse,
+    PostCancelPerpOrdersRequest,
+    PostCancelPerpOrdersResponse,
 } from "../proto/messages/api"
 import { createServiceClient, Service } from "../proto/services/api/Api"
 import { BaseProvider } from "./base"
@@ -277,6 +295,55 @@ export class GrpcProvider extends BaseProvider {
         request: RouteTradeSwapRequest
     ): Promise<TradeSwapResponse> {
         return this.client.postRouteTradeSwap(request)
+    }
+    getOpenPerpOrders(
+        request: GetOpenPerpOrdersRequest
+    ): Promise<GetOpenPerpOrdersResponse> {
+        return this.client.getOpenPerpOrders(request)
+    }
+
+    postCancelPerpOrder(
+        request: PostCancelPerpOrderRequest
+    ): Promise<PostCancelPerpOrderResponse> {
+        return this.client.postCancelPerpOrder(request)
+    }
+
+    postCancelPerpOrders(
+        request: PostCancelPerpOrdersRequest
+    ): Promise<PostCancelPerpOrdersResponse> {
+        return this.client.postCancelPerpOrders(request)
+    }
+
+    postClosePerpPositions(
+        request: PostClosePerpPositionsRequest
+    ): Promise<PostClosePerpPositionsResponse> {
+        return this.client.postClosePerpPositions(request)
+    }
+
+    postCreateUser(
+        request: PostCreateUserRequest
+    ): Promise<PostCreateUserResponse> {
+        return this.client.postCreateUser(request)
+    }
+
+    getUser(request: GetUserRequest): Promise<GetUserResponse> {
+        return this.client.getUser(request)
+    }
+
+    postDepositCollateral(
+        request: PostDepositCollateralRequest
+    ): Promise<PostDepositCollateralResponse> {
+        return this.client.postDepositCollateral(request)
+    }
+
+    postWithdrawCollateral(
+        request: PostWithdrawCollateralRequest
+    ): Promise<PostWithdrawCollateralResponse> {
+        return this.client.postWithdrawCollateral(request)
+    }
+
+    getOrders(request: GetOrdersRequest): Promise<GetOrdersResponse> {
+        return this.client.getOrders(request)
     }
 
     getPerpOrderbook(

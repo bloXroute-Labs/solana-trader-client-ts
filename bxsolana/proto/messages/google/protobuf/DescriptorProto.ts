@@ -67,7 +67,7 @@ import {
 } from "../../../runtime/wire/deserialize";
 
 export declare namespace $.google.protobuf {
-  export interface DescriptorProto {
+  export type DescriptorProto = {
     name?: string;
     field: FieldDescriptorProto[];
     nestedType: DescriptorProto_1[];

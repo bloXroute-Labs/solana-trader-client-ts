@@ -27,7 +27,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface GetQuotesRequest {
+  export type GetQuotesRequest = {
     inToken: string;
     outToken: string;
     inAmount: number;

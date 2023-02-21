@@ -26,7 +26,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface GetUserRequest {
+  export type GetUserRequest = {
     ownerAddress: string;
     project: Project;
   }

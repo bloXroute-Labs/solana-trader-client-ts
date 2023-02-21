@@ -26,7 +26,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface GetPerpTradesStreamResponse {
+  export type GetPerpTradesStreamResponse = {
     market: string;
     marketIndex: number;
     makerPositionSide: PerpPositionSide;

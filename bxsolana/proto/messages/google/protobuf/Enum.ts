@@ -47,7 +47,7 @@ import {
 } from "../../../runtime/wire/deserialize";
 
 export declare namespace $.google.protobuf {
-  export interface Enum {
+  export type Enum = {
     name: string;
     enumvalue: EnumValue[];
     options: Option[];

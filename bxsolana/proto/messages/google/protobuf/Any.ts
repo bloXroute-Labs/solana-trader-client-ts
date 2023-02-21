@@ -17,7 +17,7 @@ import {
 } from "../../../runtime/wire/deserialize";
 
 export declare namespace $.google.protobuf {
-  export interface Any {
+  export type Any = {
     typeUrl: string;
     value: Uint8Array;
   }

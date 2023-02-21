@@ -32,7 +32,7 @@ import {
 } from "../../runtime/wire/scalar";
 
 export declare namespace $.api {
-  export interface GetQuotesStreamRequest {
+  export type GetQuotesStreamRequest = {
     projects: Project[];
     tokenPairs: TokenPair[];
   }
