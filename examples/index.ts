@@ -115,9 +115,9 @@ async function http() {
         )
     }
 
-    console.info(" ----  HTTP Requests  ----")
+    console.info(" ----  HTTP Perp Requests  ----")
     await runPerpRequests(provider)
-
+    console.info(" ----  HTTP Orderbook Requests  ----")
     await doOrderbookRequests(provider)
     console.info(" ----  HTTP Amm Requests  ----")
     await doAmmRequests(provider)
@@ -166,7 +166,12 @@ async function grpc() {
         )
     }
 
-    console.info(" ----  GRPC Requests  ----")
+
+
+    console.info(" ----  GRPC Perp Requests  ----")
+    await runPerpRequests(provider)
+
+    console.info(" ----  GRPC Orderbook Requests  ----")
     await doOrderbookRequests(provider)
 
     console.info(" ----  GRPC Amm Requests  ----")
@@ -214,8 +219,12 @@ async function ws() {
     }
 
     await provider.connect()
-    console.info(" ----  WS Requests  ----")
+    console.info(" ----  WS Perp Requests  ----")
+    await runPerpRequests(provider)
+
+    console.info(" ----  WS Orderbook Requests  ----")
     await doOrderbookRequests(provider)
+
     console.info(" ----  WS Amm Requests  ----")
     await doAmmRequests(provider)
 
