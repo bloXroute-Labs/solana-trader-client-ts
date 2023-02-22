@@ -78,6 +78,7 @@ function getRandom() {
 async function run() {
     console.info("---- STARTING HTTP TESTS ----")
     await http()
+    return
     console.info("---- STARTING GRPC TESTS ----")
     await grpc()
     console.info("---- STARTING WS TESTS ----")
@@ -117,6 +118,7 @@ async function http() {
 
     console.info(" ----  HTTP Perp Requests  ----")
     await runPerpRequests(provider)
+    return
     console.info(" ----  HTTP Orderbook Requests  ----")
     await doOrderbookRequests(provider)
     console.info(" ----  HTTP Amm Requests  ----")
@@ -247,6 +249,15 @@ async function ws() {
 }
 
 async function runPerpRequests(provider: BaseProvider) {
+
+    await callPostPerpOrder(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetOpenPerpOrders(provider)
+    console.info(" ")
+    console.info(" ")
+
     await callGetOpenPerpOrders(provider)
     console.info(" ")
     console.info(" ")
@@ -607,20 +618,20 @@ async function doHttpLifecycle(provider: BaseProvider) {
 
 async function callGetOrderbook(provider: BaseProvider) {
     console.info("Retrieving orderbook for SOLUSDC market")
-    let req = await provider.getOrderbook({
+    let res = await provider.getOrderbook({
         market: "SOLUSDC",
         project: "P_OPENBOOK",
         limit: 5,
     })
-    console.info(req)
+    console.info(res)
 
     console.info("Retrieving orderbook for SOL-USDC market")
-    req = await provider.getOrderbook({
+    res = await provider.getOrderbook({
         market: "SOL-USDC",
         project: "P_OPENBOOK",
         limit: 5,
     })
-    console.info(req)
+    console.info(res)
 }
 
 async function callGetMarketDepth(provider: BaseProvider) {
@@ -765,6 +776,25 @@ async function callGetOpenPerpOrders(provider: BaseProvider) {
     console.info(req)
 }
 
+async function callPostPerpOrder(provider: BaseProvider) {
+    console.info("post perp order")
+    const req = await provider.postPerpOrder({
+        project: "P_DRIFT",
+        ownerAddress:   ownerAddress,
+        payerAddress:   ownerAddress,
+        contract:       "SOL_PERP",
+        accountAddress: "",
+        positionSide:   "PS_SHORT",
+        slippage:       10,
+        type:           "POT_LIMIT",
+        amount:         1,
+        price:          1000,
+        clientOrderID:  "2",
+    })
+
+    console.info(req)
+}
+
 async function callPostCancelPerpOrder(provider: BaseProvider) {
     console.info("canceling perp order")
     const req = await provider.postCancelPerpOrder({
@@ -823,13 +853,13 @@ async function callGetUser(provider: BaseProvider) {
 
 async function callPostDepositCollateral(provider: BaseProvider) {
     console.info("depositing perp collateral")
-    const req = await provider.postDepositCollateral({
+    const res = await provider.postDepositCollateral({
         ownerAddress: ownerAddress,
         project: "P_DRIFT",
         amount: 1,
         contract: "SOL_PERP",
     })
-    console.info(req)
+    console.info(res)
 }
 
 async function callPostWithdrawCollateral(provider: BaseProvider) {

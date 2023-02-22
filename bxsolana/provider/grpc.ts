@@ -92,6 +92,8 @@ import {
     PostCreateUserResponse,
     PostCancelPerpOrdersRequest,
     PostCancelPerpOrdersResponse,
+    PostPerpOrderRequest,
+    PostPerpOrderResponse,
 } from "../proto/messages/api"
 import { createServiceClient, Service } from "../proto/services/api/Api"
 import { BaseProvider } from "./base"
@@ -318,6 +320,12 @@ export class GrpcProvider extends BaseProvider {
         request: PostClosePerpPositionsRequest
     ): Promise<PostClosePerpPositionsResponse> {
         return this.client.postClosePerpPositions(request)
+    }
+
+    postPerpOrder(
+        request: PostPerpOrderRequest
+    ): Promise<PostPerpOrderResponse> {
+        return this.client.postPerpOrder(request)
     }
 
     postCreateUser(

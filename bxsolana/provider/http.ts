@@ -61,6 +61,8 @@ import {
     PostCancelPerpOrderResponse,
     PostCreateUserRequest,
     PostCreateUserResponse,
+    PostPerpOrderRequest,
+    PostPerpOrderResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -306,6 +308,16 @@ export class HttpProvider extends BaseProvider {
         return this.post<
             PostClosePerpPositionsRequest,
             PostClosePerpPositionsResponse
+        >(path, request)
+    }
+
+    postPerpOrder(
+        request: PostPerpOrderRequest
+    ): Promise<PostPerpOrderResponse> {
+        const path = `${this.baseUrl}/trade/perp/order`
+        return this.post<
+            PostPerpOrderRequest,
+            PostPerpOrderResponse
         >(path, request)
     }
 

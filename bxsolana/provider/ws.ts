@@ -82,6 +82,8 @@ import {
     PostCreateUserResponse,
     PostCancelPerpOrdersRequest,
     PostCancelPerpOrdersResponse,
+    PostPerpOrderRequest,
+    PostPerpOrderResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -425,6 +427,12 @@ export class WsProvider extends BaseProvider {
         request: PostCreateUserRequest
     ): Promise<PostCreateUserResponse> {
         return await this.wsConnection.call("PostCreateUser", request)
+    }
+
+    async postPerpOrder(
+        request: PostPerpOrderRequest
+    ): Promise<PostPerpOrderResponse> {
+        return await this.wsConnection.call("PostPerpOrder", request)
     }
 
     async getUser(request: GetUserRequest): Promise<GetUserResponse> {
