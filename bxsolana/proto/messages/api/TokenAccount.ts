@@ -17,54 +17,50 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type TokenBalance = {
+  export type TokenAccount = {
     symbol: string;
     tokenMint: string;
-    settledAmount: number;
-    unsettledAmount: number;
-    openOrdersAmount: number;
+    tokenAccount: string;
+    amount: number;
   }
 }
-export type Type = $.api.TokenBalance;
+export type Type = $.api.TokenAccount;
 
-export function getDefaultValue(): $.api.TokenBalance {
+export function getDefaultValue(): $.api.TokenAccount {
   return {
     symbol: "",
     tokenMint: "",
-    settledAmount: 0,
-    unsettledAmount: 0,
-    openOrdersAmount: 0,
+    tokenAccount: "",
+    amount: 0,
   };
 }
 
-export function createValue(partialValue: Partial<$.api.TokenBalance>): $.api.TokenBalance {
+export function createValue(partialValue: Partial<$.api.TokenAccount>): $.api.TokenAccount {
   return {
     ...getDefaultValue(),
     ...partialValue,
   };
 }
 
-export function encodeJson(value: $.api.TokenBalance): unknown {
+export function encodeJson(value: $.api.TokenAccount): unknown {
   const result: any = {};
   if (value.symbol !== undefined) result.symbol = tsValueToJsonValueFns.string(value.symbol);
   if (value.tokenMint !== undefined) result.tokenMint = tsValueToJsonValueFns.string(value.tokenMint);
-  if (value.settledAmount !== undefined) result.settledAmount = tsValueToJsonValueFns.double(value.settledAmount);
-  if (value.unsettledAmount !== undefined) result.unsettledAmount = tsValueToJsonValueFns.double(value.unsettledAmount);
-  if (value.openOrdersAmount !== undefined) result.openOrdersAmount = tsValueToJsonValueFns.double(value.openOrdersAmount);
+  if (value.tokenAccount !== undefined) result.tokenAccount = tsValueToJsonValueFns.string(value.tokenAccount);
+  if (value.amount !== undefined) result.amount = tsValueToJsonValueFns.double(value.amount);
   return result;
 }
 
-export function decodeJson(value: any): $.api.TokenBalance {
+export function decodeJson(value: any): $.api.TokenAccount {
   const result = getDefaultValue();
   if (value.symbol !== undefined) result.symbol = jsonValueToTsValueFns.string(value.symbol);
   if (value.tokenMint !== undefined) result.tokenMint = jsonValueToTsValueFns.string(value.tokenMint);
-  if (value.settledAmount !== undefined) result.settledAmount = jsonValueToTsValueFns.double(value.settledAmount);
-  if (value.unsettledAmount !== undefined) result.unsettledAmount = jsonValueToTsValueFns.double(value.unsettledAmount);
-  if (value.openOrdersAmount !== undefined) result.openOrdersAmount = jsonValueToTsValueFns.double(value.openOrdersAmount);
+  if (value.tokenAccount !== undefined) result.tokenAccount = jsonValueToTsValueFns.string(value.tokenAccount);
+  if (value.amount !== undefined) result.amount = jsonValueToTsValueFns.double(value.amount);
   return result;
 }
 
-export function encodeBinary(value: $.api.TokenBalance): Uint8Array {
+export function encodeBinary(value: $.api.TokenAccount): Uint8Array {
   const result: WireMessage = [];
   if (value.symbol !== undefined) {
     const tsValue = value.symbol;
@@ -78,28 +74,22 @@ export function encodeBinary(value: $.api.TokenBalance): Uint8Array {
       [2, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.settledAmount !== undefined) {
-    const tsValue = value.settledAmount;
+  if (value.tokenAccount !== undefined) {
+    const tsValue = value.tokenAccount;
     result.push(
-      [3, tsValueToWireValueFns.double(tsValue)],
+      [3, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.unsettledAmount !== undefined) {
-    const tsValue = value.unsettledAmount;
+  if (value.amount !== undefined) {
+    const tsValue = value.amount;
     result.push(
       [4, tsValueToWireValueFns.double(tsValue)],
-    );
-  }
-  if (value.openOrdersAmount !== undefined) {
-    const tsValue = value.openOrdersAmount;
-    result.push(
-      [5, tsValueToWireValueFns.double(tsValue)],
     );
   }
   return serialize(result);
 }
 
-export function decodeBinary(binary: Uint8Array): $.api.TokenBalance {
+export function decodeBinary(binary: Uint8Array): $.api.TokenAccount {
   const result = getDefaultValue();
   const wireMessage = deserialize(binary);
   const wireFields = new Map(wireMessage);
@@ -120,23 +110,16 @@ export function decodeBinary(binary: Uint8Array): $.api.TokenBalance {
   field: {
     const wireValue = wireFields.get(3);
     if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.double(wireValue);
+    const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
-    result.settledAmount = value;
+    result.tokenAccount = value;
   }
   field: {
     const wireValue = wireFields.get(4);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
-    result.unsettledAmount = value;
-  }
-  field: {
-    const wireValue = wireFields.get(5);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.double(wireValue);
-    if (value === undefined) break field;
-    result.openOrdersAmount = value;
+    result.amount = value;
   }
   return result;
 }

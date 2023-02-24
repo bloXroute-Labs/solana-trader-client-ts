@@ -84,18 +84,18 @@ import {
     GetUserResponse,
     PostClosePerpPositionsRequest,
     PostClosePerpPositionsResponse,
-    PostDepositCollateralRequest,
-    PostDepositCollateralResponse,
+    PostManageCollateralRequest,
+    PostManageCollateralResponse,
     PostPerpOrderRequest,
     PostPerpOrderResponse,
-    PostWithdrawCollateralRequest,
-    PostWithdrawCollateralResponse,
     PostCancelPerpOrderRequest,
     PostCancelPerpOrderResponse,
     PostCancelPerpOrdersRequest,
     PostCancelPerpOrdersResponse,
     PostCreateUserRequest,
     PostCreateUserResponse,
+    GetTokenAccountsResponse,
+    GetTokenAccountsRequest
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -128,6 +128,11 @@ export abstract class BaseProvider implements Api {
     getPerpPositions(
         request: GetPerpPositionsRequest
     ): RpcReturnType<Promise<GetPerpPositionsResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    getTokenAccounts(
+        request: GetTokenAccountsRequest
+    ): RpcReturnType<Promise<GetTokenAccountsResponse>, []> {
         throw new Error("Method not implemented.")
     }
     getOpenPerpOrders(
@@ -165,16 +170,12 @@ export abstract class BaseProvider implements Api {
     ): RpcReturnType<Promise<GetUserResponse>, []> {
         throw new Error("Method not implemented.")
     }
-    postDepositCollateral(
-        request: PostDepositCollateralRequest
-    ): RpcReturnType<Promise<PostDepositCollateralResponse>, []> {
+    postManageCollateral(
+        request: PostManageCollateralRequest
+    ): RpcReturnType<Promise<PostManageCollateralResponse>, []> {
         throw new Error("Method not implemented.")
     }
-    postWithdrawCollateral(
-        request: PostWithdrawCollateralRequest
-    ): RpcReturnType<Promise<PostWithdrawCollateralResponse>, []> {
-        throw new Error("Method not implemented.")
-    }
+
     getPerpOrderbooksStream(
         request: GetPerpOrderbooksRequest
     ): RpcReturnType<
@@ -489,7 +490,7 @@ export abstract class BaseProvider implements Api {
 
         return this.postSubmitBatch({
             entries: entries,
-            SubmitStrategy: submitStrategy,
+            submitStrategy: submitStrategy,
         })
     }
 
