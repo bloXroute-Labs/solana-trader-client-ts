@@ -282,7 +282,7 @@ async function runPerpRequests(provider: BaseProvider) {
     console.info(" ")
     console.info(" ")
 
-    await callPostDepositCollateral(provider)
+    await callPostManageCollateral(provider)
     console.info(" ")
     console.info(" ")
 
@@ -800,6 +800,7 @@ async function callPostCancelPerpOrder(provider: BaseProvider) {
     const req = await provider.postCancelPerpOrder({
         orderID: "0",
         clientOrderID: "12",
+        accountAddress: "",
         ownerAddress: ownerAddress,
         project: "P_DRIFT",
         contract: "SOL_PERP",
@@ -812,6 +813,7 @@ async function callPostCancelPerpOrders(provider: BaseProvider) {
     console.info("canceling perp orders")
     const req = await provider.postCancelPerpOrders({
         ownerAddress: ownerAddress,
+        accountAddress: "",
         project: "P_DRIFT",
         contract: "SOL_PERP",
     })
@@ -851,24 +853,28 @@ async function callGetUser(provider: BaseProvider) {
     console.info(req)
 }
 
-async function callPostDepositCollateral(provider: BaseProvider) {
+async function callPostManageCollateral(provider: BaseProvider) {
     console.info("depositing perp collateral")
-    const res = await provider.postDepositCollateral({
+    const res = await provider.postManageCollateral({
         ownerAddress: ownerAddress,
+        accountAddress: "",
         project: "P_DRIFT",
         amount: 1,
-        contract: "SOL_PERP",
+        type: "PCT_DEPOSIT",
+        token: "PCTK_USDC"
     })
     console.info(res)
 }
 
 async function callPostWithdrawCollateral(provider: BaseProvider) {
     console.info("withdrawing collateral")
-    const req = await provider.postWithdrawCollateral({
+    const req = await provider.postManageCollateral({
         ownerAddress: ownerAddress,
+        accountAddress: "",
         project: "P_DRIFT",
         amount: 1,
-        contract: "SOL_PERP",
+        type: "PCT_WITHDRAWAL",
+        token: "PCTK_USDC"
     })
     console.info(req)
 }

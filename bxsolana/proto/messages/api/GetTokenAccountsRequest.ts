@@ -17,41 +17,41 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type PostPerpOrderResponse = {
-    transaction: string;
+  export type GetTokenAccountsRequest = {
+    ownerAddress: string;
   }
 }
-export type Type = $.api.PostPerpOrderResponse;
+export type Type = $.api.GetTokenAccountsRequest;
 
-export function getDefaultValue(): $.api.PostPerpOrderResponse {
+export function getDefaultValue(): $.api.GetTokenAccountsRequest {
   return {
-    transaction: "",
+    ownerAddress: "",
   };
 }
 
-export function createValue(partialValue: Partial<$.api.PostPerpOrderResponse>): $.api.PostPerpOrderResponse {
+export function createValue(partialValue: Partial<$.api.GetTokenAccountsRequest>): $.api.GetTokenAccountsRequest {
   return {
     ...getDefaultValue(),
     ...partialValue,
   };
 }
 
-export function encodeJson(value: $.api.PostPerpOrderResponse): unknown {
+export function encodeJson(value: $.api.GetTokenAccountsRequest): unknown {
   const result: any = {};
-  if (value.transaction !== undefined) result.transaction = tsValueToJsonValueFns.string(value.transaction);
+  if (value.ownerAddress !== undefined) result.ownerAddress = tsValueToJsonValueFns.string(value.ownerAddress);
   return result;
 }
 
-export function decodeJson(value: any): $.api.PostPerpOrderResponse {
+export function decodeJson(value: any): $.api.GetTokenAccountsRequest {
   const result = getDefaultValue();
-  if (value.transaction !== undefined) result.transaction = jsonValueToTsValueFns.string(value.transaction);
+  if (value.ownerAddress !== undefined) result.ownerAddress = jsonValueToTsValueFns.string(value.ownerAddress);
   return result;
 }
 
-export function encodeBinary(value: $.api.PostPerpOrderResponse): Uint8Array {
+export function encodeBinary(value: $.api.GetTokenAccountsRequest): Uint8Array {
   const result: WireMessage = [];
-  if (value.transaction !== undefined) {
-    const tsValue = value.transaction;
+  if (value.ownerAddress !== undefined) {
+    const tsValue = value.ownerAddress;
     result.push(
       [1, tsValueToWireValueFns.string(tsValue)],
     );
@@ -59,7 +59,7 @@ export function encodeBinary(value: $.api.PostPerpOrderResponse): Uint8Array {
   return serialize(result);
 }
 
-export function decodeBinary(binary: Uint8Array): $.api.PostPerpOrderResponse {
+export function decodeBinary(binary: Uint8Array): $.api.GetTokenAccountsRequest {
   const result = getDefaultValue();
   const wireMessage = deserialize(binary);
   const wireFields = new Map(wireMessage);
@@ -68,7 +68,7 @@ export function decodeBinary(binary: Uint8Array): $.api.PostPerpOrderResponse {
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
-    result.transaction = value;
+    result.ownerAddress = value;
   }
   return result;
 }

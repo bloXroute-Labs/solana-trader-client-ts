@@ -51,10 +51,8 @@ import {
     PostClosePerpPositionsResponse,
     GetUserResponse,
     GetUserRequest,
-    PostDepositCollateralRequest,
-    PostDepositCollateralResponse,
-    PostWithdrawCollateralRequest,
-    PostWithdrawCollateralResponse,
+    PostManageCollateralRequest,
+    PostManageCollateralResponse,
     PostCancelPerpOrdersResponse,
     PostCancelPerpOrdersRequest,
     PostCancelPerpOrderRequest,
@@ -336,23 +334,13 @@ export class HttpProvider extends BaseProvider {
         return this.get<GetUserResponse>(path)
     }
 
-    postDepositCollateral(
-        request: PostDepositCollateralRequest
-    ): Promise<PostDepositCollateralResponse> {
-        const path = `${this.baseUrl}/trade/perp/collateral/deposit`
+    postManageCollateral(
+        request: PostManageCollateralRequest
+    ): Promise<PostManageCollateralResponse> {
+        const path = `${this.baseUrl}/trade/perp/managecollateral`
         return this.post<
-            PostDepositCollateralRequest,
-            PostDepositCollateralResponse
-        >(path, request)
-    }
-
-    postWithdrawCollateral(
-        request: PostWithdrawCollateralRequest
-    ): Promise<PostWithdrawCollateralResponse> {
-        const path = `${this.baseUrl}/trade/perp/collateral/withdraw`
-        return this.post<
-            PostWithdrawCollateralRequest,
-            PostWithdrawCollateralResponse
+            PostManageCollateralRequest,
+            PostManageCollateralResponse
         >(path, request)
     }
 
