@@ -822,7 +822,7 @@ async function callPostManageCollateral(provider: BaseProvider) {
         project: "P_DRIFT",
         amount: 1,
         type: "PCT_DEPOSIT",
-        token: "PCTK_USDC"
+        token: "PCTK_USDC",
     })
     console.info(res)
 }
@@ -835,7 +835,7 @@ async function callPostWithdrawCollateral(provider: BaseProvider) {
         project: "P_DRIFT",
         amount: 1,
         type: "PCT_WITHDRAWAL",
-        token: "PCTK_USDC"
+        token: "PCTK_USDC",
     })
     console.info(req)
 }

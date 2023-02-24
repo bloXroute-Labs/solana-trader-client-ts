@@ -95,7 +95,7 @@ import {
     PostCreateUserRequest,
     PostCreateUserResponse,
     GetTokenAccountsResponse,
-    GetTokenAccountsRequest
+    GetTokenAccountsRequest,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
