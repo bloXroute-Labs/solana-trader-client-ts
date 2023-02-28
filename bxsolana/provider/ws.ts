@@ -72,10 +72,8 @@ import {
     PostClosePerpPositionsRequest,
     GetUserResponse,
     GetUserRequest,
-    PostDepositCollateralRequest,
-    PostDepositCollateralResponse,
-    PostWithdrawCollateralResponse,
-    PostWithdrawCollateralRequest,
+    PostManageCollateralRequest,
+    PostManageCollateralResponse,
     PostCancelPerpOrderRequest,
     PostCancelPerpOrderResponse,
     PostCreateUserRequest,
@@ -431,16 +429,10 @@ export class WsProvider extends BaseProvider {
         return await this.wsConnection.call("GetUser", request)
     }
 
-    async postDepositCollateral(
-        request: PostDepositCollateralRequest
-    ): Promise<PostDepositCollateralResponse> {
-        return await this.wsConnection.call("PostDepositCollateral", request)
-    }
-
-    async postWithdrawCollateral(
-        request: PostWithdrawCollateralRequest
-    ): Promise<PostWithdrawCollateralResponse> {
-        return await this.wsConnection.call("PostWithdrawCollateral", request)
+    async postManageCollateral(
+        request: PostManageCollateralRequest
+    ): Promise<PostManageCollateralResponse> {
+        return await this.wsConnection.call("PostManageCollateral", request)
     }
 
     cancelGetOrderbooksStreamByCount = async (

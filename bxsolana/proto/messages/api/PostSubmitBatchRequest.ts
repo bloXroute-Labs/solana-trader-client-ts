@@ -31,7 +31,7 @@ import {
 export declare namespace $.api {
   export type PostSubmitBatchRequest = {
     entries: PostSubmitRequestEntry[];
-    SubmitStrategy: SubmitStrategy;
+    submitStrategy: SubmitStrategy;
   }
 }
 export type Type = $.api.PostSubmitBatchRequest;
@@ -39,7 +39,7 @@ export type Type = $.api.PostSubmitBatchRequest;
 export function getDefaultValue(): $.api.PostSubmitBatchRequest {
   return {
     entries: [],
-    SubmitStrategy: "P_UKNOWN",
+    submitStrategy: "P_UKNOWN",
   };
 }
 
@@ -53,14 +53,14 @@ export function createValue(partialValue: Partial<$.api.PostSubmitBatchRequest>)
 export function encodeJson(value: $.api.PostSubmitBatchRequest): unknown {
   const result: any = {};
   result.entries = value.entries.map(value => encodeJson_1(value));
-  if (value.SubmitStrategy !== undefined) result.SubmitStrategy = tsValueToJsonValueFns.enum(value.SubmitStrategy);
+  if (value.submitStrategy !== undefined) result.submitStrategy = tsValueToJsonValueFns.enum(value.submitStrategy);
   return result;
 }
 
 export function decodeJson(value: any): $.api.PostSubmitBatchRequest {
   const result = getDefaultValue();
   result.entries = value.entries?.map((value: any) => decodeJson_1(value)) ?? [];
-  if (value.SubmitStrategy !== undefined) result.SubmitStrategy = jsonValueToTsValueFns.enum(value.SubmitStrategy) as SubmitStrategy;
+  if (value.submitStrategy !== undefined) result.submitStrategy = jsonValueToTsValueFns.enum(value.submitStrategy) as SubmitStrategy;
   return result;
 }
 
@@ -71,8 +71,8 @@ export function encodeBinary(value: $.api.PostSubmitBatchRequest): Uint8Array {
       [1, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
     );
   }
-  if (value.SubmitStrategy !== undefined) {
-    const tsValue = value.SubmitStrategy;
+  if (value.submitStrategy !== undefined) {
+    const tsValue = value.submitStrategy;
     result.push(
       [2, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
     );
@@ -95,7 +95,7 @@ export function decodeBinary(binary: Uint8Array): $.api.PostSubmitBatchRequest {
     if (wireValue === undefined) break field;
     const value = wireValue.type === WireType.Varint ? num2name[wireValue.value[0] as keyof typeof num2name] : undefined;
     if (value === undefined) break field;
-    result.SubmitStrategy = value;
+    result.submitStrategy = value;
   }
   return result;
 }

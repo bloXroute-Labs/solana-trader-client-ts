@@ -37,6 +37,7 @@ export declare namespace $.api {
     contract: PerpContract;
     clientOrderID: string;
     orderID: string;
+    accountAddress: string;
   }
 }
 export type Type = $.api.PostCancelPerpOrderRequest;
@@ -48,6 +49,7 @@ export function getDefaultValue(): $.api.PostCancelPerpOrderRequest {
     contract: "ALL",
     clientOrderID: "0",
     orderID: "0",
+    accountAddress: "",
   };
 }
 
@@ -65,6 +67,7 @@ export function encodeJson(value: $.api.PostCancelPerpOrderRequest): unknown {
   if (value.contract !== undefined) result.contract = tsValueToJsonValueFns.enum(value.contract);
   if (value.clientOrderID !== undefined) result.clientOrderID = tsValueToJsonValueFns.uint64(value.clientOrderID);
   if (value.orderID !== undefined) result.orderID = tsValueToJsonValueFns.uint64(value.orderID);
+  if (value.accountAddress !== undefined) result.accountAddress = tsValueToJsonValueFns.string(value.accountAddress);
   return result;
 }
 
@@ -75,6 +78,7 @@ export function decodeJson(value: any): $.api.PostCancelPerpOrderRequest {
   if (value.contract !== undefined) result.contract = jsonValueToTsValueFns.enum(value.contract) as PerpContract;
   if (value.clientOrderID !== undefined) result.clientOrderID = jsonValueToTsValueFns.uint64(value.clientOrderID);
   if (value.orderID !== undefined) result.orderID = jsonValueToTsValueFns.uint64(value.orderID);
+  if (value.accountAddress !== undefined) result.accountAddress = jsonValueToTsValueFns.string(value.accountAddress);
   return result;
 }
 
@@ -108,6 +112,12 @@ export function encodeBinary(value: $.api.PostCancelPerpOrderRequest): Uint8Arra
     const tsValue = value.orderID;
     result.push(
       [5, tsValueToWireValueFns.uint64(tsValue)],
+    );
+  }
+  if (value.accountAddress !== undefined) {
+    const tsValue = value.accountAddress;
+    result.push(
+      [6, tsValueToWireValueFns.string(tsValue)],
     );
   }
   return serialize(result);
@@ -151,6 +161,13 @@ export function decodeBinary(binary: Uint8Array): $.api.PostCancelPerpOrderReque
     const value = wireValueToTsValueFns.uint64(wireValue);
     if (value === undefined) break field;
     result.orderID = value;
+  }
+  field: {
+    const wireValue = wireFields.get(6);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.accountAddress = value;
   }
   return result;
 }

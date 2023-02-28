@@ -70,8 +70,8 @@ import {
     PostCancelOrderResponse,
     PostClosePerpPositionsRequest,
     PostClosePerpPositionsResponse,
-    PostDepositCollateralRequest,
-    PostDepositCollateralResponse,
+    PostManageCollateralRequest,
+    PostManageCollateralResponse,
     PostOrderRequest,
     PostOrderResponse,
     PostReplaceOrderRequest,
@@ -81,8 +81,6 @@ import {
     PostSubmitBatchResponse,
     PostSubmitRequest,
     PostSubmitResponse,
-    PostWithdrawCollateralRequest,
-    PostWithdrawCollateralResponse,
     RouteTradeSwapRequest,
     TradeSwapRequest,
     TradeSwapResponse,
@@ -330,16 +328,10 @@ export class GrpcProvider extends BaseProvider {
         return this.client.getUser(request)
     }
 
-    postDepositCollateral(
-        request: PostDepositCollateralRequest
-    ): Promise<PostDepositCollateralResponse> {
-        return this.client.postDepositCollateral(request)
-    }
-
-    postWithdrawCollateral(
-        request: PostWithdrawCollateralRequest
-    ): Promise<PostWithdrawCollateralResponse> {
-        return this.client.postWithdrawCollateral(request)
+    postManageCollateral(
+        request: PostManageCollateralRequest
+    ): Promise<PostManageCollateralResponse> {
+        return this.client.postManageCollateral(request)
     }
 
     getOrders(request: GetOrdersRequest): Promise<GetOrdersResponse> {

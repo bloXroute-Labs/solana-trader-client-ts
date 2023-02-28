@@ -35,6 +35,7 @@ export declare namespace $.api {
     ownerAddress: string;
     project: Project;
     contract: PerpContract;
+    accountAddress: string;
   }
 }
 export type Type = $.api.PostCancelPerpOrdersRequest;
@@ -44,6 +45,7 @@ export function getDefaultValue(): $.api.PostCancelPerpOrdersRequest {
     ownerAddress: "",
     project: "P_UNKNOWN",
     contract: "ALL",
+    accountAddress: "",
   };
 }
 
@@ -59,6 +61,7 @@ export function encodeJson(value: $.api.PostCancelPerpOrdersRequest): unknown {
   if (value.ownerAddress !== undefined) result.ownerAddress = tsValueToJsonValueFns.string(value.ownerAddress);
   if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
   if (value.contract !== undefined) result.contract = tsValueToJsonValueFns.enum(value.contract);
+  if (value.accountAddress !== undefined) result.accountAddress = tsValueToJsonValueFns.string(value.accountAddress);
   return result;
 }
 
@@ -67,6 +70,7 @@ export function decodeJson(value: any): $.api.PostCancelPerpOrdersRequest {
   if (value.ownerAddress !== undefined) result.ownerAddress = jsonValueToTsValueFns.string(value.ownerAddress);
   if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
   if (value.contract !== undefined) result.contract = jsonValueToTsValueFns.enum(value.contract) as PerpContract;
+  if (value.accountAddress !== undefined) result.accountAddress = jsonValueToTsValueFns.string(value.accountAddress);
   return result;
 }
 
@@ -88,6 +92,12 @@ export function encodeBinary(value: $.api.PostCancelPerpOrdersRequest): Uint8Arr
     const tsValue = value.contract;
     result.push(
       [3, { type: WireType.Varint as const, value: new Long(name2num_1[tsValue as keyof typeof name2num_1]) }],
+    );
+  }
+  if (value.accountAddress !== undefined) {
+    const tsValue = value.accountAddress;
+    result.push(
+      [4, tsValueToWireValueFns.string(tsValue)],
     );
   }
   return serialize(result);
@@ -117,6 +127,13 @@ export function decodeBinary(binary: Uint8Array): $.api.PostCancelPerpOrdersRequ
     const value = wireValue.type === WireType.Varint ? num2name_1[wireValue.value[0] as keyof typeof num2name_1] : undefined;
     if (value === undefined) break field;
     result.contract = value;
+  }
+  field: {
+    const wireValue = wireFields.get(4);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.accountAddress = value;
   }
   return result;
 }
