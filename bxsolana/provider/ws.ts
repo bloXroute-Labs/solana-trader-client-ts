@@ -80,9 +80,24 @@ import {
     PostCreateUserResponse,
     PostCancelPerpOrdersRequest,
     PostCancelPerpOrdersResponse,
+    PostPerpOrderRequest,
+    PostPerpOrderResponse,
+    GetAssetsRequest,
+    GetAssetsResponse,
+    GetContractsRequest,
+    GetContractsResponse,
+    PostSettlePNLRequest,
+    PostSettlePNLResponse,
+    PostSettlePNLsRequest,
+    PostSettlePNLsResponse,
+    PostLiquidatePerpRequest,
+    PostLiquidatePerpResponse,
+    GetPerpPositionsRequest,
+    GetPerpPositionsResponse
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
+import { RpcReturnType } from "../proto/runtime/rpc"
 
 export class WsProvider extends BaseProvider {
     private wsConnection: RpcWsConnection
@@ -393,6 +408,47 @@ export class WsProvider extends BaseProvider {
 
     async getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
         return this.wsConnection.call("GetPrice", request)
+    }
+
+    async postPerpOrder(
+        request: PostPerpOrderRequest
+    ): Promise<PostPerpOrderResponse> {
+        return this.wsConnection.call("PostPerpOrder", request)
+    }
+
+    async getAssets(
+        request: GetAssetsRequest
+    ): RpcReturnType<Promise<GetAssetsResponse>, []> {
+        return this.wsConnection.call("GetAssets", request)
+    }
+
+    async getPerpContracts(
+        request: GetContractsRequest
+    ): RpcReturnType<Promise<GetContractsResponse>, []> {
+        return this.wsConnection.call("GetPerpContracts", request)
+    }
+
+    async postSettlePNL(
+        request: PostSettlePNLRequest
+    ): RpcReturnType<Promise<PostSettlePNLResponse>, []> {
+        return this.wsConnection.call("PostSettlePNL", request)
+    }
+
+    async postSettlePNLs(
+        request: PostSettlePNLsRequest
+    ): RpcReturnType<Promise<PostSettlePNLsResponse>, []> {
+        return this.wsConnection.call("PostSettlePNLs", request)
+    }
+
+    async postLiquidatePerp(
+        request: PostLiquidatePerpRequest
+    ): RpcReturnType<Promise<PostLiquidatePerpResponse>, []> {
+        return this.wsConnection.call("PostLiquidatePerp", request)
+    }
+
+    async getPerpPositions(request: GetPerpPositionsRequest
+    ): Promise<GetPerpPositionsResponse> {
+        return this.wsConnection.call("GetPerpPositions", request)
     }
 
     async getOpenPerpOrders(

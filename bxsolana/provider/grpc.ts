@@ -90,6 +90,20 @@ import {
     PostCreateUserResponse,
     PostCancelPerpOrdersRequest,
     PostCancelPerpOrdersResponse,
+    PostPerpOrderRequest,
+    PostPerpOrderResponse,
+    GetOpenPerpOrderRequest,
+    GetOpenPerpOrderResponse,
+    GetAssetsRequest,
+    GetAssetsResponse,
+    GetContractsRequest,
+    GetContractsResponse,
+    PostSettlePNLRequest,
+    PostSettlePNLResponse,
+    PostSettlePNLsRequest,
+    PostSettlePNLsResponse,
+    PostLiquidatePerpRequest,
+    PostLiquidatePerpResponse, GetPerpPositionsRequest, GetPerpPositionsResponse
 } from "../proto/messages/api"
 import { createServiceClient, Service } from "../proto/services/api/Api"
 import { BaseProvider } from "./base"
@@ -293,6 +307,45 @@ export class GrpcProvider extends BaseProvider {
         request: RouteTradeSwapRequest
     ): Promise<TradeSwapResponse> {
         return this.client.postRouteTradeSwap(request)
+    }
+    getOpenPerpOrder(
+        request: GetOpenPerpOrderRequest
+    ): RpcReturnType<Promise<GetOpenPerpOrderResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    getAssets(
+        request: GetAssetsRequest
+    ): RpcReturnType<Promise<GetAssetsResponse>, []> {
+        return this.client.getAssets(request)
+    }
+    getPerpContracts(
+        request: GetContractsRequest
+    ): RpcReturnType<Promise<GetContractsResponse>, []> {
+        return this.client.getPerpContracts(request)
+    }
+    postSettlePNL(
+        request: PostSettlePNLRequest
+    ): RpcReturnType<Promise<PostSettlePNLResponse>, []> {
+        return this.client.postSettlePNL(request)
+    }
+    postSettlePNLs(
+        request: PostSettlePNLsRequest
+    ): RpcReturnType<Promise<PostSettlePNLsResponse>, []> {
+        return this.client.postSettlePNLs(request)
+    }
+    postLiquidatePerp(
+        request: PostLiquidatePerpRequest
+    ): RpcReturnType<Promise<PostLiquidatePerpResponse>, []> {
+        return this.client.postLiquidatePerp(request)
+    }
+    postPerpOrder(
+        request: PostPerpOrderRequest
+    ): Promise<PostPerpOrderResponse> {
+        return this.client.postPerpOrder(request)
+    }
+    getPerpPositions(request: GetPerpPositionsRequest
+    ): Promise<GetPerpPositionsResponse> {
+        return this.client.getPerpPositions(request)
     }
     getOpenPerpOrders(
         request: GetOpenPerpOrdersRequest
