@@ -25,6 +25,14 @@ import {
     TESTNET_API_HTTP,
     TESTNET_API_WS,
     WsProvider,
+    GetAssetsRequest,
+    GetAssetsResponse,
+    PostSettlePNLRequest,
+    PostSettlePNLResponse,
+    PostSettlePNLsRequest,
+    PostSettlePNLsResponse,
+    PostLiquidatePerpRequest,
+    PostLiquidatePerpResponse,
 } from "../bxsolana"
 import { Keypair } from "@solana/web3.js"
 import base58 from "bs58"
@@ -33,6 +41,8 @@ import {
     DEVNET_API_GRPC_PORT,
 } from "../bxsolana/utils/constants"
 import { AxiosRequestConfig } from "axios"
+import { RpcReturnType } from "../bxsolana/proto/runtime/rpc"
+import { Type as PerpContract } from "../bxsolana/proto/messages/common/PerpContract"
 
 // if longer examples (placing and canceling transactions, etc. should be run)
 const runLongExamples = process.env.RUN_LIFECYCLE === "true"
@@ -238,6 +248,34 @@ async function ws() {
 }
 
 async function runPerpRequests(provider: BaseProvider) {
+    await callGetAssets(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetPerpContracts(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostSettlePNL(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostSettlePNLs(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostLiquidatePerp(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostPerpOrder(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetPerpPositions(provider)
+    console.info(" ")
+    console.info(" ")
+
     await callGetOpenPerpOrders(provider)
     console.info(" ")
     console.info(" ")
@@ -742,6 +780,90 @@ async function callGetPerpOrderbook(provider: BaseProvider) {
     } catch (e) {
         console.info(e)
     }
+}
+
+async function callGetAssets(provider: BaseProvider) {
+    console.info("get assets")
+    const req = await provider.getAssets({
+        ownerAddress: ownerAddress,
+        accountAddress: ownerAddress,
+        contract: "SOL_PERP",
+        project: "P_DRIFT",
+    })
+    console.info(req)
+}
+
+async function callGetPerpContracts(provider: BaseProvider) {
+    console.info("get perp contracts")
+    const req = await provider.getPerpContracts({
+        contracts: ["SOL_PERP"],
+        project: "P_DRIFT",
+    })
+    console.info(req)
+}
+
+async function callPostSettlePNL(provider: BaseProvider) {
+    console.info("post settle pnl")
+    const req = await provider.postSettlePNL({
+        ownerAddress: ownerAddress,
+        settleeAccountAddress: ownerAddress,
+        contract: "SOL_PERP",
+        project: "P_DRIFT",
+    })
+    console.info(req)
+}
+
+async function callPostSettlePNLs(provider: BaseProvider) {
+    console.info("post settle pnls")
+    const req = await provider.postSettlePNLs({
+        ownerAddress: ownerAddress,
+        settleeAccountAddresses: [ownerAddress],
+        contract: "SOL_PERP",
+        project: "P_DRIFT",
+    })
+    console.info(req)
+}
+
+async function callPostLiquidatePerp(provider: BaseProvider) {
+    console.info("post liquidate perp")
+    const req = await provider.postLiquidatePerp({
+        ownerAddress: ownerAddress,
+        settleeAccountAddress: ownerAddress,
+        contract: "SOL_PERP",
+        project: "P_DRIFT",
+        amount: 1,
+    })
+    console.info(req)
+}
+
+async function callPostPerpOrder(provider: BaseProvider) {
+    console.info("post perp order")
+    const req = await provider.postPerpOrder({
+        ownerAddress: ownerAddress,
+        payerAddress: ownerAddress,
+        accountAddress: "",
+        positionSide: "PS_LONG",
+        slippage: 5,
+        type: "POT_LIMIT",
+        contract: "SOL_PERP",
+        project: "P_DRIFT",
+        amount: 1,
+        price: 232,
+        clientOrderID: "1",
+    })
+    console.info(req)
+}
+
+async function callGetPerpPositions(provider: BaseProvider) {
+    console.info("get perp positions for SOL_PERP market")
+    const req = await provider.getPerpPositions({
+        ownerAddress: ownerAddress,
+        accountAddress: "",
+        contracts: ["SOL_PERP"],
+        project: "P_DRIFT",
+    })
+
+    console.info(req)
 }
 
 async function callGetOpenPerpOrders(provider: BaseProvider) {

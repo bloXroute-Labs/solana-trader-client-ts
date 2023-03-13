@@ -20,38 +20,38 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type PostPerpOrderResponse = {
+  export type PostSettlePNLResponse = {
     transaction?: TransactionMessage;
   }
 }
-export type Type = $.api.PostPerpOrderResponse;
+export type Type = $.api.PostSettlePNLResponse;
 
-export function getDefaultValue(): $.api.PostPerpOrderResponse {
+export function getDefaultValue(): $.api.PostSettlePNLResponse {
   return {
     transaction: undefined,
   };
 }
 
-export function createValue(partialValue: Partial<$.api.PostPerpOrderResponse>): $.api.PostPerpOrderResponse {
+export function createValue(partialValue: Partial<$.api.PostSettlePNLResponse>): $.api.PostSettlePNLResponse {
   return {
     ...getDefaultValue(),
     ...partialValue,
   };
 }
 
-export function encodeJson(value: $.api.PostPerpOrderResponse): unknown {
+export function encodeJson(value: $.api.PostSettlePNLResponse): unknown {
   const result: any = {};
   if (value.transaction !== undefined) result.transaction = encodeJson_1(value.transaction);
   return result;
 }
 
-export function decodeJson(value: any): $.api.PostPerpOrderResponse {
+export function decodeJson(value: any): $.api.PostSettlePNLResponse {
   const result = getDefaultValue();
   if (value.transaction !== undefined) result.transaction = decodeJson_1(value.transaction);
   return result;
 }
 
-export function encodeBinary(value: $.api.PostPerpOrderResponse): Uint8Array {
+export function encodeBinary(value: $.api.PostSettlePNLResponse): Uint8Array {
   const result: WireMessage = [];
   if (value.transaction !== undefined) {
     const tsValue = value.transaction;
@@ -62,7 +62,7 @@ export function encodeBinary(value: $.api.PostPerpOrderResponse): Uint8Array {
   return serialize(result);
 }
 
-export function decodeBinary(binary: Uint8Array): $.api.PostPerpOrderResponse {
+export function decodeBinary(binary: Uint8Array): $.api.PostSettlePNLResponse {
   const result = getDefaultValue();
   const wireMessage = deserialize(binary);
   const wireFields = new Map(wireMessage);

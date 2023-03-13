@@ -132,3 +132,17 @@ export type { Type as GetNewPerpOrdersStreamRequest } from "./GetNewPerpOrdersSt
 export type { Type as GetNewPerpOrdersStreamResponse } from "./GetNewPerpOrdersStreamResponse";
 export type { Type as GetPerpTradesStreamRequest } from "./GetPerpTradesStreamRequest";
 export type { Type as GetPerpTradesStreamResponse } from "./GetPerpTradesStreamResponse";
+export type { Type as PostSettlePNLRequest } from "./PostSettlePNLRequest";
+export type { Type as PostSettlePNLResponse } from "./PostSettlePNLResponse";
+export type { Type as GetAssetsRequest } from "./GetAssetsRequest";
+export type { Type as Asset } from "./Asset";
+export type { Type as GetAssetsResponse } from "./GetAssetsResponse";
+export type { Type as PostSettlePNLsRequest } from "./PostSettlePNLsRequest";
+export type { Type as PostSettlePNLsResponse } from "./PostSettlePNLsResponse";
+export type { Type as PostLiquidatePerpRequest } from "./PostLiquidatePerpRequest";
+export type { Type as PostLiquidatePerpResponse } from "./PostLiquidatePerpResponse";
+export type { Type as GetPerpContractsRequest } from "./GetPerpContractsRequest";
+export type { Type as ContractInfo } from "./ContractInfo";
+export type { Type as GetPerpContractsResponse } from "./GetPerpContractsResponse";
+export type { Type as GetOpenPerpOrderRequest } from "./GetOpenPerpOrderRequest";
+export type { Type as GetOpenPerpOrderResponse } from "./GetOpenPerpOrderResponse";

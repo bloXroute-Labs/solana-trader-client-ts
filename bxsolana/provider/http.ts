@@ -59,6 +59,20 @@ import {
     PostCancelPerpOrderResponse,
     PostCreateUserRequest,
     PostCreateUserResponse,
+    GetAssetsRequest,
+    GetAssetsResponse,
+    GetPerpContractsRequest,
+    GetPerpContractsResponse,
+    PostSettlePNLRequest,
+    PostSettlePNLResponse,
+    PostSettlePNLsRequest,
+    PostSettlePNLsResponse,
+    PostLiquidatePerpRequest,
+    PostLiquidatePerpResponse,
+    PostPerpOrderRequest,
+    PostPerpOrderResponse,
+    GetPerpPositionsRequest,
+    GetPerpPositionsResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -67,6 +81,7 @@ import axios, {
     AxiosResponse,
     RawAxiosRequestHeaders,
 } from "axios"
+import { RpcReturnType } from "../proto/runtime/rpc"
 
 export class HttpProvider extends BaseProvider {
     private readonly baseUrl: string
@@ -263,6 +278,82 @@ export class HttpProvider extends BaseProvider {
             path,
             request
         )
+    }
+
+    getAssets(
+        request: GetAssetsRequest
+    ): RpcReturnType<Promise<GetAssetsResponse>, []> {
+        const path = `${this.baseUrl}/trade/perp/assets?ownerAddress=${request.ownerAddress}&accountAddress=${request.accountAddress}&project=${request.project}&contract=${request.contract}`
+        return this.get<GetAssetsResponse>(path)
+    }
+
+    getContracts(
+        request: GetPerpContractsRequest
+    ): RpcReturnType<Promise<GetPerpContractsResponse>, []> {
+        const path = `${this.baseUrl}/trade/perp/contracts?project=${request.project}`
+        return this.get<GetPerpContractsResponse>(path)
+    }
+
+    postSettlePNL(
+        request: PostSettlePNLRequest
+    ): RpcReturnType<Promise<PostSettlePNLResponse>, []> {
+        const path = `${this.baseUrl}/trade/perp/settle-pnl`
+        return this.post<PostSettlePNLRequest, PostSettlePNLResponse>(
+            path,
+            request
+        )
+    }
+
+    postSettlePNLs(
+        request: PostSettlePNLsRequest
+    ): RpcReturnType<Promise<PostSettlePNLsResponse>, []> {
+        const path = `${this.baseUrl}/trade/perp/settle-pnls`
+        return this.post<PostSettlePNLsRequest, PostSettlePNLsResponse>(
+            path,
+            request
+        )
+    }
+
+    postLiquidatePerp(
+        request: PostLiquidatePerpRequest
+    ): RpcReturnType<Promise<PostLiquidatePerpResponse>, []> {
+        const path = `${this.baseUrl}/trade/perp/liquidate`
+        return this.post<PostLiquidatePerpRequest, PostLiquidatePerpResponse>(
+            path,
+            request
+        )
+    }
+
+    postPerpOrder(
+        request: PostPerpOrderRequest
+    ): RpcReturnType<Promise<PostPerpOrderResponse>, []> {
+        const path = `${this.baseUrl}/trade/perp/order`
+        return this.post<PostPerpOrderRequest, PostPerpOrderResponse>(
+            path,
+            request
+        )
+    }
+
+    getPerpPositions(
+        request: GetPerpPositionsRequest
+    ): RpcReturnType<Promise<GetPerpPositionsResponse>, []> {
+        let path = `${this.baseUrl}/trade/perp/positions?ownerAddress=${request.ownerAddress}&accountAddress=${request.accountAddress}&project=${request.project}`
+        const args = request.contracts.map((v) => `contracts=${v}`).join("&")
+        if (args != "") {
+            path += `&${args}`
+        }
+        return this.get<GetPerpPositionsResponse>(path)
+    }
+
+    getPerpContracts(
+        request: GetPerpContractsRequest
+    ): RpcReturnType<Promise<GetPerpContractsResponse>, []> {
+        let path = `${this.baseUrl}/trade/perp/contracts?project=${request.project}`
+        const args = request.contracts.map((v) => `contracts=${v}`).join("&")
+        if (args != "") {
+            path += `&${args}`
+        }
+        return this.get<GetPerpContractsResponse>(path)
     }
 
     getOpenPerpOrders(

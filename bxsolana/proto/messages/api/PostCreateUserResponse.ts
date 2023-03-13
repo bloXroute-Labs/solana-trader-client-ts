@@ -1,4 +1,11 @@
 import {
+  Type as TransactionMessage,
+  encodeJson as encodeJson_1,
+  decodeJson as decodeJson_1,
+  encodeBinary as encodeBinary_1,
+  decodeBinary as decodeBinary_1,
+} from "./TransactionMessage";
+import {
   Type as Project,
   name2num,
   num2name,
@@ -15,10 +22,6 @@ import {
   default as serialize,
 } from "../../runtime/wire/serialize";
 import {
-  tsValueToWireValueFns,
-  wireValueToTsValueFns,
-} from "../../runtime/wire/scalar";
-import {
   default as Long,
 } from "../../runtime/Long";
 import {
@@ -27,7 +30,7 @@ import {
 
 export declare namespace $.api {
   export type PostCreateUserResponse = {
-    transaction: string;
+    transaction?: TransactionMessage;
     project: Project;
   }
 }
@@ -35,7 +38,7 @@ export type Type = $.api.PostCreateUserResponse;
 
 export function getDefaultValue(): $.api.PostCreateUserResponse {
   return {
-    transaction: "",
+    transaction: undefined,
     project: "P_UNKNOWN",
   };
 }
@@ -49,14 +52,14 @@ export function createValue(partialValue: Partial<$.api.PostCreateUserResponse>)
 
 export function encodeJson(value: $.api.PostCreateUserResponse): unknown {
   const result: any = {};
-  if (value.transaction !== undefined) result.transaction = tsValueToJsonValueFns.string(value.transaction);
+  if (value.transaction !== undefined) result.transaction = encodeJson_1(value.transaction);
   if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
   return result;
 }
 
 export function decodeJson(value: any): $.api.PostCreateUserResponse {
   const result = getDefaultValue();
-  if (value.transaction !== undefined) result.transaction = jsonValueToTsValueFns.string(value.transaction);
+  if (value.transaction !== undefined) result.transaction = decodeJson_1(value.transaction);
   if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
   return result;
 }
@@ -66,7 +69,7 @@ export function encodeBinary(value: $.api.PostCreateUserResponse): Uint8Array {
   if (value.transaction !== undefined) {
     const tsValue = value.transaction;
     result.push(
-      [1, tsValueToWireValueFns.string(tsValue)],
+      [1, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
     );
   }
   if (value.project !== undefined) {
@@ -85,7 +88,7 @@ export function decodeBinary(binary: Uint8Array): $.api.PostCreateUserResponse {
   field: {
     const wireValue = wireFields.get(1);
     if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.string(wireValue);
+    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined;
     if (value === undefined) break field;
     result.transaction = value;
   }

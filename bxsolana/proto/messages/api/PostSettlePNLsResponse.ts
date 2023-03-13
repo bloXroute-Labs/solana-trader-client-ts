@@ -20,38 +20,38 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type PostClosePerpPositionsResponse = {
+  export type PostSettlePNLsResponse = {
     transactions: TransactionMessage[];
   }
 }
-export type Type = $.api.PostClosePerpPositionsResponse;
+export type Type = $.api.PostSettlePNLsResponse;
 
-export function getDefaultValue(): $.api.PostClosePerpPositionsResponse {
+export function getDefaultValue(): $.api.PostSettlePNLsResponse {
   return {
     transactions: [],
   };
 }
 
-export function createValue(partialValue: Partial<$.api.PostClosePerpPositionsResponse>): $.api.PostClosePerpPositionsResponse {
+export function createValue(partialValue: Partial<$.api.PostSettlePNLsResponse>): $.api.PostSettlePNLsResponse {
   return {
     ...getDefaultValue(),
     ...partialValue,
   };
 }
 
-export function encodeJson(value: $.api.PostClosePerpPositionsResponse): unknown {
+export function encodeJson(value: $.api.PostSettlePNLsResponse): unknown {
   const result: any = {};
   result.transactions = value.transactions.map(value => encodeJson_1(value));
   return result;
 }
 
-export function decodeJson(value: any): $.api.PostClosePerpPositionsResponse {
+export function decodeJson(value: any): $.api.PostSettlePNLsResponse {
   const result = getDefaultValue();
   result.transactions = value.transactions?.map((value: any) => decodeJson_1(value)) ?? [];
   return result;
 }
 
-export function encodeBinary(value: $.api.PostClosePerpPositionsResponse): Uint8Array {
+export function encodeBinary(value: $.api.PostSettlePNLsResponse): Uint8Array {
   const result: WireMessage = [];
   for (const tsValue of value.transactions) {
     result.push(
@@ -61,7 +61,7 @@ export function encodeBinary(value: $.api.PostClosePerpPositionsResponse): Uint8
   return serialize(result);
 }
 
-export function decodeBinary(binary: Uint8Array): $.api.PostClosePerpPositionsResponse {
+export function decodeBinary(binary: Uint8Array): $.api.PostSettlePNLsResponse {
   const result = getDefaultValue();
   const wireMessage = deserialize(binary);
   const wireFields = new Map(wireMessage);

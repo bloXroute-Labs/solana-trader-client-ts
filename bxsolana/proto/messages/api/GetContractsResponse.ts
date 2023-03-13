@@ -1,10 +1,10 @@
 import {
-  Type as TransactionMessage,
+  Type as ContractInfo,
   encodeJson as encodeJson_1,
   decodeJson as decodeJson_1,
   encodeBinary as encodeBinary_1,
   decodeBinary as decodeBinary_1,
-} from "./TransactionMessage";
+} from "./ContractInfo";
 import {
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar";
@@ -20,40 +20,40 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type PostClosePerpPositionsResponse = {
-    transactions: TransactionMessage[];
+  export type GetContractsResponse = {
+    contracts: ContractInfo[];
   }
 }
-export type Type = $.api.PostClosePerpPositionsResponse;
+export type Type = $.api.GetContractsResponse;
 
-export function getDefaultValue(): $.api.PostClosePerpPositionsResponse {
+export function getDefaultValue(): $.api.GetContractsResponse {
   return {
-    transactions: [],
+    contracts: [],
   };
 }
 
-export function createValue(partialValue: Partial<$.api.PostClosePerpPositionsResponse>): $.api.PostClosePerpPositionsResponse {
+export function createValue(partialValue: Partial<$.api.GetContractsResponse>): $.api.GetContractsResponse {
   return {
     ...getDefaultValue(),
     ...partialValue,
   };
 }
 
-export function encodeJson(value: $.api.PostClosePerpPositionsResponse): unknown {
+export function encodeJson(value: $.api.GetContractsResponse): unknown {
   const result: any = {};
-  result.transactions = value.transactions.map(value => encodeJson_1(value));
+  result.contracts = value.contracts.map(value => encodeJson_1(value));
   return result;
 }
 
-export function decodeJson(value: any): $.api.PostClosePerpPositionsResponse {
+export function decodeJson(value: any): $.api.GetContractsResponse {
   const result = getDefaultValue();
-  result.transactions = value.transactions?.map((value: any) => decodeJson_1(value)) ?? [];
+  result.contracts = value.contracts?.map((value: any) => decodeJson_1(value)) ?? [];
   return result;
 }
 
-export function encodeBinary(value: $.api.PostClosePerpPositionsResponse): Uint8Array {
+export function encodeBinary(value: $.api.GetContractsResponse): Uint8Array {
   const result: WireMessage = [];
-  for (const tsValue of value.transactions) {
+  for (const tsValue of value.contracts) {
     result.push(
       [1, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
     );
@@ -61,7 +61,7 @@ export function encodeBinary(value: $.api.PostClosePerpPositionsResponse): Uint8
   return serialize(result);
 }
 
-export function decodeBinary(binary: Uint8Array): $.api.PostClosePerpPositionsResponse {
+export function decodeBinary(binary: Uint8Array): $.api.GetContractsResponse {
   const result = getDefaultValue();
   const wireMessage = deserialize(binary);
   const wireFields = new Map(wireMessage);
@@ -69,7 +69,7 @@ export function decodeBinary(binary: Uint8Array): $.api.PostClosePerpPositionsRe
     const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 1).map(([, wireValue]) => wireValue);
     const value = wireValues.map((wireValue) => wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined).filter(x => x !== undefined);
     if (!value.length) break collection;
-    result.transactions = value as any;
+    result.contracts = value as any;
   }
   return result;
 }
