@@ -72,7 +72,7 @@ import {
     PostPerpOrderRequest,
     PostPerpOrderResponse,
     GetPerpPositionsRequest,
-    GetPerpPositionsResponse
+    GetPerpPositionsResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -298,31 +298,45 @@ export class HttpProvider extends BaseProvider {
         request: PostSettlePNLRequest
     ): RpcReturnType<Promise<PostSettlePNLResponse>, []> {
         const path = `${this.baseUrl}/trade/perp/settle-pnl`
-        return this.post<PostSettlePNLRequest, PostSettlePNLResponse>(path, request)
+        return this.post<PostSettlePNLRequest, PostSettlePNLResponse>(
+            path,
+            request
+        )
     }
 
     postSettlePNLs(
         request: PostSettlePNLsRequest
     ): RpcReturnType<Promise<PostSettlePNLsResponse>, []> {
         const path = `${this.baseUrl}/trade/perp/settle-pnls`
-        return this.post<PostSettlePNLsRequest, PostSettlePNLsResponse>(path, request)
+        return this.post<PostSettlePNLsRequest, PostSettlePNLsResponse>(
+            path,
+            request
+        )
     }
 
     postLiquidatePerp(
         request: PostLiquidatePerpRequest
     ): RpcReturnType<Promise<PostLiquidatePerpResponse>, []> {
         const path = `${this.baseUrl}/trade/perp/liquidate`
-        return this.post<PostLiquidatePerpRequest, PostLiquidatePerpResponse>(path, request)
+        return this.post<PostLiquidatePerpRequest, PostLiquidatePerpResponse>(
+            path,
+            request
+        )
     }
 
     postPerpOrder(
         request: PostPerpOrderRequest
     ): RpcReturnType<Promise<PostPerpOrderResponse>, []> {
         const path = `${this.baseUrl}/trade/perp/order`
-        return this.post<PostPerpOrderRequest, PostPerpOrderResponse>(path, request)
+        return this.post<PostPerpOrderRequest, PostPerpOrderResponse>(
+            path,
+            request
+        )
     }
 
-    getPerpPositions(request: GetPerpPositionsRequest): RpcReturnType<Promise<GetPerpPositionsResponse>, []> {
+    getPerpPositions(
+        request: GetPerpPositionsRequest
+    ): RpcReturnType<Promise<GetPerpPositionsResponse>, []> {
         let path = `${this.baseUrl}/trade/perp/positions?ownerAddress=${request.ownerAddress}&accountAddress=${request.accountAddress}&project=${request.project}`
         const args = request.contracts.map((v) => `contracts=${v}`).join("&")
         if (args != "") {
@@ -331,7 +345,9 @@ export class HttpProvider extends BaseProvider {
         return this.get<GetPerpPositionsResponse>(path)
     }
 
-    getPerpContracts(request: GetPerpContractsRequest): RpcReturnType<Promise<GetPerpContractsResponse>, []> {
+    getPerpContracts(
+        request: GetPerpContractsRequest
+    ): RpcReturnType<Promise<GetPerpContractsResponse>, []> {
         let path = `${this.baseUrl}/trade/perp/contracts?project=${request.project}`
         const args = request.contracts.map((v) => `contracts=${v}`).join("&")
         if (args != "") {

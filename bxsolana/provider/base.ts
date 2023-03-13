@@ -105,7 +105,9 @@ import {
     PostSettlePNLRequest,
     PostSettlePNLResponse,
     PostSettlePNLsRequest,
-    PostSettlePNLsResponse, PostLiquidatePerpRequest, PostLiquidatePerpResponse
+    PostSettlePNLsResponse,
+    PostLiquidatePerpRequest,
+    PostLiquidatePerpResponse,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {

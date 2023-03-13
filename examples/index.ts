@@ -32,7 +32,7 @@ import {
     PostSettlePNLsRequest,
     PostSettlePNLsResponse,
     PostLiquidatePerpRequest,
-    PostLiquidatePerpResponse
+    PostLiquidatePerpResponse,
 } from "../bxsolana"
 import { Keypair } from "@solana/web3.js"
 import base58 from "bs58"
@@ -835,7 +835,6 @@ async function callPostLiquidatePerp(provider: BaseProvider) {
     })
     console.info(req)
 }
-
 
 async function callPostPerpOrder(provider: BaseProvider) {
     console.info("post perp order")

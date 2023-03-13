@@ -92,7 +92,8 @@ import {
     PostSettlePNLsResponse,
     PostLiquidatePerpRequest,
     PostLiquidatePerpResponse,
-    GetPerpPositionsRequest, GetPerpPositionsResponse
+    GetPerpPositionsRequest,
+    GetPerpPositionsResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -445,7 +446,8 @@ export class WsProvider extends BaseProvider {
         return this.wsConnection.call("PostLiquidatePerp", request)
     }
 
-    async getPerpPositions(request: GetPerpPositionsRequest
+    async getPerpPositions(
+        request: GetPerpPositionsRequest
     ): Promise<GetPerpPositionsResponse> {
         return this.wsConnection.call("GetPerpPositions", request)
     }

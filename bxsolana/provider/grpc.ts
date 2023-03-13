@@ -345,7 +345,8 @@ export class GrpcProvider extends BaseProvider {
     ): Promise<PostPerpOrderResponse> {
         return this.client.postPerpOrder(request)
     }
-    getPerpPositions(request: GetPerpPositionsRequest
+    getPerpPositions(
+        request: GetPerpPositionsRequest
     ): Promise<GetPerpPositionsResponse> {
         return this.client.getPerpPositions(request)
     }
