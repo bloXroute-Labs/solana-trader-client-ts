@@ -39,7 +39,7 @@ export declare namespace $.api {
     positionMargin: number;
     positionSide: PerpPositionSide;
     unrealizedPnL: number;
-    perpPrice: number;
+    notionalValue: number;
     indexPrice: number;
     liquidationPrice: number;
   }
@@ -55,7 +55,7 @@ export function getDefaultValue(): $.api.PerpPosition {
     positionMargin: 0,
     positionSide: "PS_UNKNOWN",
     unrealizedPnL: 0,
-    perpPrice: 0,
+    notionalValue: 0,
     indexPrice: 0,
     liquidationPrice: 0,
   };
@@ -77,7 +77,7 @@ export function encodeJson(value: $.api.PerpPosition): unknown {
   if (value.positionMargin !== undefined) result.positionMargin = tsValueToJsonValueFns.double(value.positionMargin);
   if (value.positionSide !== undefined) result.positionSide = tsValueToJsonValueFns.enum(value.positionSide);
   if (value.unrealizedPnL !== undefined) result.unrealizedPnL = tsValueToJsonValueFns.double(value.unrealizedPnL);
-  if (value.perpPrice !== undefined) result.perpPrice = tsValueToJsonValueFns.double(value.perpPrice);
+  if (value.notionalValue !== undefined) result.notionalValue = tsValueToJsonValueFns.double(value.notionalValue);
   if (value.indexPrice !== undefined) result.indexPrice = tsValueToJsonValueFns.double(value.indexPrice);
   if (value.liquidationPrice !== undefined) result.liquidationPrice = tsValueToJsonValueFns.double(value.liquidationPrice);
   return result;
@@ -92,7 +92,7 @@ export function decodeJson(value: any): $.api.PerpPosition {
   if (value.positionMargin !== undefined) result.positionMargin = jsonValueToTsValueFns.double(value.positionMargin);
   if (value.positionSide !== undefined) result.positionSide = jsonValueToTsValueFns.enum(value.positionSide) as PerpPositionSide;
   if (value.unrealizedPnL !== undefined) result.unrealizedPnL = jsonValueToTsValueFns.double(value.unrealizedPnL);
-  if (value.perpPrice !== undefined) result.perpPrice = jsonValueToTsValueFns.double(value.perpPrice);
+  if (value.notionalValue !== undefined) result.notionalValue = jsonValueToTsValueFns.double(value.notionalValue);
   if (value.indexPrice !== undefined) result.indexPrice = jsonValueToTsValueFns.double(value.indexPrice);
   if (value.liquidationPrice !== undefined) result.liquidationPrice = jsonValueToTsValueFns.double(value.liquidationPrice);
   return result;
@@ -142,8 +142,8 @@ export function encodeBinary(value: $.api.PerpPosition): Uint8Array {
       [7, tsValueToWireValueFns.double(tsValue)],
     );
   }
-  if (value.perpPrice !== undefined) {
-    const tsValue = value.perpPrice;
+  if (value.notionalValue !== undefined) {
+    const tsValue = value.notionalValue;
     result.push(
       [8, tsValueToWireValueFns.double(tsValue)],
     );
@@ -221,7 +221,7 @@ export function decodeBinary(binary: Uint8Array): $.api.PerpPosition {
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
-    result.perpPrice = value;
+    result.notionalValue = value;
   }
   field: {
     const wireValue = wireFields.get(9);

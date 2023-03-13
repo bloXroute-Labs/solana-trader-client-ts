@@ -19,8 +19,8 @@ import {
 export declare namespace $.api {
   export type Asset = {
     valuationAsset: string;
-    balance: string;
-    valuation: string;
+    balance: number;
+    valuation: number;
   }
 }
 export type Type = $.api.Asset;
@@ -28,8 +28,8 @@ export type Type = $.api.Asset;
 export function getDefaultValue(): $.api.Asset {
   return {
     valuationAsset: "",
-    balance: "",
-    valuation: "",
+    balance: 0,
+    valuation: 0,
   };
 }
 
@@ -43,16 +43,16 @@ export function createValue(partialValue: Partial<$.api.Asset>): $.api.Asset {
 export function encodeJson(value: $.api.Asset): unknown {
   const result: any = {};
   if (value.valuationAsset !== undefined) result.valuationAsset = tsValueToJsonValueFns.string(value.valuationAsset);
-  if (value.balance !== undefined) result.balance = tsValueToJsonValueFns.string(value.balance);
-  if (value.valuation !== undefined) result.valuation = tsValueToJsonValueFns.string(value.valuation);
+  if (value.balance !== undefined) result.balance = tsValueToJsonValueFns.double(value.balance);
+  if (value.valuation !== undefined) result.valuation = tsValueToJsonValueFns.double(value.valuation);
   return result;
 }
 
 export function decodeJson(value: any): $.api.Asset {
   const result = getDefaultValue();
   if (value.valuationAsset !== undefined) result.valuationAsset = jsonValueToTsValueFns.string(value.valuationAsset);
-  if (value.balance !== undefined) result.balance = jsonValueToTsValueFns.string(value.balance);
-  if (value.valuation !== undefined) result.valuation = jsonValueToTsValueFns.string(value.valuation);
+  if (value.balance !== undefined) result.balance = jsonValueToTsValueFns.double(value.balance);
+  if (value.valuation !== undefined) result.valuation = jsonValueToTsValueFns.double(value.valuation);
   return result;
 }
 
@@ -67,13 +67,13 @@ export function encodeBinary(value: $.api.Asset): Uint8Array {
   if (value.balance !== undefined) {
     const tsValue = value.balance;
     result.push(
-      [2, tsValueToWireValueFns.string(tsValue)],
+      [2, tsValueToWireValueFns.double(tsValue)],
     );
   }
   if (value.valuation !== undefined) {
     const tsValue = value.valuation;
     result.push(
-      [3, tsValueToWireValueFns.string(tsValue)],
+      [3, tsValueToWireValueFns.double(tsValue)],
     );
   }
   return serialize(result);
@@ -93,14 +93,14 @@ export function decodeBinary(binary: Uint8Array): $.api.Asset {
   field: {
     const wireValue = wireFields.get(2);
     if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.string(wireValue);
+    const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
     result.balance = value;
   }
   field: {
     const wireValue = wireFields.get(3);
     if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.string(wireValue);
+    const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
     result.valuation = value;
   }

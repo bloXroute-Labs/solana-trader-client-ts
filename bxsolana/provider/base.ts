@@ -100,8 +100,8 @@ import {
     GetOpenPerpOrderRequest,
     GetAssetsRequest,
     GetAssetsResponse,
-    GetContractsResponse,
-    GetContractsRequest,
+    GetPerpContractsResponse,
+    GetPerpContractsRequest,
     PostSettlePNLRequest,
     PostSettlePNLResponse,
     PostSettlePNLsRequest,
@@ -142,8 +142,8 @@ export abstract class BaseProvider implements Api {
     }
 
     getPerpContracts(
-        request: GetContractsRequest
-    ): RpcReturnType<Promise<GetContractsResponse>, []> {
+        request: GetPerpContractsRequest
+    ): RpcReturnType<Promise<GetPerpContractsResponse>, []> {
         throw new Error("Method not implemented.")
     }
 

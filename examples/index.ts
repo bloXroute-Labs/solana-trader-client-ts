@@ -27,8 +27,6 @@ import {
     WsProvider,
     GetAssetsRequest,
     GetAssetsResponse,
-    GetContractsRequest,
-    GetContractsResponse,
     PostSettlePNLRequest,
     PostSettlePNLResponse,
     PostSettlePNLsRequest,
@@ -785,7 +783,7 @@ async function callGetPerpOrderbook(provider: BaseProvider) {
 }
 
 async function callGetAssets(provider: BaseProvider) {
-    console.info("post settle pnl")
+    console.info("get assets")
     const req = await provider.getAssets({
         ownerAddress: ownerAddress,
         accountAddress: ownerAddress,
@@ -796,7 +794,7 @@ async function callGetAssets(provider: BaseProvider) {
 }
 
 async function callGetPerpContracts(provider: BaseProvider) {
-    console.info("post settle pnl")
+    console.info("get perp contracts")
     const req = await provider.getPerpContracts({
         contracts: ["SOL_PERP"],
         project: "P_DRIFT",
@@ -819,7 +817,7 @@ async function callPostSettlePNLs(provider: BaseProvider) {
     console.info("post settle pnls")
     const req = await provider.postSettlePNLs({
         ownerAddress: ownerAddress,
-        settleAccountAddresses: [ownerAddress],
+        settleeAccountAddresses: [ownerAddress],
         contract: "SOL_PERP",
         project: "P_DRIFT",
     })

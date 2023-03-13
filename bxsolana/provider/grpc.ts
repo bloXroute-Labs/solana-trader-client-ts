@@ -96,14 +96,16 @@ import {
     GetOpenPerpOrderResponse,
     GetAssetsRequest,
     GetAssetsResponse,
-    GetContractsRequest,
-    GetContractsResponse,
+    GetPerpContractsRequest,
+    GetPerpContractsResponse,
     PostSettlePNLRequest,
     PostSettlePNLResponse,
     PostSettlePNLsRequest,
     PostSettlePNLsResponse,
     PostLiquidatePerpRequest,
-    PostLiquidatePerpResponse, GetPerpPositionsRequest, GetPerpPositionsResponse
+    PostLiquidatePerpResponse,
+    GetPerpPositionsRequest,
+    GetPerpPositionsResponse,
 } from "../proto/messages/api"
 import { createServiceClient, Service } from "../proto/services/api/Api"
 import { BaseProvider } from "./base"
@@ -319,8 +321,8 @@ export class GrpcProvider extends BaseProvider {
         return this.client.getAssets(request)
     }
     getPerpContracts(
-        request: GetContractsRequest
-    ): RpcReturnType<Promise<GetContractsResponse>, []> {
+        request: GetPerpContractsRequest
+    ): RpcReturnType<Promise<GetPerpContractsResponse>, []> {
         return this.client.getPerpContracts(request)
     }
     postSettlePNL(

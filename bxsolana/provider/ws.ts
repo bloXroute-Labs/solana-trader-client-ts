@@ -84,16 +84,15 @@ import {
     PostPerpOrderResponse,
     GetAssetsRequest,
     GetAssetsResponse,
-    GetContractsRequest,
-    GetContractsResponse,
+    GetPerpContractsRequest,
+    GetPerpContractsResponse,
     PostSettlePNLRequest,
     PostSettlePNLResponse,
     PostSettlePNLsRequest,
     PostSettlePNLsResponse,
     PostLiquidatePerpRequest,
     PostLiquidatePerpResponse,
-    GetPerpPositionsRequest,
-    GetPerpPositionsResponse
+    GetPerpPositionsRequest, GetPerpPositionsResponse
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -423,8 +422,8 @@ export class WsProvider extends BaseProvider {
     }
 
     async getPerpContracts(
-        request: GetContractsRequest
-    ): RpcReturnType<Promise<GetContractsResponse>, []> {
+        request: GetPerpContractsRequest
+    ): RpcReturnType<Promise<GetPerpContractsResponse>, []> {
         return this.wsConnection.call("GetPerpContracts", request)
     }
 

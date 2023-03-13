@@ -61,8 +61,8 @@ import {
     PostCreateUserResponse,
     GetAssetsRequest,
     GetAssetsResponse,
-    GetContractsRequest,
-    GetContractsResponse,
+    GetPerpContractsRequest,
+    GetPerpContractsResponse,
     PostSettlePNLRequest,
     PostSettlePNLResponse,
     PostSettlePNLsRequest,
@@ -288,10 +288,10 @@ export class HttpProvider extends BaseProvider {
     }
 
     getContracts(
-        request: GetContractsRequest
-    ): RpcReturnType<Promise<GetContractsResponse>, []> {
+        request: GetPerpContractsRequest
+    ): RpcReturnType<Promise<GetPerpContractsResponse>, []> {
         const path = `${this.baseUrl}/trade/perp/contracts?project=${request.project}`
-        return this.get<GetContractsResponse>(path)
+        return this.get<GetPerpContractsResponse>(path)
     }
 
     postSettlePNL(
@@ -329,6 +329,15 @@ export class HttpProvider extends BaseProvider {
             path += `&${args}`
         }
         return this.get<GetPerpPositionsResponse>(path)
+    }
+
+    getPerpContracts(request: GetPerpContractsRequest): RpcReturnType<Promise<GetPerpContractsResponse>, []> {
+        let path = `${this.baseUrl}/trade/perp/contracts?project=${request.project}`
+        const args = request.contracts.map((v) => `contracts=${v}`).join("&")
+        if (args != "") {
+            path += `&${args}`
+        }
+        return this.get<GetPerpContractsResponse>(path)
     }
 
     getOpenPerpOrders(

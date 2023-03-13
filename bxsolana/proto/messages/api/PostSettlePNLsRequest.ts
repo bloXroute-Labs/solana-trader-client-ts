@@ -33,7 +33,7 @@ import {
 export declare namespace $.api {
   export type PostSettlePNLsRequest = {
     ownerAddress: string;
-    settleAccountAddresses: string[];
+    settleeAccountAddresses: string[];
     contract: PerpContract;
     project: Project;
   }
@@ -43,7 +43,7 @@ export type Type = $.api.PostSettlePNLsRequest;
 export function getDefaultValue(): $.api.PostSettlePNLsRequest {
   return {
     ownerAddress: "",
-    settleAccountAddresses: [],
+    settleeAccountAddresses: [],
     contract: "ALL",
     project: "P_UNKNOWN",
   };
@@ -59,7 +59,7 @@ export function createValue(partialValue: Partial<$.api.PostSettlePNLsRequest>):
 export function encodeJson(value: $.api.PostSettlePNLsRequest): unknown {
   const result: any = {};
   if (value.ownerAddress !== undefined) result.ownerAddress = tsValueToJsonValueFns.string(value.ownerAddress);
-  result.settleAccountAddresses = value.settleAccountAddresses.map(value => tsValueToJsonValueFns.string(value));
+  result.settleeAccountAddresses = value.settleeAccountAddresses.map(value => tsValueToJsonValueFns.string(value));
   if (value.contract !== undefined) result.contract = tsValueToJsonValueFns.enum(value.contract);
   if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
   return result;
@@ -68,7 +68,7 @@ export function encodeJson(value: $.api.PostSettlePNLsRequest): unknown {
 export function decodeJson(value: any): $.api.PostSettlePNLsRequest {
   const result = getDefaultValue();
   if (value.ownerAddress !== undefined) result.ownerAddress = jsonValueToTsValueFns.string(value.ownerAddress);
-  result.settleAccountAddresses = value.settleAccountAddresses?.map((value: any) => jsonValueToTsValueFns.string(value)) ?? [];
+  result.settleeAccountAddresses = value.settleeAccountAddresses?.map((value: any) => jsonValueToTsValueFns.string(value)) ?? [];
   if (value.contract !== undefined) result.contract = jsonValueToTsValueFns.enum(value.contract) as PerpContract;
   if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
   return result;
@@ -82,7 +82,7 @@ export function encodeBinary(value: $.api.PostSettlePNLsRequest): Uint8Array {
       [1, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  for (const tsValue of value.settleAccountAddresses) {
+  for (const tsValue of value.settleeAccountAddresses) {
     result.push(
       [2, tsValueToWireValueFns.string(tsValue)],
     );
@@ -117,7 +117,7 @@ export function decodeBinary(binary: Uint8Array): $.api.PostSettlePNLsRequest {
     const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 2).map(([, wireValue]) => wireValue);
     const value = wireValues.map((wireValue) => wireValueToTsValueFns.string(wireValue)).filter(x => x !== undefined);
     if (!value.length) break collection;
-    result.settleAccountAddresses = value as any;
+    result.settleeAccountAddresses = value as any;
   }
   field: {
     const wireValue = wireFields.get(3);
