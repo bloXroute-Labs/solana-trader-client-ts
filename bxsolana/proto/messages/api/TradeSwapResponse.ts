@@ -47,7 +47,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface TradeSwapResponse {
+  export type TradeSwapResponse = {
     project: Project;
     transactions: TransactionMessage[];
     outAmount: number;

@@ -25,7 +25,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface GetPerpPositionsResponse {
+  export type GetPerpPositionsResponse = {
     ownerAddress: string;
     accountAddress: string;
     perpPositions: PerpPosition[];

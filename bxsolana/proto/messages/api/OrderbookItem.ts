@@ -17,7 +17,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface OrderbookItem {
+  export type OrderbookItem = {
     price: number;
     size: number;
     orderID: string;

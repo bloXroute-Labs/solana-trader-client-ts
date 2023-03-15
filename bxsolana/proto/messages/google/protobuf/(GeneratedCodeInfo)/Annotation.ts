@@ -18,7 +18,7 @@ import {
 } from "../../../../runtime/wire/deserialize";
 
 export declare namespace $.google.protobuf.GeneratedCodeInfo {
-  export interface Annotation {
+  export type Annotation = {
     path: number[];
     sourceFile?: string;
     begin?: number;

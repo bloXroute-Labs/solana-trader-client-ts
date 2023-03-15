@@ -9,7 +9,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface GetBlockStreamRequest {}
+  export type GetBlockStreamRequest = {}
 }
 export type Type = $.api.GetBlockStreamRequest;
 

@@ -32,7 +32,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface GetPerpPositionsRequest {
+  export type GetPerpPositionsRequest = {
     project: Project;
     ownerAddress: string;
     accountAddress: string;

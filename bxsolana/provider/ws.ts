@@ -66,9 +66,38 @@ import {
     GetMarketDepthResponse,
     GetMarketDepthsRequest,
     GetMarketDepthsStreamResponse,
+    GetOpenPerpOrdersRequest,
+    GetOpenPerpOrdersResponse,
+    PostClosePerpPositionsResponse,
+    PostClosePerpPositionsRequest,
+    GetUserResponse,
+    GetUserRequest,
+    PostManageCollateralRequest,
+    PostManageCollateralResponse,
+    PostCancelPerpOrderRequest,
+    PostCancelPerpOrderResponse,
+    PostCreateUserRequest,
+    PostCreateUserResponse,
+    PostCancelPerpOrdersRequest,
+    PostCancelPerpOrdersResponse,
+    PostPerpOrderRequest,
+    PostPerpOrderResponse,
+    GetAssetsRequest,
+    GetAssetsResponse,
+    GetPerpContractsRequest,
+    GetPerpContractsResponse,
+    PostSettlePNLRequest,
+    PostSettlePNLResponse,
+    PostSettlePNLsRequest,
+    PostSettlePNLsResponse,
+    PostLiquidatePerpRequest,
+    PostLiquidatePerpResponse,
+    GetPerpPositionsRequest,
+    GetPerpPositionsResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
+import { RpcReturnType } from "../proto/runtime/rpc"
 
 export class WsProvider extends BaseProvider {
     private wsConnection: RpcWsConnection
@@ -379,6 +408,88 @@ export class WsProvider extends BaseProvider {
 
     async getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
         return this.wsConnection.call("GetPrice", request)
+    }
+
+    async postPerpOrder(
+        request: PostPerpOrderRequest
+    ): Promise<PostPerpOrderResponse> {
+        return this.wsConnection.call("PostPerpOrder", request)
+    }
+
+    async getAssets(
+        request: GetAssetsRequest
+    ): RpcReturnType<Promise<GetAssetsResponse>, []> {
+        return this.wsConnection.call("GetAssets", request)
+    }
+
+    async getPerpContracts(
+        request: GetPerpContractsRequest
+    ): RpcReturnType<Promise<GetPerpContractsResponse>, []> {
+        return this.wsConnection.call("GetPerpContracts", request)
+    }
+
+    async postSettlePNL(
+        request: PostSettlePNLRequest
+    ): RpcReturnType<Promise<PostSettlePNLResponse>, []> {
+        return this.wsConnection.call("PostSettlePNL", request)
+    }
+
+    async postSettlePNLs(
+        request: PostSettlePNLsRequest
+    ): RpcReturnType<Promise<PostSettlePNLsResponse>, []> {
+        return this.wsConnection.call("PostSettlePNLs", request)
+    }
+
+    async postLiquidatePerp(
+        request: PostLiquidatePerpRequest
+    ): RpcReturnType<Promise<PostLiquidatePerpResponse>, []> {
+        return this.wsConnection.call("PostLiquidatePerp", request)
+    }
+
+    async getPerpPositions(
+        request: GetPerpPositionsRequest
+    ): Promise<GetPerpPositionsResponse> {
+        return this.wsConnection.call("GetPerpPositions", request)
+    }
+
+    async getOpenPerpOrders(
+        request: GetOpenPerpOrdersRequest
+    ): Promise<GetOpenPerpOrdersResponse> {
+        return await this.wsConnection.call("GetOpenPerpOrders", request)
+    }
+
+    async postCancelPerpOrder(
+        request: PostCancelPerpOrderRequest
+    ): Promise<PostCancelPerpOrderResponse> {
+        return await this.wsConnection.call("PostCancelPerpOrder", request)
+    }
+
+    async postCancelPerpOrders(
+        request: PostCancelPerpOrdersRequest
+    ): Promise<PostCancelPerpOrdersResponse> {
+        return await this.wsConnection.call("PostCancelPerpOrders", request)
+    }
+
+    async postClosePerpPositions(
+        request: PostClosePerpPositionsRequest
+    ): Promise<PostClosePerpPositionsResponse> {
+        return await this.wsConnection.call("PostClosePerpPositions", request)
+    }
+
+    async postCreateUser(
+        request: PostCreateUserRequest
+    ): Promise<PostCreateUserResponse> {
+        return await this.wsConnection.call("PostCreateUser", request)
+    }
+
+    async getUser(request: GetUserRequest): Promise<GetUserResponse> {
+        return await this.wsConnection.call("GetUser", request)
+    }
+
+    async postManageCollateral(
+        request: PostManageCollateralRequest
+    ): Promise<PostManageCollateralResponse> {
+        return await this.wsConnection.call("PostManageCollateral", request)
     }
 
     cancelGetOrderbooksStreamByCount = async (

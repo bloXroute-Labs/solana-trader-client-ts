@@ -24,8 +24,15 @@ import {
     TESTNET_API_GRPC_PORT,
     TESTNET_API_HTTP,
     TESTNET_API_WS,
-    TokenPair,
     WsProvider,
+    GetAssetsRequest,
+    GetAssetsResponse,
+    PostSettlePNLRequest,
+    PostSettlePNLResponse,
+    PostSettlePNLsRequest,
+    PostSettlePNLsResponse,
+    PostLiquidatePerpRequest,
+    PostLiquidatePerpResponse,
 } from "../bxsolana"
 import { Keypair } from "@solana/web3.js"
 import base58 from "bs58"
@@ -34,6 +41,8 @@ import {
     DEVNET_API_GRPC_PORT,
 } from "../bxsolana/utils/constants"
 import { AxiosRequestConfig } from "axios"
+import { RpcReturnType } from "../bxsolana/proto/runtime/rpc"
+import { Type as PerpContract } from "../bxsolana/proto/messages/common/PerpContract"
 
 // if longer examples (placing and canceling transactions, etc. should be run)
 const runLongExamples = process.env.RUN_LIFECYCLE === "true"
@@ -62,8 +71,8 @@ const testOrder: PostOrderRequest = {
 }
 
 const transactionWaitTimeS = 60
-const httpTimeout = 4000
-const httpLongTimeout = 10_000
+const httpTimeout = 30_000
+const httpLongTimeout = 60_000
 
 function delay(milliseconds: number) {
     return new Promise((resolve) => setTimeout(resolve, milliseconds))
@@ -117,6 +126,8 @@ async function http() {
     }
 
     console.info(" ----  HTTP Requests  ----")
+    await runPerpRequests(provider)
+
     await doOrderbookRequests(provider)
     console.info(" ----  HTTP Amm Requests  ----")
     await doAmmRequests(provider)
@@ -236,6 +247,68 @@ async function ws() {
     return
 }
 
+async function runPerpRequests(provider: BaseProvider) {
+    await callGetAssets(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetPerpContracts(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostSettlePNL(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostSettlePNLs(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostLiquidatePerp(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostPerpOrder(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetPerpPositions(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetOpenPerpOrders(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostCancelPerpOrder(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostCancelPerpOrders(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostClosePerpPositions(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostCreateUser(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetUser(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostManageCollateral(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostWithdrawCollateral(provider)
+    console.info(" ")
+    console.info(" ")
+}
+
 async function doOrderbookRequests(provider: BaseProvider) {
     await callGetOrderbook(provider)
     console.info(" ")
@@ -340,7 +413,7 @@ async function doStreams(provider: BaseProvider) {
     console.info(" ")
     console.info(" ")
 
-    await callGetPerpOrderbookStream(provider)
+    // await callGetPerpOrderbookStream(provider)
     console.info(" ")
     console.info(" ")
 }
@@ -372,11 +445,11 @@ async function doAmmStreams(provider: BaseProvider) {
     console.info(" ")
     console.info(" ")
 
-    await callGetPoolsStream(provider)
-    console.info(" ")
-    console.info(" ")
-
     if (runLongExamples) {
+        await callGetPoolsStream(provider)
+        console.info(" ")
+        console.info(" ")
+
         await callGetSwapsStream(provider)
         console.info(" ")
         console.info(" ")
@@ -696,11 +769,195 @@ async function callGetQuotes(provider: BaseProvider) {
 }
 
 async function callGetPerpOrderbook(provider: BaseProvider) {
-    console.info("Retrieving orderbook for SOL-PERP market")
-    const req = await provider.getPerpOrderbook({
-        market: "SOL-PERP",
+    try {
+        console.info("Retrieving orderbook for SOL-PERP market")
+        const req = await provider.getPerpOrderbook({
+            market: "SOL-PERP",
+            project: "P_DRIFT",
+            limit: 5,
+        })
+        console.info(req)
+    } catch (e) {
+        console.info(e)
+    }
+}
+
+async function callGetAssets(provider: BaseProvider) {
+    console.info("get assets")
+    const req = await provider.getAssets({
+        ownerAddress: ownerAddress,
+        accountAddress: ownerAddress,
+        contract: "SOL_PERP",
         project: "P_DRIFT",
-        limit: 5,
+    })
+    console.info(req)
+}
+
+async function callGetPerpContracts(provider: BaseProvider) {
+    console.info("get perp contracts")
+    const req = await provider.getPerpContracts({
+        contracts: ["SOL_PERP"],
+        project: "P_DRIFT",
+    })
+    console.info(req)
+}
+
+async function callPostSettlePNL(provider: BaseProvider) {
+    console.info("post settle pnl")
+    const req = await provider.postSettlePNL({
+        ownerAddress: ownerAddress,
+        settleeAccountAddress: ownerAddress,
+        contract: "SOL_PERP",
+        project: "P_DRIFT",
+    })
+    console.info(req)
+}
+
+async function callPostSettlePNLs(provider: BaseProvider) {
+    console.info("post settle pnls")
+    const req = await provider.postSettlePNLs({
+        ownerAddress: ownerAddress,
+        settleeAccountAddresses: [ownerAddress],
+        contract: "SOL_PERP",
+        project: "P_DRIFT",
+    })
+    console.info(req)
+}
+
+async function callPostLiquidatePerp(provider: BaseProvider) {
+    console.info("post liquidate perp")
+    const req = await provider.postLiquidatePerp({
+        ownerAddress: ownerAddress,
+        settleeAccountAddress: ownerAddress,
+        contract: "SOL_PERP",
+        project: "P_DRIFT",
+        amount: 1,
+    })
+    console.info(req)
+}
+
+async function callPostPerpOrder(provider: BaseProvider) {
+    console.info("post perp order")
+    const req = await provider.postPerpOrder({
+        ownerAddress: ownerAddress,
+        payerAddress: ownerAddress,
+        accountAddress: "",
+        positionSide: "PS_LONG",
+        slippage: 5,
+        type: "POT_LIMIT",
+        contract: "SOL_PERP",
+        project: "P_DRIFT",
+        amount: 1,
+        price: 232,
+        clientOrderID: "1",
+    })
+    console.info(req)
+}
+
+async function callGetPerpPositions(provider: BaseProvider) {
+    console.info("get perp positions for SOL_PERP market")
+    const req = await provider.getPerpPositions({
+        ownerAddress: ownerAddress,
+        accountAddress: "",
+        contracts: ["SOL_PERP"],
+        project: "P_DRIFT",
+    })
+
+    console.info(req)
+}
+
+async function callGetOpenPerpOrders(provider: BaseProvider) {
+    console.info("get open perp orders for SOL_PERP market")
+    const req = await provider.getOpenPerpOrders({
+        ownerAddress: ownerAddress,
+        accountAddress: "",
+        contracts: ["SOL_PERP"],
+        project: "P_DRIFT",
+    })
+
+    console.info(req)
+}
+
+async function callPostCancelPerpOrder(provider: BaseProvider) {
+    console.info("canceling perp order")
+    const req = await provider.postCancelPerpOrder({
+        orderID: "0",
+        clientOrderID: "12",
+        accountAddress: "",
+        ownerAddress: ownerAddress,
+        project: "P_DRIFT",
+        contract: "SOL_PERP",
+    })
+
+    console.info(req)
+}
+
+async function callPostCancelPerpOrders(provider: BaseProvider) {
+    console.info("canceling perp orders")
+    const req = await provider.postCancelPerpOrders({
+        ownerAddress: ownerAddress,
+        accountAddress: "",
+        project: "P_DRIFT",
+        contract: "SOL_PERP",
+    })
+
+    console.info(req)
+}
+
+async function callPostClosePerpPositions(provider: BaseProvider) {
+    console.info("closing perp positions")
+    const req = await provider.postClosePerpPositions({
+        ownerAddress: ownerAddress,
+        project: "P_DRIFT",
+        contracts: ["SOL_PERP"],
+    })
+    console.info(req)
+}
+
+async function callPostCreateUser(provider: BaseProvider) {
+    console.info("creating user")
+    try {
+        const req = await provider.postCreateUser({
+            ownerAddress: ownerAddress,
+            project: "P_DRIFT",
+        })
+        console.info(req)
+    } catch (err) {
+        console.info(err)
+    }
+}
+
+async function callGetUser(provider: BaseProvider) {
+    console.info("getting user")
+    const req = await provider.getUser({
+        ownerAddress: ownerAddress,
+        project: "P_DRIFT",
+    })
+    console.info(req)
+}
+
+async function callPostManageCollateral(provider: BaseProvider) {
+    console.info("depositing perp collateral")
+    const res = await provider.postManageCollateral({
+        ownerAddress: ownerAddress,
+        accountAddress: "",
+        project: "P_DRIFT",
+        amount: 1,
+        type: "PCT_DEPOSIT",
+        token: "PCTK_USDC",
+    })
+    console.info(res)
+}
+
+async function callPostWithdrawCollateral(provider: BaseProvider) {
+    console.info("withdrawing collateral")
+    const req = await provider.postManageCollateral({
+        ownerAddress: ownerAddress,
+        accountAddress: "",
+        project: "P_DRIFT",
+        amount: 1,
+        type: "PCT_WITHDRAWAL",
+        token: "PCTK_USDC",
     })
     console.info(req)
 }

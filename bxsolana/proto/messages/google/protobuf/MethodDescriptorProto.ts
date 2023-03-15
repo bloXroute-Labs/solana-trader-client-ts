@@ -25,7 +25,7 @@ import {
 } from "../../../runtime/wire/deserialize";
 
 export declare namespace $.google.protobuf {
-  export interface MethodDescriptorProto {
+  export type MethodDescriptorProto = {
     name?: string;
     inputType?: string;
     outputType?: string;

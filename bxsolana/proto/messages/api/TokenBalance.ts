@@ -17,10 +17,10 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface TokenBalance {
+  export type TokenBalance = {
     symbol: string;
-    address: string;
-    walletAmount: number;
+    tokenMint: string;
+    settledAmount: number;
     unsettledAmount: number;
     openOrdersAmount: number;
   }
@@ -30,8 +30,8 @@ export type Type = $.api.TokenBalance;
 export function getDefaultValue(): $.api.TokenBalance {
   return {
     symbol: "",
-    address: "",
-    walletAmount: 0,
+    tokenMint: "",
+    settledAmount: 0,
     unsettledAmount: 0,
     openOrdersAmount: 0,
   };
@@ -47,8 +47,8 @@ export function createValue(partialValue: Partial<$.api.TokenBalance>): $.api.To
 export function encodeJson(value: $.api.TokenBalance): unknown {
   const result: any = {};
   if (value.symbol !== undefined) result.symbol = tsValueToJsonValueFns.string(value.symbol);
-  if (value.address !== undefined) result.address = tsValueToJsonValueFns.string(value.address);
-  if (value.walletAmount !== undefined) result.walletAmount = tsValueToJsonValueFns.double(value.walletAmount);
+  if (value.tokenMint !== undefined) result.tokenMint = tsValueToJsonValueFns.string(value.tokenMint);
+  if (value.settledAmount !== undefined) result.settledAmount = tsValueToJsonValueFns.double(value.settledAmount);
   if (value.unsettledAmount !== undefined) result.unsettledAmount = tsValueToJsonValueFns.double(value.unsettledAmount);
   if (value.openOrdersAmount !== undefined) result.openOrdersAmount = tsValueToJsonValueFns.double(value.openOrdersAmount);
   return result;
@@ -57,8 +57,8 @@ export function encodeJson(value: $.api.TokenBalance): unknown {
 export function decodeJson(value: any): $.api.TokenBalance {
   const result = getDefaultValue();
   if (value.symbol !== undefined) result.symbol = jsonValueToTsValueFns.string(value.symbol);
-  if (value.address !== undefined) result.address = jsonValueToTsValueFns.string(value.address);
-  if (value.walletAmount !== undefined) result.walletAmount = jsonValueToTsValueFns.double(value.walletAmount);
+  if (value.tokenMint !== undefined) result.tokenMint = jsonValueToTsValueFns.string(value.tokenMint);
+  if (value.settledAmount !== undefined) result.settledAmount = jsonValueToTsValueFns.double(value.settledAmount);
   if (value.unsettledAmount !== undefined) result.unsettledAmount = jsonValueToTsValueFns.double(value.unsettledAmount);
   if (value.openOrdersAmount !== undefined) result.openOrdersAmount = jsonValueToTsValueFns.double(value.openOrdersAmount);
   return result;
@@ -72,14 +72,14 @@ export function encodeBinary(value: $.api.TokenBalance): Uint8Array {
       [1, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.address !== undefined) {
-    const tsValue = value.address;
+  if (value.tokenMint !== undefined) {
+    const tsValue = value.tokenMint;
     result.push(
       [2, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.walletAmount !== undefined) {
-    const tsValue = value.walletAmount;
+  if (value.settledAmount !== undefined) {
+    const tsValue = value.settledAmount;
     result.push(
       [3, tsValueToWireValueFns.double(tsValue)],
     );
@@ -115,14 +115,14 @@ export function decodeBinary(binary: Uint8Array): $.api.TokenBalance {
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
-    result.address = value;
+    result.tokenMint = value;
   }
   field: {
     const wireValue = wireFields.get(3);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
-    result.walletAmount = value;
+    result.settledAmount = value;
   }
   field: {
     const wireValue = wireFields.get(4);

@@ -29,7 +29,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface ProjectPools {
+  export type ProjectPools = {
     project: Project;
     pools: ProjectPool[];
   }

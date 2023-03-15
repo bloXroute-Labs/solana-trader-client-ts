@@ -68,8 +68,6 @@ import {
     TradeSwapRequest,
     TradeSwapResponse,
     TransactionMessage,
-    CreateUserRequest,
-    CreateUserResponse,
     GetNewPerpOrdersStreamRequest,
     GetNewPerpOrdersStreamResponse,
     GetOpenPerpOrdersRequest,
@@ -86,12 +84,30 @@ import {
     GetUserResponse,
     PostClosePerpPositionsRequest,
     PostClosePerpPositionsResponse,
-    PostDepositCollateralRequest,
-    PostDepositCollateralResponse,
+    PostManageCollateralRequest,
+    PostManageCollateralResponse,
     PostPerpOrderRequest,
     PostPerpOrderResponse,
-    PostWithdrawCollateralRequest,
-    PostWithdrawCollateralResponse,
+    PostCancelPerpOrderRequest,
+    PostCancelPerpOrderResponse,
+    PostCancelPerpOrdersRequest,
+    PostCancelPerpOrdersResponse,
+    PostCreateUserRequest,
+    PostCreateUserResponse,
+    GetTokenAccountsResponse,
+    GetTokenAccountsRequest,
+    GetOpenPerpOrderResponse,
+    GetOpenPerpOrderRequest,
+    GetAssetsRequest,
+    GetAssetsResponse,
+    GetPerpContractsResponse,
+    GetPerpContractsRequest,
+    PostSettlePNLRequest,
+    PostSettlePNLResponse,
+    PostSettlePNLsRequest,
+    PostSettlePNLsResponse,
+    PostLiquidatePerpRequest,
+    PostLiquidatePerpResponse,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -116,52 +132,108 @@ export abstract class BaseProvider implements Api {
             this.privateKey = Keypair.fromSecretKey(base58.decode(privateKey))
         }
     }
+    getOpenPerpOrder(
+        request: GetOpenPerpOrderRequest
+    ): RpcReturnType<Promise<GetOpenPerpOrderResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    getAssets(
+        request: GetAssetsRequest
+    ): RpcReturnType<Promise<GetAssetsResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    getPerpContracts(
+        request: GetPerpContractsRequest
+    ): RpcReturnType<Promise<GetPerpContractsResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postSettlePNL(
+        request: PostSettlePNLRequest
+    ): RpcReturnType<Promise<PostSettlePNLResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postSettlePNLs(
+        request: PostSettlePNLsRequest
+    ): RpcReturnType<Promise<PostSettlePNLsResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postLiquidatePerp(
+        request: PostLiquidatePerpRequest
+    ): RpcReturnType<Promise<PostLiquidatePerpResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
 
     postPerpOrder(
         request: PostPerpOrderRequest
     ): RpcReturnType<Promise<PostPerpOrderResponse>, []> {
         throw new Error("Method not implemented.")
     }
+
     getPerpPositions(
         request: GetPerpPositionsRequest
     ): RpcReturnType<Promise<GetPerpPositionsResponse>, []> {
         throw new Error("Method not implemented.")
     }
+
+    getTokenAccounts(
+        request: GetTokenAccountsRequest
+    ): RpcReturnType<Promise<GetTokenAccountsResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
     getOpenPerpOrders(
         request: GetOpenPerpOrdersRequest
     ): RpcReturnType<Promise<GetOpenPerpOrdersResponse>, []> {
         throw new Error("Method not implemented.")
     }
+
+    postCancelPerpOrder(
+        request: PostCancelPerpOrderRequest
+    ): RpcReturnType<Promise<PostCancelPerpOrderResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postCancelPerpOrders(
+        request: PostCancelPerpOrdersRequest
+    ): RpcReturnType<Promise<PostCancelPerpOrdersResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
     postClosePerpPositions(
         request: PostClosePerpPositionsRequest
     ): RpcReturnType<Promise<PostClosePerpPositionsResponse>, []> {
         throw new Error("Method not implemented.")
     }
+
     getPerpOrderbook(
         request: GetPerpOrderbookRequest
     ): RpcReturnType<Promise<GetPerpOrderbookResponse>, []> {
         throw new Error("Method not implemented.")
     }
-    createUser(
-        request: CreateUserRequest
-    ): RpcReturnType<Promise<CreateUserResponse>, []> {
+
+    postCreateUser(
+        request: PostCreateUserRequest
+    ): RpcReturnType<Promise<PostCreateUserResponse>, []> {
         throw new Error("Method not implemented.")
     }
+
     getUser(
         request: GetUserRequest
     ): RpcReturnType<Promise<GetUserResponse>, []> {
         throw new Error("Method not implemented.")
     }
-    postDepositCollateral(
-        request: PostDepositCollateralRequest
-    ): RpcReturnType<Promise<PostDepositCollateralResponse>, []> {
+
+    postManageCollateral(
+        request: PostManageCollateralRequest
+    ): RpcReturnType<Promise<PostManageCollateralResponse>, []> {
         throw new Error("Method not implemented.")
     }
-    postWithdrawCollateral(
-        request: PostWithdrawCollateralRequest
-    ): RpcReturnType<Promise<PostWithdrawCollateralResponse>, []> {
-        throw new Error("Method not implemented.")
-    }
+
     getPerpOrderbooksStream(
         request: GetPerpOrderbooksRequest
     ): RpcReturnType<
@@ -476,7 +548,7 @@ export abstract class BaseProvider implements Api {
 
         return this.postSubmitBatch({
             entries: entries,
-            SubmitStrategy: submitStrategy,
+            submitStrategy: submitStrategy,
         })
     }
 

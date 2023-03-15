@@ -1,33 +1,34 @@
 import {
-  tsValueToJsonValueFns,
+  Type as TransactionMessage,
+  encodeJson as encodeJson_1,
+  decodeJson as decodeJson_1,
+  encodeBinary as encodeBinary_1,
+  decodeBinary as decodeBinary_1,
+} from "./TransactionMessage";
+import {
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar";
 import {
   WireMessage,
+  WireType,
 } from "../../runtime/wire/index";
 import {
   default as serialize,
 } from "../../runtime/wire/serialize";
 import {
-  tsValueToWireValueFns,
-  wireValueToTsValueFns,
-} from "../../runtime/wire/scalar";
-import {
   default as deserialize,
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface PostPerpOrderResponse {
-    transaction: string;
-    accountAddress: string;
+  export type PostPerpOrderResponse = {
+    transaction?: TransactionMessage;
   }
 }
 export type Type = $.api.PostPerpOrderResponse;
 
 export function getDefaultValue(): $.api.PostPerpOrderResponse {
   return {
-    transaction: "",
-    accountAddress: "",
+    transaction: undefined,
   };
 }
 
@@ -40,15 +41,13 @@ export function createValue(partialValue: Partial<$.api.PostPerpOrderResponse>):
 
 export function encodeJson(value: $.api.PostPerpOrderResponse): unknown {
   const result: any = {};
-  if (value.transaction !== undefined) result.transaction = tsValueToJsonValueFns.string(value.transaction);
-  if (value.accountAddress !== undefined) result.accountAddress = tsValueToJsonValueFns.string(value.accountAddress);
+  if (value.transaction !== undefined) result.transaction = encodeJson_1(value.transaction);
   return result;
 }
 
 export function decodeJson(value: any): $.api.PostPerpOrderResponse {
   const result = getDefaultValue();
-  if (value.transaction !== undefined) result.transaction = jsonValueToTsValueFns.string(value.transaction);
-  if (value.accountAddress !== undefined) result.accountAddress = jsonValueToTsValueFns.string(value.accountAddress);
+  if (value.transaction !== undefined) result.transaction = decodeJson_1(value.transaction);
   return result;
 }
 
@@ -57,13 +56,7 @@ export function encodeBinary(value: $.api.PostPerpOrderResponse): Uint8Array {
   if (value.transaction !== undefined) {
     const tsValue = value.transaction;
     result.push(
-      [1, tsValueToWireValueFns.string(tsValue)],
-    );
-  }
-  if (value.accountAddress !== undefined) {
-    const tsValue = value.accountAddress;
-    result.push(
-      [2, tsValueToWireValueFns.string(tsValue)],
+      [1, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
     );
   }
   return serialize(result);
@@ -76,16 +69,9 @@ export function decodeBinary(binary: Uint8Array): $.api.PostPerpOrderResponse {
   field: {
     const wireValue = wireFields.get(1);
     if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.string(wireValue);
+    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined;
     if (value === undefined) break field;
     result.transaction = value;
-  }
-  field: {
-    const wireValue = wireFields.get(2);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.string(wireValue);
-    if (value === undefined) break field;
-    result.accountAddress = value;
   }
   return result;
 }

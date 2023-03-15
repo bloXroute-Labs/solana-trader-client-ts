@@ -17,7 +17,7 @@ import {
 } from "../../../runtime/wire/deserialize";
 
 export declare namespace $.google.protobuf {
-  export interface Mixin {
+  export type Mixin = {
     name: string;
     root: string;
   }

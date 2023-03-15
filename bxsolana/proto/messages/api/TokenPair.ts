@@ -17,7 +17,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface TokenPair {
+  export type TokenPair = {
     inToken: string;
     outToken: string;
     inAmount: number;

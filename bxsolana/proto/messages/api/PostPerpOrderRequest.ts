@@ -41,14 +41,14 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface PostPerpOrderRequest {
+  export type PostPerpOrderRequest = {
     project: Project;
     ownerAddress: string;
     payerAddress: string;
     contract: PerpContract;
     accountAddress: string;
     positionSide: PerpPositionSide;
-    slippage: string;
+    slippage: number;
     type: PerpOrderType;
     amount: number;
     price: number;
@@ -65,7 +65,7 @@ export function getDefaultValue(): $.api.PostPerpOrderRequest {
     contract: "ALL",
     accountAddress: "",
     positionSide: "PS_UNKNOWN",
-    slippage: "",
+    slippage: 0,
     type: "POT_UNKNOWN",
     amount: 0,
     price: 0,
@@ -88,7 +88,7 @@ export function encodeJson(value: $.api.PostPerpOrderRequest): unknown {
   if (value.contract !== undefined) result.contract = tsValueToJsonValueFns.enum(value.contract);
   if (value.accountAddress !== undefined) result.accountAddress = tsValueToJsonValueFns.string(value.accountAddress);
   if (value.positionSide !== undefined) result.positionSide = tsValueToJsonValueFns.enum(value.positionSide);
-  if (value.slippage !== undefined) result.slippage = tsValueToJsonValueFns.string(value.slippage);
+  if (value.slippage !== undefined) result.slippage = tsValueToJsonValueFns.double(value.slippage);
   if (value.type !== undefined) result.type = tsValueToJsonValueFns.enum(value.type);
   if (value.amount !== undefined) result.amount = tsValueToJsonValueFns.double(value.amount);
   if (value.price !== undefined) result.price = tsValueToJsonValueFns.double(value.price);
@@ -104,7 +104,7 @@ export function decodeJson(value: any): $.api.PostPerpOrderRequest {
   if (value.contract !== undefined) result.contract = jsonValueToTsValueFns.enum(value.contract) as PerpContract;
   if (value.accountAddress !== undefined) result.accountAddress = jsonValueToTsValueFns.string(value.accountAddress);
   if (value.positionSide !== undefined) result.positionSide = jsonValueToTsValueFns.enum(value.positionSide) as PerpPositionSide;
-  if (value.slippage !== undefined) result.slippage = jsonValueToTsValueFns.string(value.slippage);
+  if (value.slippage !== undefined) result.slippage = jsonValueToTsValueFns.double(value.slippage);
   if (value.type !== undefined) result.type = jsonValueToTsValueFns.enum(value.type) as PerpOrderType;
   if (value.amount !== undefined) result.amount = jsonValueToTsValueFns.double(value.amount);
   if (value.price !== undefined) result.price = jsonValueToTsValueFns.double(value.price);
@@ -153,7 +153,7 @@ export function encodeBinary(value: $.api.PostPerpOrderRequest): Uint8Array {
   if (value.slippage !== undefined) {
     const tsValue = value.slippage;
     result.push(
-      [7, tsValueToWireValueFns.string(tsValue)],
+      [7, tsValueToWireValueFns.double(tsValue)],
     );
   }
   if (value.type !== undefined) {
@@ -232,7 +232,7 @@ export function decodeBinary(binary: Uint8Array): $.api.PostPerpOrderRequest {
   field: {
     const wireValue = wireFields.get(7);
     if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.string(wireValue);
+    const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
     result.slippage = value;
   }
