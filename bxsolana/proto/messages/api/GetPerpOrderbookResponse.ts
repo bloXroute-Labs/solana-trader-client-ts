@@ -5,6 +5,11 @@ import {
   num2name,
 } from "../common/PerpContract";
 import {
+  Type as PerpContract,
+  name2num,
+  num2name,
+} from "../common/PerpContract";
+import {
   Type as PerpOrderbookItem,
   encodeJson as encodeJson_1,
   decodeJson as decodeJson_1,

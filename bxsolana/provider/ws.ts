@@ -93,7 +93,7 @@ import {
     PostLiquidatePerpRequest,
     PostLiquidatePerpResponse,
     GetPerpPositionsRequest,
-    GetPerpPositionsResponse,
+    GetPerpPositionsResponse, GetOpenPerpOrderRequest, GetOpenPerpOrderResponse
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -456,6 +456,12 @@ export class WsProvider extends BaseProvider {
         request: GetOpenPerpOrdersRequest
     ): Promise<GetOpenPerpOrdersResponse> {
         return await this.wsConnection.call("GetOpenPerpOrders", request)
+    }
+
+    async getOpenPerpOrder(
+        request: GetOpenPerpOrderRequest
+    ): Promise<GetOpenPerpOrderResponse> {
+        return await this.wsConnection.call("GetOpenPerpOrder", request)
     }
 
     async postCancelPerpOrder(

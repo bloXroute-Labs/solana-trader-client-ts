@@ -502,7 +502,7 @@ export abstract class BaseProvider implements Api {
         }
     }
 
-    private signAndSubmitTx(
+    public signAndSubmitTx(
         transactionMessage: TransactionMessage | undefined,
         skipPreFlight: boolean,
         isCleanup = false

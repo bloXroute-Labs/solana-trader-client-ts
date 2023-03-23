@@ -313,7 +313,7 @@ export class GrpcProvider extends BaseProvider {
     getOpenPerpOrder(
         request: GetOpenPerpOrderRequest
     ): RpcReturnType<Promise<GetOpenPerpOrderResponse>, []> {
-        throw new Error("Method not implemented.")
+        return this.client.getOpenPerpOrder(request)
     }
     getAssets(
         request: GetAssetsRequest

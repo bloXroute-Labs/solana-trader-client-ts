@@ -32,7 +32,7 @@ import {
     PostSettlePNLsRequest,
     PostSettlePNLsResponse,
     PostLiquidatePerpRequest,
-    PostLiquidatePerpResponse,
+    PostLiquidatePerpResponse, TransactionMessage
 } from "../bxsolana"
 import { Keypair } from "@solana/web3.js"
 import base58 from "bs58"
@@ -292,9 +292,29 @@ async function runPerpRequests(provider: BaseProvider) {
     console.info(" ")
     console.info(" ")
 
-    await callPostCreateUser(provider)
-    console.info(" ")
-    console.info(" ")
+    const createUserTx = await provider.postCreateUser({
+        ownerAddress: ownerAddress,
+        project: "P_DRIFT",
+    })
+
+    let txMsg : TransactionMessage = {
+        content: "",
+        isCleanup: false
+    }
+    if (createUserTx.transaction?.content != undefined) {
+        txMsg.content = createUserTx.transaction?.content
+    }
+    const submitResponse = await provider.signAndSubmitTx(
+        txMsg,
+        false,
+    )
+    console.log(submitResponse)
+
+    return {
+        signature: submitResponse.signature,
+    }
+    const req = await provider.submitOrder()
+    console.info(req)
 
     await callGetUser(provider)
     console.info(" ")

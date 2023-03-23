@@ -29,6 +29,7 @@ import {
 export declare namespace $.api {
   export type GetUserRequest = {
     ownerAddress: string;
+    accountAddress: string;
     project: Project;
   }
 }
@@ -38,6 +39,7 @@ export type Type = $.api.GetUserRequest;
 export function getDefaultValue(): $.api.GetUserRequest {
   return {
     ownerAddress: "",
+    accountAddress: "",
     project: "P_UNKNOWN",
   };
 }
@@ -52,6 +54,7 @@ export function createValue(partialValue: Partial<$.api.GetUserRequest>): $.api.
 export function encodeJson(value: $.api.GetUserRequest): unknown {
   const result: any = {};
   if (value.ownerAddress !== undefined) result.ownerAddress = tsValueToJsonValueFns.string(value.ownerAddress);
+  if (value.accountAddress !== undefined) result.accountAddress = tsValueToJsonValueFns.string(value.accountAddress);
   if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
   return result;
 }
@@ -59,6 +62,7 @@ export function encodeJson(value: $.api.GetUserRequest): unknown {
 export function decodeJson(value: any): $.api.GetUserRequest {
   const result = getDefaultValue();
   if (value.ownerAddress !== undefined) result.ownerAddress = jsonValueToTsValueFns.string(value.ownerAddress);
+  if (value.accountAddress !== undefined) result.accountAddress = jsonValueToTsValueFns.string(value.accountAddress);
   if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
   return result;
 }
@@ -71,10 +75,16 @@ export function encodeBinary(value: $.api.GetUserRequest): Uint8Array {
       [1, tsValueToWireValueFns.string(tsValue)],
     );
   }
+  if (value.accountAddress !== undefined) {
+    const tsValue = value.accountAddress;
+    result.push(
+      [2, tsValueToWireValueFns.string(tsValue)],
+    );
+  }
   if (value.project !== undefined) {
     const tsValue = value.project;
     result.push(
-      [2, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
+      [3, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
     );
   }
   return serialize(result);
@@ -93,6 +103,13 @@ export function decodeBinary(binary: Uint8Array): $.api.GetUserRequest {
   }
   field: {
     const wireValue = wireFields.get(2);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.accountAddress = value;
+  }
+  field: {
+    const wireValue = wireFields.get(3);
     if (wireValue === undefined) break field;
     const value = wireValue.type === WireType.Varint ? num2name[wireValue.value[0] as keyof typeof num2name] : undefined;
     if (value === undefined) break field;

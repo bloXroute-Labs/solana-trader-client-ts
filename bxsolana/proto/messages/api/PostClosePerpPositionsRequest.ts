@@ -36,6 +36,7 @@ export declare namespace $.api {
   export type PostClosePerpPositionsRequest = {
     project: Project;
     ownerAddress: string;
+    accountAddress: string;
     contracts: PerpContract[];
   }
 }
@@ -46,6 +47,7 @@ export function getDefaultValue(): $.api.PostClosePerpPositionsRequest {
   return {
     project: "P_UNKNOWN",
     ownerAddress: "",
+    accountAddress: "",
     contracts: [],
   };
 }
@@ -61,6 +63,7 @@ export function encodeJson(value: $.api.PostClosePerpPositionsRequest): unknown 
   const result: any = {};
   if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
   if (value.ownerAddress !== undefined) result.ownerAddress = tsValueToJsonValueFns.string(value.ownerAddress);
+  if (value.accountAddress !== undefined) result.accountAddress = tsValueToJsonValueFns.string(value.accountAddress);
   result.contracts = value.contracts.map(value => tsValueToJsonValueFns.enum(value));
   return result;
 }
@@ -69,6 +72,7 @@ export function decodeJson(value: any): $.api.PostClosePerpPositionsRequest {
   const result = getDefaultValue();
   if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
   if (value.ownerAddress !== undefined) result.ownerAddress = jsonValueToTsValueFns.string(value.ownerAddress);
+  if (value.accountAddress !== undefined) result.accountAddress = jsonValueToTsValueFns.string(value.accountAddress);
   result.contracts = value.contracts?.map((value: any) => jsonValueToTsValueFns.enum(value) as PerpContract) ?? [];
   return result;
 }
@@ -87,9 +91,15 @@ export function encodeBinary(value: $.api.PostClosePerpPositionsRequest): Uint8A
       [2, tsValueToWireValueFns.string(tsValue)],
     );
   }
+  if (value.accountAddress !== undefined) {
+    const tsValue = value.accountAddress;
+    result.push(
+      [3, tsValueToWireValueFns.string(tsValue)],
+    );
+  }
   for (const tsValue of value.contracts) {
     result.push(
-      [3, { type: WireType.Varint as const, value: new Long(name2num_1[tsValue as keyof typeof name2num_1]) }],
+      [4, { type: WireType.Varint as const, value: new Long(name2num_1[tsValue as keyof typeof name2num_1]) }],
     );
   }
   return serialize(result);
@@ -113,8 +123,15 @@ export function decodeBinary(binary: Uint8Array): $.api.PostClosePerpPositionsRe
     if (value === undefined) break field;
     result.ownerAddress = value;
   }
+  field: {
+    const wireValue = wireFields.get(3);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.accountAddress = value;
+  }
   collection: {
-    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 3).map(([, wireValue]) => wireValue);
+    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 4).map(([, wireValue]) => wireValue);
     const value = Array.from(unpackFns.int32(wireValues)).map(num => num2name_1[num as keyof typeof num2name_1]);
     if (!value.length) break collection;
     result.contracts = value as any;
