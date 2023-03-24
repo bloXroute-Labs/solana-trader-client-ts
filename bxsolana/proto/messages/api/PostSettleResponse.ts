@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as TransactionMessage,
   encodeJson as encodeJson_1,
@@ -24,6 +25,7 @@ export declare namespace $.api {
     transaction?: TransactionMessage;
   }
 }
+
 export type Type = $.api.PostSettleResponse;
 
 export function getDefaultValue(): $.api.PostSettleResponse {

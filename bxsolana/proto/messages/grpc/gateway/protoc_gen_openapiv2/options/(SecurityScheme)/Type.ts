@@ -1,3 +1,4 @@
+// @ts-nocheck
 export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options.SecurityScheme {
   export type Type =
     | "TYPE_INVALID"
@@ -5,6 +6,7 @@ export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options.SecuritySch
     | "TYPE_API_KEY"
     | "TYPE_OAUTH2";
 }
+
 export type Type = $.grpc.gateway.protoc_gen_openapiv2.options.SecurityScheme.Type;
 
 export const num2name = {

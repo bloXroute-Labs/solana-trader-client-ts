@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as HttpRule,
   encodeJson as encodeJson_1,
@@ -30,6 +31,7 @@ export declare namespace $.google.api {
     fullyDecodeReservedExpansion: boolean;
   }
 }
+
 export type Type = $.google.api.Http;
 
 export function getDefaultValue(): $.google.api.Http {

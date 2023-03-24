@@ -1,7 +1,13 @@
+// @ts-nocheck
 import {
-  Type as Project,
+  Type as PerpContract,
   name2num,
   num2name,
+} from "../common/PerpContract";
+import {
+  Type as Project,
+  name2num as name2num_1,
+  num2name as num2name_1,
 } from "./Project";
 import {
   tsValueToJsonValueFns,
@@ -15,28 +21,30 @@ import {
   default as serialize,
 } from "../../runtime/wire/serialize";
 import {
-  tsValueToWireValueFns,
-  wireValueToTsValueFns,
-} from "../../runtime/wire/scalar";
-import {
   default as Long,
 } from "../../runtime/Long";
+import {
+  tsValueToWireValueFns,
+  unpackFns,
+  wireValueToTsValueFns,
+} from "../../runtime/wire/scalar";
 import {
   default as deserialize,
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
   export type GetPerpOrderbooksRequest = {
-    markets: string[];
+    contracts: PerpContract[];
     limit: number;
     project: Project;
   }
 }
+
 export type Type = $.api.GetPerpOrderbooksRequest;
 
 export function getDefaultValue(): $.api.GetPerpOrderbooksRequest {
   return {
-    markets: [],
+    contracts: [],
     limit: 0,
     project: "P_UNKNOWN",
   };
@@ -51,7 +59,7 @@ export function createValue(partialValue: Partial<$.api.GetPerpOrderbooksRequest
 
 export function encodeJson(value: $.api.GetPerpOrderbooksRequest): unknown {
   const result: any = {};
-  result.markets = value.markets.map(value => tsValueToJsonValueFns.string(value));
+  result.contracts = value.contracts.map(value => tsValueToJsonValueFns.enum(value));
   if (value.limit !== undefined) result.limit = tsValueToJsonValueFns.uint32(value.limit);
   if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
   return result;
@@ -59,7 +67,7 @@ export function encodeJson(value: $.api.GetPerpOrderbooksRequest): unknown {
 
 export function decodeJson(value: any): $.api.GetPerpOrderbooksRequest {
   const result = getDefaultValue();
-  result.markets = value.markets?.map((value: any) => jsonValueToTsValueFns.string(value)) ?? [];
+  result.contracts = value.contracts?.map((value: any) => jsonValueToTsValueFns.enum(value) as PerpContract) ?? [];
   if (value.limit !== undefined) result.limit = jsonValueToTsValueFns.uint32(value.limit);
   if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
   return result;
@@ -67,9 +75,9 @@ export function decodeJson(value: any): $.api.GetPerpOrderbooksRequest {
 
 export function encodeBinary(value: $.api.GetPerpOrderbooksRequest): Uint8Array {
   const result: WireMessage = [];
-  for (const tsValue of value.markets) {
+  for (const tsValue of value.contracts) {
     result.push(
-      [1, tsValueToWireValueFns.string(tsValue)],
+      [1, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
     );
   }
   if (value.limit !== undefined) {
@@ -81,7 +89,7 @@ export function encodeBinary(value: $.api.GetPerpOrderbooksRequest): Uint8Array 
   if (value.project !== undefined) {
     const tsValue = value.project;
     result.push(
-      [3, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
+      [3, { type: WireType.Varint as const, value: new Long(name2num_1[tsValue as keyof typeof name2num_1]) }],
     );
   }
   return serialize(result);
@@ -93,9 +101,9 @@ export function decodeBinary(binary: Uint8Array): $.api.GetPerpOrderbooksRequest
   const wireFields = new Map(wireMessage);
   collection: {
     const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 1).map(([, wireValue]) => wireValue);
-    const value = wireValues.map((wireValue) => wireValueToTsValueFns.string(wireValue)).filter(x => x !== undefined);
+    const value = Array.from(unpackFns.int32(wireValues)).map(num => num2name[num as keyof typeof num2name]);
     if (!value.length) break collection;
-    result.markets = value as any;
+    result.contracts = value as any;
   }
   field: {
     const wireValue = wireFields.get(2);
@@ -107,7 +115,7 @@ export function decodeBinary(binary: Uint8Array): $.api.GetPerpOrderbooksRequest
   field: {
     const wireValue = wireFields.get(3);
     if (wireValue === undefined) break field;
-    const value = wireValue.type === WireType.Varint ? num2name[wireValue.value[0] as keyof typeof num2name] : undefined;
+    const value = wireValue.type === WireType.Varint ? num2name_1[wireValue.value[0] as keyof typeof num2name_1] : undefined;
     if (value === undefined) break field;
     result.project = value;
   }

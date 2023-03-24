@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as TokenAccount,
   encodeJson as encodeJson_1,
@@ -24,6 +25,7 @@ export declare namespace $.api {
     accounts: TokenAccount[];
   }
 }
+
 export type Type = $.api.GetTokenAccountsResponse;
 
 export function getDefaultValue(): $.api.GetTokenAccountsResponse {

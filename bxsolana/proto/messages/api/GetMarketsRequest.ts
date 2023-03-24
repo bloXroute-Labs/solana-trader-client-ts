@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   WireMessage,
 } from "../../runtime/wire/index";
@@ -11,6 +12,7 @@ import {
 export declare namespace $.api {
   export type GetMarketsRequest = {}
 }
+
 export type Type = $.api.GetMarketsRequest;
 
 export function getDefaultValue(): $.api.GetMarketsRequest {

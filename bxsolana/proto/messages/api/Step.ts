@@ -1,3 +1,4 @@
+// @ts-nocheck
 export declare namespace $.api {
   export type Step =
     | "STEP0"
@@ -5,6 +6,7 @@ export declare namespace $.api {
     | "STEP2"
     | "STEP3";
 }
+
 export type Type = $.api.Step;
 
 export const num2name = {

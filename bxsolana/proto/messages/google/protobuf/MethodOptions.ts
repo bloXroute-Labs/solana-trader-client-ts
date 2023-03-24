@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as IdempotencyLevel,
   name2num,
@@ -39,12 +40,13 @@ export declare namespace $.google.protobuf {
     uninterpretedOption: UninterpretedOption[];
   }
 }
+
 export type Type = $.google.protobuf.MethodOptions;
 
 export function getDefaultValue(): $.google.protobuf.MethodOptions {
   return {
-    deprecated: false,
-    idempotencyLevel: "IDEMPOTENCY_UNKNOWN",
+    deprecated: undefined,
+    idempotencyLevel: undefined,
     uninterpretedOption: [],
   };
 }

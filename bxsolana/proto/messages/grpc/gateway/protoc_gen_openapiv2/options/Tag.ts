@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as ExternalDocumentation,
   encodeJson as encodeJson_1,
@@ -31,6 +32,7 @@ export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options {
     name: string;
   }
 }
+
 export type Type = $.grpc.gateway.protoc_gen_openapiv2.options.Tag;
 
 export function getDefaultValue(): $.grpc.gateway.protoc_gen_openapiv2.options.Tag {

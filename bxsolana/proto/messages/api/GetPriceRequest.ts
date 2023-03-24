@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -21,6 +22,7 @@ export declare namespace $.api {
     tokens: string[];
   }
 }
+
 export type Type = $.api.GetPriceRequest;
 
 export function getDefaultValue(): $.api.GetPriceRequest {

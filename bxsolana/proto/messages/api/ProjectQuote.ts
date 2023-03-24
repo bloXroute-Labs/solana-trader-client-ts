@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as Project,
   name2num,
@@ -34,6 +35,7 @@ export declare namespace $.api {
     routes: QuoteRoute[];
   }
 }
+
 export type Type = $.api.ProjectQuote;
 
 export function getDefaultValue(): $.api.ProjectQuote {

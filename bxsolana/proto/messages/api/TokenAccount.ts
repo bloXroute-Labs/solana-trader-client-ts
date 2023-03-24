@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -24,6 +25,7 @@ export declare namespace $.api {
     amount: number;
   }
 }
+
 export type Type = $.api.TokenAccount;
 
 export function getDefaultValue(): $.api.TokenAccount {

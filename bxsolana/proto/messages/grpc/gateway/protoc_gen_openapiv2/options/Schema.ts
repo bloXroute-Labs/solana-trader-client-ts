@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as JSONSchema,
   encodeJson as encodeJson_1,
@@ -40,6 +41,7 @@ export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options {
     example: string;
   }
 }
+
 export type Type = $.grpc.gateway.protoc_gen_openapiv2.options.Schema;
 
 export function getDefaultValue(): $.grpc.gateway.protoc_gen_openapiv2.options.Schema {

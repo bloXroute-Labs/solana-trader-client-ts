@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -28,6 +29,7 @@ export declare namespace $.api {
     token2MintSymbol: string;
   }
 }
+
 export type Type = $.api.ProjectPool;
 
 export function getDefaultValue(): $.api.ProjectPool {

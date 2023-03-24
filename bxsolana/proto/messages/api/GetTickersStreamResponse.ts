@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as GetTickersResponse,
   encodeJson as encodeJson_1,
@@ -30,6 +31,7 @@ export declare namespace $.api {
     ticker?: GetTickersResponse;
   }
 }
+
 export type Type = $.api.GetTickersStreamResponse;
 
 export function getDefaultValue(): $.api.GetTickersStreamResponse {

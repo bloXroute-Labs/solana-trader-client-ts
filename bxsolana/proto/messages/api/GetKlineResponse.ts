@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as Timestamp,
   encodeJson as encodeJson_1,
@@ -38,6 +39,7 @@ export declare namespace $.api {
     candles: Candle[];
   }
 }
+
 export type Type = $.api.GetKlineResponse;
 
 export function getDefaultValue(): $.api.GetKlineResponse {

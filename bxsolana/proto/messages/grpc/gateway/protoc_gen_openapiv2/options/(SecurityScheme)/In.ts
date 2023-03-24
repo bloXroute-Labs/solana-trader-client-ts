@@ -1,9 +1,11 @@
+// @ts-nocheck
 export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options.SecurityScheme {
   export type In =
     | "IN_INVALID"
     | "IN_QUERY"
     | "IN_HEADER";
 }
+
 export type Type = $.grpc.gateway.protoc_gen_openapiv2.options.SecurityScheme.In;
 
 export const num2name = {

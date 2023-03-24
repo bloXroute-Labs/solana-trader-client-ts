@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as TransactionMessage,
   encodeJson as encodeJson_1,
@@ -30,6 +31,7 @@ export declare namespace $.api {
     skipPreFlight: boolean;
   }
 }
+
 export type Type = $.api.PostSubmitRequest;
 
 export function getDefaultValue(): $.api.PostSubmitRequest {

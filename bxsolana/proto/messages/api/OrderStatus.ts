@@ -1,3 +1,4 @@
+// @ts-nocheck
 export declare namespace $.api {
   export type OrderStatus =
     | "OS_UNKNOWN"
@@ -6,6 +7,7 @@ export declare namespace $.api {
     | "OS_CANCELLED"
     | "OS_FILLED";
 }
+
 export type Type = $.api.OrderStatus;
 
 export const num2name = {

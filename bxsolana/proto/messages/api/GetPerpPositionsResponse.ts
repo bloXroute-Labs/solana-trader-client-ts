@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as PerpPosition,
   encodeJson as encodeJson_1,
@@ -31,6 +32,7 @@ export declare namespace $.api {
     perpPositions: PerpPosition[];
   }
 }
+
 export type Type = $.api.GetPerpPositionsResponse;
 
 export function getDefaultValue(): $.api.GetPerpPositionsResponse {

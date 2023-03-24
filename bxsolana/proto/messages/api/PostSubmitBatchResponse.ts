@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as PostSubmitBatchResponseEntry,
   encodeJson as encodeJson_1,
@@ -24,6 +25,7 @@ export declare namespace $.api {
     transactions: PostSubmitBatchResponseEntry[];
   }
 }
+
 export type Type = $.api.PostSubmitBatchResponse;
 
 export function getDefaultValue(): $.api.PostSubmitBatchResponse {

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -21,6 +22,7 @@ export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options.SecurityReq
     scope: string[];
   }
 }
+
 export type Type = $.grpc.gateway.protoc_gen_openapiv2.options.SecurityRequirement.SecurityRequirementValue;
 
 export function getDefaultValue(): $.grpc.gateway.protoc_gen_openapiv2.options.SecurityRequirement.SecurityRequirementValue {

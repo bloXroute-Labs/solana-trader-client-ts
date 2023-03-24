@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as Timestamp,
   encodeJson as encodeJson_1,
@@ -33,6 +34,7 @@ export declare namespace $.api {
     limit: number;
   }
 }
+
 export type Type = $.api.GetKlineRequest;
 
 export function getDefaultValue(): $.api.GetKlineRequest {

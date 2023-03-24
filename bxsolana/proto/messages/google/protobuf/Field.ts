@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as Kind,
   name2num,
@@ -51,6 +52,7 @@ export declare namespace $.google.protobuf {
     defaultValue: string;
   }
 }
+
 export type Type = $.google.protobuf.Field;
 
 export function getDefaultValue(): $.google.protobuf.Field {

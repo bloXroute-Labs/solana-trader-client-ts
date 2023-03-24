@@ -1,3 +1,4 @@
+// @ts-nocheck
 export declare namespace $.google.protobuf.Field {
   export type Kind =
     | "TYPE_UNKNOWN"
@@ -20,6 +21,7 @@ export declare namespace $.google.protobuf.Field {
     | "TYPE_SINT32"
     | "TYPE_SINT64";
 }
+
 export type Type = $.google.protobuf.Field.Kind;
 
 export const num2name = {

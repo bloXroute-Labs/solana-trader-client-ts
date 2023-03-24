@@ -1,3 +1,4 @@
+// @ts-nocheck
 export declare namespace $.google.protobuf.FileOptions {
   export type OptimizeMode =
     | "UNSPECIFIED"
@@ -5,6 +6,7 @@ export declare namespace $.google.protobuf.FileOptions {
     | "CODE_SIZE"
     | "LITE_RUNTIME";
 }
+
 export type Type = $.google.protobuf.FileOptions.OptimizeMode;
 
 export const num2name = {

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as Project,
   name2num,
@@ -39,6 +40,7 @@ export declare namespace $.api {
     steps: RouteStep[];
   }
 }
+
 export type Type = $.api.RouteTradeSwapRequest;
 
 export function getDefaultValue(): $.api.RouteTradeSwapRequest {

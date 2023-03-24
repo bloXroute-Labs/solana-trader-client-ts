@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -23,6 +24,7 @@ export declare namespace $.api {
     valuation: number;
   }
 }
+
 export type Type = $.api.Asset;
 
 export function getDefaultValue(): $.api.Asset {

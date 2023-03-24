@@ -1,3 +1,4 @@
+// @ts-nocheck
 export declare namespace $.common {
   export type PerpOrderType =
     | "POT_UNKNOWN"
@@ -6,6 +7,7 @@ export declare namespace $.common {
     | "POT_TRIGGER_MARKET"
     | "POT_TRIGGER_LIMIT";
 }
+
 export type Type = $.common.PerpOrderType;
 
 export const num2name = {

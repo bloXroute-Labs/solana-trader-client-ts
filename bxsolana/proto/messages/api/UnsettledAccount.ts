@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as UnsettledAccountToken,
   encodeJson as encodeJson_1,
@@ -31,6 +32,7 @@ export declare namespace $.api {
     quoteToken?: UnsettledAccountToken;
   }
 }
+
 export type Type = $.api.UnsettledAccount;
 
 export function getDefaultValue(): $.api.UnsettledAccount {

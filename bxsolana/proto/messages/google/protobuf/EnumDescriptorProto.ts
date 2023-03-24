@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as EnumValueDescriptorProto,
   encodeJson as encodeJson_1,
@@ -47,11 +48,12 @@ export declare namespace $.google.protobuf {
     reservedName: string[];
   }
 }
+
 export type Type = $.google.protobuf.EnumDescriptorProto;
 
 export function getDefaultValue(): $.google.protobuf.EnumDescriptorProto {
   return {
-    name: "",
+    name: undefined,
     value: [],
     options: undefined,
     reservedRange: [],

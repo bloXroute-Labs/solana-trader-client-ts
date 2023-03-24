@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -22,6 +23,7 @@ export declare namespace $.google.protobuf.UninterpretedOption {
     isExtension: boolean;
   }
 }
+
 export type Type = $.google.protobuf.UninterpretedOption.NamePart;
 
 export function getDefaultValue(): $.google.protobuf.UninterpretedOption.NamePart {

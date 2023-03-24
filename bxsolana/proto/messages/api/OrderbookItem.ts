@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -25,6 +26,7 @@ export declare namespace $.api {
     ownerAddress: string;
   }
 }
+
 export type Type = $.api.OrderbookItem;
 
 export function getDefaultValue(): $.api.OrderbookItem {

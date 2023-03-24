@@ -1,3 +1,4 @@
+// @ts-nocheck
 export type { Type as OrderType } from "./OrderType";
 export type { Type as PerpOrderType } from "./PerpOrderType";
 export type { Type as PerpPositionSide } from "./PerpPositionSide";

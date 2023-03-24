@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as Option,
   encodeJson as encodeJson_1,
@@ -31,6 +32,7 @@ export declare namespace $.google.protobuf {
     options: Option[];
   }
 }
+
 export type Type = $.google.protobuf.EnumValue;
 
 export function getDefaultValue(): $.google.protobuf.EnumValue {

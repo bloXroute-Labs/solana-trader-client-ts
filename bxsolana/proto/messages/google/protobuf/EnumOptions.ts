@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as UninterpretedOption,
   encodeJson as encodeJson_1,
@@ -31,12 +32,13 @@ export declare namespace $.google.protobuf {
     uninterpretedOption: UninterpretedOption[];
   }
 }
+
 export type Type = $.google.protobuf.EnumOptions;
 
 export function getDefaultValue(): $.google.protobuf.EnumOptions {
   return {
-    allowAlias: false,
-    deprecated: false,
+    allowAlias: undefined,
+    deprecated: undefined,
     uninterpretedOption: [],
   };
 }

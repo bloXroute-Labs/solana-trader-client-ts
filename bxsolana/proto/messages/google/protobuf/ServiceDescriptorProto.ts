@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as MethodDescriptorProto,
   encodeJson as encodeJson_1,
@@ -38,11 +39,12 @@ export declare namespace $.google.protobuf {
     options?: ServiceOptions;
   }
 }
+
 export type Type = $.google.protobuf.ServiceDescriptorProto;
 
 export function getDefaultValue(): $.google.protobuf.ServiceDescriptorProto {
   return {
-    name: "",
+    name: undefined,
     method: [],
     options: undefined,
   };

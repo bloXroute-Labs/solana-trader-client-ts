@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as ExtensionRangeOptions,
   encodeJson as encodeJson_1,
@@ -31,12 +32,13 @@ export declare namespace $.google.protobuf.DescriptorProto {
     options?: ExtensionRangeOptions;
   }
 }
+
 export type Type = $.google.protobuf.DescriptorProto.ExtensionRange;
 
 export function getDefaultValue(): $.google.protobuf.DescriptorProto.ExtensionRange {
   return {
-    start: 0,
-    end: 0,
+    start: undefined,
+    end: undefined,
     options: undefined,
   };
 }
