@@ -72,7 +72,9 @@ import {
     PostPerpOrderRequest,
     PostPerpOrderResponse,
     GetPerpPositionsRequest,
-    GetPerpPositionsResponse, GetOpenPerpOrderRequest, GetOpenPerpOrderResponse
+    GetPerpPositionsResponse,
+    GetOpenPerpOrderRequest,
+    GetOpenPerpOrderResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"

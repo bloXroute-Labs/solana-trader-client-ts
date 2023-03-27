@@ -32,7 +32,8 @@ import {
     PostSettlePNLsRequest,
     PostSettlePNLsResponse,
     PostLiquidatePerpRequest,
-    PostLiquidatePerpResponse, TransactionMessage
+    PostLiquidatePerpResponse,
+    TransactionMessage,
 } from "../bxsolana"
 import { Keypair } from "@solana/web3.js"
 import base58 from "bs58"
@@ -813,7 +814,9 @@ async function callPostSettlePNLs(provider: BaseProvider) {
     console.info("post settle pnls")
     const req = await provider.postSettlePNLs({
         ownerAddress: ownerAddress,
-        settleeAccountAddresses: ["9UnwdvTf5EfGeLyLrF4GZDUs7LKRUeJQzW7qsDVGQ8sS"],
+        settleeAccountAddresses: [
+            "9UnwdvTf5EfGeLyLrF4GZDUs7LKRUeJQzW7qsDVGQ8sS",
+        ],
         contract: "SOL_PERP",
         project: "P_DRIFT",
     })

@@ -93,7 +93,9 @@ import {
     PostLiquidatePerpRequest,
     PostLiquidatePerpResponse,
     GetPerpPositionsRequest,
-    GetPerpPositionsResponse, GetOpenPerpOrderRequest, GetOpenPerpOrderResponse
+    GetPerpPositionsResponse,
+    GetOpenPerpOrderRequest,
+    GetOpenPerpOrderResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
