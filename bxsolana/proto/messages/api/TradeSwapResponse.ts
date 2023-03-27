@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as Project,
   name2num,
@@ -56,6 +57,7 @@ export declare namespace $.api {
     fees: Fee[];
   }
 }
+
 export type Type = $.api.TradeSwapResponse;
 
 export function getDefaultValue(): $.api.TradeSwapResponse {

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -25,14 +26,15 @@ export declare namespace $.google.protobuf.GeneratedCodeInfo {
     end?: number;
   }
 }
+
 export type Type = $.google.protobuf.GeneratedCodeInfo.Annotation;
 
 export function getDefaultValue(): $.google.protobuf.GeneratedCodeInfo.Annotation {
   return {
     path: [],
-    sourceFile: "",
-    begin: 0,
-    end: 0,
+    sourceFile: undefined,
+    begin: undefined,
+    end: undefined,
   };
 }
 

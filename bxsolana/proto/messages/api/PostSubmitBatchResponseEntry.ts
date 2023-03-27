@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -23,6 +24,7 @@ export declare namespace $.api {
     submitted: boolean;
   }
 }
+
 export type Type = $.api.PostSubmitBatchResponseEntry;
 
 export function getDefaultValue(): $.api.PostSubmitBatchResponseEntry {

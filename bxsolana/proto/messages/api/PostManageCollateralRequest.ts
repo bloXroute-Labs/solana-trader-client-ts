@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as Project,
   name2num,
@@ -45,6 +46,7 @@ export declare namespace $.api {
     token: PerpCollateralToken;
   }
 }
+
 export type Type = $.api.PostManageCollateralRequest;
 
 export function getDefaultValue(): $.api.PostManageCollateralRequest {

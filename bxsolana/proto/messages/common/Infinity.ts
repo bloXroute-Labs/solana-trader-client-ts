@@ -1,9 +1,11 @@
+// @ts-nocheck
 export declare namespace $.common {
   export type Infinity =
     | "INF_NOT"
     | "INF_POSITIVE"
     | "INF_NEGATIVE";
 }
+
 export type Type = $.common.Infinity;
 
 export const num2name = {

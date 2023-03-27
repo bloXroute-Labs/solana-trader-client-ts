@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -24,6 +25,7 @@ export declare namespace $.api {
     height: string;
   }
 }
+
 export type Type = $.api.Block;
 
 export function getDefaultValue(): $.api.Block {

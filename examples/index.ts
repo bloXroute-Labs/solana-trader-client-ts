@@ -772,7 +772,7 @@ async function callGetPerpOrderbook(provider: BaseProvider) {
     try {
         console.info("Retrieving orderbook for SOL-PERP market")
         const req = await provider.getPerpOrderbook({
-            market: "SOL-PERP",
+            contract: "SOL_PERP",
             project: "P_DRIFT",
             limit: 5,
         })
@@ -1158,7 +1158,7 @@ async function callGetRecentBlockHashStream(provider: BaseProvider) {
 async function callGetPerpOrderbookStream(provider: BaseProvider) {
     console.info("Subscribing for orderbook updates of SOL-PERP market")
     const req = await provider.getPerpOrderbooksStream({
-        markets: ["SOL-PERP"],
+        contracts: ["SOL_PERP"],
         project: "P_DRIFT",
         limit: 0,
     })

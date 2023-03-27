@@ -1,8 +1,10 @@
+// @ts-nocheck
 export declare namespace $.common {
   export type PerpCollateralType =
     | "PCT_DEPOSIT"
     | "PCT_WITHDRAWAL";
 }
+
 export type Type = $.common.PerpCollateralType;
 
 export const num2name = {

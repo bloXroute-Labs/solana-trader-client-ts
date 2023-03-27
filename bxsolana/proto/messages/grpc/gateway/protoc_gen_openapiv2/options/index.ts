@@ -1,3 +1,4 @@
+// @ts-nocheck
 export type { Type as Scheme } from "./Scheme";
 export type { Type as Swagger } from "./Swagger";
 export type { Type as Operation } from "./Operation";

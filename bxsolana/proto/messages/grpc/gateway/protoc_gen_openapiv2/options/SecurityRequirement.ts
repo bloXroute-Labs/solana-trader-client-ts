@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as SecurityRequirementValue,
   encodeJson as encodeJson_1,
@@ -28,6 +29,7 @@ export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options {
     securityRequirement: Map<string, SecurityRequirementValue>;
   }
 }
+
 export type Type = $.grpc.gateway.protoc_gen_openapiv2.options.SecurityRequirement;
 
 export function getDefaultValue(): $.grpc.gateway.protoc_gen_openapiv2.options.SecurityRequirement {

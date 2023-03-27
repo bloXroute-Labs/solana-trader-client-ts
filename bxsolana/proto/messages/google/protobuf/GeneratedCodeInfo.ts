@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as Annotation,
   encodeJson as encodeJson_1,
@@ -24,6 +25,7 @@ export declare namespace $.google.protobuf {
     annotation: Annotation[];
   }
 }
+
 export type Type = $.google.protobuf.GeneratedCodeInfo;
 
 export function getDefaultValue(): $.google.protobuf.GeneratedCodeInfo {

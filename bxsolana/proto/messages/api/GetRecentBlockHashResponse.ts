@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -21,6 +22,7 @@ export declare namespace $.api {
     blockHash: string;
   }
 }
+
 export type Type = $.api.GetRecentBlockHashResponse;
 
 export function getDefaultValue(): $.api.GetRecentBlockHashResponse {

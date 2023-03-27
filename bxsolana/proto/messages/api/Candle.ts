@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as Timestamp,
   encodeJson as encodeJson_1,
@@ -37,6 +38,7 @@ export declare namespace $.api {
     count: number;
   }
 }
+
 export type Type = $.api.Candle;
 
 export function getDefaultValue(): $.api.Candle {

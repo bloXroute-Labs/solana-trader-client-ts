@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as ContractInfo,
   encodeJson as encodeJson_1,
@@ -24,6 +25,7 @@ export declare namespace $.api {
     contracts: ContractInfo[];
   }
 }
+
 export type Type = $.api.GetPerpContractsResponse;
 
 export function getDefaultValue(): $.api.GetPerpContractsResponse {

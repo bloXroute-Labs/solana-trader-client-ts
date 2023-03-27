@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as Struct,
   encodeJson as encodeJson_1,
@@ -51,6 +52,7 @@ export declare namespace $.google.protobuf {
   );
   }
 }
+
 export type Type = $.google.protobuf.Value;
 
 export function getDefaultValue(): $.google.protobuf.Value {
@@ -157,17 +159,10 @@ export function encodeBinary(value: $.google.protobuf.Value): Uint8Array {
   return serialize(result);
 }
 
-const fieldNames: Map<number, string> = new Map([
-  [1, "nullValue"],
-  [2, "numberValue"],
-  [3, "stringValue"],
-  [4, "boolValue"],
-  [5, "structValue"],
-  [6, "listValue"],
-]);
 const oneofFieldNumbersMap: { [oneof: string]: Set<number> } = {
   kind: new Set([1, 2, 3, 4, 5, 6]),
 };
+
 const oneofFieldNamesMap = {
   kind: new Map([
     [1, "nullValue" as const],
@@ -178,6 +173,7 @@ const oneofFieldNamesMap = {
     [6, "listValue" as const],
   ]),
 };
+
 export function decodeBinary(binary: Uint8Array): $.google.protobuf.Value {
   const result = getDefaultValue();
   const wireMessage = deserialize(binary);

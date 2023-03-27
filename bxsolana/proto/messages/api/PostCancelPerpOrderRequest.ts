@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as Project,
   name2num,
@@ -40,6 +41,7 @@ export declare namespace $.api {
     accountAddress: string;
   }
 }
+
 export type Type = $.api.PostCancelPerpOrderRequest;
 
 export function getDefaultValue(): $.api.PostCancelPerpOrderRequest {

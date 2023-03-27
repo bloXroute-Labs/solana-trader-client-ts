@@ -1,3 +1,4 @@
+// @ts-nocheck
 export declare namespace $.google.protobuf.Field {
   export type Cardinality =
     | "CARDINALITY_UNKNOWN"
@@ -5,6 +6,7 @@ export declare namespace $.google.protobuf.Field {
     | "CARDINALITY_REQUIRED"
     | "CARDINALITY_REPEATED";
 }
+
 export type Type = $.google.protobuf.Field.Cardinality;
 
 export const num2name = {

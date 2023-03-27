@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -22,6 +23,7 @@ export declare namespace $.google.protobuf {
     root: string;
   }
 }
+
 export type Type = $.google.protobuf.Mixin;
 
 export function getDefaultValue(): $.google.protobuf.Mixin {

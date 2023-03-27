@@ -1,8 +1,10 @@
+// @ts-nocheck
 export declare namespace $.google.protobuf {
   export type Syntax =
     | "SYNTAX_PROTO2"
     | "SYNTAX_PROTO3";
 }
+
 export type Type = $.google.protobuf.Syntax;
 
 export const num2name = {

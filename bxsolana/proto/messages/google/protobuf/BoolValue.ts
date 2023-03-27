@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -21,6 +22,7 @@ export declare namespace $.google.protobuf {
     value: boolean;
   }
 }
+
 export type Type = $.google.protobuf.BoolValue;
 
 export function getDefaultValue(): $.google.protobuf.BoolValue {

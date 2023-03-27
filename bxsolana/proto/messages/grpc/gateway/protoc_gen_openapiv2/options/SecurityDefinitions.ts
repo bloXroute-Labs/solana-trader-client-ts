@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as SecurityScheme,
   encodeJson as encodeJson_1,
@@ -28,6 +29,7 @@ export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options {
     security: Map<string, SecurityScheme>;
   }
 }
+
 export type Type = $.grpc.gateway.protoc_gen_openapiv2.options.SecurityDefinitions;
 
 export function getDefaultValue(): $.grpc.gateway.protoc_gen_openapiv2.options.SecurityDefinitions {

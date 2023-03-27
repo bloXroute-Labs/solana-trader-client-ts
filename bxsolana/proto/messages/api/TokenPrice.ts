@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as Project,
   name2num,
@@ -36,6 +37,7 @@ export declare namespace $.api {
     sellSize: number;
   }
 }
+
 export type Type = $.api.TokenPrice;
 
 export function getDefaultValue(): $.api.TokenPrice {

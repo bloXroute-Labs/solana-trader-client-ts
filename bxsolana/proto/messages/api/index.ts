@@ -1,3 +1,4 @@
+// @ts-nocheck
 export type { Type as GetMarketsRequest } from "./GetMarketsRequest";
 export type { Type as GetMarketsResponse } from "./GetMarketsResponse";
 export type { Type as Market } from "./Market";

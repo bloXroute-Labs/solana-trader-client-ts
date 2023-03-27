@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -23,6 +24,7 @@ export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options {
     email: string;
   }
 }
+
 export type Type = $.grpc.gateway.protoc_gen_openapiv2.options.Contact;
 
 export function getDefaultValue(): $.grpc.gateway.protoc_gen_openapiv2.options.Contact {

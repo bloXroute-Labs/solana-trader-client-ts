@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as MarketDepthItem,
   encodeJson as encodeJson_1,
@@ -32,6 +33,7 @@ export declare namespace $.api {
     asks: MarketDepthItem[];
   }
 }
+
 export type Type = $.api.GetMarketDepthResponse;
 
 export function getDefaultValue(): $.api.GetMarketDepthResponse {

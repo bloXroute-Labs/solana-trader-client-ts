@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as FieldDescriptorProto,
   encodeJson as encodeJson_1,
@@ -80,11 +81,12 @@ export declare namespace $.google.protobuf {
     reservedName: string[];
   }
 }
+
 export type Type = $.google.protobuf.DescriptorProto;
 
 export function getDefaultValue(): $.google.protobuf.DescriptorProto {
   return {
-    name: "",
+    name: undefined,
     field: [],
     nestedType: [],
     enumType: [],

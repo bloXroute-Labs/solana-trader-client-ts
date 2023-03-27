@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as Project,
   name2num,
@@ -33,6 +34,7 @@ export declare namespace $.api {
     project: Project;
   }
 }
+
 export type Type = $.api.GetUserResponse;
 
 export function getDefaultValue(): $.api.GetUserResponse {

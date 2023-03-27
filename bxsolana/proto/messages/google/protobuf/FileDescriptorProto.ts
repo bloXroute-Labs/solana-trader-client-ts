@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as DescriptorProto,
   encodeJson as encodeJson_1,
@@ -76,12 +77,13 @@ export declare namespace $.google.protobuf {
     syntax?: string;
   }
 }
+
 export type Type = $.google.protobuf.FileDescriptorProto;
 
 export function getDefaultValue(): $.google.protobuf.FileDescriptorProto {
   return {
-    name: "",
-    package: "",
+    name: undefined,
+    package: undefined,
     dependency: [],
     messageType: [],
     enumType: [],
@@ -91,7 +93,7 @@ export function getDefaultValue(): $.google.protobuf.FileDescriptorProto {
     sourceCodeInfo: undefined,
     publicDependency: [],
     weakDependency: [],
-    syntax: "",
+    syntax: undefined,
   };
 }
 

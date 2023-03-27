@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as Info,
   encodeJson as encodeJson_1,
@@ -84,6 +85,7 @@ export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options {
     extensions: Map<string, Value>;
   }
 }
+
 export type Type = $.grpc.gateway.protoc_gen_openapiv2.options.Swagger;
 
 export function getDefaultValue(): $.grpc.gateway.protoc_gen_openapiv2.options.Swagger {

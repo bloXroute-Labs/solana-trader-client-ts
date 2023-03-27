@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -21,6 +22,7 @@ export declare namespace $.google.protobuf {
     paths: string[];
   }
 }
+
 export type Type = $.google.protobuf.FieldMask;
 
 export function getDefaultValue(): $.google.protobuf.FieldMask {

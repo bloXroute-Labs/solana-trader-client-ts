@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as CustomHttpPattern,
   encodeJson as encodeJson_2,
@@ -48,6 +49,7 @@ export declare namespace $.google.api {
   );
   }
 }
+
 export type Type = $.google.api.HttpRule;
 
 export function getDefaultValue(): $.google.api.HttpRule {
@@ -189,21 +191,10 @@ export function encodeBinary(value: $.google.api.HttpRule): Uint8Array {
   return serialize(result);
 }
 
-const fieldNames: Map<number, string> = new Map([
-  [1, "selector"],
-  [2, "get"],
-  [3, "put"],
-  [4, "post"],
-  [5, "delete"],
-  [6, "patch"],
-  [7, "body"],
-  [8, "custom"],
-  [11, "additionalBindings"],
-  [12, "responseBody"],
-]);
 const oneofFieldNumbersMap: { [oneof: string]: Set<number> } = {
   pattern: new Set([2, 3, 4, 5, 6, 8]),
 };
+
 const oneofFieldNamesMap = {
   pattern: new Map([
     [2, "get" as const],
@@ -214,6 +205,7 @@ const oneofFieldNamesMap = {
     [8, "custom" as const],
   ]),
 };
+
 export function decodeBinary(binary: Uint8Array): $.google.api.HttpRule {
   const result = getDefaultValue();
   const wireMessage = deserialize(binary);

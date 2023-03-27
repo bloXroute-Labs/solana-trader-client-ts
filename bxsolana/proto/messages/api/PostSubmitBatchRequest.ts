@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as PostSubmitRequestEntry,
   encodeJson as encodeJson_1,
@@ -34,6 +35,7 @@ export declare namespace $.api {
     submitStrategy: SubmitStrategy;
   }
 }
+
 export type Type = $.api.PostSubmitBatchRequest;
 
 export function getDefaultValue(): $.api.PostSubmitBatchRequest {

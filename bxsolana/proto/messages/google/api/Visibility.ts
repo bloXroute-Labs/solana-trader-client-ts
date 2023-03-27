@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as VisibilityRule,
   encodeJson as encodeJson_1,
@@ -24,6 +25,7 @@ export declare namespace $.google.api {
     rules: VisibilityRule[];
   }
 }
+
 export type Type = $.google.api.Visibility;
 
 export function getDefaultValue(): $.google.api.Visibility {

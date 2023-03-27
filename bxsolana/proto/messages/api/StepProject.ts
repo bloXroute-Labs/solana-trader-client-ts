@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -22,6 +23,7 @@ export declare namespace $.api {
     id: string;
   }
 }
+
 export type Type = $.api.StepProject;
 
 export function getDefaultValue(): $.api.StepProject {

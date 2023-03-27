@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -35,6 +36,7 @@ export declare namespace $.api {
     auctionEndPrice: number;
   }
 }
+
 export type Type = $.api.PerpOrderbookItem;
 
 export function getDefaultValue(): $.api.PerpOrderbookItem {

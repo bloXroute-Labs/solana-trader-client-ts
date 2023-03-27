@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as Any,
   encodeJson as encodeJson_1,
@@ -31,6 +32,7 @@ export declare namespace $.google.api {
     extensions: Any[];
   }
 }
+
 export type Type = $.google.api.HttpBody;
 
 export function getDefaultValue(): $.google.api.HttpBody {

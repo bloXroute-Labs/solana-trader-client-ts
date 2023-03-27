@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as PerpContract,
   name2num,
@@ -44,6 +45,7 @@ export declare namespace $.api {
     status: string;
   }
 }
+
 export type Type = $.api.PerpOrder;
 
 export function getDefaultValue(): $.api.PerpOrder {

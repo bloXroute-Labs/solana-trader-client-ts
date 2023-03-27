@@ -1,3 +1,4 @@
+// @ts-nocheck
 export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options.SecurityScheme {
   export type Flow =
     | "FLOW_INVALID"
@@ -6,6 +7,7 @@ export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options.SecuritySch
     | "FLOW_APPLICATION"
     | "FLOW_ACCESS_CODE";
 }
+
 export type Type = $.grpc.gateway.protoc_gen_openapiv2.options.SecurityScheme.Flow;
 
 export const num2name = {

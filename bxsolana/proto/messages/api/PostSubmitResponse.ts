@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -21,6 +22,7 @@ export declare namespace $.api {
     signature: string;
   }
 }
+
 export type Type = $.api.PostSubmitResponse;
 
 export function getDefaultValue(): $.api.PostSubmitResponse {

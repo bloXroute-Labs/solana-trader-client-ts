@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Type as GetPerpOrderbookResponse,
   encodeJson as encodeJson_1,
@@ -30,6 +31,7 @@ export declare namespace $.api {
     orderbook?: GetPerpOrderbookResponse;
   }
 }
+
 export type Type = $.api.GetPerpOrderbooksStreamResponse;
 
 export function getDefaultValue(): $.api.GetPerpOrderbooksStreamResponse {

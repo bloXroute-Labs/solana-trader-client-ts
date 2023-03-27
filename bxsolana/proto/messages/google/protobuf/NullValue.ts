@@ -1,7 +1,9 @@
+// @ts-nocheck
 export declare namespace $.google.protobuf {
   export type NullValue =
     | "NULL_VALUE";
 }
+
 export type Type = $.google.protobuf.NullValue;
 
 export const num2name = {
