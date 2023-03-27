@@ -73,6 +73,8 @@ import {
     PostPerpOrderResponse,
     GetPerpPositionsRequest,
     GetPerpPositionsResponse,
+    GetOpenPerpOrderRequest,
+    GetOpenPerpOrderResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -364,8 +366,15 @@ export class HttpProvider extends BaseProvider {
         if (args != "") {
             path += `&${args}`
         }
-        console.log("getOpenPerpOrders : " + path)
         return this.get<GetOpenPerpOrdersResponse>(path)
+    }
+
+    getOpenPerpOrder(
+        request: GetOpenPerpOrderRequest
+    ): Promise<GetOpenPerpOrderResponse> {
+        const path = `${this.baseUrl}/trade/perp/open-order-by-id?ownerAddress=${request.ownerAddress}&accountAddress=${request.accountAddress}&project=${request.project}
+        &contract=${request.contract}&clientOrderID=${request.clientOrderID}&orderID=${request.orderID}`
+        return this.get<GetOpenPerpOrderResponse>(path)
     }
 
     postCancelPerpOrder(

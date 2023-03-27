@@ -34,15 +34,15 @@ import {
 export declare namespace $.api {
   export type PerpPosition = {
     contract: PerpContract;
-    contractVolume: number;
     volumeAvailable: number;
     volumeInOrder: number;
     positionMargin: number;
     positionSide: PerpPositionSide;
-    unrealizedPnL: number;
     notionalValue: number;
     indexPrice: number;
     liquidationPrice: number;
+    accountAddress: string;
+    subAccountID: string;
   }
 }
 
@@ -51,15 +51,15 @@ export type Type = $.api.PerpPosition;
 export function getDefaultValue(): $.api.PerpPosition {
   return {
     contract: "ALL",
-    contractVolume: 0,
     volumeAvailable: 0,
     volumeInOrder: 0,
     positionMargin: 0,
     positionSide: "PS_UNKNOWN",
-    unrealizedPnL: 0,
     notionalValue: 0,
     indexPrice: 0,
     liquidationPrice: 0,
+    accountAddress: "",
+    subAccountID: "0",
   };
 }
 
@@ -73,30 +73,30 @@ export function createValue(partialValue: Partial<$.api.PerpPosition>): $.api.Pe
 export function encodeJson(value: $.api.PerpPosition): unknown {
   const result: any = {};
   if (value.contract !== undefined) result.contract = tsValueToJsonValueFns.enum(value.contract);
-  if (value.contractVolume !== undefined) result.contractVolume = tsValueToJsonValueFns.double(value.contractVolume);
   if (value.volumeAvailable !== undefined) result.volumeAvailable = tsValueToJsonValueFns.double(value.volumeAvailable);
   if (value.volumeInOrder !== undefined) result.volumeInOrder = tsValueToJsonValueFns.double(value.volumeInOrder);
   if (value.positionMargin !== undefined) result.positionMargin = tsValueToJsonValueFns.double(value.positionMargin);
   if (value.positionSide !== undefined) result.positionSide = tsValueToJsonValueFns.enum(value.positionSide);
-  if (value.unrealizedPnL !== undefined) result.unrealizedPnL = tsValueToJsonValueFns.double(value.unrealizedPnL);
   if (value.notionalValue !== undefined) result.notionalValue = tsValueToJsonValueFns.double(value.notionalValue);
   if (value.indexPrice !== undefined) result.indexPrice = tsValueToJsonValueFns.double(value.indexPrice);
   if (value.liquidationPrice !== undefined) result.liquidationPrice = tsValueToJsonValueFns.double(value.liquidationPrice);
+  if (value.accountAddress !== undefined) result.accountAddress = tsValueToJsonValueFns.string(value.accountAddress);
+  if (value.subAccountID !== undefined) result.subAccountID = tsValueToJsonValueFns.int64(value.subAccountID);
   return result;
 }
 
 export function decodeJson(value: any): $.api.PerpPosition {
   const result = getDefaultValue();
   if (value.contract !== undefined) result.contract = jsonValueToTsValueFns.enum(value.contract) as PerpContract;
-  if (value.contractVolume !== undefined) result.contractVolume = jsonValueToTsValueFns.double(value.contractVolume);
   if (value.volumeAvailable !== undefined) result.volumeAvailable = jsonValueToTsValueFns.double(value.volumeAvailable);
   if (value.volumeInOrder !== undefined) result.volumeInOrder = jsonValueToTsValueFns.double(value.volumeInOrder);
   if (value.positionMargin !== undefined) result.positionMargin = jsonValueToTsValueFns.double(value.positionMargin);
   if (value.positionSide !== undefined) result.positionSide = jsonValueToTsValueFns.enum(value.positionSide) as PerpPositionSide;
-  if (value.unrealizedPnL !== undefined) result.unrealizedPnL = jsonValueToTsValueFns.double(value.unrealizedPnL);
   if (value.notionalValue !== undefined) result.notionalValue = jsonValueToTsValueFns.double(value.notionalValue);
   if (value.indexPrice !== undefined) result.indexPrice = jsonValueToTsValueFns.double(value.indexPrice);
   if (value.liquidationPrice !== undefined) result.liquidationPrice = jsonValueToTsValueFns.double(value.liquidationPrice);
+  if (value.accountAddress !== undefined) result.accountAddress = jsonValueToTsValueFns.string(value.accountAddress);
+  if (value.subAccountID !== undefined) result.subAccountID = jsonValueToTsValueFns.int64(value.subAccountID);
   return result;
 }
 
@@ -108,58 +108,58 @@ export function encodeBinary(value: $.api.PerpPosition): Uint8Array {
       [1, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
     );
   }
-  if (value.contractVolume !== undefined) {
-    const tsValue = value.contractVolume;
-    result.push(
-      [2, tsValueToWireValueFns.double(tsValue)],
-    );
-  }
   if (value.volumeAvailable !== undefined) {
     const tsValue = value.volumeAvailable;
     result.push(
-      [3, tsValueToWireValueFns.double(tsValue)],
+      [2, tsValueToWireValueFns.double(tsValue)],
     );
   }
   if (value.volumeInOrder !== undefined) {
     const tsValue = value.volumeInOrder;
     result.push(
-      [4, tsValueToWireValueFns.double(tsValue)],
+      [3, tsValueToWireValueFns.double(tsValue)],
     );
   }
   if (value.positionMargin !== undefined) {
     const tsValue = value.positionMargin;
     result.push(
-      [5, tsValueToWireValueFns.double(tsValue)],
+      [4, tsValueToWireValueFns.double(tsValue)],
     );
   }
   if (value.positionSide !== undefined) {
     const tsValue = value.positionSide;
     result.push(
-      [6, { type: WireType.Varint as const, value: new Long(name2num_1[tsValue as keyof typeof name2num_1]) }],
-    );
-  }
-  if (value.unrealizedPnL !== undefined) {
-    const tsValue = value.unrealizedPnL;
-    result.push(
-      [7, tsValueToWireValueFns.double(tsValue)],
+      [5, { type: WireType.Varint as const, value: new Long(name2num_1[tsValue as keyof typeof name2num_1]) }],
     );
   }
   if (value.notionalValue !== undefined) {
     const tsValue = value.notionalValue;
     result.push(
-      [8, tsValueToWireValueFns.double(tsValue)],
+      [6, tsValueToWireValueFns.double(tsValue)],
     );
   }
   if (value.indexPrice !== undefined) {
     const tsValue = value.indexPrice;
     result.push(
-      [9, tsValueToWireValueFns.double(tsValue)],
+      [7, tsValueToWireValueFns.double(tsValue)],
     );
   }
   if (value.liquidationPrice !== undefined) {
     const tsValue = value.liquidationPrice;
     result.push(
-      [10, tsValueToWireValueFns.double(tsValue)],
+      [8, tsValueToWireValueFns.double(tsValue)],
+    );
+  }
+  if (value.accountAddress !== undefined) {
+    const tsValue = value.accountAddress;
+    result.push(
+      [9, tsValueToWireValueFns.string(tsValue)],
+    );
+  }
+  if (value.subAccountID !== undefined) {
+    const tsValue = value.subAccountID;
+    result.push(
+      [10, tsValueToWireValueFns.int64(tsValue)],
     );
   }
   return serialize(result);
@@ -181,63 +181,63 @@ export function decodeBinary(binary: Uint8Array): $.api.PerpPosition {
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
-    result.contractVolume = value;
+    result.volumeAvailable = value;
   }
   field: {
     const wireValue = wireFields.get(3);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
-    result.volumeAvailable = value;
+    result.volumeInOrder = value;
   }
   field: {
     const wireValue = wireFields.get(4);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
-    result.volumeInOrder = value;
-  }
-  field: {
-    const wireValue = wireFields.get(5);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.double(wireValue);
-    if (value === undefined) break field;
     result.positionMargin = value;
   }
   field: {
-    const wireValue = wireFields.get(6);
+    const wireValue = wireFields.get(5);
     if (wireValue === undefined) break field;
     const value = wireValue.type === WireType.Varint ? num2name_1[wireValue.value[0] as keyof typeof num2name_1] : undefined;
     if (value === undefined) break field;
     result.positionSide = value;
   }
   field: {
-    const wireValue = wireFields.get(7);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.double(wireValue);
-    if (value === undefined) break field;
-    result.unrealizedPnL = value;
-  }
-  field: {
-    const wireValue = wireFields.get(8);
+    const wireValue = wireFields.get(6);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
     result.notionalValue = value;
   }
   field: {
-    const wireValue = wireFields.get(9);
+    const wireValue = wireFields.get(7);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
     result.indexPrice = value;
   }
   field: {
-    const wireValue = wireFields.get(10);
+    const wireValue = wireFields.get(8);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
     result.liquidationPrice = value;
+  }
+  field: {
+    const wireValue = wireFields.get(9);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.accountAddress = value;
+  }
+  field: {
+    const wireValue = wireFields.get(10);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.int64(wireValue);
+    if (value === undefined) break field;
+    result.subAccountID = value;
   }
   return result;
 }

@@ -28,7 +28,6 @@ import {
 export declare namespace $.api {
   export type GetOpenPerpOrderResponse = {
     ownerAddress: string;
-    accountAddress: string;
     order?: PerpOrder;
   }
 }
@@ -38,7 +37,6 @@ export type Type = $.api.GetOpenPerpOrderResponse;
 export function getDefaultValue(): $.api.GetOpenPerpOrderResponse {
   return {
     ownerAddress: "",
-    accountAddress: "",
     order: undefined,
   };
 }
@@ -53,7 +51,6 @@ export function createValue(partialValue: Partial<$.api.GetOpenPerpOrderResponse
 export function encodeJson(value: $.api.GetOpenPerpOrderResponse): unknown {
   const result: any = {};
   if (value.ownerAddress !== undefined) result.ownerAddress = tsValueToJsonValueFns.string(value.ownerAddress);
-  if (value.accountAddress !== undefined) result.accountAddress = tsValueToJsonValueFns.string(value.accountAddress);
   if (value.order !== undefined) result.order = encodeJson_1(value.order);
   return result;
 }
@@ -61,7 +58,6 @@ export function encodeJson(value: $.api.GetOpenPerpOrderResponse): unknown {
 export function decodeJson(value: any): $.api.GetOpenPerpOrderResponse {
   const result = getDefaultValue();
   if (value.ownerAddress !== undefined) result.ownerAddress = jsonValueToTsValueFns.string(value.ownerAddress);
-  if (value.accountAddress !== undefined) result.accountAddress = jsonValueToTsValueFns.string(value.accountAddress);
   if (value.order !== undefined) result.order = decodeJson_1(value.order);
   return result;
 }
@@ -74,16 +70,10 @@ export function encodeBinary(value: $.api.GetOpenPerpOrderResponse): Uint8Array 
       [1, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.accountAddress !== undefined) {
-    const tsValue = value.accountAddress;
-    result.push(
-      [2, tsValueToWireValueFns.string(tsValue)],
-    );
-  }
   if (value.order !== undefined) {
     const tsValue = value.order;
     result.push(
-      [3, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
+      [2, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
     );
   }
   return serialize(result);
@@ -102,13 +92,6 @@ export function decodeBinary(binary: Uint8Array): $.api.GetOpenPerpOrderResponse
   }
   field: {
     const wireValue = wireFields.get(2);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.string(wireValue);
-    if (value === undefined) break field;
-    result.accountAddress = value;
-  }
-  field: {
-    const wireValue = wireFields.get(3);
     if (wireValue === undefined) break field;
     const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined;
     if (value === undefined) break field;

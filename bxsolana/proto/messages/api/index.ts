@@ -111,6 +111,7 @@ export type { Type as PerpOrderbookItem } from "./PerpOrderbookItem";
 export type { Type as GetPerpOrderbooksStreamResponse } from "./GetPerpOrderbooksStreamResponse";
 export type { Type as GetUserRequest } from "./GetUserRequest";
 export type { Type as GetUserResponse } from "./GetUserResponse";
+export type { Type as UserDetail } from "./UserDetail";
 export type { Type as PostCreateUserRequest } from "./PostCreateUserRequest";
 export type { Type as PostCreateUserResponse } from "./PostCreateUserResponse";
 export type { Type as PostCancelPerpOrdersRequest } from "./PostCancelPerpOrdersRequest";

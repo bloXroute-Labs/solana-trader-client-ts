@@ -33,6 +33,7 @@ import {
     PostSettlePNLsResponse,
     PostLiquidatePerpRequest,
     PostLiquidatePerpResponse,
+    TransactionMessage,
 } from "../bxsolana"
 import { Keypair } from "@solana/web3.js"
 import base58 from "bs58"
@@ -289,10 +290,6 @@ async function runPerpRequests(provider: BaseProvider) {
     console.info(" ")
 
     await callPostClosePerpPositions(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callPostCreateUser(provider)
     console.info(" ")
     console.info(" ")
 
@@ -806,7 +803,7 @@ async function callPostSettlePNL(provider: BaseProvider) {
     console.info("post settle pnl")
     const req = await provider.postSettlePNL({
         ownerAddress: ownerAddress,
-        settleeAccountAddress: ownerAddress,
+        settleeAccountAddress: "9UnwdvTf5EfGeLyLrF4GZDUs7LKRUeJQzW7qsDVGQ8sS",
         contract: "SOL_PERP",
         project: "P_DRIFT",
     })
@@ -817,7 +814,9 @@ async function callPostSettlePNLs(provider: BaseProvider) {
     console.info("post settle pnls")
     const req = await provider.postSettlePNLs({
         ownerAddress: ownerAddress,
-        settleeAccountAddresses: [ownerAddress],
+        settleeAccountAddresses: [
+            "9UnwdvTf5EfGeLyLrF4GZDUs7LKRUeJQzW7qsDVGQ8sS",
+        ],
         contract: "SOL_PERP",
         project: "P_DRIFT",
     })
@@ -828,7 +827,7 @@ async function callPostLiquidatePerp(provider: BaseProvider) {
     console.info("post liquidate perp")
     const req = await provider.postLiquidatePerp({
         ownerAddress: ownerAddress,
-        settleeAccountAddress: ownerAddress,
+        settleeAccountAddress: "9UnwdvTf5EfGeLyLrF4GZDUs7LKRUeJQzW7qsDVGQ8sS",
         contract: "SOL_PERP",
         project: "P_DRIFT",
         amount: 1,
@@ -908,6 +907,7 @@ async function callPostClosePerpPositions(provider: BaseProvider) {
     console.info("closing perp positions")
     const req = await provider.postClosePerpPositions({
         ownerAddress: ownerAddress,
+        accountAddress: "",
         project: "P_DRIFT",
         contracts: ["SOL_PERP"],
     })
@@ -931,6 +931,7 @@ async function callGetUser(provider: BaseProvider) {
     console.info("getting user")
     const req = await provider.getUser({
         ownerAddress: ownerAddress,
+        accountAddress: "",
         project: "P_DRIFT",
     })
     console.info(req)
