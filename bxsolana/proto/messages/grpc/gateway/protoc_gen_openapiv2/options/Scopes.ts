@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -23,7 +22,6 @@ export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options {
     scope: Map<string, string>;
   }
 }
-
 export type Type = $.grpc.gateway.protoc_gen_openapiv2.options.Scopes;
 
 export function getDefaultValue(): $.grpc.gateway.protoc_gen_openapiv2.options.Scopes {

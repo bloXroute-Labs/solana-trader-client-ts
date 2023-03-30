@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as CType,
   name2num,
@@ -49,17 +48,16 @@ export declare namespace $.google.protobuf {
     uninterpretedOption: UninterpretedOption[];
   }
 }
-
 export type Type = $.google.protobuf.FieldOptions;
 
 export function getDefaultValue(): $.google.protobuf.FieldOptions {
   return {
-    ctype: undefined,
-    packed: undefined,
-    deprecated: undefined,
-    lazy: undefined,
-    jstype: undefined,
-    weak: undefined,
+    ctype: "STRING",
+    packed: false,
+    deprecated: false,
+    lazy: false,
+    jstype: "JS_NORMAL",
+    weak: false,
     uninterpretedOption: [],
   };
 }

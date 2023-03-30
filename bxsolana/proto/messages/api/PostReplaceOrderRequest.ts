@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as Side,
   name2num,
@@ -52,7 +51,6 @@ export declare namespace $.api {
     project: Project;
   }
 }
-
 export type Type = $.api.PostReplaceOrderRequest;
 
 export function getDefaultValue(): $.api.PostReplaceOrderRequest {

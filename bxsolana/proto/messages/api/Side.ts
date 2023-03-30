@@ -1,11 +1,9 @@
-// @ts-nocheck
 export declare namespace $.api {
   export type Side =
     | "S_UNKNOWN"
     | "S_BID"
     | "S_ASK";
 }
-
 export type Type = $.api.Side;
 
 export const num2name = {

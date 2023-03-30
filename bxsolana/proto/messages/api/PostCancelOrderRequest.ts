@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as Side,
   name2num,
@@ -41,7 +40,6 @@ export declare namespace $.api {
     project: Project;
   }
 }
-
 export type Type = $.api.PostCancelOrderRequest;
 
 export function getDefaultValue(): $.api.PostCancelOrderRequest {

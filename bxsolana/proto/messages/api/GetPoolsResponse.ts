@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as ProjectPools,
   encodeJson as encodeJson_1,
@@ -25,7 +24,6 @@ export declare namespace $.api {
     projects: ProjectPools[];
   }
 }
-
 export type Type = $.api.GetPoolsResponse;
 
 export function getDefaultValue(): $.api.GetPoolsResponse {

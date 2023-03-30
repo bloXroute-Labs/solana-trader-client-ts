@@ -285,7 +285,7 @@ export class HttpProvider extends BaseProvider {
     getAssets(
         request: GetAssetsRequest
     ): RpcReturnType<Promise<GetAssetsResponse>, []> {
-        const path = `${this.baseUrl}/trade/perp/assets?ownerAddress=${request.ownerAddress}&accountAddress=${request.accountAddress}&project=${request.project}&contract=${request.contract}`
+        const path = `${this.baseUrl}/trade/perp/assets?ownerAddress=${request.ownerAddress}&accountAddress=${request.accountAddress}&project=${request.project}`
         return this.get<GetAssetsResponse>(path)
     }
 

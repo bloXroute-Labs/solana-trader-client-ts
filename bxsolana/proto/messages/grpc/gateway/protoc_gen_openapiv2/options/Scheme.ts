@@ -1,4 +1,3 @@
-// @ts-nocheck
 export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options {
   export type Scheme =
     | "UNKNOWN"
@@ -7,7 +6,6 @@ export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options {
     | "WS"
     | "WSS";
 }
-
 export type Type = $.grpc.gateway.protoc_gen_openapiv2.options.Scheme;
 
 export const num2name = {

@@ -1,4 +1,3 @@
-// @ts-nocheck
 export declare namespace $.api {
   export type Project =
     | "P_UNKNOWN"
@@ -9,7 +8,6 @@ export declare namespace $.api {
     | "P_OPENBOOK"
     | "P_DRIFT";
 }
-
 export type Type = $.api.Project;
 
 export const num2name = {

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as UninterpretedOption,
   encodeJson as encodeJson_1,
@@ -34,15 +33,14 @@ export declare namespace $.google.protobuf {
     uninterpretedOption: UninterpretedOption[];
   }
 }
-
 export type Type = $.google.protobuf.MessageOptions;
 
 export function getDefaultValue(): $.google.protobuf.MessageOptions {
   return {
-    messageSetWireFormat: undefined,
-    noStandardDescriptorAccessor: undefined,
-    deprecated: undefined,
-    mapEntry: undefined,
+    messageSetWireFormat: false,
+    noStandardDescriptorAccessor: false,
+    deprecated: false,
+    mapEntry: false,
     uninterpretedOption: [],
   };
 }

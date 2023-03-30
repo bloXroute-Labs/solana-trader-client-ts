@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -24,7 +23,6 @@ export declare namespace $.common {
     percent: number;
   }
 }
-
 export type Type = $.common.Fee;
 
 export function getDefaultValue(): $.common.Fee {

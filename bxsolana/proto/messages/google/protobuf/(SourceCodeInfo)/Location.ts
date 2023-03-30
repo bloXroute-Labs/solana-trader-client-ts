@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -27,15 +26,14 @@ export declare namespace $.google.protobuf.SourceCodeInfo {
     leadingDetachedComments: string[];
   }
 }
-
 export type Type = $.google.protobuf.SourceCodeInfo.Location;
 
 export function getDefaultValue(): $.google.protobuf.SourceCodeInfo.Location {
   return {
     path: [],
     span: [],
-    leadingComments: undefined,
-    trailingComments: undefined,
+    leadingComments: "",
+    trailingComments: "",
     leadingDetachedComments: [],
   };
 }

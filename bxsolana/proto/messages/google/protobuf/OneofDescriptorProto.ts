@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as OneofOptions,
   encodeJson as encodeJson_1,
@@ -31,12 +30,11 @@ export declare namespace $.google.protobuf {
     options?: OneofOptions;
   }
 }
-
 export type Type = $.google.protobuf.OneofDescriptorProto;
 
 export function getDefaultValue(): $.google.protobuf.OneofDescriptorProto {
   return {
-    name: undefined,
+    name: "",
     options: undefined,
   };
 }

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as OrderStatus,
   name2num,
@@ -68,7 +67,6 @@ export declare namespace $.api {
     project: Project;
   }
 }
-
 export type Type = $.api.GetOrdersRequest;
 
 export function getDefaultValue(): $.api.GetOrdersRequest {

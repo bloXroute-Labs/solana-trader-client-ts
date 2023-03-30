@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as Order,
   encodeJson as encodeJson_1,
@@ -25,7 +24,6 @@ export declare namespace $.api {
     order?: Order;
   }
 }
-
 export type Type = $.api.GetOrderByIDResponse;
 
 export function getDefaultValue(): $.api.GetOrderByIDResponse {

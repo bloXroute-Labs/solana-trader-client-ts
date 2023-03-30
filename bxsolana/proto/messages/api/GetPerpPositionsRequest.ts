@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as Project,
   name2num,
@@ -40,7 +39,6 @@ export declare namespace $.api {
     contracts: PerpContract[];
   }
 }
-
 export type Type = $.api.GetPerpPositionsRequest;
 
 export function getDefaultValue(): $.api.GetPerpPositionsRequest {

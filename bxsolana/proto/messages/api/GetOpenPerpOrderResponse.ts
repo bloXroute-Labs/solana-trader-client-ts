@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as PerpOrder,
   encodeJson as encodeJson_1,
@@ -31,7 +30,6 @@ export declare namespace $.api {
     order?: PerpOrder;
   }
 }
-
 export type Type = $.api.GetOpenPerpOrderResponse;
 
 export function getDefaultValue(): $.api.GetOpenPerpOrderResponse {

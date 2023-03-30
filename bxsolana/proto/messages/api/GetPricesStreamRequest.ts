@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as Project,
   name2num,
@@ -33,7 +32,6 @@ export declare namespace $.api {
     tokens: string[];
   }
 }
-
 export type Type = $.api.GetPricesStreamRequest;
 
 export function getDefaultValue(): $.api.GetPricesStreamRequest {

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   RpcReturnType,
   RpcClientImpl,
@@ -717,7 +716,6 @@ export interface Service<TReqArgs extends any[] = [], TResArgs extends any[] = [
 }
 
 export type MethodDescriptors = typeof methodDescriptors;
-
 export const methodDescriptors = {
   getPrice: {
     methodName: "GetPrice",
@@ -1650,33 +1648,24 @@ export const methodDescriptors = {
 } as const;
 
 export class RpcError<TTrailer = any> extends Error {
-  trailer: TTrailer;
-  constructor(trailer: TTrailer) {
-    super();
-    this.trailer = trailer;
-  }
+  constructor(public trailer: TTrailer) { super(); }
 }
-
 export interface CreateServiceClientConfig {
   responseOnly?: boolean;
   devtools?: true | { tags: string[] };
 }
-
 export function createServiceClient<TMetadata, THeader, TTrailer>(
   rpcClientImpl: RpcClientImpl<TMetadata, THeader, TTrailer>,
   config?: undefined
 ): Service<[] | [TMetadata], []>;
-
 export function createServiceClient<TMetadata, THeader, TTrailer>(
   rpcClientImpl: RpcClientImpl<TMetadata, THeader, TTrailer>,
   config: CreateServiceClientConfig & { responseOnly: false }
 ): Service<[] | [TMetadata], [THeader, Promise<TTrailer>]>;
-
 export function createServiceClient<TMetadata, THeader, TTrailer>(
   rpcClientImpl: RpcClientImpl<TMetadata, THeader, TTrailer>,
   config: CreateServiceClientConfig & { responseOnly?: true }
 ): Service<[] | [TMetadata], []>;
-
 export function createServiceClient<TMetadata, THeader, TTrailer>(
   rpcClientImpl: RpcClientImpl<TMetadata, THeader, TTrailer>,
   config?: CreateServiceClientConfig
@@ -1709,7 +1698,6 @@ export function createServiceClient<TMetadata, THeader, TTrailer>(
     }
   )) as unknown as Service;
 }
-
 function getHeaderBeforeTrailer<THeader, TTrailer>(
   headerPromise: Promise<THeader>,
   trailerPromise: Promise<TTrailer>

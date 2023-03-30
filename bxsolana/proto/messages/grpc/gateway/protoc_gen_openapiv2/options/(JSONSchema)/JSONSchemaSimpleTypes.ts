@@ -1,4 +1,3 @@
-// @ts-nocheck
 export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options.JSONSchema {
   export type JSONSchemaSimpleTypes =
     | "UNKNOWN"
@@ -10,7 +9,6 @@ export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options.JSONSchema 
     | "OBJECT"
     | "STRING";
 }
-
 export type Type = $.grpc.gateway.protoc_gen_openapiv2.options.JSONSchema.JSONSchemaSimpleTypes;
 
 export const num2name = {

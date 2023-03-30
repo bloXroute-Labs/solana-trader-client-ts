@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as Value,
   encodeJson as encodeJson_1,
@@ -29,7 +28,6 @@ export declare namespace $.google.protobuf {
     fields: Map<string, Value>;
   }
 }
-
 export type Type = $.google.protobuf.Struct;
 
 export function getDefaultValue(): $.google.protobuf.Struct {

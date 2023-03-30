@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as GetQuotesStreamUpdate,
   encodeJson as encodeJson_1,
@@ -31,7 +30,6 @@ export declare namespace $.api {
     quote?: GetQuotesStreamUpdate;
   }
 }
-
 export type Type = $.api.GetQuotesStreamResponse;
 
 export function getDefaultValue(): $.api.GetQuotesStreamResponse {

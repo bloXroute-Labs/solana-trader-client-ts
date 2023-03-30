@@ -1,4 +1,3 @@
-// @ts-nocheck
 export declare namespace $.common {
   export type PerpContract =
     | "ALL"
@@ -7,7 +6,6 @@ export declare namespace $.common {
     | "BTC_PERP"
     | "APT_PERP";
 }
-
 export type Type = $.common.PerpContract;
 
 export const num2name = {

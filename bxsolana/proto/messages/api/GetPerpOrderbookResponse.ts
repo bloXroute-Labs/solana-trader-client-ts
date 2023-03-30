@@ -1,9 +1,3 @@
-// @ts-nocheck
-import {
-  Type as PerpContract,
-  name2num,
-  num2name,
-} from "../common/PerpContract";
 import {
   Type as PerpContract,
   name2num,
@@ -41,7 +35,6 @@ export declare namespace $.api {
     asks: PerpOrderbookItem[];
   }
 }
-
 export type Type = $.api.GetPerpOrderbookResponse;
 
 export function getDefaultValue(): $.api.GetPerpOrderbookResponse {

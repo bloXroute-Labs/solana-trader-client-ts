@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as Project,
   name2num,
@@ -36,7 +35,6 @@ export declare namespace $.api {
     slippage: number;
   }
 }
-
 export type Type = $.api.TradeSwapRequest;
 
 export function getDefaultValue(): $.api.TradeSwapRequest {

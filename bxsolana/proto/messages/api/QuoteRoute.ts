@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as QuoteStep,
   encodeJson as encodeJson_1,
@@ -33,7 +32,6 @@ export declare namespace $.api {
     steps: QuoteStep[];
   }
 }
-
 export type Type = $.api.QuoteRoute;
 
 export function getDefaultValue(): $.api.QuoteRoute {

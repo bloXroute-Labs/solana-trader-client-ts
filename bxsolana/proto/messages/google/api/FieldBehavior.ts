@@ -1,4 +1,3 @@
-// @ts-nocheck
 export declare namespace $.google.api {
   export type FieldBehavior =
     | "FIELD_BEHAVIOR_UNSPECIFIED"
@@ -10,7 +9,6 @@ export declare namespace $.google.api {
     | "UNORDERED_LIST"
     | "NON_EMPTY_DEFAULT";
 }
-
 export type Type = $.google.api.FieldBehavior;
 
 export const num2name = {

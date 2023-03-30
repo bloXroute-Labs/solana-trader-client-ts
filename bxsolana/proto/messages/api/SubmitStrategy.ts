@@ -1,4 +1,3 @@
-// @ts-nocheck
 export declare namespace $.api {
   export type SubmitStrategy =
     | "P_UKNOWN"
@@ -6,7 +5,6 @@ export declare namespace $.api {
     | "P_ABORT_ON_FIRST_ERROR"
     | "P_WAIT_FOR_CONFIRMATION";
 }
-
 export type Type = $.api.SubmitStrategy;
 
 export const num2name = {

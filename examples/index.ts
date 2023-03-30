@@ -783,8 +783,7 @@ async function callGetAssets(provider: BaseProvider) {
     console.info("get assets")
     const req = await provider.getAssets({
         ownerAddress: ownerAddress,
-        accountAddress: ownerAddress,
-        contract: "SOL_PERP",
+        accountAddress: "",
         project: "P_DRIFT",
     })
     console.info(req)
@@ -940,8 +939,7 @@ async function callGetUser(provider: BaseProvider) {
 async function callPostManageCollateral(provider: BaseProvider) {
     console.info("depositing perp collateral")
     const res = await provider.postManageCollateral({
-        ownerAddress: ownerAddress,
-        accountAddress: "",
+        accountAddress: "9UnwdvTf5EfGeLyLrF4GZDUs7LKRUeJQzW7qsDVGQ8sS",
         project: "P_DRIFT",
         amount: 1,
         type: "PCT_DEPOSIT",
@@ -953,8 +951,7 @@ async function callPostManageCollateral(provider: BaseProvider) {
 async function callPostWithdrawCollateral(provider: BaseProvider) {
     console.info("withdrawing collateral")
     const req = await provider.postManageCollateral({
-        ownerAddress: ownerAddress,
-        accountAddress: "",
+        accountAddress: "9UnwdvTf5EfGeLyLrF4GZDUs7LKRUeJQzW7qsDVGQ8sS",
         project: "P_DRIFT",
         amount: 1,
         type: "PCT_WITHDRAWAL",

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -26,7 +25,6 @@ export declare namespace $.api {
     openOrdersAmount: number;
   }
 }
-
 export type Type = $.api.TokenBalance;
 
 export function getDefaultValue(): $.api.TokenBalance {

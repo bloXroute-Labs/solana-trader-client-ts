@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -23,7 +22,6 @@ export declare namespace $.google.api {
     path: string;
   }
 }
-
 export type Type = $.google.api.CustomHttpPattern;
 
 export function getDefaultValue(): $.google.api.CustomHttpPattern {

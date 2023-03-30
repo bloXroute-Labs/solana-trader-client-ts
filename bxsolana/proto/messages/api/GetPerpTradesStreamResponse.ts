@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as PerpContract,
   name2num,
@@ -44,7 +43,6 @@ export declare namespace $.api {
     quoteAmountFilled: number;
   }
 }
-
 export type Type = $.api.GetPerpTradesStreamResponse;
 
 export function getDefaultValue(): $.api.GetPerpTradesStreamResponse {

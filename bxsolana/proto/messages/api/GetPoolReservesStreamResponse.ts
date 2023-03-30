@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as PoolReserves,
   encodeJson as encodeJson_1,
@@ -31,7 +30,6 @@ export declare namespace $.api {
     reserves?: PoolReserves;
   }
 }
-
 export type Type = $.api.GetPoolReservesStreamResponse;
 
 export function getDefaultValue(): $.api.GetPoolReservesStreamResponse {

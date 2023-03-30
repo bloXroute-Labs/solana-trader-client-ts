@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as TransactionMessage,
   encodeJson as encodeJson_1,
@@ -31,7 +30,6 @@ export declare namespace $.api {
     openOrdersAddress: string;
   }
 }
-
 export type Type = $.api.PostOrderResponse;
 
 export function getDefaultValue(): $.api.PostOrderResponse {

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -23,13 +22,12 @@ export declare namespace $.google.protobuf.EnumDescriptorProto {
     end?: number;
   }
 }
-
 export type Type = $.google.protobuf.EnumDescriptorProto.EnumReservedRange;
 
 export function getDefaultValue(): $.google.protobuf.EnumDescriptorProto.EnumReservedRange {
   return {
-    start: undefined,
-    end: undefined,
+    start: 0,
+    end: 0,
   };
 }
 

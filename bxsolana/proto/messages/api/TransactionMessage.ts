@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -23,7 +22,6 @@ export declare namespace $.api {
     isCleanup: boolean;
   }
 }
-
 export type Type = $.api.TransactionMessage;
 
 export function getDefaultValue(): $.api.TransactionMessage {

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -23,7 +22,6 @@ export declare namespace $.google.protobuf {
     value: Uint8Array;
   }
 }
-
 export type Type = $.google.protobuf.Any;
 
 export function getDefaultValue(): $.google.protobuf.Any {

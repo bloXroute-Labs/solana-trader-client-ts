@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as OptimizeMode,
   name2num,
@@ -59,31 +58,30 @@ export declare namespace $.google.protobuf {
     uninterpretedOption: UninterpretedOption[];
   }
 }
-
 export type Type = $.google.protobuf.FileOptions;
 
 export function getDefaultValue(): $.google.protobuf.FileOptions {
   return {
-    javaPackage: undefined,
-    javaOuterClassname: undefined,
-    optimizeFor: undefined,
-    javaMultipleFiles: undefined,
-    goPackage: undefined,
-    ccGenericServices: undefined,
-    javaGenericServices: undefined,
-    pyGenericServices: undefined,
-    javaGenerateEqualsAndHash: undefined,
-    deprecated: undefined,
-    javaStringCheckUtf8: undefined,
-    ccEnableArenas: undefined,
-    objcClassPrefix: undefined,
-    csharpNamespace: undefined,
-    swiftPrefix: undefined,
-    phpClassPrefix: undefined,
-    phpNamespace: undefined,
-    phpGenericServices: undefined,
-    phpMetadataNamespace: undefined,
-    rubyPackage: undefined,
+    javaPackage: "",
+    javaOuterClassname: "",
+    optimizeFor: "UNSPECIFIED",
+    javaMultipleFiles: false,
+    goPackage: "",
+    ccGenericServices: false,
+    javaGenericServices: false,
+    pyGenericServices: false,
+    javaGenerateEqualsAndHash: false,
+    deprecated: false,
+    javaStringCheckUtf8: false,
+    ccEnableArenas: false,
+    objcClassPrefix: "",
+    csharpNamespace: "",
+    swiftPrefix: "",
+    phpClassPrefix: "",
+    phpNamespace: "",
+    phpGenericServices: false,
+    phpMetadataNamespace: "",
+    rubyPackage: "",
     uninterpretedOption: [],
   };
 }
