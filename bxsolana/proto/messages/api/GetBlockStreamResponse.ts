@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as Block,
   encodeJson as encodeJson_1,
@@ -25,7 +24,6 @@ export declare namespace $.api {
     block?: Block;
   }
 }
-
 export type Type = $.api.GetBlockStreamResponse;
 
 export function getDefaultValue(): $.api.GetBlockStreamResponse {

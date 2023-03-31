@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -23,13 +22,12 @@ export declare namespace $.google.protobuf.DescriptorProto {
     end?: number;
   }
 }
-
 export type Type = $.google.protobuf.DescriptorProto.ReservedRange;
 
 export function getDefaultValue(): $.google.protobuf.DescriptorProto.ReservedRange {
   return {
-    start: undefined,
-    end: undefined,
+    start: 0,
+    end: 0,
   };
 }
 

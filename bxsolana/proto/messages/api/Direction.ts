@@ -1,10 +1,8 @@
-// @ts-nocheck
 export declare namespace $.api {
   export type Direction =
     | "D_ASCENDING"
     | "D_DESCENDING";
 }
-
 export type Type = $.api.Direction;
 
 export const num2name = {

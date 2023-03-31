@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as JSONSchemaSimpleTypes,
   name2num,
@@ -71,7 +70,6 @@ export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options {
     fieldConfiguration?: FieldConfiguration;
   }
 }
-
 export type Type = $.grpc.gateway.protoc_gen_openapiv2.options.JSONSchema;
 
 export function getDefaultValue(): $.grpc.gateway.protoc_gen_openapiv2.options.JSONSchema {

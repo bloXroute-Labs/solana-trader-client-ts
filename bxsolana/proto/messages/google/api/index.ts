@@ -1,4 +1,3 @@
-// @ts-nocheck
 export type { Type as Visibility } from "./Visibility";
 export type { Type as VisibilityRule } from "./VisibilityRule";
 export type { Type as FieldBehavior } from "./FieldBehavior";

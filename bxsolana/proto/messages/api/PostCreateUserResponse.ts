@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as TransactionMessage,
   encodeJson as encodeJson_1,
@@ -35,7 +34,6 @@ export declare namespace $.api {
     project: Project;
   }
 }
-
 export type Type = $.api.PostCreateUserResponse;
 
 export function getDefaultValue(): $.api.PostCreateUserResponse {

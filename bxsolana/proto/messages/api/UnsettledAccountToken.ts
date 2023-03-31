@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -23,7 +22,6 @@ export declare namespace $.api {
     amount: number;
   }
 }
-
 export type Type = $.api.UnsettledAccountToken;
 
 export function getDefaultValue(): $.api.UnsettledAccountToken {

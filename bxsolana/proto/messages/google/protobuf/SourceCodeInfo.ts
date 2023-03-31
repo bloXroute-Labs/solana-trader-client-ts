@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as Location,
   encodeJson as encodeJson_1,
@@ -25,7 +24,6 @@ export declare namespace $.google.protobuf {
     location: Location[];
   }
 }
-
 export type Type = $.google.protobuf.SourceCodeInfo;
 
 export function getDefaultValue(): $.google.protobuf.SourceCodeInfo {

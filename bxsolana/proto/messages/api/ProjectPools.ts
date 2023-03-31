@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as Project,
   name2num,
@@ -35,7 +34,6 @@ export declare namespace $.api {
     pools: ProjectPool[];
   }
 }
-
 export type Type = $.api.ProjectPools;
 
 export function getDefaultValue(): $.api.ProjectPools {

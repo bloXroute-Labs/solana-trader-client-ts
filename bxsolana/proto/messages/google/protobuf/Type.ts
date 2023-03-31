@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as Field,
   encodeJson as encodeJson_1,
@@ -57,7 +56,6 @@ export declare namespace $.google.protobuf {
     syntax: Syntax;
   }
 }
-
 export type Type = $.google.protobuf.Type;
 
 export function getDefaultValue(): $.google.protobuf.Type {

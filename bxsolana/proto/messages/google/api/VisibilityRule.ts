@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -23,7 +22,6 @@ export declare namespace $.google.api {
     restriction: string;
   }
 }
-
 export type Type = $.google.api.VisibilityRule;
 
 export function getDefaultValue(): $.google.api.VisibilityRule {

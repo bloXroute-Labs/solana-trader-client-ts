@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as Market,
   encodeJson as encodeJson_1,
@@ -29,7 +28,6 @@ export declare namespace $.api {
     markets: Map<string, Market>;
   }
 }
-
 export type Type = $.api.GetMarketsResponse;
 
 export function getDefaultValue(): $.api.GetMarketsResponse {

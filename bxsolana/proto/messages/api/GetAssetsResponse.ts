@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as Asset,
   encodeJson as encodeJson_1,
@@ -32,7 +31,6 @@ export declare namespace $.api {
     assets: Asset[];
   }
 }
-
 export type Type = $.api.GetAssetsResponse;
 
 export function getDefaultValue(): $.api.GetAssetsResponse {

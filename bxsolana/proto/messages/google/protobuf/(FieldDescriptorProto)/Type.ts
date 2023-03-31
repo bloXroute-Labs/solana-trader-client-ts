@@ -1,4 +1,3 @@
-// @ts-nocheck
 export declare namespace $.google.protobuf.FieldDescriptorProto {
   export type Type =
     | "UNSPECIFIED"
@@ -21,7 +20,6 @@ export declare namespace $.google.protobuf.FieldDescriptorProto {
     | "TYPE_SINT32"
     | "TYPE_SINT64";
 }
-
 export type Type = $.google.protobuf.FieldDescriptorProto.Type;
 
 export const num2name = {

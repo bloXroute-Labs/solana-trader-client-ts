@@ -1,4 +1,3 @@
-// @ts-nocheck
 export type { Type as Struct } from "./Struct";
 export type { Type as Value } from "./Value";
 export type { Type as NullValue } from "./NullValue";

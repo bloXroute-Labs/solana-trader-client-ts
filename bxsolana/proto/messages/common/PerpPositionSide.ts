@@ -1,11 +1,9 @@
-// @ts-nocheck
 export declare namespace $.common {
   export type PerpPositionSide =
     | "PS_UNKNOWN"
     | "PS_LONG"
     | "PS_SHORT";
 }
-
 export type Type = $.common.PerpPositionSide;
 
 export const num2name = {

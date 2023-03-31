@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as GetSwapsStreamUpdate,
   encodeJson as encodeJson_1,
@@ -31,7 +30,6 @@ export declare namespace $.api {
     swap?: GetSwapsStreamUpdate;
   }
 }
-
 export type Type = $.api.GetSwapsStreamResponse;
 
 export function getDefaultValue(): $.api.GetSwapsStreamResponse {

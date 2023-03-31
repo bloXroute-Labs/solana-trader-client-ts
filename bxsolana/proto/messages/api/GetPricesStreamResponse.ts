@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as TokenPrice,
   encodeJson as encodeJson_1,
@@ -31,7 +30,6 @@ export declare namespace $.api {
     price?: TokenPrice;
   }
 }
-
 export type Type = $.api.GetPricesStreamResponse;
 
 export function getDefaultValue(): $.api.GetPricesStreamResponse {

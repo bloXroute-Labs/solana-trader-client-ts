@@ -1,11 +1,9 @@
-// @ts-nocheck
 export declare namespace $.google.protobuf.FieldOptions {
   export type JSType =
     | "JS_NORMAL"
     | "JS_STRING"
     | "JS_NUMBER";
 }
-
 export type Type = $.google.protobuf.FieldOptions.JSType;
 
 export const num2name = {

@@ -1,11 +1,9 @@
-// @ts-nocheck
 export declare namespace $.google.protobuf.MethodOptions {
   export type IdempotencyLevel =
     | "IDEMPOTENCY_UNKNOWN"
     | "NO_SIDE_EFFECTS"
     | "IDEMPOTENT";
 }
-
 export type Type = $.google.protobuf.MethodOptions.IdempotencyLevel;
 
 export const num2name = {

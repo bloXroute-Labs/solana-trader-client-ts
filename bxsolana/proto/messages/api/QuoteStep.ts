@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as StepProject,
   encodeJson as encodeJson_1,
@@ -54,7 +53,6 @@ export declare namespace $.api {
     outAmountMin: number;
   }
 }
-
 export type Type = $.api.QuoteStep;
 
 export function getDefaultValue(): $.api.QuoteStep {

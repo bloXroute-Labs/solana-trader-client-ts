@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as Label,
   name2num,
@@ -52,21 +51,20 @@ export declare namespace $.google.protobuf {
     jsonName?: string;
   }
 }
-
 export type Type = $.google.protobuf.FieldDescriptorProto;
 
 export function getDefaultValue(): $.google.protobuf.FieldDescriptorProto {
   return {
-    name: undefined,
-    extendee: undefined,
-    number: undefined,
-    label: undefined,
-    type: undefined,
-    typeName: undefined,
-    defaultValue: undefined,
+    name: "",
+    extendee: "",
+    number: 0,
+    label: "UNSPECIFIED",
+    type: "UNSPECIFIED",
+    typeName: "",
+    defaultValue: "",
     options: undefined,
-    oneofIndex: undefined,
-    jsonName: undefined,
+    oneofIndex: 0,
+    jsonName: "",
   };
 }
 

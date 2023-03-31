@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as Type_1,
   name2num,
@@ -63,7 +62,6 @@ export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options {
     extensions: Map<string, Value>;
   }
 }
-
 export type Type = $.grpc.gateway.protoc_gen_openapiv2.options.SecurityScheme;
 
 export function getDefaultValue(): $.grpc.gateway.protoc_gen_openapiv2.options.SecurityScheme {

@@ -1,4 +1,3 @@
-// @ts-nocheck
 export declare namespace $.common {
   export type OrderType =
     | "OT_MARKET"
@@ -6,7 +5,6 @@ export declare namespace $.common {
     | "OT_IOC"
     | "OT_POST";
 }
-
 export type Type = $.common.OrderType;
 
 export const num2name = {

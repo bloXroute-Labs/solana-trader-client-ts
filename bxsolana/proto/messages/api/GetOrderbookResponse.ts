@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as OrderbookItem,
   encodeJson as encodeJson_1,
@@ -33,7 +32,6 @@ export declare namespace $.api {
     asks: OrderbookItem[];
   }
 }
-
 export type Type = $.api.GetOrderbookResponse;
 
 export function getDefaultValue(): $.api.GetOrderbookResponse {

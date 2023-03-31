@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as Project,
   name2num,
@@ -34,7 +33,6 @@ export declare namespace $.api {
     includeFailed: boolean;
   }
 }
-
 export type Type = $.api.GetSwapsStreamRequest;
 
 export function getDefaultValue(): $.api.GetSwapsStreamRequest {

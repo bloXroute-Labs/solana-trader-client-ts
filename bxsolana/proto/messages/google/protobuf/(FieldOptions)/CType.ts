@@ -1,11 +1,9 @@
-// @ts-nocheck
 export declare namespace $.google.protobuf.FieldOptions {
   export type CType =
     | "STRING"
     | "CORD"
     | "STRING_PIECE";
 }
-
 export type Type = $.google.protobuf.FieldOptions.CType;
 
 export const num2name = {

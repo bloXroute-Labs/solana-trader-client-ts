@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as TransactionMessage,
   encodeJson as encodeJson_1,
@@ -25,7 +24,6 @@ export declare namespace $.api {
     transactions: TransactionMessage[];
   }
 }
-
 export type Type = $.api.PostClosePerpPositionsResponse;
 
 export function getDefaultValue(): $.api.PostClosePerpPositionsResponse {

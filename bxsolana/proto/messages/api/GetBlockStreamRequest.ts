@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   WireMessage,
 } from "../../runtime/wire/index";
@@ -12,7 +11,6 @@ import {
 export declare namespace $.api {
   export type GetBlockStreamRequest = {}
 }
-
 export type Type = $.api.GetBlockStreamRequest;
 
 export function getDefaultValue(): $.api.GetBlockStreamRequest {

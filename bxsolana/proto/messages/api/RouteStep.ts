@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as StepProject,
   encodeJson as encodeJson_1,
@@ -35,7 +34,6 @@ export declare namespace $.api {
     project?: StepProject;
   }
 }
-
 export type Type = $.api.RouteStep;
 
 export function getDefaultValue(): $.api.RouteStep {

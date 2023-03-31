@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -22,7 +21,6 @@ export declare namespace $.api {
     ownerAddress: string;
   }
 }
-
 export type Type = $.api.GetTokenAccountsRequest;
 
 export function getDefaultValue(): $.api.GetTokenAccountsRequest {

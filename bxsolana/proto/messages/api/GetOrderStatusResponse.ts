@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as Side,
   name2num,
@@ -45,7 +44,6 @@ export declare namespace $.api {
     orderPrice: number;
   }
 }
-
 export type Type = $.api.GetOrderStatusResponse;
 
 export function getDefaultValue(): $.api.GetOrderStatusResponse {

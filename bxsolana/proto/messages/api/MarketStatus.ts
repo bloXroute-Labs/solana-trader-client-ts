@@ -1,10 +1,8 @@
-// @ts-nocheck
 export declare namespace $.api {
   export type MarketStatus =
     | "MS_UNKNOWN"
     | "MS_ONLINE";
 }
-
 export type Type = $.api.MarketStatus;
 
 export const num2name = {

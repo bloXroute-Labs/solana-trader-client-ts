@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as Trade,
   encodeJson as encodeJson_1,
@@ -25,7 +24,6 @@ export declare namespace $.api {
     trades: Trade[];
   }
 }
-
 export type Type = $.api.GetTradesResponse;
 
 export function getDefaultValue(): $.api.GetTradesResponse {

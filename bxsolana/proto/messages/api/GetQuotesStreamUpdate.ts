@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as Project,
   name2num,
@@ -37,7 +36,6 @@ export declare namespace $.api {
     project: Project;
   }
 }
-
 export type Type = $.api.GetQuotesStreamUpdate;
 
 export function getDefaultValue(): $.api.GetQuotesStreamUpdate {

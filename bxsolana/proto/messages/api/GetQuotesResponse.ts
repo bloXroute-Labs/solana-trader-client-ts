@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as ProjectQuote,
   encodeJson as encodeJson_1,
@@ -35,7 +34,6 @@ export declare namespace $.api {
     quotes: ProjectQuote[];
   }
 }
-
 export type Type = $.api.GetQuotesResponse;
 
 export function getDefaultValue(): $.api.GetQuotesResponse {

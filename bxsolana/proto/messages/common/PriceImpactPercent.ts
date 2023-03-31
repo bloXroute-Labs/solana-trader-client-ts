@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as Infinity,
   name2num,
@@ -32,7 +31,6 @@ export declare namespace $.common {
     infinity: Infinity;
   }
 }
-
 export type Type = $.common.PriceImpactPercent;
 
 export function getDefaultValue(): $.common.PriceImpactPercent {

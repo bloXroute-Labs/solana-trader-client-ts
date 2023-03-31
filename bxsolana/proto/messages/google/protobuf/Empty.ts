@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   WireMessage,
 } from "../../../runtime/wire/index";
@@ -12,7 +11,6 @@ import {
 export declare namespace $.google.protobuf {
   export type Empty = {}
 }
-
 export type Type = $.google.protobuf.Empty;
 
 export function getDefaultValue(): $.google.protobuf.Empty {

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -22,7 +21,6 @@ export declare namespace $.api {
     timestamp: string;
   }
 }
-
 export type Type = $.api.GetServerTimeResponse;
 
 export function getDefaultValue(): $.api.GetServerTimeResponse {

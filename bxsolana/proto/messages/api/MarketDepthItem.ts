@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -23,7 +22,6 @@ export declare namespace $.api {
     size: number;
   }
 }
-
 export type Type = $.api.MarketDepthItem;
 
 export function getDefaultValue(): $.api.MarketDepthItem {

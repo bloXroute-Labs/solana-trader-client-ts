@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Type as UnsettledAccount,
   encodeJson as encodeJson_1,
@@ -31,7 +30,6 @@ export declare namespace $.api {
     unsettled: UnsettledAccount[];
   }
 }
-
 export type Type = $.api.GetUnsettledResponse;
 
 export function getDefaultValue(): $.api.GetUnsettledResponse {

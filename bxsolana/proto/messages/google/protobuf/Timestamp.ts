@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -23,7 +22,6 @@ export declare namespace $.google.protobuf {
     nanos: number;
   }
 }
-
 export type Type = $.google.protobuf.Timestamp;
 
 export function getDefaultValue(): $.google.protobuf.Timestamp {

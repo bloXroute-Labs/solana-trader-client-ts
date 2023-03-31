@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -26,7 +25,6 @@ export declare namespace $.api {
     subAccountID: string;
   }
 }
-
 export type Type = $.api.Asset;
 
 export function getDefaultValue(): $.api.Asset {
