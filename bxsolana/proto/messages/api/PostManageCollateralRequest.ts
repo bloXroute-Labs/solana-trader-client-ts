@@ -42,6 +42,7 @@ export declare namespace $.api {
     project: Project;
     type: PerpCollateralType;
     token: PerpCollateralToken;
+    toAccountAddress: string;
   }
 }
 export type Type = $.api.PostManageCollateralRequest;
@@ -53,6 +54,7 @@ export function getDefaultValue(): $.api.PostManageCollateralRequest {
     project: "P_UNKNOWN",
     type: "PCT_DEPOSIT",
     token: "PCTK_USDC",
+    toAccountAddress: "",
   };
 }
 
@@ -70,6 +72,7 @@ export function encodeJson(value: $.api.PostManageCollateralRequest): unknown {
   if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
   if (value.type !== undefined) result.type = tsValueToJsonValueFns.enum(value.type);
   if (value.token !== undefined) result.token = tsValueToJsonValueFns.enum(value.token);
+  if (value.toAccountAddress !== undefined) result.toAccountAddress = tsValueToJsonValueFns.string(value.toAccountAddress);
   return result;
 }
 
@@ -80,6 +83,7 @@ export function decodeJson(value: any): $.api.PostManageCollateralRequest {
   if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
   if (value.type !== undefined) result.type = jsonValueToTsValueFns.enum(value.type) as PerpCollateralType;
   if (value.token !== undefined) result.token = jsonValueToTsValueFns.enum(value.token) as PerpCollateralToken;
+  if (value.toAccountAddress !== undefined) result.toAccountAddress = jsonValueToTsValueFns.string(value.toAccountAddress);
   return result;
 }
 
@@ -113,6 +117,12 @@ export function encodeBinary(value: $.api.PostManageCollateralRequest): Uint8Arr
     const tsValue = value.token;
     result.push(
       [5, { type: WireType.Varint as const, value: new Long(name2num_2[tsValue as keyof typeof name2num_2]) }],
+    );
+  }
+  if (value.toAccountAddress !== undefined) {
+    const tsValue = value.toAccountAddress;
+    result.push(
+      [6, tsValueToWireValueFns.string(tsValue)],
     );
   }
   return serialize(result);
@@ -156,6 +166,13 @@ export function decodeBinary(binary: Uint8Array): $.api.PostManageCollateralRequ
     const value = wireValue.type === WireType.Varint ? num2name_2[wireValue.value[0] as keyof typeof num2name_2] : undefined;
     if (value === undefined) break field;
     result.token = value;
+  }
+  field: {
+    const wireValue = wireFields.get(6);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.toAccountAddress = value;
   }
   return result;
 }

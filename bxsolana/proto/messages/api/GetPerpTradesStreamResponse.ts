@@ -1,13 +1,10 @@
 import {
-  Type as PerpContract,
-  name2num,
-  num2name,
-} from "../common/PerpContract";
-import {
-  Type as PerpPositionSide,
-  name2num as name2num_1,
-  num2name as num2name_1,
-} from "../common/PerpPositionSide";
+  Type as GetPerpTradesResponse,
+  encodeJson as encodeJson_1,
+  decodeJson as decodeJson_1,
+  encodeBinary as encodeBinary_1,
+  decodeBinary as decodeBinary_1,
+} from "./GetPerpTradesResponse";
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -20,9 +17,6 @@ import {
   default as serialize,
 } from "../../runtime/wire/serialize";
 import {
-  default as Long,
-} from "../../runtime/Long";
-import {
   tsValueToWireValueFns,
   wireValueToTsValueFns,
 } from "../../runtime/wire/scalar";
@@ -32,30 +26,16 @@ import {
 
 export declare namespace $.api {
   export type GetPerpTradesStreamResponse = {
-    contract: PerpContract;
-    makerPositionSide: PerpPositionSide;
-    fillerAddress: string;
-    takerAddress: string;
-    takerOrderID: string;
-    makerAddress: string;
-    makerOrderID: string;
-    baseAmountFilled: number;
-    quoteAmountFilled: number;
+    slot: string;
+    trade?: GetPerpTradesResponse;
   }
 }
 export type Type = $.api.GetPerpTradesStreamResponse;
 
 export function getDefaultValue(): $.api.GetPerpTradesStreamResponse {
   return {
-    contract: "ALL",
-    makerPositionSide: "PS_UNKNOWN",
-    fillerAddress: "",
-    takerAddress: "",
-    takerOrderID: "",
-    makerAddress: "",
-    makerOrderID: "",
-    baseAmountFilled: 0,
-    quoteAmountFilled: 0,
+    slot: "0",
+    trade: undefined,
   };
 }
 
@@ -68,86 +48,30 @@ export function createValue(partialValue: Partial<$.api.GetPerpTradesStreamRespo
 
 export function encodeJson(value: $.api.GetPerpTradesStreamResponse): unknown {
   const result: any = {};
-  if (value.contract !== undefined) result.contract = tsValueToJsonValueFns.enum(value.contract);
-  if (value.makerPositionSide !== undefined) result.makerPositionSide = tsValueToJsonValueFns.enum(value.makerPositionSide);
-  if (value.fillerAddress !== undefined) result.fillerAddress = tsValueToJsonValueFns.string(value.fillerAddress);
-  if (value.takerAddress !== undefined) result.takerAddress = tsValueToJsonValueFns.string(value.takerAddress);
-  if (value.takerOrderID !== undefined) result.takerOrderID = tsValueToJsonValueFns.string(value.takerOrderID);
-  if (value.makerAddress !== undefined) result.makerAddress = tsValueToJsonValueFns.string(value.makerAddress);
-  if (value.makerOrderID !== undefined) result.makerOrderID = tsValueToJsonValueFns.string(value.makerOrderID);
-  if (value.baseAmountFilled !== undefined) result.baseAmountFilled = tsValueToJsonValueFns.double(value.baseAmountFilled);
-  if (value.quoteAmountFilled !== undefined) result.quoteAmountFilled = tsValueToJsonValueFns.double(value.quoteAmountFilled);
+  if (value.slot !== undefined) result.slot = tsValueToJsonValueFns.int64(value.slot);
+  if (value.trade !== undefined) result.trade = encodeJson_1(value.trade);
   return result;
 }
 
 export function decodeJson(value: any): $.api.GetPerpTradesStreamResponse {
   const result = getDefaultValue();
-  if (value.contract !== undefined) result.contract = jsonValueToTsValueFns.enum(value.contract) as PerpContract;
-  if (value.makerPositionSide !== undefined) result.makerPositionSide = jsonValueToTsValueFns.enum(value.makerPositionSide) as PerpPositionSide;
-  if (value.fillerAddress !== undefined) result.fillerAddress = jsonValueToTsValueFns.string(value.fillerAddress);
-  if (value.takerAddress !== undefined) result.takerAddress = jsonValueToTsValueFns.string(value.takerAddress);
-  if (value.takerOrderID !== undefined) result.takerOrderID = jsonValueToTsValueFns.string(value.takerOrderID);
-  if (value.makerAddress !== undefined) result.makerAddress = jsonValueToTsValueFns.string(value.makerAddress);
-  if (value.makerOrderID !== undefined) result.makerOrderID = jsonValueToTsValueFns.string(value.makerOrderID);
-  if (value.baseAmountFilled !== undefined) result.baseAmountFilled = jsonValueToTsValueFns.double(value.baseAmountFilled);
-  if (value.quoteAmountFilled !== undefined) result.quoteAmountFilled = jsonValueToTsValueFns.double(value.quoteAmountFilled);
+  if (value.slot !== undefined) result.slot = jsonValueToTsValueFns.int64(value.slot);
+  if (value.trade !== undefined) result.trade = decodeJson_1(value.trade);
   return result;
 }
 
 export function encodeBinary(value: $.api.GetPerpTradesStreamResponse): Uint8Array {
   const result: WireMessage = [];
-  if (value.contract !== undefined) {
-    const tsValue = value.contract;
+  if (value.slot !== undefined) {
+    const tsValue = value.slot;
     result.push(
-      [1, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
+      [1, tsValueToWireValueFns.int64(tsValue)],
     );
   }
-  if (value.makerPositionSide !== undefined) {
-    const tsValue = value.makerPositionSide;
+  if (value.trade !== undefined) {
+    const tsValue = value.trade;
     result.push(
-      [2, { type: WireType.Varint as const, value: new Long(name2num_1[tsValue as keyof typeof name2num_1]) }],
-    );
-  }
-  if (value.fillerAddress !== undefined) {
-    const tsValue = value.fillerAddress;
-    result.push(
-      [3, tsValueToWireValueFns.string(tsValue)],
-    );
-  }
-  if (value.takerAddress !== undefined) {
-    const tsValue = value.takerAddress;
-    result.push(
-      [4, tsValueToWireValueFns.string(tsValue)],
-    );
-  }
-  if (value.takerOrderID !== undefined) {
-    const tsValue = value.takerOrderID;
-    result.push(
-      [5, tsValueToWireValueFns.string(tsValue)],
-    );
-  }
-  if (value.makerAddress !== undefined) {
-    const tsValue = value.makerAddress;
-    result.push(
-      [6, tsValueToWireValueFns.string(tsValue)],
-    );
-  }
-  if (value.makerOrderID !== undefined) {
-    const tsValue = value.makerOrderID;
-    result.push(
-      [7, tsValueToWireValueFns.string(tsValue)],
-    );
-  }
-  if (value.baseAmountFilled !== undefined) {
-    const tsValue = value.baseAmountFilled;
-    result.push(
-      [8, tsValueToWireValueFns.double(tsValue)],
-    );
-  }
-  if (value.quoteAmountFilled !== undefined) {
-    const tsValue = value.quoteAmountFilled;
-    result.push(
-      [9, tsValueToWireValueFns.double(tsValue)],
+      [2, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
     );
   }
   return serialize(result);
@@ -160,65 +84,16 @@ export function decodeBinary(binary: Uint8Array): $.api.GetPerpTradesStreamRespo
   field: {
     const wireValue = wireFields.get(1);
     if (wireValue === undefined) break field;
-    const value = wireValue.type === WireType.Varint ? num2name[wireValue.value[0] as keyof typeof num2name] : undefined;
+    const value = wireValueToTsValueFns.int64(wireValue);
     if (value === undefined) break field;
-    result.contract = value;
+    result.slot = value;
   }
   field: {
     const wireValue = wireFields.get(2);
     if (wireValue === undefined) break field;
-    const value = wireValue.type === WireType.Varint ? num2name_1[wireValue.value[0] as keyof typeof num2name_1] : undefined;
+    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined;
     if (value === undefined) break field;
-    result.makerPositionSide = value;
-  }
-  field: {
-    const wireValue = wireFields.get(3);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.string(wireValue);
-    if (value === undefined) break field;
-    result.fillerAddress = value;
-  }
-  field: {
-    const wireValue = wireFields.get(4);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.string(wireValue);
-    if (value === undefined) break field;
-    result.takerAddress = value;
-  }
-  field: {
-    const wireValue = wireFields.get(5);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.string(wireValue);
-    if (value === undefined) break field;
-    result.takerOrderID = value;
-  }
-  field: {
-    const wireValue = wireFields.get(6);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.string(wireValue);
-    if (value === undefined) break field;
-    result.makerAddress = value;
-  }
-  field: {
-    const wireValue = wireFields.get(7);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.string(wireValue);
-    if (value === undefined) break field;
-    result.makerOrderID = value;
-  }
-  field: {
-    const wireValue = wireFields.get(8);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.double(wireValue);
-    if (value === undefined) break field;
-    result.baseAmountFilled = value;
-  }
-  field: {
-    const wireValue = wireFields.get(9);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.double(wireValue);
-    if (value === undefined) break field;
-    result.quoteAmountFilled = value;
+    result.trade = value;
   }
   return result;
 }

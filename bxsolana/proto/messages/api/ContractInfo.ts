@@ -35,6 +35,7 @@ export declare namespace $.api {
     minSize: number;
     perpPrice: number;
     indexPrice: number;
+    openInterest: number;
   }
 }
 export type Type = $.api.ContractInfo;
@@ -49,6 +50,7 @@ export function getDefaultValue(): $.api.ContractInfo {
     minSize: 0,
     perpPrice: 0,
     indexPrice: 0,
+    openInterest: 0,
   };
 }
 
@@ -69,6 +71,7 @@ export function encodeJson(value: $.api.ContractInfo): unknown {
   if (value.minSize !== undefined) result.minSize = tsValueToJsonValueFns.double(value.minSize);
   if (value.perpPrice !== undefined) result.perpPrice = tsValueToJsonValueFns.double(value.perpPrice);
   if (value.indexPrice !== undefined) result.indexPrice = tsValueToJsonValueFns.double(value.indexPrice);
+  if (value.openInterest !== undefined) result.openInterest = tsValueToJsonValueFns.double(value.openInterest);
   return result;
 }
 
@@ -82,6 +85,7 @@ export function decodeJson(value: any): $.api.ContractInfo {
   if (value.minSize !== undefined) result.minSize = jsonValueToTsValueFns.double(value.minSize);
   if (value.perpPrice !== undefined) result.perpPrice = jsonValueToTsValueFns.double(value.perpPrice);
   if (value.indexPrice !== undefined) result.indexPrice = jsonValueToTsValueFns.double(value.indexPrice);
+  if (value.openInterest !== undefined) result.openInterest = jsonValueToTsValueFns.double(value.openInterest);
   return result;
 }
 
@@ -133,6 +137,12 @@ export function encodeBinary(value: $.api.ContractInfo): Uint8Array {
     const tsValue = value.indexPrice;
     result.push(
       [8, tsValueToWireValueFns.double(tsValue)],
+    );
+  }
+  if (value.openInterest !== undefined) {
+    const tsValue = value.openInterest;
+    result.push(
+      [9, tsValueToWireValueFns.double(tsValue)],
     );
   }
   return serialize(result);
@@ -197,6 +207,13 @@ export function decodeBinary(binary: Uint8Array): $.api.ContractInfo {
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
     result.indexPrice = value;
+  }
+  field: {
+    const wireValue = wireFields.get(9);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.double(wireValue);
+    if (value === undefined) break field;
+    result.openInterest = value;
   }
   return result;
 }
