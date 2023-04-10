@@ -42,8 +42,6 @@ import {
     DEVNET_API_GRPC_PORT,
 } from "../bxsolana/utils/constants"
 import { AxiosRequestConfig } from "axios"
-import { RpcReturnType } from "../bxsolana/proto/runtime/rpc"
-import { Type as PerpContract } from "../bxsolana/proto/messages/common/PerpContract"
 
 // if longer examples (placing and canceling transactions, etc. should be run)
 const runLongExamples = process.env.RUN_LIFECYCLE === "true"
@@ -304,6 +302,10 @@ async function runPerpRequests(provider: BaseProvider) {
     await callPostWithdrawCollateral(provider)
     console.info(" ")
     console.info(" ")
+
+    await callPostTransferCollateral(provider)
+    console.info(" ")
+    console.info(" ")
 }
 
 async function doOrderbookRequests(provider: BaseProvider) {
@@ -410,7 +412,11 @@ async function doStreams(provider: BaseProvider) {
     console.info(" ")
     console.info(" ")
 
-    // await callGetPerpOrderbookStream(provider)
+    await callGetPerpOrderbookStream(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetPerpTradesStream(provider)
     console.info(" ")
     console.info(" ")
 }
@@ -792,7 +798,6 @@ async function callGetAssets(provider: BaseProvider) {
 async function callGetPerpContracts(provider: BaseProvider) {
     console.info("get perp contracts")
     const req = await provider.getPerpContracts({
-        contracts: ["SOL_PERP"],
         project: "P_DRIFT",
     })
     console.info(req)
@@ -944,6 +949,7 @@ async function callPostManageCollateral(provider: BaseProvider) {
         amount: 1,
         type: "PCT_DEPOSIT",
         token: "PCTK_USDC",
+        toAccountAddress: "",
     })
     console.info(res)
 }
@@ -956,6 +962,20 @@ async function callPostWithdrawCollateral(provider: BaseProvider) {
         amount: 1,
         type: "PCT_WITHDRAWAL",
         token: "PCTK_USDC",
+        toAccountAddress: ""
+    })
+    console.info(req)
+}
+
+async function callPostTransferCollateral(provider: BaseProvider) {
+    console.info("transfer collateral")
+    const req = await provider.postManageCollateral({
+        accountAddress: "9UnwdvTf5EfGeLyLrF4GZDUs7LKRUeJQzW7qsDVGQ8sS",
+        project: "P_DRIFT",
+        amount: 1,
+        type: "PCT_TRANSFER",
+        token: "PCTK_USDC",
+        toAccountAddress: "AbnwAQGrYnvktT4ihhX5np8RbgtfXJfPwpgMJnCFa4MT"
     })
     console.info(req)
 }
@@ -1154,9 +1174,9 @@ async function callGetRecentBlockHashStream(provider: BaseProvider) {
 
 // Drift
 async function callGetPerpOrderbookStream(provider: BaseProvider) {
-    console.info("Subscribing for orderbook updates of SOL-PERP market")
+    console.info("Subscribing for orderbook updates")
     const req = await provider.getPerpOrderbooksStream({
-        contracts: ["SOL_PERP"],
+        contracts: ["SOL_PERP", "BTC_PERP", "ETH_PERP", "APT_PERP"],
         project: "P_DRIFT",
         limit: 0,
     })
@@ -1165,7 +1185,26 @@ async function callGetPerpOrderbookStream(provider: BaseProvider) {
     for await (const ob of req) {
         console.info(ob)
         count++
-        if (count == 5) {
+        if (count == 1) {
+            break
+        }
+    }
+    console.info(" ")
+    console.info(" ")
+}
+
+async function callGetPerpTradesStream(provider: BaseProvider) {
+    console.info("Subscribing for drift trade updates")
+    const req = await provider.getPerpTradesStream({
+        contracts: ["SOL_PERP", "BTC_PERP", "ETH_PERP", "APT_PERP"],
+        project: "P_DRIFT",
+    })
+
+    let count = 0
+    for await (const ob of req) {
+        console.info(ob)
+        count++
+        if (count == 1) {
             break
         }
     }
