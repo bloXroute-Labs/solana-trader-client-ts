@@ -962,7 +962,7 @@ async function callPostWithdrawCollateral(provider: BaseProvider) {
         amount: 1,
         type: "PCT_WITHDRAWAL",
         token: "PCTK_USDC",
-        toAccountAddress: ""
+        toAccountAddress: "",
     })
     console.info(req)
 }
@@ -975,7 +975,7 @@ async function callPostTransferCollateral(provider: BaseProvider) {
         amount: 1,
         type: "PCT_TRANSFER",
         token: "PCTK_USDC",
-        toAccountAddress: "AbnwAQGrYnvktT4ihhX5np8RbgtfXJfPwpgMJnCFa4MT"
+        toAccountAddress: "AbnwAQGrYnvktT4ihhX5np8RbgtfXJfPwpgMJnCFa4MT",
     })
     console.info(req)
 }
