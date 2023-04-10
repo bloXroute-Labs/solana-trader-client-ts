@@ -96,7 +96,8 @@ import {
     GetPerpPositionsResponse,
     GetOpenPerpOrderRequest,
     GetOpenPerpOrderResponse,
-    GetPerpTradesStreamResponse, GetPerpTradesStreamRequest
+    GetPerpTradesStreamResponse,
+    GetPerpTradesStreamRequest,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
