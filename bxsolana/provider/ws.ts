@@ -96,7 +96,7 @@ import {
     GetPerpPositionsResponse,
     GetOpenPerpOrderRequest,
     GetOpenPerpOrderResponse,
-    GetPerpTradesStreamResponse,
+    GetPerpTradesStreamResponse, GetPerpTradesStreamRequest
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -216,7 +216,7 @@ export class WsProvider extends BaseProvider {
     }
 
     getPerpTradesStream = async (
-        request: GetPerpOrderbooksRequest
+        request: GetPerpTradesStreamRequest
     ): Promise<AsyncGenerator<GetPerpTradesStreamResponse>> => {
         const subscriptionId = await this.wsConnection.subscribe(
             "GetPerpTradesStream",
