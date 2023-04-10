@@ -433,7 +433,7 @@ async function cancelWsStreams(provider: BaseProvider) {
     console.info(" ")
 
     console.info("Cancelling get tickers stream")
-    await provider.cancelAllGetOrderbooksStream()
+    await provider.cancelAllGetTickersStream()
     console.info(" ")
     console.info(" ")
 

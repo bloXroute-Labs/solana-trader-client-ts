@@ -106,6 +106,8 @@ import {
     PostLiquidatePerpResponse,
     GetPerpPositionsRequest,
     GetPerpPositionsResponse,
+    GetPerpTradesStreamResponse,
+    GetPerpTradesStreamRequest,
 } from "../proto/messages/api"
 import { createServiceClient, Service } from "../proto/services/api/Api"
 import { BaseProvider } from "./base"
@@ -405,6 +407,12 @@ export class GrpcProvider extends BaseProvider {
         request: GetOrderbooksRequest
     ): Promise<AsyncGenerator<GetOrderbooksStreamResponse>> => {
         return this.client.getOrderbooksStream(request)
+    }
+
+    getPerpTradesStream = (
+        request: GetPerpTradesStreamRequest
+    ): Promise<AsyncGenerator<GetPerpTradesStreamResponse>> => {
+        return this.client.getPerpTradesStream(request)
     }
 
     getMarketDepthsStream = (
