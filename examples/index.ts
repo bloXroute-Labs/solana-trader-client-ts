@@ -444,11 +444,11 @@ async function cancelWsStreams(provider: BaseProvider) {
 }
 
 async function doAmmStreams(provider: BaseProvider) {
-    await callGetPricesStream(provider)
-    console.info(" ")
-    console.info(" ")
-
     if (runLongExamples) {
+        await callGetPricesStream(provider)
+        console.info(" ")
+        console.info(" ")
+
         await callGetPoolsStream(provider)
         console.info(" ")
         console.info(" ")
@@ -1110,7 +1110,7 @@ async function callGetPricesStream(provider: BaseProvider) {
     console.info("Subscribing for prices updates of SOL and USDC on Raydium")
 
     const projects: Project[] = ["P_RAYDIUM", "P_JUPITER"]
-    const tokens: string[] = ["SOL", "USDC"]
+    const tokens: string[] = ["SOL", "USDC", "USDT"]
     const stream = await provider.getPricesStream({
         projects: projects,
         tokens,
@@ -1120,7 +1120,7 @@ async function callGetPricesStream(provider: BaseProvider) {
     for await (const update of stream) {
         console.info(update)
         count++
-        if (count == 3) {
+        if (count == 1) {
             break
         }
     }
