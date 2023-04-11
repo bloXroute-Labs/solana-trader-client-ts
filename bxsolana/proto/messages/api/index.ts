@@ -133,6 +133,7 @@ export type { Type as GetNewPerpOrdersStreamRequest } from "./GetNewPerpOrdersSt
 export type { Type as GetNewPerpOrdersStreamResponse } from "./GetNewPerpOrdersStreamResponse";
 export type { Type as GetPerpTradesStreamRequest } from "./GetPerpTradesStreamRequest";
 export type { Type as GetPerpTradesStreamResponse } from "./GetPerpTradesStreamResponse";
+export type { Type as GetPerpTradesResponse } from "./GetPerpTradesResponse";
 export type { Type as PostSettlePNLRequest } from "./PostSettlePNLRequest";
 export type { Type as PostSettlePNLResponse } from "./PostSettlePNLResponse";
 export type { Type as GetAssetsRequest } from "./GetAssetsRequest";
