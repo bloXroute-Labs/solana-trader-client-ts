@@ -43,6 +43,7 @@ export declare namespace $.api {
     status: string;
     accountAddress: string;
     subAccountID: string;
+    postOnly: boolean;
   }
 }
 export type Type = $.api.PerpOrder;
@@ -60,6 +61,7 @@ export function getDefaultValue(): $.api.PerpOrder {
     status: "",
     accountAddress: "",
     subAccountID: "0",
+    postOnly: false,
   };
 }
 
@@ -83,6 +85,7 @@ export function encodeJson(value: $.api.PerpOrder): unknown {
   if (value.status !== undefined) result.status = tsValueToJsonValueFns.string(value.status);
   if (value.accountAddress !== undefined) result.accountAddress = tsValueToJsonValueFns.string(value.accountAddress);
   if (value.subAccountID !== undefined) result.subAccountID = tsValueToJsonValueFns.uint64(value.subAccountID);
+  if (value.postOnly !== undefined) result.postOnly = tsValueToJsonValueFns.bool(value.postOnly);
   return result;
 }
 
@@ -99,6 +102,7 @@ export function decodeJson(value: any): $.api.PerpOrder {
   if (value.status !== undefined) result.status = jsonValueToTsValueFns.string(value.status);
   if (value.accountAddress !== undefined) result.accountAddress = jsonValueToTsValueFns.string(value.accountAddress);
   if (value.subAccountID !== undefined) result.subAccountID = jsonValueToTsValueFns.uint64(value.subAccountID);
+  if (value.postOnly !== undefined) result.postOnly = jsonValueToTsValueFns.bool(value.postOnly);
   return result;
 }
 
@@ -168,6 +172,12 @@ export function encodeBinary(value: $.api.PerpOrder): Uint8Array {
     const tsValue = value.subAccountID;
     result.push(
       [11, tsValueToWireValueFns.uint64(tsValue)],
+    );
+  }
+  if (value.postOnly !== undefined) {
+    const tsValue = value.postOnly;
+    result.push(
+      [12, tsValueToWireValueFns.bool(tsValue)],
     );
   }
   return serialize(result);
@@ -253,6 +263,13 @@ export function decodeBinary(binary: Uint8Array): $.api.PerpOrder {
     const value = wireValueToTsValueFns.uint64(wireValue);
     if (value === undefined) break field;
     result.subAccountID = value;
+  }
+  field: {
+    const wireValue = wireFields.get(12);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.bool(wireValue);
+    if (value === undefined) break field;
+    result.postOnly = value;
   }
   return result;
 }
