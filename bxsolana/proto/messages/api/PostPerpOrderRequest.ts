@@ -19,6 +19,11 @@ import {
   num2name as num2name_3,
 } from "../common/PerpOrderType";
 import {
+  Type as PostOnlyParams,
+  name2num as name2num_4,
+  num2name as num2name_4,
+} from "../common/PostOnlyParams";
+import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar";
@@ -53,6 +58,7 @@ export declare namespace $.api {
     amount: number;
     price: number;
     clientOrderID: string;
+    postOnly: PostOnlyParams;
   }
 }
 export type Type = $.api.PostPerpOrderRequest;
@@ -70,6 +76,7 @@ export function getDefaultValue(): $.api.PostPerpOrderRequest {
     amount: 0,
     price: 0,
     clientOrderID: "0",
+    postOnly: "PO_NONE",
   };
 }
 
@@ -93,6 +100,7 @@ export function encodeJson(value: $.api.PostPerpOrderRequest): unknown {
   if (value.amount !== undefined) result.amount = tsValueToJsonValueFns.double(value.amount);
   if (value.price !== undefined) result.price = tsValueToJsonValueFns.double(value.price);
   if (value.clientOrderID !== undefined) result.clientOrderID = tsValueToJsonValueFns.uint64(value.clientOrderID);
+  if (value.postOnly !== undefined) result.postOnly = tsValueToJsonValueFns.enum(value.postOnly);
   return result;
 }
 
@@ -109,6 +117,7 @@ export function decodeJson(value: any): $.api.PostPerpOrderRequest {
   if (value.amount !== undefined) result.amount = jsonValueToTsValueFns.double(value.amount);
   if (value.price !== undefined) result.price = jsonValueToTsValueFns.double(value.price);
   if (value.clientOrderID !== undefined) result.clientOrderID = jsonValueToTsValueFns.uint64(value.clientOrderID);
+  if (value.postOnly !== undefined) result.postOnly = jsonValueToTsValueFns.enum(value.postOnly) as PostOnlyParams;
   return result;
 }
 
@@ -178,6 +187,12 @@ export function encodeBinary(value: $.api.PostPerpOrderRequest): Uint8Array {
     const tsValue = value.clientOrderID;
     result.push(
       [11, tsValueToWireValueFns.uint64(tsValue)],
+    );
+  }
+  if (value.postOnly !== undefined) {
+    const tsValue = value.postOnly;
+    result.push(
+      [12, { type: WireType.Varint as const, value: new Long(name2num_4[tsValue as keyof typeof name2num_4]) }],
     );
   }
   return serialize(result);
@@ -263,6 +278,13 @@ export function decodeBinary(binary: Uint8Array): $.api.PostPerpOrderRequest {
     const value = wireValueToTsValueFns.uint64(wireValue);
     if (value === undefined) break field;
     result.clientOrderID = value;
+  }
+  field: {
+    const wireValue = wireFields.get(12);
+    if (wireValue === undefined) break field;
+    const value = wireValue.type === WireType.Varint ? num2name_4[wireValue.value[0] as keyof typeof num2name_4] : undefined;
+    if (value === undefined) break field;
+    result.postOnly = value;
   }
   return result;
 }

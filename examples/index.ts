@@ -853,6 +853,7 @@ async function callPostPerpOrder(provider: BaseProvider) {
         amount: 1,
         price: 232,
         clientOrderID: "1",
+        postOnly: "PO_NONE",
     })
     console.info(req)
 }
