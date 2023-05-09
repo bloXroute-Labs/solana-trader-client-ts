@@ -17,7 +17,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type UserDetail = {
+  export interface UserDetail {
     status: string;
     subAccountId: string;
     accountAddress: string;

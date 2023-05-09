@@ -17,7 +17,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type GetServerTimeResponse = {
+  export interface GetServerTimeResponse {
     timestamp: string;
   }
 }

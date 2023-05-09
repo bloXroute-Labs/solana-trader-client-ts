@@ -37,7 +37,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type PostReplaceOrderRequest = {
+  export interface PostReplaceOrderRequest {
     ownerAddress: string;
     payerAddress: string;
     market: string;

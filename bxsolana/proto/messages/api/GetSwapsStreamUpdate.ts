@@ -26,7 +26,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type GetSwapsStreamUpdate = {
+  export interface GetSwapsStreamUpdate {
     success: boolean;
     project: Project;
     poolAddress: string;

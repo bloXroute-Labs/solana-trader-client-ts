@@ -17,7 +17,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.common {
-  export type Fee = {
+  export interface Fee {
     amount: number;
     mint: string;
     percent: number;

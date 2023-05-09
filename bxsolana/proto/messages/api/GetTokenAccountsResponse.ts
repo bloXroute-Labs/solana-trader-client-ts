@@ -20,7 +20,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type GetTokenAccountsResponse = {
+  export interface GetTokenAccountsResponse {
     accounts: TokenAccount[];
   }
 }

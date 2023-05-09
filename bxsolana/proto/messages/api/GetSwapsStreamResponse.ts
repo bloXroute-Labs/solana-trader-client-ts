@@ -25,7 +25,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type GetSwapsStreamResponse = {
+  export interface GetSwapsStreamResponse {
     slot: string;
     swap?: GetSwapsStreamUpdate;
   }

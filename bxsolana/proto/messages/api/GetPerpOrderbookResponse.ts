@@ -29,7 +29,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type GetPerpOrderbookResponse = {
+  export interface GetPerpOrderbookResponse {
     contract: PerpContract;
     bids: PerpOrderbookItem[];
     asks: PerpOrderbookItem[];

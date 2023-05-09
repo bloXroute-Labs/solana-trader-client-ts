@@ -36,7 +36,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type PostManageCollateralRequest = {
+  export interface PostManageCollateralRequest {
     accountAddress: string;
     amount: number;
     project: Project;

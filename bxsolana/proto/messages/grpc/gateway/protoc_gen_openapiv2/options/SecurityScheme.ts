@@ -50,7 +50,7 @@ import {
 } from "../../../../../runtime/wire/deserialize";
 
 export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options {
-  export type SecurityScheme = {
+  export interface SecurityScheme {
     type: Type_1;
     description: string;
     name: string;

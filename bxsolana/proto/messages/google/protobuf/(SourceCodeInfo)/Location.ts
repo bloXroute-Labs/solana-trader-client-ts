@@ -18,7 +18,7 @@ import {
 } from "../../../../runtime/wire/deserialize";
 
 export declare namespace $.google.protobuf.SourceCodeInfo {
-  export type Location = {
+  export interface Location {
     path: number[];
     span: number[];
     leadingComments?: string;

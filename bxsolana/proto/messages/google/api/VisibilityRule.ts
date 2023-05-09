@@ -17,7 +17,7 @@ import {
 } from "../../../runtime/wire/deserialize";
 
 export declare namespace $.google.api {
-  export type VisibilityRule = {
+  export interface VisibilityRule {
     selector: string;
     restriction: string;
   }

@@ -25,7 +25,7 @@ import {
 } from "../../../runtime/wire/deserialize";
 
 export declare namespace $.google.protobuf {
-  export type EnumOptions = {
+  export interface EnumOptions {
     allowAlias?: boolean;
     deprecated?: boolean;
     uninterpretedOption: UninterpretedOption[];
