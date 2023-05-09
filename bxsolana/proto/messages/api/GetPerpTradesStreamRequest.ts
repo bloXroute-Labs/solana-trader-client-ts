@@ -30,7 +30,7 @@ import {
 } from "../../runtime/wire/scalar";
 
 export declare namespace $.api {
-  export type GetPerpTradesStreamRequest = {
+  export interface GetPerpTradesStreamRequest {
     contracts: PerpContract[];
     project: Project;
   }

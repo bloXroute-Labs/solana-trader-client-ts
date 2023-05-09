@@ -17,7 +17,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type StepProject = {
+  export interface StepProject {
     label: string;
     id: string;
   }

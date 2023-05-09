@@ -20,7 +20,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type GetPoolsResponse = {
+  export interface GetPoolsResponse {
     projects: ProjectPools[];
   }
 }

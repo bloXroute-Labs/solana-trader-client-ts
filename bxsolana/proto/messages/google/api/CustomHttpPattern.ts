@@ -17,7 +17,7 @@ import {
 } from "../../../runtime/wire/deserialize";
 
 export declare namespace $.google.api {
-  export type CustomHttpPattern = {
+  export interface CustomHttpPattern {
     kind: string;
     path: string;
   }

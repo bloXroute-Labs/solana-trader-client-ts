@@ -20,7 +20,7 @@ import {
 } from "../../../runtime/wire/deserialize";
 
 export declare namespace $.google.protobuf {
-  export type ListValue = {
+  export interface ListValue {
     values: Value[];
   }
 }

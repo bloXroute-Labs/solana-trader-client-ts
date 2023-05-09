@@ -31,7 +31,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type PerpPosition = {
+  export interface PerpPosition {
     contract: PerpContract;
     volumeAvailable: number;
     volumeInOrder: number;

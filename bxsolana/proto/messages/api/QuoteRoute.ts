@@ -25,7 +25,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type QuoteRoute = {
+  export interface QuoteRoute {
     inAmount: number;
     outAmount: number;
     outAmountMin: number;

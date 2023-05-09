@@ -25,7 +25,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type Candle = {
+  export interface Candle {
     startTime?: Timestamp;
     updateTime?: Timestamp;
     open: number;

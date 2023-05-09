@@ -17,7 +17,7 @@ import {
 } from "../../../runtime/wire/deserialize";
 
 export declare namespace $.google.protobuf {
-  export type Int32Value = {
+  export interface Int32Value {
     value: number;
   }
 }

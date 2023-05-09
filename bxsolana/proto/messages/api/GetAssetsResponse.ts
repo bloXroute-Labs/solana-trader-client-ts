@@ -25,7 +25,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type GetAssetsResponse = {
+  export interface GetAssetsResponse {
     ownerAddress: string;
     assets: Asset[];
   }

@@ -25,7 +25,7 @@ import {
 } from "../../../../../runtime/wire/deserialize";
 
 export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options {
-  export type Tag = {
+  export interface Tag {
     description: string;
     externalDocs?: ExternalDocumentation;
     name: string;

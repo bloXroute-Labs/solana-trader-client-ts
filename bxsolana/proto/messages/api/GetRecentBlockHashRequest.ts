@@ -9,7 +9,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type GetRecentBlockHashRequest = {}
+  export interface GetRecentBlockHashRequest {}
 }
 export type Type = $.api.GetRecentBlockHashRequest;
 

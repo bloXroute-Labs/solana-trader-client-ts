@@ -26,7 +26,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type PostCreateUserRequest = {
+  export interface PostCreateUserRequest {
     ownerAddress: string;
     project: Project;
   }

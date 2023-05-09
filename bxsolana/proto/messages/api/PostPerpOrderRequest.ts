@@ -46,7 +46,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type PostPerpOrderRequest = {
+  export interface PostPerpOrderRequest {
     project: Project;
     ownerAddress: string;
     payerAddress: string;

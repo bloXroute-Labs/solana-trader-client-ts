@@ -54,7 +54,7 @@ import {
 } from "../../../runtime/wire/deserialize";
 
 export declare namespace $.google.protobuf {
-  export type Api = {
+  export interface Api {
     name: string;
     methods: Method[];
     options: Option[];

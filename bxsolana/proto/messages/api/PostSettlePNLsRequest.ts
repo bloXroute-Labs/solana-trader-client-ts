@@ -31,7 +31,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type PostSettlePNLsRequest = {
+  export interface PostSettlePNLsRequest {
     ownerAddress: string;
     settleeAccountAddresses: string[];
     contract: PerpContract;

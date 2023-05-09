@@ -39,7 +39,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type Order = {
+  export interface Order {
     orderID: string;
     market: string;
     side: Side;

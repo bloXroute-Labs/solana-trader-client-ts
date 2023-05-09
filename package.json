@@ -40,7 +40,7 @@
         "lint": "eslint --fix .",
         "format": "prettier --config .prettierrc -l './**/*.ts' --write",
         "formatCI": "prettier --config .prettierrc -l './**/*.ts'",
-        "proto": "pb gen ts --entry-path ./solana-trader-proto/proto --out-dir=./bxsolana/proto ./solana-trader-proto/proto/api.proto --ext-in-import=' '"
+        "proto": "pb-gen-ts --entry-path ./solana-trader-proto/proto --out-dir=./bxsolana/proto ./solana-trader-proto/proto/api.proto --ext-in-import=' '"
     },
     "repository": {
         "type": "git",

@@ -25,7 +25,7 @@ import {
 } from "../../../../runtime/wire/deserialize";
 
 export declare namespace $.google.protobuf.DescriptorProto {
-  export type ExtensionRange = {
+  export interface ExtensionRange {
     start?: number;
     end?: number;
     options?: ExtensionRangeOptions;

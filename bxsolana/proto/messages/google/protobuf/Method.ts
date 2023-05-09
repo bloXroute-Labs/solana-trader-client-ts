@@ -33,7 +33,7 @@ import {
 } from "../../../runtime/wire/deserialize";
 
 export declare namespace $.google.protobuf {
-  export type Method = {
+  export interface Method {
     name: string;
     requestTypeUrl: string;
     requestStreaming: boolean;

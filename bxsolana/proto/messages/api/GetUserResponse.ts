@@ -29,7 +29,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type GetUserResponse = {
+  export interface GetUserResponse {
     userAccounts: UserDetail[];
     project: Project;
   }
