@@ -108,6 +108,10 @@ import {
     GetPerpPositionsResponse,
     GetPerpTradesStreamResponse,
     GetPerpTradesStreamRequest,
+    GetDriftMarketDepthRequest,
+    GetDriftMarketDepthResponse,
+    GetDriftMarketDepthsStreamRequest,
+    GetDriftMarketDepthStreamResponse,
 } from "../proto/messages/api"
 import { createServiceClient, Service } from "../proto/services/api/Api"
 import { BaseProvider } from "./base"
@@ -468,9 +472,21 @@ export class GrpcProvider extends BaseProvider {
         return this.client.getBlockStream(request)
     }
 
-    getPerpOrderbooksStream = (
+    getPerpOrderbooksStream(
         request: GetPerpOrderbooksRequest
-    ): Promise<AsyncGenerator<GetPerpOrderbooksStreamResponse>> => {
+    ): Promise<AsyncGenerator<GetPerpOrderbooksStreamResponse>> {
         return this.client.getPerpOrderbooksStream(request)
+    }
+
+    getDriftMarketDepth(
+        request: GetDriftMarketDepthRequest
+    ): RpcReturnType<Promise<GetDriftMarketDepthResponse>, []> {
+        return this.client.getDriftMarketDepth(request)
+    }
+
+    getDriftMarketDepthsStream(
+        request: GetDriftMarketDepthsStreamRequest
+    ): Promise<AsyncGenerator<GetDriftMarketDepthStreamResponse>> {
+        return this.client.getDriftMarketDepthsStream(request)
     }
 }

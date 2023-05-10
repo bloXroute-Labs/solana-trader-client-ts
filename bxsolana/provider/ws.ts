@@ -98,6 +98,10 @@ import {
     GetOpenPerpOrderResponse,
     GetPerpTradesStreamResponse,
     GetPerpTradesStreamRequest,
+    GetDriftMarketDepthRequest,
+    GetDriftMarketDepthResponse,
+    GetDriftMarketDepthsStreamRequest,
+    GetDriftMarketDepthStreamResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -601,6 +605,24 @@ export class WsProvider extends BaseProvider {
 
     cancelAllGetPoolReservesStream = async (): Promise<Awaited<boolean>[]> => {
         return this.cancelAllStreams("GetPoolReservesStream")
+    }
+
+    getDriftMarketDepth = async (
+        request: GetDriftMarketDepthRequest
+    ): Promise<GetDriftMarketDepthResponse> => {
+        return await this.wsConnection.call("GetDriftMarketDepth", request)
+    }
+
+    getDriftMarketDepthsStream = async (
+        request: GetDriftMarketDepthsStreamRequest
+    ): Promise<AsyncGenerator<GetDriftMarketDepthStreamResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetDriftMarketDepthsStream",
+            request
+        )
+
+        this.manageGetStreamMaps("GetDriftMarketDepthsStream", subscriptionId)
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
     private manageGetStreamMaps = (
