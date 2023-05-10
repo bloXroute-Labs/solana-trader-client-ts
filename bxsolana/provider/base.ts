@@ -176,7 +176,7 @@ export abstract class BaseProvider implements Api {
     > {
         throw new Error("Method not implemented.")
     }
-    
+
     getDriftMarketDepthsStream(
         request: GetDriftMarketDepthsStreamRequest
     ): RpcReturnType<
