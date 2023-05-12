@@ -121,7 +121,7 @@ import {
     GetDriftMarginOrderbookRequest,
     GetDriftMarginOrderbookResponse,
     GetDriftMarginOrderbooksRequest,
-    GetDriftMarginOrderbooksStreamResponse
+    GetDriftMarginOrderbooksStreamResponse,
 } from "../proto/messages/api"
 import { createServiceClient, Service } from "../proto/services/api/Api"
 import { BaseProvider } from "./base"

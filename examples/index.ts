@@ -178,10 +178,7 @@ async function grpc() {
     console.info(" ----  GRPC Requests  ----")
     await runPerpRequests(provider)
 
-<<<<<<< HEAD
     console.info(" ----  GRPC Requests  ----")
-=======
->>>>>>> 8992638 (Adding support for Drift v2 part 1)
     await doOrderbookRequests(provider)
 
     console.info(" ----  GRPC Amm Requests  ----")
@@ -259,9 +256,10 @@ async function ws() {
 }
 
 async function runPerpRequests(provider: BaseProvider) {
-<<<<<<< HEAD
     await callGetPerpOrderbook(provider)
-=======
+    console.info(" ")
+    console.info(" ")
+
     await callDriftPostMarginTradingFlag(provider)
     console.info(" ")
     console.info(" ")
@@ -279,7 +277,6 @@ async function runPerpRequests(provider: BaseProvider) {
     console.info(" ")
 
     await callGetDriftMarginOrderbooksStream(provider)
->>>>>>> 8992638 (Adding support for Drift v2 part 1)
     console.info(" ")
     console.info(" ")
 
@@ -328,6 +325,10 @@ async function runPerpRequests(provider: BaseProvider) {
     console.info(" ")
 
     await callPostClosePerpPositions(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostCreateUser(provider)
     console.info(" ")
     console.info(" ")
 
@@ -834,28 +835,6 @@ async function callGetPerpOrderbook(provider: BaseProvider) {
     }
 }
 
-<<<<<<< HEAD
-=======
-async function callGetDriftMarketDepthsStream(provider: BaseProvider) {
-    console.info("Subscribing for Drift market depth updates")
-    const req = await provider.getDriftMarketDepthsStream({
-        contracts: ["SOL_PERP", "BTC_PERP", "ETH_PERP", "APT_PERP"],
-        limit: 0,
-    })
-
-    let count = 0
-    for await (const ob of req) {
-        console.info(ob)
-        count++
-        if (count == 1) {
-            break
-        }
-    }
-    console.info(" ")
-    console.info(" ")
-}
-
->>>>>>> 8992638 (Adding support for Drift v2 part 1)
 async function callGetDriftMarketDepth(provider: BaseProvider) {
     try {
         console.info("Retrieving market depth for SOL_PERP market")
@@ -869,8 +848,6 @@ async function callGetDriftMarketDepth(provider: BaseProvider) {
     }
 }
 
-<<<<<<< HEAD
-=======
 async function callGetDriftMarkets(provider: BaseProvider) {
     try {
         console.info("get Drift markets")
@@ -883,7 +860,6 @@ async function callGetDriftMarkets(provider: BaseProvider) {
     }
 }
 
->>>>>>> 8992638 (Adding support for Drift v2 part 1)
 async function callGetAssets(provider: BaseProvider) {
     console.info("get assets")
     const req = await provider.getAssets({
@@ -1044,23 +1020,6 @@ async function callPostClosePerpPositions(provider: BaseProvider) {
     console.info(req)
 }
 
-<<<<<<< HEAD
-// async function callPostCreateUser(provider: BaseProvider) {
-//     console.info("creating user")
-//     try {
-//         const req = await provider.postCreateUser({
-//             ownerAddress: ownerAddress,
-//             project: "P_DRIFT",
-//             action: "",
-//             subAccountID: "0",
-//             accountName: "",
-//         })
-//         console.info(req)
-//     } catch (err) {
-//         console.info(err)
-//     }
-// }
-=======
 async function callPostCreateUser(provider: BaseProvider) {
     console.info("creating user")
     try {
@@ -1076,7 +1035,6 @@ async function callPostCreateUser(provider: BaseProvider) {
         console.info(err)
     }
 }
->>>>>>> 8992638 (Adding support for Drift v2 part 1)
 
 async function callGetUser(provider: BaseProvider) {
     console.info("getting user")

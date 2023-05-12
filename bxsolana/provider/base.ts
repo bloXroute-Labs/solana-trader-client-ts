@@ -180,7 +180,7 @@ export abstract class BaseProvider implements Api {
     ): RpcReturnType<
         AsyncGenerator<GetDriftMarginOrderbooksStreamResponse, any, unknown>,
         []
-        > {
+    > {
         throw new Error("Method not implemented.")
     }
 
@@ -189,7 +189,7 @@ export abstract class BaseProvider implements Api {
     ): RpcReturnType<
         AsyncGenerator<GetDriftMarketDepthStreamResponse, any, unknown>,
         []
-        > {
+    > {
         throw new Error("Method not implemented.")
     }
     // End of Drift V2

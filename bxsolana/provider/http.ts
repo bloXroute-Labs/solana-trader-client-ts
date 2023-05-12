@@ -83,7 +83,8 @@ import {
     PostDriftMarginOrderResponse,
     PostDriftEnableMarginTradingRequest,
     PostDriftEnableMarginTradingResponse,
-    GetDriftMarginOrderbookRequest, GetDriftMarginOrderbookResponse
+    GetDriftMarginOrderbookRequest,
+    GetDriftMarginOrderbookResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
