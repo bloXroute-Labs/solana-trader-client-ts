@@ -111,7 +111,7 @@ import {
     PostDriftEnableMarginTradingRequest,
     PostDriftEnableMarginTradingResponse,
     GetDriftMarginOrderbookRequest,
-    GetDriftMarginOrderbookResponse
+    GetDriftMarginOrderbookResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -168,7 +168,7 @@ export class WsProvider extends BaseProvider {
             request
         )
     }
-    
+
     async getDriftMarginOrderbook(
         request: GetDriftMarginOrderbookRequest
     ): RpcReturnType<Promise<GetDriftMarginOrderbookResponse>, []> {
