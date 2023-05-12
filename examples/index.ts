@@ -25,15 +25,6 @@ import {
     TESTNET_API_HTTP,
     TESTNET_API_WS,
     WsProvider,
-    GetAssetsRequest,
-    GetAssetsResponse,
-    PostSettlePNLRequest,
-    PostSettlePNLResponse,
-    PostSettlePNLsRequest,
-    PostSettlePNLsResponse,
-    PostLiquidatePerpRequest,
-    PostLiquidatePerpResponse,
-    TransactionMessage,
 } from "../bxsolana"
 import { Keypair } from "@solana/web3.js"
 import base58 from "bs58"
