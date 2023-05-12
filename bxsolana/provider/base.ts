@@ -121,7 +121,7 @@ import {
     GetDriftMarketDepthsStreamRequest,
     GetDriftMarketDepthStreamResponse,
     PostDriftEnableMarginTradingResponse,
-    PostDriftEnableMarginTradingRequest
+    PostDriftEnableMarginTradingRequest,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
