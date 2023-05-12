@@ -25,15 +25,6 @@ import {
     TESTNET_API_HTTP,
     TESTNET_API_WS,
     WsProvider,
-    GetAssetsRequest,
-    GetAssetsResponse,
-    PostSettlePNLRequest,
-    PostSettlePNLResponse,
-    PostSettlePNLsRequest,
-    PostSettlePNLsResponse,
-    PostLiquidatePerpRequest,
-    PostLiquidatePerpResponse,
-    TransactionMessage,
 } from "../bxsolana"
 import { Keypair } from "@solana/web3.js"
 import base58 from "bs58"
@@ -227,6 +218,8 @@ async function ws() {
 
     await provider.connect()
     console.info(" ----  WS Requests  ----")
+    await runPerpRequests(provider)
+
     await doOrderbookRequests(provider)
 
     console.info(" ----  WS Amm Requests  ----")
@@ -255,6 +248,22 @@ async function ws() {
 
 async function runPerpRequests(provider: BaseProvider) {
     await callGetPerpOrderbook(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callDriftPostMarginTradingFlag(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetDriftMarkets(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostDriftMarginOrder(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetDriftMarginOrderbook(provider)
     console.info(" ")
     console.info(" ")
 
@@ -303,6 +312,10 @@ async function runPerpRequests(provider: BaseProvider) {
     console.info(" ")
 
     await callPostClosePerpPositions(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostCreateUser(provider)
     console.info(" ")
     console.info(" ")
 
@@ -431,6 +444,10 @@ async function doStreams(provider: BaseProvider) {
     console.info(" ")
 
     await callGetDriftMarketDepthsStream(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetDriftMarginOrderbooksStream(provider)
     console.info(" ")
     console.info(" ")
 }
@@ -669,6 +686,16 @@ async function callGetOrderbook(provider: BaseProvider) {
     console.info(req)
 }
 
+async function callGetDriftMarginOrderbook(provider: BaseProvider) {
+    console.info("Retrieving drift margin orderbook for SOL market")
+    const req = await provider.getDriftMarginOrderbook({
+        market: "SOL",
+        limit: 2,
+        metadata: true,
+    })
+    console.info(req)
+}
+
 async function callGetMarketDepth(provider: BaseProvider) {
     console.info("Retrieving market depth data for SOLUSDC market")
     let req = await provider.getMarketDepth({
@@ -812,6 +839,18 @@ async function callGetDriftMarketDepth(provider: BaseProvider) {
     }
 }
 
+async function callGetDriftMarkets(provider: BaseProvider) {
+    try {
+        console.info("get Drift markets")
+        const req = await provider.getDriftMarkets({
+            metadata: true,
+        })
+        console.info(req)
+    } catch (e) {
+        console.info(e)
+    }
+}
+
 async function callGetAssets(provider: BaseProvider) {
     console.info("get assets")
     const req = await provider.getAssets({
@@ -837,6 +876,16 @@ async function callPostSettlePNL(provider: BaseProvider) {
         settleeAccountAddress: "9UnwdvTf5EfGeLyLrF4GZDUs7LKRUeJQzW7qsDVGQ8sS",
         contract: "SOL_PERP",
         project: "P_DRIFT",
+    })
+    console.info(req)
+}
+
+async function callDriftPostMarginTradingFlag(provider: BaseProvider) {
+    console.info("post margin trading flag")
+    const req = await provider.postDriftEnableMarginTrading({
+        ownerAddress: ownerAddress,
+        accountAddress: "",
+        enableMargin: true,
     })
     console.info(req)
 }
@@ -876,6 +925,23 @@ async function callPostPerpOrder(provider: BaseProvider) {
         type: "POT_LIMIT",
         contract: "SOL_PERP",
         project: "P_DRIFT",
+        amount: 1,
+        price: 232,
+        clientOrderID: "1",
+        postOnly: "PO_NONE",
+    })
+    console.info(req)
+}
+
+async function callPostDriftMarginOrder(provider: BaseProvider) {
+    console.info("post drift margin order")
+    const req = await provider.postDriftMarginOrder({
+        ownerAddress: ownerAddress,
+        accountAddress: "",
+        positionSide: "LONG",
+        slippage: 5,
+        type: "LIMIT",
+        market: "SOL",
         amount: 1,
         price: 232,
         clientOrderID: "1",
@@ -945,21 +1011,21 @@ async function callPostClosePerpPositions(provider: BaseProvider) {
     console.info(req)
 }
 
-// async function callPostCreateUser(provider: BaseProvider) {
-//     console.info("creating user")
-//     try {
-//         const req = await provider.postCreateUser({
-//             ownerAddress: ownerAddress,
-//             project: "P_DRIFT",
-//             action: "",
-//             subAccountID: "0",
-//             accountName: "",
-//         })
-//         console.info(req)
-//     } catch (err) {
-//         console.info(err)
-//     }
-// }
+async function callPostCreateUser(provider: BaseProvider) {
+    console.info("creating user")
+    try {
+        const req = await provider.postCreateUser({
+            ownerAddress: ownerAddress,
+            project: "P_DRIFT",
+            accountName: "Second Account",
+            subAccountID: "2",
+            action: "CREATE",
+        })
+        console.info(req)
+    } catch (err) {
+        console.info(err)
+    }
+}
 
 async function callGetUser(provider: BaseProvider) {
     console.info("getting user")
@@ -1011,6 +1077,26 @@ async function callPostTransferCollateral(provider: BaseProvider) {
 }
 
 // streaming requests
+async function callGetDriftMarginOrderbooksStream(provider: BaseProvider) {
+    console.info("Subscribing for Drift margin orderbook updates of SOL market")
+    const req = await provider.getDriftMarginOrderbooksStream({
+        markets: ["SOL"],
+        limit: 5,
+        metadata: true,
+    })
+
+    let count = 0
+    for await (const ob of req) {
+        console.info(ob)
+        count++
+        if (count == 2) {
+            break
+        }
+    }
+    console.info(" ")
+    console.info(" ")
+}
+
 async function callGetOrderbookStream(provider: BaseProvider) {
     console.info("Subscribing for orderbook updates of SOLUSDC market")
     let req = await provider.getOrderbooksStream({

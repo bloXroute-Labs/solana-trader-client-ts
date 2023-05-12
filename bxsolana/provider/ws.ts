@@ -102,6 +102,16 @@ import {
     GetDriftMarketDepthResponse,
     GetDriftMarketDepthsStreamRequest,
     GetDriftMarketDepthStreamResponse,
+    GetDriftMarginOrderbooksRequest,
+    GetDriftMarginOrderbooksStreamResponse,
+    GetDriftMarketsRequest,
+    GetDriftMarketsResponse,
+    PostDriftMarginOrderRequest,
+    PostDriftMarginOrderResponse,
+    PostDriftEnableMarginTradingRequest,
+    PostDriftEnableMarginTradingResponse,
+    GetDriftMarginOrderbookRequest,
+    GetDriftMarginOrderbookResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -138,6 +148,53 @@ export class WsProvider extends BaseProvider {
         this.isClosed = true
         this.wsConnection.close()
     }
+
+    // Drift V2
+    async getDriftMarkets(
+        request: GetDriftMarketsRequest
+    ): RpcReturnType<Promise<GetDriftMarketsResponse>, []> {
+        return await this.wsConnection.call("GetDriftMarkets", request)
+    }
+
+    async postDriftMarginOrder(
+        request: PostDriftMarginOrderRequest
+    ): RpcReturnType<Promise<PostDriftMarginOrderResponse>, []> {
+        return await this.wsConnection.call("PostDriftMarginOrder", request)
+    }
+
+    async postDriftEnableMarginTrading(
+        request: PostDriftEnableMarginTradingRequest
+    ): RpcReturnType<Promise<PostDriftEnableMarginTradingResponse>, []> {
+        return await this.wsConnection.call(
+            "PostDriftEnableMarginTrading",
+            request
+        )
+    }
+
+    async getDriftMarginOrderbook(
+        request: GetDriftMarginOrderbookRequest
+    ): RpcReturnType<Promise<GetDriftMarginOrderbookResponse>, []> {
+        return await this.wsConnection.call("GetDriftMarginOrderbook", request)
+    }
+
+    async getDriftMarginOrderbooksStream(
+        request: GetDriftMarginOrderbooksRequest
+    ): RpcReturnType<
+        AsyncGenerator<GetDriftMarginOrderbooksStreamResponse>,
+        []
+    > {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetDriftMarginOrderbooksStream",
+            request
+        )
+
+        this.manageGetStreamMaps(
+            "GetDriftMarginOrderbooksStream",
+            subscriptionId
+        )
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
+    }
+    // End of Drift V2
 
     async getOrderbook(
         request: GetOrderbookRequest
