@@ -120,6 +120,8 @@ import {
     GetDriftMarginOrderbooksStreamResponse,
     GetDriftMarketDepthsStreamRequest,
     GetDriftMarketDepthStreamResponse,
+    PostDriftEnableMarginTradingResponse,
+    PostDriftEnableMarginTradingRequest
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -144,6 +146,12 @@ export abstract class BaseProvider implements Api {
             this.privateKey = Keypair.fromSecretKey(base58.decode(privateKey))
         }
     }
+    postDriftEnableMarginTrading(
+        request: PostDriftEnableMarginTradingRequest
+    ): RpcReturnType<Promise<PostDriftEnableMarginTradingResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
     getDriftMarkets(
         request: GetDriftMarketsRequest
     ): RpcReturnType<Promise<GetDriftMarketsResponse>, []> {
