@@ -155,11 +155,13 @@ export class WsProvider extends BaseProvider {
     ): RpcReturnType<Promise<GetDriftMarketsResponse>, []> {
         return await this.wsConnection.call("GetDriftMarkets", request)
     }
+
     async postDriftMarginOrder(
         request: PostDriftMarginOrderRequest
     ): RpcReturnType<Promise<PostDriftMarginOrderResponse>, []> {
         return await this.wsConnection.call("PostDriftMarginOrder", request)
     }
+
     async postDriftEnableMarginTrading(
         request: PostDriftEnableMarginTradingRequest
     ): RpcReturnType<Promise<PostDriftEnableMarginTradingResponse>, []> {
@@ -181,10 +183,13 @@ export class WsProvider extends BaseProvider {
         AsyncGenerator<GetDriftMarginOrderbooksStreamResponse>,
         []
     > {
-        return await this.wsConnection.call(
+        const subscriptionId = await this.wsConnection.subscribe(
             "GetDriftMarginOrderbooksStream",
             request
         )
+
+        this.manageGetStreamMaps("GetDriftMarginOrderbooksStream", subscriptionId)
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
     // End of Drift V2
 
