@@ -178,7 +178,10 @@ async function grpc() {
     console.info(" ----  GRPC Requests  ----")
     await runPerpRequests(provider)
 
+<<<<<<< HEAD
     console.info(" ----  GRPC Requests  ----")
+=======
+>>>>>>> 8992638 (Adding support for Drift v2 part 1)
     await doOrderbookRequests(provider)
 
     console.info(" ----  GRPC Amm Requests  ----")
@@ -227,6 +230,8 @@ async function ws() {
 
     await provider.connect()
     console.info(" ----  WS Requests  ----")
+    await runPerpRequests(provider)
+
     await doOrderbookRequests(provider)
 
     console.info(" ----  WS Amm Requests  ----")
@@ -254,7 +259,27 @@ async function ws() {
 }
 
 async function runPerpRequests(provider: BaseProvider) {
+<<<<<<< HEAD
     await callGetPerpOrderbook(provider)
+=======
+    await callDriftPostMarginTradingFlag(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetDriftMarkets(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostDriftMarginOrder(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetDriftMarginOrderbook(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetDriftMarginOrderbooksStream(provider)
+>>>>>>> 8992638 (Adding support for Drift v2 part 1)
     console.info(" ")
     console.info(" ")
 
@@ -669,6 +694,16 @@ async function callGetOrderbook(provider: BaseProvider) {
     console.info(req)
 }
 
+async function callGetDriftMarginOrderbook(provider: BaseProvider) {
+    console.info("Retrieving drift margin orderbook for SOL market")
+    const req = await provider.getDriftMarginOrderbook({
+        market: "SOL",
+        limit: 2,
+        metadata: true,
+    })
+    console.info(req)
+}
+
 async function callGetMarketDepth(provider: BaseProvider) {
     console.info("Retrieving market depth data for SOLUSDC market")
     let req = await provider.getMarketDepth({
@@ -799,6 +834,28 @@ async function callGetPerpOrderbook(provider: BaseProvider) {
     }
 }
 
+<<<<<<< HEAD
+=======
+async function callGetDriftMarketDepthsStream(provider: BaseProvider) {
+    console.info("Subscribing for Drift market depth updates")
+    const req = await provider.getDriftMarketDepthsStream({
+        contracts: ["SOL_PERP", "BTC_PERP", "ETH_PERP", "APT_PERP"],
+        limit: 0,
+    })
+
+    let count = 0
+    for await (const ob of req) {
+        console.info(ob)
+        count++
+        if (count == 1) {
+            break
+        }
+    }
+    console.info(" ")
+    console.info(" ")
+}
+
+>>>>>>> 8992638 (Adding support for Drift v2 part 1)
 async function callGetDriftMarketDepth(provider: BaseProvider) {
     try {
         console.info("Retrieving market depth for SOL_PERP market")
@@ -812,6 +869,21 @@ async function callGetDriftMarketDepth(provider: BaseProvider) {
     }
 }
 
+<<<<<<< HEAD
+=======
+async function callGetDriftMarkets(provider: BaseProvider) {
+    try {
+        console.info("get Drift markets")
+        const req = await provider.getDriftMarkets({
+            metadata: true,
+        })
+        console.info(req)
+    } catch (e) {
+        console.info(e)
+    }
+}
+
+>>>>>>> 8992638 (Adding support for Drift v2 part 1)
 async function callGetAssets(provider: BaseProvider) {
     console.info("get assets")
     const req = await provider.getAssets({
@@ -837,6 +909,16 @@ async function callPostSettlePNL(provider: BaseProvider) {
         settleeAccountAddress: "9UnwdvTf5EfGeLyLrF4GZDUs7LKRUeJQzW7qsDVGQ8sS",
         contract: "SOL_PERP",
         project: "P_DRIFT",
+    })
+    console.info(req)
+}
+
+async function callDriftPostMarginTradingFlag(provider: BaseProvider) {
+    console.info("post margin trading flag")
+    const req = await provider.postDriftEnableMarginTrading({
+        ownerAddress: ownerAddress,
+        accountAddress: "",
+        enableMargin: true,
     })
     console.info(req)
 }
@@ -876,6 +958,23 @@ async function callPostPerpOrder(provider: BaseProvider) {
         type: "POT_LIMIT",
         contract: "SOL_PERP",
         project: "P_DRIFT",
+        amount: 1,
+        price: 232,
+        clientOrderID: "1",
+        postOnly: "PO_NONE",
+    })
+    console.info(req)
+}
+
+async function callPostDriftMarginOrder(provider: BaseProvider) {
+    console.info("post drift margin order")
+    const req = await provider.postDriftMarginOrder({
+        ownerAddress: ownerAddress,
+        accountAddress: "",
+        positionSide: "LONG",
+        slippage: 5,
+        type: "LIMIT",
+        market: "SOL",
         amount: 1,
         price: 232,
         clientOrderID: "1",
@@ -945,6 +1044,7 @@ async function callPostClosePerpPositions(provider: BaseProvider) {
     console.info(req)
 }
 
+<<<<<<< HEAD
 // async function callPostCreateUser(provider: BaseProvider) {
 //     console.info("creating user")
 //     try {
@@ -960,6 +1060,23 @@ async function callPostClosePerpPositions(provider: BaseProvider) {
 //         console.info(err)
 //     }
 // }
+=======
+async function callPostCreateUser(provider: BaseProvider) {
+    console.info("creating user")
+    try {
+        const req = await provider.postCreateUser({
+            ownerAddress: ownerAddress,
+            project: "P_DRIFT",
+            accountName: "Second Account",
+            subAccountID: "2",
+            action: "CREATE",
+        })
+        console.info(req)
+    } catch (err) {
+        console.info(err)
+    }
+}
+>>>>>>> 8992638 (Adding support for Drift v2 part 1)
 
 async function callGetUser(provider: BaseProvider) {
     console.info("getting user")
@@ -1011,6 +1128,26 @@ async function callPostTransferCollateral(provider: BaseProvider) {
 }
 
 // streaming requests
+async function callGetDriftMarginOrderbooksStream(provider: BaseProvider) {
+    console.info("Subscribing for Drift margin orderbook updates of SOL market")
+    const req = await provider.getDriftMarginOrderbooksStream({
+        markets: ["SOL"],
+        limit: 5,
+        metadata: true,
+    })
+
+    let count = 0
+    for await (const ob of req) {
+        console.info(ob)
+        count++
+        if (count == 2) {
+            break
+        }
+    }
+    console.info(" ")
+    console.info(" ")
+}
+
 async function callGetOrderbookStream(provider: BaseProvider) {
     console.info("Subscribing for orderbook updates of SOLUSDC market")
     let req = await provider.getOrderbooksStream({

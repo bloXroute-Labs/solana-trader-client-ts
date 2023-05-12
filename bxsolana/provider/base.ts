@@ -133,7 +133,6 @@ import {
 import { Keypair } from "@solana/web3.js"
 import base58 from "bs58"
 import { RpcReturnType } from "../proto/runtime/rpc"
-
 /* eslint-disable */
 
 export abstract class BaseProvider implements Api {
@@ -146,12 +145,7 @@ export abstract class BaseProvider implements Api {
             this.privateKey = Keypair.fromSecretKey(base58.decode(privateKey))
         }
     }
-    postDriftEnableMarginTrading(
-        request: PostDriftEnableMarginTradingRequest
-    ): RpcReturnType<Promise<PostDriftEnableMarginTradingResponse>, []> {
-        throw new Error("Method not implemented.")
-    }
-
+    // Drift V2
     getDriftMarkets(
         request: GetDriftMarketsRequest
     ): RpcReturnType<Promise<GetDriftMarketsResponse>, []> {
@@ -164,12 +158,17 @@ export abstract class BaseProvider implements Api {
         throw new Error("Method not implemented.")
     }
 
+    postDriftEnableMarginTrading(
+        request: PostDriftEnableMarginTradingRequest
+    ): RpcReturnType<Promise<PostDriftEnableMarginTradingResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
     getDriftMarginOrderbook(
         request: GetDriftMarginOrderbookRequest
     ): RpcReturnType<Promise<GetDriftMarginOrderbookResponse>, []> {
         throw new Error("Method not implemented.")
     }
-
     getDriftMarketDepth(
         request: GetDriftMarketDepthRequest
     ): RpcReturnType<Promise<GetDriftMarketDepthResponse>, []> {
@@ -181,7 +180,7 @@ export abstract class BaseProvider implements Api {
     ): RpcReturnType<
         AsyncGenerator<GetDriftMarginOrderbooksStreamResponse, any, unknown>,
         []
-    > {
+        > {
         throw new Error("Method not implemented.")
     }
 
@@ -190,9 +189,11 @@ export abstract class BaseProvider implements Api {
     ): RpcReturnType<
         AsyncGenerator<GetDriftMarketDepthStreamResponse, any, unknown>,
         []
-    > {
+        > {
         throw new Error("Method not implemented.")
     }
+    // End of Drift V2
+
     getOpenPerpOrder(
         request: GetOpenPerpOrderRequest
     ): RpcReturnType<Promise<GetOpenPerpOrderResponse>, []> {

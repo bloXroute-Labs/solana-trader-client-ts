@@ -77,6 +77,13 @@ import {
     GetOpenPerpOrderResponse,
     GetDriftMarketDepthRequest,
     GetDriftMarketDepthResponse,
+    GetDriftMarketsRequest,
+    GetDriftMarketsResponse,
+    PostDriftMarginOrderRequest,
+    PostDriftMarginOrderResponse,
+    PostDriftEnableMarginTradingRequest,
+    PostDriftEnableMarginTradingResponse,
+    GetDriftMarginOrderbookRequest, GetDriftMarginOrderbookResponse
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -110,6 +117,49 @@ export class HttpProvider extends BaseProvider {
     close = () => {
         // no need
     }
+
+    // Drift V2
+    async getDriftMarkets(
+        request: GetDriftMarketsRequest
+    ): RpcReturnType<Promise<GetDriftMarketsResponse>, []> {
+        const path = `${this.baseUrlV2}/v2/drift/markets/?metadata=${request.metadata}`
+        return this.get<GetDriftMarketsResponse>(path)
+    }
+
+    async postDriftMarginOrder(
+        request: PostDriftMarginOrderRequest
+    ): RpcReturnType<Promise<PostDriftMarginOrderResponse>, []> {
+        const path = `${this.baseUrlV2}/drift/margin-place`
+        return this.post<
+            PostDriftMarginOrderRequest,
+            PostDriftMarginOrderResponse
+        >(path, request)
+    }
+
+    async postDriftEnableMarginTrading(
+        request: PostDriftEnableMarginTradingRequest
+    ): RpcReturnType<Promise<PostDriftEnableMarginTradingResponse>, []> {
+        const path = `${this.baseUrlV2}/drift/enable-margin`
+        return this.post<
+            PostDriftEnableMarginTradingRequest,
+            PostDriftEnableMarginTradingResponse
+        >(path, request)
+    }
+
+    async getDriftMarginOrderbook(
+        request: GetDriftMarginOrderbookRequest
+    ): RpcReturnType<Promise<GetDriftMarginOrderbookResponse>, []> {
+        const path = `${this.baseUrlV2}/drift/margin-orderbooks/${request.market}?limit=${request.limit}`
+        return this.get<GetDriftMarginOrderbookResponse>(path)
+    }
+
+    async getDriftMarketDepth(
+        request: GetDriftMarketDepthRequest
+    ): RpcReturnType<Promise<GetDriftMarketDepthResponse>, []> {
+        const path = `${this.baseUrlV2}/drift/market-depth/${request.contract}?limit=${request.limit}`
+        return this.get<GetDriftMarketDepthResponse>(path)
+    }
+    // End of Drift V2
 
     getOrderbook = (
         request: GetOrderbookRequest
@@ -437,13 +487,6 @@ export class HttpProvider extends BaseProvider {
     ): Promise<GetPerpOrderbookResponse> => {
         const path = `${this.baseUrl}/market/perp/orderbook/${request.contract}?limit=${request.limit}&project=${request.project}`
         return this.get<GetPerpOrderbookResponse>(path)
-    }
-
-    getDriftMarketDepth = (
-        request: GetDriftMarketDepthRequest
-    ): Promise<GetDriftMarketDepthResponse> => {
-        const path = `${this.baseUrlV2}/drift/market-depth/${request.contract}?limit=${request.limit}`
-        return this.get<GetDriftMarketDepthResponse>(path)
     }
 
     private async get<T>(path: string): Promise<T> {

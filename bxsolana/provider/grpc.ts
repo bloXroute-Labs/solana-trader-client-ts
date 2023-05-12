@@ -112,6 +112,16 @@ import {
     GetDriftMarketDepthResponse,
     GetDriftMarketDepthsStreamRequest,
     GetDriftMarketDepthStreamResponse,
+    GetDriftMarketsRequest,
+    GetDriftMarketsResponse,
+    PostDriftMarginOrderRequest,
+    PostDriftMarginOrderResponse,
+    PostDriftEnableMarginTradingRequest,
+    PostDriftEnableMarginTradingResponse,
+    GetDriftMarginOrderbookRequest,
+    GetDriftMarginOrderbookResponse,
+    GetDriftMarginOrderbooksRequest,
+    GetDriftMarginOrderbooksStreamResponse
 } from "../proto/messages/api"
 import { createServiceClient, Service } from "../proto/services/api/Api"
 import { BaseProvider } from "./base"
@@ -194,6 +204,53 @@ export class GrpcProvider extends BaseProvider {
     close = () => {
         this.grpcClient.close()
     }
+
+    // Drift V2
+    getDriftMarkets(
+        request: GetDriftMarketsRequest
+    ): RpcReturnType<Promise<GetDriftMarketsResponse>, []> {
+        return this.client.getDriftMarkets(request)
+    }
+
+    postDriftMarginOrder(
+        request: PostDriftMarginOrderRequest
+    ): RpcReturnType<Promise<PostDriftMarginOrderResponse>, []> {
+        return this.client.postDriftMarginOrder(request)
+    }
+
+    postDriftEnableMarginTrading(
+        request: PostDriftEnableMarginTradingRequest
+    ): RpcReturnType<Promise<PostDriftEnableMarginTradingResponse>, []> {
+        return this.client.postDriftEnableMarginTrading(request)
+    }
+
+    getDriftMarginOrderbook(
+        request: GetDriftMarginOrderbookRequest
+    ): RpcReturnType<Promise<GetDriftMarginOrderbookResponse>, []> {
+        return this.client.getDriftMarginOrderbook(request)
+    }
+
+    getDriftMarketDepth(
+        request: GetDriftMarketDepthRequest
+    ): RpcReturnType<Promise<GetDriftMarketDepthResponse>, []> {
+        return this.client.getDriftMarketDepth(request)
+    }
+
+    getDriftMarginOrderbooksStream(
+        request: GetDriftMarginOrderbooksRequest
+    ): RpcReturnType<
+        AsyncGenerator<GetDriftMarginOrderbooksStreamResponse>,
+        []
+    > {
+        return this.client.getDriftMarginOrderbooksStream(request)
+    }
+
+    getDriftMarketDepthsStream(
+        request: GetDriftMarketDepthsStreamRequest
+    ): RpcReturnType<AsyncGenerator<GetDriftMarketDepthStreamResponse>, []> {
+        return this.client.getDriftMarketDepthsStream(request)
+    }
+    // End of Drift V2
 
     getOrderbook = (
         request: GetOrderbookRequest
@@ -476,17 +533,5 @@ export class GrpcProvider extends BaseProvider {
         request: GetPerpOrderbooksRequest
     ): Promise<AsyncGenerator<GetPerpOrderbooksStreamResponse>> {
         return this.client.getPerpOrderbooksStream(request)
-    }
-
-    getDriftMarketDepth(
-        request: GetDriftMarketDepthRequest
-    ): RpcReturnType<Promise<GetDriftMarketDepthResponse>, []> {
-        return this.client.getDriftMarketDepth(request)
-    }
-
-    getDriftMarketDepthsStream(
-        request: GetDriftMarketDepthsStreamRequest
-    ): Promise<AsyncGenerator<GetDriftMarketDepthStreamResponse>> {
-        return this.client.getDriftMarketDepthsStream(request)
     }
 }
