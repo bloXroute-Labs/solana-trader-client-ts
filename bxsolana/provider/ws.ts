@@ -188,7 +188,10 @@ export class WsProvider extends BaseProvider {
             request
         )
 
-        this.manageGetStreamMaps("GetDriftMarginOrderbooksStream", subscriptionId)
+        this.manageGetStreamMaps(
+            "GetDriftMarginOrderbooksStream",
+            subscriptionId
+        )
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
     // End of Drift V2
