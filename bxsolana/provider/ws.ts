@@ -102,24 +102,20 @@ import {
     GetDriftMarketDepthResponse,
     GetDriftMarketDepthsStreamRequest,
     GetDriftMarketDepthStreamResponse,
+    GetDriftMarginOrderbooksRequest,
+    GetDriftMarginOrderbooksStreamResponse,
+    GetDriftMarketsRequest,
+    GetDriftMarketsResponse,
+    PostDriftMarginOrderRequest,
+    PostDriftMarginOrderResponse,
+    PostDriftEnableMarginTradingRequest,
+    PostDriftEnableMarginTradingResponse,
+    GetDriftMarginOrderbookRequest,
+    GetDriftMarginOrderbookResponse
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
 import { RpcReturnType } from "../proto/runtime/rpc"
-import { Type as GetDriftMarketsRequest } from "../proto/messages/api/GetDriftMarketsRequest"
-import { Type as GetDriftMarketsResponse } from "../proto/messages/api/GetDriftMarketsResponse"
-import { Type as PostDriftMarginOrderRequest } from "../proto/messages/api/PostDriftMarginOrderRequest"
-import { Type as PostDriftMarginOrderResponse } from "../proto/messages/api/PostDriftMarginOrderResponse"
-import { Type as PostDriftEnableMarginTradingRequest } from "../proto/messages/api/PostDriftEnableMarginTradingRequest"
-import { Type as PostDriftEnableMarginTradingResponse } from "../proto/messages/api/PostDriftEnableMarginTradingResponse"
-import { Type as GetDriftMarginOrderbookRequest } from "../proto/messages/api/GetDriftMarginOrderbookRequest"
-import { Type as GetDriftMarginOrderbookResponse } from "../proto/messages/api/GetDriftMarginOrderbookResponse"
-import { Type as GetDriftMarketDepthRequest } from "../proto/messages/api/GetDriftMarketDepthRequest"
-import { Type as GetDriftMarketDepthResponse } from "../proto/messages/api/GetDriftMarketDepthResponse"
-import { Type as GetDriftMarginOrderbooksRequest } from "../proto/messages/api/GetDriftMarginOrderbooksRequest"
-import { Type as GetDriftMarginOrderbooksStreamResponse } from "../proto/messages/api/GetDriftMarginOrderbooksStreamResponse"
-import { Type as GetDriftMarketDepthsStreamRequest } from "../proto/messages/api/GetDriftMarketDepthsStreamRequest"
-import { Type as GetDriftMarketDepthStreamResponse } from "../proto/messages/api/GetDriftMarketDepthStreamResponse"
 
 export class WsProvider extends BaseProvider {
     private wsConnection: RpcWsConnection
@@ -172,16 +168,13 @@ export class WsProvider extends BaseProvider {
             request
         )
     }
+    
     async getDriftMarginOrderbook(
         request: GetDriftMarginOrderbookRequest
     ): RpcReturnType<Promise<GetDriftMarginOrderbookResponse>, []> {
         return await this.wsConnection.call("GetDriftMarginOrderbook", request)
     }
-    async getDriftMarketDepth(
-        request: GetDriftMarketDepthRequest
-    ): RpcReturnType<Promise<GetDriftMarketDepthResponse>, []> {
-        return await this.wsConnection.call("GetDriftMarketDepth", request)
-    }
+
     async getDriftMarginOrderbooksStream(
         request: GetDriftMarginOrderbooksRequest
     ): RpcReturnType<
@@ -190,14 +183,6 @@ export class WsProvider extends BaseProvider {
     > {
         return await this.wsConnection.call(
             "GetDriftMarginOrderbooksStream",
-            request
-        )
-    }
-    async getDriftMarketDepthsStream(
-        request: GetDriftMarketDepthsStreamRequest
-    ): RpcReturnType<AsyncGenerator<GetDriftMarketDepthStreamResponse>, []> {
-        return await this.wsConnection.call(
-            "GetDriftMarketDepthsStream",
             request
         )
     }
