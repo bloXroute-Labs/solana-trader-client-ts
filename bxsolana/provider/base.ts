@@ -108,6 +108,20 @@ import {
     PostSettlePNLsResponse,
     PostLiquidatePerpRequest,
     PostLiquidatePerpResponse,
+    GetDriftMarketsRequest,
+    PostDriftMarginOrderRequest,
+    PostDriftMarginOrderResponse,
+    GetDriftMarketsResponse,
+    GetDriftMarginOrderbookRequest,
+    GetDriftMarginOrderbookResponse,
+    GetDriftMarketDepthRequest,
+    GetDriftMarketDepthResponse,
+    GetDriftMarginOrderbooksRequest,
+    GetDriftMarginOrderbooksStreamResponse,
+    GetDriftMarketDepthsStreamRequest,
+    GetDriftMarketDepthStreamResponse,
+    PostDriftEnableMarginTradingResponse,
+    PostDriftEnableMarginTradingRequest,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -131,6 +145,53 @@ export abstract class BaseProvider implements Api {
         if (privateKey) {
             this.privateKey = Keypair.fromSecretKey(base58.decode(privateKey))
         }
+    }
+    postDriftEnableMarginTrading(
+        request: PostDriftEnableMarginTradingRequest
+    ): RpcReturnType<Promise<PostDriftEnableMarginTradingResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    getDriftMarkets(
+        request: GetDriftMarketsRequest
+    ): RpcReturnType<Promise<GetDriftMarketsResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postDriftMarginOrder(
+        request: PostDriftMarginOrderRequest
+    ): RpcReturnType<Promise<PostDriftMarginOrderResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    getDriftMarginOrderbook(
+        request: GetDriftMarginOrderbookRequest
+    ): RpcReturnType<Promise<GetDriftMarginOrderbookResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    getDriftMarketDepth(
+        request: GetDriftMarketDepthRequest
+    ): RpcReturnType<Promise<GetDriftMarketDepthResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    getDriftMarginOrderbooksStream(
+        request: GetDriftMarginOrderbooksRequest
+    ): RpcReturnType<
+        AsyncGenerator<GetDriftMarginOrderbooksStreamResponse, any, unknown>,
+        []
+    > {
+        throw new Error("Method not implemented.")
+    }
+
+    getDriftMarketDepthsStream(
+        request: GetDriftMarketDepthsStreamRequest
+    ): RpcReturnType<
+        AsyncGenerator<GetDriftMarketDepthStreamResponse, any, unknown>,
+        []
+    > {
+        throw new Error("Method not implemented.")
     }
     getOpenPerpOrder(
         request: GetOpenPerpOrderRequest

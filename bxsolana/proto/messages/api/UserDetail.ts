@@ -21,6 +21,7 @@ export declare namespace $.api {
     status: string;
     subAccountId: string;
     accountAddress: string;
+    accountName: string;
   }
 }
 export type Type = $.api.UserDetail;
@@ -30,6 +31,7 @@ export function getDefaultValue(): $.api.UserDetail {
     status: "",
     subAccountId: "0",
     accountAddress: "",
+    accountName: "",
   };
 }
 
@@ -45,6 +47,7 @@ export function encodeJson(value: $.api.UserDetail): unknown {
   if (value.status !== undefined) result.status = tsValueToJsonValueFns.string(value.status);
   if (value.subAccountId !== undefined) result.subAccountId = tsValueToJsonValueFns.uint64(value.subAccountId);
   if (value.accountAddress !== undefined) result.accountAddress = tsValueToJsonValueFns.string(value.accountAddress);
+  if (value.accountName !== undefined) result.accountName = tsValueToJsonValueFns.string(value.accountName);
   return result;
 }
 
@@ -53,6 +56,7 @@ export function decodeJson(value: any): $.api.UserDetail {
   if (value.status !== undefined) result.status = jsonValueToTsValueFns.string(value.status);
   if (value.subAccountId !== undefined) result.subAccountId = jsonValueToTsValueFns.uint64(value.subAccountId);
   if (value.accountAddress !== undefined) result.accountAddress = jsonValueToTsValueFns.string(value.accountAddress);
+  if (value.accountName !== undefined) result.accountName = jsonValueToTsValueFns.string(value.accountName);
   return result;
 }
 
@@ -74,6 +78,12 @@ export function encodeBinary(value: $.api.UserDetail): Uint8Array {
     const tsValue = value.accountAddress;
     result.push(
       [3, tsValueToWireValueFns.string(tsValue)],
+    );
+  }
+  if (value.accountName !== undefined) {
+    const tsValue = value.accountName;
+    result.push(
+      [4, tsValueToWireValueFns.string(tsValue)],
     );
   }
   return serialize(result);
@@ -103,6 +113,13 @@ export function decodeBinary(binary: Uint8Array): $.api.UserDetail {
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
     result.accountAddress = value;
+  }
+  field: {
+    const wireValue = wireFields.get(4);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.accountName = value;
   }
   return result;
 }

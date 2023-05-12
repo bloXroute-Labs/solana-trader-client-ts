@@ -43,11 +43,11 @@ import {
 } from "../bxsolana/utils/constants"
 import { AxiosRequestConfig } from "axios"
 
+const config = loadFromEnv()
+
 // if longer examples (placing and canceling transactions, etc. should be run)
 const runLongExamples = process.env.RUN_LIFECYCLE === "true"
 const runStreams = process.env.RUN_STREAMS === "true"
-
-const config = loadFromEnv()
 
 const marketAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"
 const ownerAddress = config.publicKey
@@ -176,6 +176,9 @@ async function grpc() {
     }
 
     console.info(" ----  GRPC Requests  ----")
+    await runPerpRequests(provider)
+
+    console.info(" ----  GRPC Requests  ----")
     await doOrderbookRequests(provider)
 
     console.info(" ----  GRPC Amm Requests  ----")
@@ -225,8 +228,12 @@ async function ws() {
     await provider.connect()
     console.info(" ----  WS Requests  ----")
     await doOrderbookRequests(provider)
+
     console.info(" ----  WS Amm Requests  ----")
     await doAmmRequests(provider)
+
+    console.info(" ----  WS Requests  ----")
+    await runPerpRequests(provider)
 
     if (runStreams) {
         console.info(" ----  WS Streams  ----")
@@ -247,6 +254,14 @@ async function ws() {
 }
 
 async function runPerpRequests(provider: BaseProvider) {
+    await callGetPerpOrderbook(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetDriftMarketDepth(provider)
+    console.info(" ")
+    console.info(" ")
+
     await callGetAssets(provider)
     console.info(" ")
     console.info(" ")
@@ -356,11 +371,6 @@ async function doOrderbookRequests(provider: BaseProvider) {
     await callPostSettleFunds(provider)
     console.info(" ")
     console.info(" ")
-
-    // Drift
-    await callGetPerpOrderbook(provider)
-    console.info(" ")
-    console.info(" ")
 }
 
 async function doAmmRequests(provider: BaseProvider) {
@@ -417,6 +427,10 @@ async function doStreams(provider: BaseProvider) {
     console.info(" ")
 
     await callGetPerpTradesStream(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetDriftMarketDepthsStream(provider)
     console.info(" ")
     console.info(" ")
 }
@@ -785,6 +799,19 @@ async function callGetPerpOrderbook(provider: BaseProvider) {
     }
 }
 
+async function callGetDriftMarketDepth(provider: BaseProvider) {
+    try {
+        console.info("Retrieving market depth for SOL_PERP market")
+        const req = await provider.getDriftMarketDepth({
+            contract: "SOL_PERP",
+            limit: 5,
+        })
+        console.info(req)
+    } catch (e) {
+        console.info(e)
+    }
+}
+
 async function callGetAssets(provider: BaseProvider) {
     console.info("get assets")
     const req = await provider.getAssets({
@@ -843,7 +870,6 @@ async function callPostPerpOrder(provider: BaseProvider) {
     console.info("post perp order")
     const req = await provider.postPerpOrder({
         ownerAddress: ownerAddress,
-        payerAddress: ownerAddress,
         accountAddress: "",
         positionSide: "PS_LONG",
         slippage: 5,
@@ -919,18 +945,21 @@ async function callPostClosePerpPositions(provider: BaseProvider) {
     console.info(req)
 }
 
-async function callPostCreateUser(provider: BaseProvider) {
-    console.info("creating user")
-    try {
-        const req = await provider.postCreateUser({
-            ownerAddress: ownerAddress,
-            project: "P_DRIFT",
-        })
-        console.info(req)
-    } catch (err) {
-        console.info(err)
-    }
-}
+// async function callPostCreateUser(provider: BaseProvider) {
+//     console.info("creating user")
+//     try {
+//         const req = await provider.postCreateUser({
+//             ownerAddress: ownerAddress,
+//             project: "P_DRIFT",
+//             action: "",
+//             subAccountID: "0",
+//             accountName: "",
+//         })
+//         console.info(req)
+//     } catch (err) {
+//         console.info(err)
+//     }
+// }
 
 async function callGetUser(provider: BaseProvider) {
     console.info("getting user")
@@ -1194,6 +1223,25 @@ async function callGetPerpOrderbookStream(provider: BaseProvider) {
     console.info(" ")
 }
 
+async function callGetDriftMarketDepthsStream(provider: BaseProvider) {
+    console.info("Subscribing for Drift market depth updates")
+    const req = await provider.getDriftMarketDepthsStream({
+        contracts: ["SOL_PERP", "BTC_PERP", "ETH_PERP", "APT_PERP"],
+        limit: 0,
+    })
+
+    let count = 0
+    for await (const ob of req) {
+        console.info(ob)
+        count++
+        if (count == 1) {
+            break
+        }
+    }
+    console.info(" ")
+    console.info(" ")
+}
+
 async function callGetPerpTradesStream(provider: BaseProvider) {
     console.info("Subscribing for drift trade updates")
     const req = await provider.getPerpTradesStream({
@@ -1369,6 +1417,7 @@ async function callPostRouteTradeSwap(provider: BaseProvider) {
     })
     console.info(response)
 }
+
 async function callSubmitRouteTradeSwap(provider: BaseProvider) {
     console.info("Submitting a route trade swap")
     const responses = await provider.submitRouteTradeSwap(

@@ -75,6 +75,8 @@ import {
     GetPerpPositionsResponse,
     GetOpenPerpOrderRequest,
     GetOpenPerpOrderResponse,
+    GetDriftMarketDepthRequest,
+    GetDriftMarketDepthResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -87,6 +89,7 @@ import { RpcReturnType } from "../proto/runtime/rpc"
 
 export class HttpProvider extends BaseProvider {
     private readonly baseUrl: string
+    private readonly baseUrlV2: string
     requestConfig: AxiosRequestConfig
 
     constructor(
@@ -97,6 +100,7 @@ export class HttpProvider extends BaseProvider {
     ) {
         super(authHeader, privateKey)
         this.baseUrl = address + "/api/v1"
+        this.baseUrlV2 = address + "/api/v2"
         this.requestConfig = {
             ...requestConfig,
             headers: { Authorization: this.authHeader },
@@ -433,6 +437,13 @@ export class HttpProvider extends BaseProvider {
     ): Promise<GetPerpOrderbookResponse> => {
         const path = `${this.baseUrl}/market/perp/orderbook/${request.contract}?limit=${request.limit}&project=${request.project}`
         return this.get<GetPerpOrderbookResponse>(path)
+    }
+
+    getDriftMarketDepth = (
+        request: GetDriftMarketDepthRequest
+    ): Promise<GetDriftMarketDepthResponse> => {
+        const path = `${this.baseUrlV2}/drift/market-depth/${request.contract}?limit=${request.limit}`
+        return this.get<GetDriftMarketDepthResponse>(path)
     }
 
     private async get<T>(path: string): Promise<T> {
