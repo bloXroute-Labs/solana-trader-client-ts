@@ -267,10 +267,6 @@ async function runPerpRequests(provider: BaseProvider) {
     console.info(" ")
     console.info(" ")
 
-    await callGetDriftMarginOrderbooksStream(provider)
-    console.info(" ")
-    console.info(" ")
-
     await callGetDriftMarketDepth(provider)
     console.info(" ")
     console.info(" ")
@@ -448,6 +444,10 @@ async function doStreams(provider: BaseProvider) {
     console.info(" ")
 
     await callGetDriftMarketDepthsStream(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetDriftMarginOrderbooksStream(provider)
     console.info(" ")
     console.info(" ")
 }
