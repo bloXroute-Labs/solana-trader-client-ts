@@ -870,7 +870,6 @@ async function callPostPerpOrder(provider: BaseProvider) {
     console.info("post perp order")
     const req = await provider.postPerpOrder({
         ownerAddress: ownerAddress,
-        payerAddress: ownerAddress,
         accountAddress: "",
         positionSide: "PS_LONG",
         slippage: 5,

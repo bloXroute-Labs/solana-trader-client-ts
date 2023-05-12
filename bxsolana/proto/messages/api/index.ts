@@ -131,6 +131,8 @@ export type { Type as PostPerpOrderRequest } from "./PostPerpOrderRequest";
 export type { Type as PostPerpOrderResponse } from "./PostPerpOrderResponse";
 export type { Type as PostDriftMarginOrderRequest } from "./PostDriftMarginOrderRequest";
 export type { Type as PostDriftMarginOrderResponse } from "./PostDriftMarginOrderResponse";
+export type { Type as PostDriftEnableMarginTradingRequest } from "./PostDriftEnableMarginTradingRequest";
+export type { Type as PostDriftEnableMarginTradingResponse } from "./PostDriftEnableMarginTradingResponse";
 export type { Type as GetNewPerpOrdersStreamRequest } from "./GetNewPerpOrdersStreamRequest";
 export type { Type as GetNewPerpOrdersStreamResponse } from "./GetNewPerpOrdersStreamResponse";
 export type { Type as GetPerpTradesStreamRequest } from "./GetPerpTradesStreamRequest";

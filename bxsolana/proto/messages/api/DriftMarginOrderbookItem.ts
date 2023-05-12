@@ -1,11 +1,4 @@
 import {
-  Type as Struct,
-  encodeJson as encodeJson_1,
-  decodeJson as decodeJson_1,
-  encodeBinary as encodeBinary_1,
-  decodeBinary as decodeBinary_1,
-} from "../google/protobuf/Struct";
-import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar";
@@ -31,7 +24,7 @@ export declare namespace $.api {
     orderID: string;
     clientOrderID: string;
     ownerAddress: string;
-    metadata?: Struct;
+    metadata: Map<string, string>;
   }
 }
 export type Type = $.api.DriftMarginOrderbookItem;
@@ -43,7 +36,7 @@ export function getDefaultValue(): $.api.DriftMarginOrderbookItem {
     orderID: "",
     clientOrderID: "0",
     ownerAddress: "",
-    metadata: undefined,
+    metadata: new Map(),
   };
 }
 
@@ -61,7 +54,7 @@ export function encodeJson(value: $.api.DriftMarginOrderbookItem): unknown {
   if (value.orderID !== undefined) result.orderID = tsValueToJsonValueFns.string(value.orderID);
   if (value.clientOrderID !== undefined) result.clientOrderID = tsValueToJsonValueFns.uint64(value.clientOrderID);
   if (value.ownerAddress !== undefined) result.ownerAddress = tsValueToJsonValueFns.string(value.ownerAddress);
-  if (value.metadata !== undefined) result.metadata = encodeJson_1(value.metadata);
+  if (value.metadata !== undefined) result.metadata = Object.fromEntries([...value.metadata.entries()].map(([key, value]) => [key, tsValueToJsonValueFns.string(value)]));
   return result;
 }
 
@@ -72,7 +65,7 @@ export function decodeJson(value: any): $.api.DriftMarginOrderbookItem {
   if (value.orderID !== undefined) result.orderID = jsonValueToTsValueFns.string(value.orderID);
   if (value.clientOrderID !== undefined) result.clientOrderID = jsonValueToTsValueFns.uint64(value.clientOrderID);
   if (value.ownerAddress !== undefined) result.ownerAddress = jsonValueToTsValueFns.string(value.ownerAddress);
-  if (value.metadata !== undefined) result.metadata = decodeJson_1(value.metadata);
+  if (value.metadata !== undefined) result.metadata = Object.fromEntries([...value.metadata.entries()].map(([key, value]) => [key, jsonValueToTsValueFns.string(value)]));
   return result;
 }
 
@@ -108,11 +101,13 @@ export function encodeBinary(value: $.api.DriftMarginOrderbookItem): Uint8Array 
       [5, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.metadata !== undefined) {
-    const tsValue = value.metadata;
-    result.push(
-      [6, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
-    );
+  {
+    const fields = value.metadata.entries();
+    for (const [key, value] of fields) {
+      result.push(
+        [6, { type: WireType.LengthDelimited as const, value: serialize([[1, tsValueToWireValueFns.string(key)], [2, tsValueToWireValueFns.string(value)]]) }],
+      );
+    }
   }
   return serialize(result);
 }
@@ -156,12 +151,11 @@ export function decodeBinary(binary: Uint8Array): $.api.DriftMarginOrderbookItem
     if (value === undefined) break field;
     result.ownerAddress = value;
   }
-  field: {
-    const wireValue = wireFields.get(6);
-    if (wireValue === undefined) break field;
-    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined;
-    if (value === undefined) break field;
-    result.metadata = value;
+  collection: {
+    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 6).map(([, wireValue]) => wireValue);
+    const value = wireValues.map((wireValue) => (() => { if (wireValue.type !== WireType.LengthDelimited) { return; } const { 1: key, 2: value } = Object.fromEntries(deserialize(wireValue.value)); if (key === undefined || value === undefined) return; return [wireValueToTsValueFns.string(key), wireValueToTsValueFns.string(value)] as const;})()).filter(x => x !== undefined);
+    if (!value.length) break collection;
+    result.metadata = new Map(value as any);
   }
   return result;
 }

@@ -1,11 +1,4 @@
 import {
-  Type as Struct,
-  encodeJson as encodeJson_1,
-  decodeJson as decodeJson_1,
-  encodeBinary as encodeBinary_1,
-  decodeBinary as decodeBinary_1,
-} from "../google/protobuf/Struct";
-import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar";
@@ -33,7 +26,7 @@ export declare namespace $.api {
     quotedMint: string;
     baseDecimals: string;
     quoteDecimals: string;
-    metadata?: Struct;
+    metadata: Map<string, string>;
   }
 }
 export type Type = $.api.DriftMarket;
@@ -47,7 +40,7 @@ export function getDefaultValue(): $.api.DriftMarket {
     quotedMint: "",
     baseDecimals: "0",
     quoteDecimals: "0",
-    metadata: undefined,
+    metadata: new Map(),
   };
 }
 
@@ -67,7 +60,7 @@ export function encodeJson(value: $.api.DriftMarket): unknown {
   if (value.quotedMint !== undefined) result.quotedMint = tsValueToJsonValueFns.string(value.quotedMint);
   if (value.baseDecimals !== undefined) result.baseDecimals = tsValueToJsonValueFns.int64(value.baseDecimals);
   if (value.quoteDecimals !== undefined) result.quoteDecimals = tsValueToJsonValueFns.int64(value.quoteDecimals);
-  if (value.metadata !== undefined) result.metadata = encodeJson_1(value.metadata);
+  if (value.metadata !== undefined) result.metadata = Object.fromEntries([...value.metadata.entries()].map(([key, value]) => [key, tsValueToJsonValueFns.string(value)]));
   return result;
 }
 
@@ -80,7 +73,7 @@ export function decodeJson(value: any): $.api.DriftMarket {
   if (value.quotedMint !== undefined) result.quotedMint = jsonValueToTsValueFns.string(value.quotedMint);
   if (value.baseDecimals !== undefined) result.baseDecimals = jsonValueToTsValueFns.int64(value.baseDecimals);
   if (value.quoteDecimals !== undefined) result.quoteDecimals = jsonValueToTsValueFns.int64(value.quoteDecimals);
-  if (value.metadata !== undefined) result.metadata = decodeJson_1(value.metadata);
+  if (value.metadata !== undefined) result.metadata = Object.fromEntries([...value.metadata.entries()].map(([key, value]) => [key, jsonValueToTsValueFns.string(value)]));
   return result;
 }
 
@@ -128,11 +121,13 @@ export function encodeBinary(value: $.api.DriftMarket): Uint8Array {
       [7, tsValueToWireValueFns.int64(tsValue)],
     );
   }
-  if (value.metadata !== undefined) {
-    const tsValue = value.metadata;
-    result.push(
-      [8, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
-    );
+  {
+    const fields = value.metadata.entries();
+    for (const [key, value] of fields) {
+      result.push(
+        [8, { type: WireType.LengthDelimited as const, value: serialize([[1, tsValueToWireValueFns.string(key)], [2, tsValueToWireValueFns.string(value)]]) }],
+      );
+    }
   }
   return serialize(result);
 }
@@ -190,12 +185,11 @@ export function decodeBinary(binary: Uint8Array): $.api.DriftMarket {
     if (value === undefined) break field;
     result.quoteDecimals = value;
   }
-  field: {
-    const wireValue = wireFields.get(8);
-    if (wireValue === undefined) break field;
-    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined;
-    if (value === undefined) break field;
-    result.metadata = value;
+  collection: {
+    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 8).map(([, wireValue]) => wireValue);
+    const value = wireValues.map((wireValue) => (() => { if (wireValue.type !== WireType.LengthDelimited) { return; } const { 1: key, 2: value } = Object.fromEntries(deserialize(wireValue.value)); if (key === undefined || value === undefined) return; return [wireValueToTsValueFns.string(key), wireValueToTsValueFns.string(value)] as const;})()).filter(x => x !== undefined);
+    if (!value.length) break collection;
+    result.metadata = new Map(value as any);
   }
   return result;
 }
