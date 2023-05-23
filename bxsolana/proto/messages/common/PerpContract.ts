@@ -9,7 +9,9 @@ export declare namespace $.common {
     | "MATIC_PERP"
     | "ARB_PERP"
     | "DOGE_PERP"
-    | "BNB_PERP";
+    | "BNB_PERP"
+    | "SUI_PERP"
+    | "PEPE_PERP";
 }
 export type Type = $.common.PerpContract;
 
@@ -24,6 +26,8 @@ export const num2name = {
   7: "ARB_PERP",
   8: "DOGE_PERP",
   9: "BNB_PERP",
+  10: "SUI_PERP",
+  11: "PEPE_PERP",
 } as const;
 
 export const name2num = {
@@ -37,4 +41,6 @@ export const name2num = {
   ARB_PERP: 7,
   DOGE_PERP: 8,
   BNB_PERP: 9,
+  SUI_PERP: 10,
+  PEPE_PERP: 11,
 } as const;
