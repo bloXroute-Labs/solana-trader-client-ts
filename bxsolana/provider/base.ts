@@ -125,7 +125,9 @@ import {
     PostModifyDriftOrderRequest,
     PostModifyDriftOrderResponse,
     GetDriftOpenMarginOrdersRequest,
-    GetDriftOpenMarginOrdersResponse, PostCancelDriftMarginOrderRequest, PostCancelDriftMarginOrderResponse
+    GetDriftOpenMarginOrdersResponse,
+    PostCancelDriftMarginOrderRequest,
+    PostCancelDriftMarginOrderResponse,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {

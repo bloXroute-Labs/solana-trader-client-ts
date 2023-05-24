@@ -28,7 +28,9 @@ import {
     GetDriftOpenMarginOrdersRequest,
     GetDriftOpenMarginOrdersResponse,
     PostModifyDriftOrderRequest,
-    PostModifyDriftOrderResponse, PostCancelDriftMarginOrderRequest, PostCancelDriftMarginOrderResponse
+    PostModifyDriftOrderResponse,
+    PostCancelDriftMarginOrderRequest,
+    PostCancelDriftMarginOrderResponse,
 } from "../bxsolana"
 import { Keypair } from "@solana/web3.js"
 import base58 from "bs58"
@@ -252,7 +254,6 @@ async function ws() {
 }
 
 async function runPerpRequests(provider: BaseProvider) {
-
     await callGetDriftOpenMarginOrders(provider)
     console.info(" ")
     console.info(" ")
@@ -813,7 +814,10 @@ async function callGetPrices(provider: BaseProvider) {
 
 async function callGetPools(provider: BaseProvider) {
     console.info("Retrieving pools")
-    const resp = await provider.getPools({ projects: ["P_RAYDIUM"], pairOrAddress: "" })
+    const resp = await provider.getPools({
+        projects: ["P_RAYDIUM"],
+        pairOrAddress: "",
+    })
     console.info(resp)
 }
 
@@ -903,7 +907,6 @@ async function callPostCancelDriftMarginOrder(provider: BaseProvider) {
     })
     console.info(req)
 }
-
 
 async function callGetAssets(provider: BaseProvider) {
     console.info("get assets")

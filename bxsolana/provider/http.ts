@@ -90,7 +90,7 @@ import {
     PostModifyDriftOrderRequest,
     PostModifyDriftOrderResponse,
     PostCancelDriftMarginOrderRequest,
-    PostCancelDriftMarginOrderResponse
+    PostCancelDriftMarginOrderResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -145,7 +145,7 @@ export class HttpProvider extends BaseProvider {
         return this.post<
             PostModifyDriftOrderRequest,
             PostModifyDriftOrderResponse
-            >(path, request)
+        >(path, request)
     }
 
     async postCancelDriftMarginOrder(
@@ -155,7 +155,7 @@ export class HttpProvider extends BaseProvider {
         return this.post<
             PostCancelDriftMarginOrderRequest,
             PostCancelDriftMarginOrderResponse
-            >(path, request)
+        >(path, request)
     }
 
     async getDriftMarkets(
