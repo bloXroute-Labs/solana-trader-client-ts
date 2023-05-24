@@ -122,6 +122,10 @@ import {
     GetDriftMarketDepthStreamResponse,
     PostDriftEnableMarginTradingResponse,
     PostDriftEnableMarginTradingRequest,
+    PostModifyDriftOrderRequest,
+    PostModifyDriftOrderResponse,
+    GetDriftOpenMarginOrdersRequest,
+    GetDriftOpenMarginOrdersResponse, PostCancelDriftMarginOrderRequest, PostCancelDriftMarginOrderResponse
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -146,6 +150,21 @@ export abstract class BaseProvider implements Api {
         }
     }
     // Drift V2
+    getDriftOpenMarginOrders(
+        request: GetDriftOpenMarginOrdersRequest
+    ): RpcReturnType<Promise<GetDriftOpenMarginOrdersResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    postModifyDriftOrder(
+        request: PostModifyDriftOrderRequest
+    ): RpcReturnType<Promise<PostModifyDriftOrderResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    postCancelDriftMarginOrder(
+        request: PostCancelDriftMarginOrderRequest
+    ): RpcReturnType<Promise<PostCancelDriftMarginOrderResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
     getDriftMarkets(
         request: GetDriftMarketsRequest
     ): RpcReturnType<Promise<GetDriftMarketsResponse>, []> {

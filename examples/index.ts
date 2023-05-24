@@ -25,6 +25,10 @@ import {
     TESTNET_API_HTTP,
     TESTNET_API_WS,
     WsProvider,
+    GetDriftOpenMarginOrdersRequest,
+    GetDriftOpenMarginOrdersResponse,
+    PostModifyDriftOrderRequest,
+    PostModifyDriftOrderResponse, PostCancelDriftMarginOrderRequest, PostCancelDriftMarginOrderResponse
 } from "../bxsolana"
 import { Keypair } from "@solana/web3.js"
 import base58 from "bs58"
@@ -33,6 +37,7 @@ import {
     DEVNET_API_GRPC_PORT,
 } from "../bxsolana/utils/constants"
 import { AxiosRequestConfig } from "axios"
+import { RpcReturnType } from "../bxsolana/proto/runtime/rpc"
 
 const config = loadFromEnv()
 
@@ -247,6 +252,19 @@ async function ws() {
 }
 
 async function runPerpRequests(provider: BaseProvider) {
+
+    await callGetDriftOpenMarginOrders(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostModifyDriftOrder(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostCancelDriftMarginOrder(provider)
+    console.info(" ")
+    console.info(" ")
+
     await callGetPerpOrderbook(provider)
     console.info(" ")
     console.info(" ")
@@ -795,7 +813,7 @@ async function callGetPrices(provider: BaseProvider) {
 
 async function callGetPools(provider: BaseProvider) {
     console.info("Retrieving pools")
-    const resp = await provider.getPools({ projects: ["P_RAYDIUM"] })
+    const resp = await provider.getPools({ projects: ["P_RAYDIUM"], pairOrAddress: "" })
     console.info(resp)
 }
 
@@ -850,6 +868,42 @@ async function callGetDriftMarkets(provider: BaseProvider) {
         console.info(e)
     }
 }
+
+async function callGetDriftOpenMarginOrders(provider: BaseProvider) {
+    console.info("get drt open margin orders")
+    const req = await provider.getDriftOpenMarginOrders({
+        ownerAddress: ownerAddress,
+        accountAddress: "",
+        markets: ["SOL"],
+    })
+    console.info(req)
+}
+
+async function callPostModifyDriftOrder(provider: BaseProvider) {
+    console.info("post modify drift order")
+    const req = await provider.postModifyDriftOrder({
+        ownerAddress: ownerAddress,
+        accountAddress: "",
+        orderID: "1",
+        newPositionSide: "",
+        postOnly: "",
+        newBaseAmount: 10,
+        newLimitPrice: 0,
+    })
+    console.info(req)
+}
+
+async function callPostCancelDriftMarginOrder(provider: BaseProvider) {
+    console.info("post cancel drift margin order")
+    const req = await provider.postCancelDriftMarginOrder({
+        ownerAddress: ownerAddress,
+        accountAddress: "",
+        orderID: "0",
+        clientOrderID: "0",
+    })
+    console.info(req)
+}
+
 
 async function callGetAssets(provider: BaseProvider) {
     console.info("get assets")
@@ -1248,6 +1302,8 @@ async function callGetPoolsStream(provider: BaseProvider) {
     const projects: Project[] = ["P_RAYDIUM"]
     const stream = await provider.getPoolReservesStream({
         projects: projects,
+        // RAY token address
+        pairOrAddress: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
     })
 
     let count = 0
