@@ -112,6 +112,12 @@ import {
     PostDriftEnableMarginTradingResponse,
     GetDriftMarginOrderbookRequest,
     GetDriftMarginOrderbookResponse,
+    GetDriftOpenMarginOrdersRequest,
+    GetDriftOpenMarginOrdersResponse,
+    PostModifyDriftOrderRequest,
+    PostModifyDriftOrderResponse,
+    PostCancelDriftMarginOrderRequest,
+    PostCancelDriftMarginOrderResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -150,6 +156,24 @@ export class WsProvider extends BaseProvider {
     }
 
     // Drift V2
+    async getDriftOpenMarginOrders(
+        request: GetDriftOpenMarginOrdersRequest
+    ): RpcReturnType<Promise<GetDriftOpenMarginOrdersResponse>, []> {
+        return await this.wsConnection.call("GetDriftOpenMarginOrders", request)
+    }
+    async postModifyDriftOrder(
+        request: PostModifyDriftOrderRequest
+    ): RpcReturnType<Promise<PostModifyDriftOrderResponse>, []> {
+        return await this.wsConnection.call("PostModifyDriftOrder", request)
+    }
+    async postCancelDriftMarginOrder(
+        request: PostCancelDriftMarginOrderRequest
+    ): RpcReturnType<Promise<PostCancelDriftMarginOrderResponse>, []> {
+        return await this.wsConnection.call(
+            "PostCancelDriftMarginOrder",
+            request
+        )
+    }
     async getDriftMarkets(
         request: GetDriftMarketsRequest
     ): RpcReturnType<Promise<GetDriftMarketsResponse>, []> {

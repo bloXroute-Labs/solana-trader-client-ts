@@ -33,6 +33,7 @@ import {
     DEVNET_API_GRPC_PORT,
 } from "../bxsolana/utils/constants"
 import { AxiosRequestConfig } from "axios"
+import { RpcReturnType } from "../bxsolana/proto/runtime/rpc"
 
 const config = loadFromEnv()
 
@@ -119,6 +120,7 @@ async function http() {
     await runPerpRequests(provider)
 
     await doOrderbookRequests(provider)
+
     console.info(" ----  HTTP Amm Requests  ----")
     await doAmmRequests(provider)
 
@@ -225,9 +227,6 @@ async function ws() {
     console.info(" ----  WS Amm Requests  ----")
     await doAmmRequests(provider)
 
-    console.info(" ----  WS Requests  ----")
-    await runPerpRequests(provider)
-
     if (runStreams) {
         console.info(" ----  WS Streams  ----")
         await doStreams(provider)
@@ -247,6 +246,18 @@ async function ws() {
 }
 
 async function runPerpRequests(provider: BaseProvider) {
+    await callGetDriftOpenMarginOrders(provider)
+    console.info(" ")
+    console.info(" ")
+    return
+    await callPostModifyDriftOrder(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostCancelDriftMarginOrder(provider)
+    console.info(" ")
+    console.info(" ")
+
     await callGetPerpOrderbook(provider)
     console.info(" ")
     console.info(" ")
@@ -795,7 +806,10 @@ async function callGetPrices(provider: BaseProvider) {
 
 async function callGetPools(provider: BaseProvider) {
     console.info("Retrieving pools")
-    const resp = await provider.getPools({ projects: ["P_RAYDIUM"] })
+    const resp = await provider.getPools({
+        projects: ["P_RAYDIUM"],
+        pairOrAddress: "",
+    })
     console.info(resp)
 }
 
@@ -849,6 +863,41 @@ async function callGetDriftMarkets(provider: BaseProvider) {
     } catch (e) {
         console.info(e)
     }
+}
+
+async function callGetDriftOpenMarginOrders(provider: BaseProvider) {
+    console.info("get drift open margin orders")
+    const req = await provider.getDriftOpenMarginOrders({
+        ownerAddress: ownerAddress,
+        accountAddress: "",
+        markets: ["SOL"],
+    })
+    console.info(req)
+}
+
+async function callPostModifyDriftOrder(provider: BaseProvider) {
+    console.info("post modify drift order")
+    const req = await provider.postModifyDriftOrder({
+        ownerAddress: ownerAddress,
+        accountAddress: "",
+        orderID: "1",
+        newPositionSide: "",
+        postOnly: "",
+        newBaseAmount: 10,
+        newLimitPrice: 0,
+    })
+    console.info(req)
+}
+
+async function callPostCancelDriftMarginOrder(provider: BaseProvider) {
+    console.info("post cancel drift margin order")
+    const req = await provider.postCancelDriftMarginOrder({
+        ownerAddress: ownerAddress,
+        accountAddress: "",
+        orderID: "0",
+        clientOrderID: "0",
+    })
+    console.info(req)
 }
 
 async function callGetAssets(provider: BaseProvider) {
@@ -1248,6 +1297,8 @@ async function callGetPoolsStream(provider: BaseProvider) {
     const projects: Project[] = ["P_RAYDIUM"]
     const stream = await provider.getPoolReservesStream({
         projects: projects,
+        // RAY token address
+        pairOrAddress: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
     })
 
     let count = 0

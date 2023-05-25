@@ -122,6 +122,12 @@ import {
     GetDriftMarginOrderbookResponse,
     GetDriftMarginOrderbooksRequest,
     GetDriftMarginOrderbooksStreamResponse,
+    GetDriftOpenMarginOrdersRequest,
+    GetDriftOpenMarginOrdersResponse,
+    PostModifyDriftOrderRequest,
+    PostModifyDriftOrderResponse,
+    PostCancelDriftMarginOrderRequest,
+    PostCancelDriftMarginOrderResponse,
 } from "../proto/messages/api"
 import { createServiceClient, Service } from "../proto/services/api/Api"
 import { BaseProvider } from "./base"
@@ -206,6 +212,24 @@ export class GrpcProvider extends BaseProvider {
     }
 
     // Drift V2
+    getDriftOpenMarginOrders(
+        request: GetDriftOpenMarginOrdersRequest
+    ): RpcReturnType<Promise<GetDriftOpenMarginOrdersResponse>, []> {
+        return this.client.getDriftOpenMarginOrders(request)
+    }
+
+    postModifyDriftOrder(
+        request: PostModifyDriftOrderRequest
+    ): RpcReturnType<Promise<PostModifyDriftOrderResponse>, []> {
+        return this.client.postModifyDriftOrder(request)
+    }
+
+    postCancelDriftMarginOrder(
+        request: PostCancelDriftMarginOrderRequest
+    ): RpcReturnType<Promise<PostCancelDriftMarginOrderResponse>, []> {
+        return this.client.postCancelDriftMarginOrder(request)
+    }
+
     getDriftMarkets(
         request: GetDriftMarketsRequest
     ): RpcReturnType<Promise<GetDriftMarketsResponse>, []> {

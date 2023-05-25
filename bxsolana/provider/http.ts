@@ -85,6 +85,12 @@ import {
     PostDriftEnableMarginTradingResponse,
     GetDriftMarginOrderbookRequest,
     GetDriftMarginOrderbookResponse,
+    GetDriftOpenMarginOrdersRequest,
+    GetDriftOpenMarginOrdersResponse,
+    PostModifyDriftOrderRequest,
+    PostModifyDriftOrderResponse,
+    PostCancelDriftMarginOrderRequest,
+    PostCancelDriftMarginOrderResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -120,10 +126,41 @@ export class HttpProvider extends BaseProvider {
     }
 
     // Drift V2
+    async getDriftOpenMarginOrders(
+        request: GetDriftOpenMarginOrdersRequest
+    ): RpcReturnType<Promise<GetDriftOpenMarginOrdersResponse>, []> {
+        let path = `${this.baseUrlV2}/drift/margin-open-orders?ownerAddress=${request.ownerAddress}&accountAddress=${request.accountAddress}`
+        const args = request.markets.map((v) => `markets=${v}`).join("&")
+        if (args != "") {
+            path += `&${args}`
+        }
+        return this.get<GetDriftOpenMarginOrdersResponse>(path)
+    }
+
+    async postModifyDriftOrder(
+        request: PostModifyDriftOrderRequest
+    ): RpcReturnType<Promise<PostModifyDriftOrderResponse>, []> {
+        const path = `${this.baseUrlV2}/drift/modify-order`
+        return this.post<
+            PostModifyDriftOrderRequest,
+            PostModifyDriftOrderResponse
+        >(path, request)
+    }
+
+    async postCancelDriftMarginOrder(
+        request: PostCancelDriftMarginOrderRequest
+    ): RpcReturnType<Promise<PostCancelDriftMarginOrderResponse>, []> {
+        const path = `${this.baseUrlV2}/drift/margin-cancel`
+        return this.post<
+            PostCancelDriftMarginOrderRequest,
+            PostCancelDriftMarginOrderResponse
+        >(path, request)
+    }
+
     async getDriftMarkets(
         request: GetDriftMarketsRequest
     ): RpcReturnType<Promise<GetDriftMarketsResponse>, []> {
-        const path = `${this.baseUrlV2}/v2/drift/markets/?metadata=${request.metadata}`
+        const path = `${this.baseUrlV2}/drift/markets/?metadata=${request.metadata}`
         return this.get<GetDriftMarketsResponse>(path)
     }
 
