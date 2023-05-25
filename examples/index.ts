@@ -119,9 +119,10 @@ async function http() {
     console.info(" ----  HTTP Requests  ----")
     await runPerpRequests(provider)
 
-    // await doOrderbookRequests(provider)
-    // console.info(" ----  HTTP Amm Requests  ----")
-    // await doAmmRequests(provider)
+    await doOrderbookRequests(provider)
+
+    console.info(" ----  HTTP Amm Requests  ----")
+    await doAmmRequests(provider)
 
     if (runLongExamples) {
         console.info(" ----  HTTP Lifecycle  ----")
@@ -170,11 +171,11 @@ async function grpc() {
     console.info(" ----  GRPC Requests  ----")
     await runPerpRequests(provider)
 
-    // console.info(" ----  GRPC Requests  ----")
-    // await doOrderbookRequests(provider)
-    //
-    // console.info(" ----  GRPC Amm Requests  ----")
-    // await doAmmRequests(provider)
+    console.info(" ----  GRPC Requests  ----")
+    await doOrderbookRequests(provider)
+
+    console.info(" ----  GRPC Amm Requests  ----")
+    await doAmmRequests(provider)
 
     if (runStreams) {
         console.info(" ----  GRPC Streams  ----")
@@ -221,10 +222,10 @@ async function ws() {
     console.info(" ----  WS Requests  ----")
     await runPerpRequests(provider)
 
-    // await doOrderbookRequests(provider)
-    //
-    // console.info(" ----  WS Amm Requests  ----")
-    // await doAmmRequests(provider)
+    await doOrderbookRequests(provider)
+
+    console.info(" ----  WS Amm Requests  ----")
+    await doAmmRequests(provider)
 
     if (runStreams) {
         console.info(" ----  WS Streams  ----")
