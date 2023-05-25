@@ -25,12 +25,6 @@ import {
     TESTNET_API_HTTP,
     TESTNET_API_WS,
     WsProvider,
-    GetDriftOpenMarginOrdersRequest,
-    GetDriftOpenMarginOrdersResponse,
-    PostModifyDriftOrderRequest,
-    PostModifyDriftOrderResponse,
-    PostCancelDriftMarginOrderRequest,
-    PostCancelDriftMarginOrderResponse,
 } from "../bxsolana"
 import { Keypair } from "@solana/web3.js"
 import base58 from "bs58"
@@ -125,9 +119,9 @@ async function http() {
     console.info(" ----  HTTP Requests  ----")
     await runPerpRequests(provider)
 
-    await doOrderbookRequests(provider)
-    console.info(" ----  HTTP Amm Requests  ----")
-    await doAmmRequests(provider)
+    // await doOrderbookRequests(provider)
+    // console.info(" ----  HTTP Amm Requests  ----")
+    // await doAmmRequests(provider)
 
     if (runLongExamples) {
         console.info(" ----  HTTP Lifecycle  ----")
@@ -176,11 +170,11 @@ async function grpc() {
     console.info(" ----  GRPC Requests  ----")
     await runPerpRequests(provider)
 
-    console.info(" ----  GRPC Requests  ----")
-    await doOrderbookRequests(provider)
-
-    console.info(" ----  GRPC Amm Requests  ----")
-    await doAmmRequests(provider)
+    // console.info(" ----  GRPC Requests  ----")
+    // await doOrderbookRequests(provider)
+    //
+    // console.info(" ----  GRPC Amm Requests  ----")
+    // await doAmmRequests(provider)
 
     if (runStreams) {
         console.info(" ----  GRPC Streams  ----")
@@ -227,13 +221,10 @@ async function ws() {
     console.info(" ----  WS Requests  ----")
     await runPerpRequests(provider)
 
-    await doOrderbookRequests(provider)
-
-    console.info(" ----  WS Amm Requests  ----")
-    await doAmmRequests(provider)
-
-    console.info(" ----  WS Requests  ----")
-    await runPerpRequests(provider)
+    // await doOrderbookRequests(provider)
+    //
+    // console.info(" ----  WS Amm Requests  ----")
+    // await doAmmRequests(provider)
 
     if (runStreams) {
         console.info(" ----  WS Streams  ----")
@@ -257,7 +248,7 @@ async function runPerpRequests(provider: BaseProvider) {
     await callGetDriftOpenMarginOrders(provider)
     console.info(" ")
     console.info(" ")
-
+    return
     await callPostModifyDriftOrder(provider)
     console.info(" ")
     console.info(" ")
@@ -874,7 +865,7 @@ async function callGetDriftMarkets(provider: BaseProvider) {
 }
 
 async function callGetDriftOpenMarginOrders(provider: BaseProvider) {
-    console.info("get drt open margin orders")
+    console.info("get drift open margin orders")
     const req = await provider.getDriftOpenMarginOrders({
         ownerAddress: ownerAddress,
         accountAddress: "",

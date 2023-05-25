@@ -134,7 +134,7 @@ export class HttpProvider extends BaseProvider {
         if (args != "") {
             path += `&${args}`
         }
-
+        console.log("GetDriftOpenMarginOrders path" + path)
         return this.get<GetDriftOpenMarginOrdersResponse>(path)
     }
 
