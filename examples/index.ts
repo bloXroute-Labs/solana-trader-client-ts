@@ -116,9 +116,10 @@ async function http() {
         )
     }
 
-    console.info(" ----  HTTP Requests  ----")
+    console.info(" ----  HTTP PERP Requests  ----")
     await runPerpRequests(provider)
 
+    console.info(" ----  HTTP Requests  ----")
     await doOrderbookRequests(provider)
 
     console.info(" ----  HTTP Amm Requests  ----")
@@ -168,7 +169,7 @@ async function grpc() {
         )
     }
 
-    console.info(" ----  GRPC Requests  ----")
+    console.info(" ----  GRPC PERP Requests  ----")
     await runPerpRequests(provider)
 
     console.info(" ----  GRPC Requests  ----")
@@ -219,9 +220,10 @@ async function ws() {
     }
 
     await provider.connect()
-    console.info(" ----  WS Requests  ----")
+    console.info(" ----  WS PERP Requests  ----")
     await runPerpRequests(provider)
 
+    console.info(" ----  WS Requests  ----")
     await doOrderbookRequests(provider)
 
     console.info(" ----  WS Amm Requests  ----")
@@ -249,7 +251,7 @@ async function runPerpRequests(provider: BaseProvider) {
     await callGetDriftOpenMarginOrders(provider)
     console.info(" ")
     console.info(" ")
-    return
+
     await callPostModifyDriftOrder(provider)
     console.info(" ")
     console.info(" ")
