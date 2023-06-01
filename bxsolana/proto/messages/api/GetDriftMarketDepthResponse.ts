@@ -26,7 +26,7 @@ import {
 
 export declare namespace $.api {
   export interface GetDriftMarketDepthResponse {
-    market: string;
+    contract: string;
     bids: DriftMarketDepthItem[];
     asks: DriftMarketDepthItem[];
   }
@@ -35,7 +35,7 @@ export type Type = $.api.GetDriftMarketDepthResponse;
 
 export function getDefaultValue(): $.api.GetDriftMarketDepthResponse {
   return {
-    market: "",
+    contract: "",
     bids: [],
     asks: [],
   };
@@ -50,7 +50,7 @@ export function createValue(partialValue: Partial<$.api.GetDriftMarketDepthRespo
 
 export function encodeJson(value: $.api.GetDriftMarketDepthResponse): unknown {
   const result: any = {};
-  if (value.market !== undefined) result.market = tsValueToJsonValueFns.string(value.market);
+  if (value.contract !== undefined) result.contract = tsValueToJsonValueFns.string(value.contract);
   result.bids = value.bids.map(value => encodeJson_1(value));
   result.asks = value.asks.map(value => encodeJson_1(value));
   return result;
@@ -58,7 +58,7 @@ export function encodeJson(value: $.api.GetDriftMarketDepthResponse): unknown {
 
 export function decodeJson(value: any): $.api.GetDriftMarketDepthResponse {
   const result = getDefaultValue();
-  if (value.market !== undefined) result.market = jsonValueToTsValueFns.string(value.market);
+  if (value.contract !== undefined) result.contract = jsonValueToTsValueFns.string(value.contract);
   result.bids = value.bids?.map((value: any) => decodeJson_1(value)) ?? [];
   result.asks = value.asks?.map((value: any) => decodeJson_1(value)) ?? [];
   return result;
@@ -66,8 +66,8 @@ export function decodeJson(value: any): $.api.GetDriftMarketDepthResponse {
 
 export function encodeBinary(value: $.api.GetDriftMarketDepthResponse): Uint8Array {
   const result: WireMessage = [];
-  if (value.market !== undefined) {
-    const tsValue = value.market;
+  if (value.contract !== undefined) {
+    const tsValue = value.contract;
     result.push(
       [1, tsValueToWireValueFns.string(tsValue)],
     );
@@ -94,7 +94,7 @@ export function decodeBinary(binary: Uint8Array): $.api.GetDriftMarketDepthRespo
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
-    result.market = value;
+    result.contract = value;
   }
   collection: {
     const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 2).map(([, wireValue]) => wireValue);
