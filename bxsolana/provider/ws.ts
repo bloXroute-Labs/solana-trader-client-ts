@@ -1,4 +1,4 @@
-import { MAINNET_API_WS } from "../utils/constants"
+import { MAINNET_API_VIRGINIA_WS } from "../utils/constants"
 
 import {
     GetAccountBalanceRequest,
@@ -139,7 +139,7 @@ export class WsProvider extends BaseProvider {
     constructor(
         authHeader: string,
         privateKey = "",
-        address: string = MAINNET_API_WS
+        address: string = MAINNET_API_VIRGINIA_WS
     ) {
         super(authHeader, privateKey)
         this.wsConnection = new RpcWsConnection(address, authHeader)

@@ -1,5 +1,5 @@
 import {
-    MAINNET_API_GRPC_HOST,
+    MAINNET_API_VIRGINIA_GRPC,
     MAINNET_API_GRPC_PORT,
 } from "../utils/constants"
 import * as grpc from "@grpc/grpc-js"
@@ -165,7 +165,7 @@ export class GrpcProvider extends BaseProvider {
     constructor(
         authHeader: string,
         privateKey = "",
-        address = `${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`,
+        address = `${MAINNET_API_VIRGINIA_GRPC}:${MAINNET_API_GRPC_PORT}`,
         useTls: boolean,
         options: grpc.ClientOptions = {
             "grpc.keepalive_time_ms": 10000, // 10s keep alive so connection isn't closed from lack of activity

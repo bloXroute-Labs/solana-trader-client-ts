@@ -13,10 +13,10 @@ import {
     LOCAL_API_GRPC_PORT,
     LOCAL_API_HTTP,
     LOCAL_API_WS,
-    MAINNET_API_GRPC_HOST,
     MAINNET_API_GRPC_PORT,
-    MAINNET_API_HTTP,
-    MAINNET_API_WS,
+    MAINNET_API_VIRGINIA_GRPC,
+    MAINNET_API_VIRGINIA_HTTP,
+    MAINNET_API_VIRGINIA_WS,
     PostCancelAllRequest,
     PostOrderRequest,
     Project,
@@ -104,7 +104,7 @@ async function http() {
         provider = new HttpProvider(
             config.authHeader,
             config.privateKey,
-            MAINNET_API_HTTP,
+            MAINNET_API_VIRGINIA_HTTP,
             requestConfig
         )
     } else {
@@ -157,7 +157,7 @@ async function grpc() {
         provider = new GrpcProvider(
             config.authHeader,
             config.privateKey,
-            `${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`,
+            `${MAINNET_API_VIRGINIA_GRPC}:${MAINNET_API_GRPC_PORT}`,
             true
         )
     } else {
@@ -209,7 +209,7 @@ async function ws() {
         provider = new WsProvider(
             config.authHeader,
             config.privateKey,
-            MAINNET_API_WS
+            MAINNET_API_VIRGINIA_WS
         )
     } else {
         provider = new WsProvider(
