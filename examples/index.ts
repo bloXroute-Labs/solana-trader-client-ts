@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 import {
-    addMemo,
     addMemoToSerializedTxn,
     BaseProvider,
     loadFromEnv,
@@ -25,8 +24,14 @@ import {
     TESTNET_API_HTTP,
     TESTNET_API_WS,
     WsProvider,
+    signTx,
 } from "../bxsolana"
-import { Keypair } from "@solana/web3.js"
+import {
+    Keypair,
+    PublicKey,
+    Transaction,
+    VersionedTransaction,
+} from "@solana/web3.js"
 import base58 from "bs58"
 import {
     DEVNET_API_GRPC_HOST,
@@ -34,6 +39,7 @@ import {
 } from "../bxsolana/utils/constants"
 import { AxiosRequestConfig } from "axios"
 import { RpcReturnType } from "../bxsolana/proto/runtime/rpc"
+import { txToBase64 } from "../bxsolana/utils/transaction"
 
 const config = loadFromEnv()
 
@@ -79,10 +85,10 @@ function getRandom() {
 async function run() {
     console.info("---- STARTING HTTP TESTS ----")
     await http()
-    console.info("---- STARTING GRPC TESTS ----")
-    await grpc()
-    console.info("---- STARTING WS TESTS ----")
-    await ws()
+    // console.info("---- STARTING GRPC TESTS ----")
+    // await grpc()
+    // console.info("---- STARTING WS TESTS ----")
+    // await ws()
 }
 
 async function http() {
@@ -116,23 +122,23 @@ async function http() {
         )
     }
 
-    console.info(" ----  HTTP PERP Requests  ----")
-    await runPerpRequests(provider)
+    // console.info(" ----  HTTP PERP Requests  ----")
+    // await runPerpRequests(provider)
 
-    console.info(" ----  HTTP Requests  ----")
-    await doOrderbookRequests(provider)
+    // console.info(" ----  HTTP Requests  ----")
+    // await doOrderbookRequests(provider)
 
-    console.info(" ----  HTTP Amm Requests  ----")
-    await doAmmRequests(provider)
+    // console.info(" ----  HTTP Amm Requests  ----")
+    // await doAmmRequests(provider)
 
-    if (runLongExamples) {
-        console.info(" ----  HTTP Lifecycle  ----")
-        await doHttpLifecycle(provider)
-        console.info(" ----  HTTP Cancel All  ----")
-        await callCancelAll(provider)
-        console.info(" ")
-    }
+    // if (runLongExamples) {
+    //     console.info(" ----  HTTP Lifecycle  ----")
 
+    //     console.info(" ----  HTTP Cancel All  ----")
+    //     await callCancelAll(provider)
+    //     console.info(" ")
+    // }
+    await doHttpLifecycle(provider)
     return
 }
 
@@ -645,33 +651,33 @@ async function doLifecycle(provider: BaseProvider) {
 
 async function doHttpLifecycle(provider: BaseProvider) {
     try {
-        await callSubmitOrder(provider)
-        console.info(" ")
-        console.info(" ")
+        // await callSubmitOrder(provider)
+        // console.info(" ")
+        // console.info(" ")
 
-        await delay(60000)
+        // await delay(60000)
 
-        let orders = await callGetOpenOrders(provider)
-        if (!orders || orders.length == 0) {
-            console.error(`order failed to get into orderbook`)
-            return
-        }
+        // let orders = await callGetOpenOrders(provider)
+        // if (!orders || orders.length == 0) {
+        //     console.error(`order failed to get into orderbook`)
+        //     return
+        // }
 
-        await callSubmitCancelByClientOrderID(provider)
-        console.info(" ")
-        console.info(" ")
+        // await callSubmitCancelByClientOrderID(provider)
+        // console.info(" ")
+        // console.info(" ")
 
-        await delay(60000)
+        // await delay(60000)
 
-        orders = await callGetOpenOrders(provider)
-        if (!orders || orders.length > 0) {
-            console.error(`order failed to cancel`)
-            return
-        }
+        // orders = await callGetOpenOrders(provider)
+        // if (!orders || orders.length > 0) {
+        //     console.error(`order failed to cancel`)
+        //     return
+        // }
 
-        await callSubmitSettleFunds(provider)
-        console.info(" ")
-        console.info(" ")
+        // await callSubmitSettleFunds(provider)
+        // console.info(" ")
+        // console.info(" ")
 
         await submitTxWithMemo(provider)
         console.info(" ")
@@ -1703,28 +1709,17 @@ async function submitTxWithMemo(provider: BaseProvider) {
     const recentBlockhash = await provider.getRecentBlockHash({})
     console.info(recentBlockhash.blockHash)
     const keypair = Keypair.fromSecretKey(base58.decode(config.privateKey))
-    const encodedTxn = addMemo(
-        [],
-        "new memo by dev",
+    const encodedTxn = buildUnsignedTxn(
         recentBlockhash.blockHash,
-        keypair.publicKey,
-        keypair
+        keypair.publicKey
     )
-    console.info("Submitting tx with one memo")
-    let response = await provider.postSubmit({
-        transaction: { content: encodedTxn, isCleanup: false },
-        skipPreFlight: true,
-    })
-    console.info(response.signature)
 
-    const encodedTxn2 = addMemoToSerializedTxn(
-        encodedTxn,
-        "new memo by dev2",
-        keypair.publicKey,
-        keypair
-    )
-    console.info("Submitting tx with two memos")
-    response = await provider.postSubmit({
+    let encodedTxn2 = addMemoToSerializedTxn(encodedTxn)
+    console.info("Submitting tx with memo")
+
+    const tx = signTx(encodedTxn2, keypair)
+    encodedTxn2 = txToBase64(tx)
+    const response = await provider.postSubmit({
         transaction: { content: encodedTxn2, isCleanup: false },
         skipPreFlight: true,
     })
@@ -1735,3 +1730,17 @@ run().then(() => {
     console.log("done!")
     process.exit(0)
 })
+
+function buildUnsignedTxn(
+    recentBlockHash: string | undefined,
+    owner: PublicKey
+): string {
+    const tx = new Transaction({
+        recentBlockhash: recentBlockHash,
+        feePayer: owner,
+    })
+
+    return Buffer.from(tx.serialize({ verifySignatures: false })).toString(
+        "base64"
+    )
+}
