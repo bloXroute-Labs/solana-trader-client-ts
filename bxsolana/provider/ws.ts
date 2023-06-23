@@ -120,7 +120,7 @@ import {
     PostCancelDriftMarginOrderResponse,
     GetDriftPerpOpenOrdersResponse,
     GetDriftPerpPositionsResponse,
-    PostDriftCancelPerpOrderResponse
+    PostDriftCancelPerpOrderResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"

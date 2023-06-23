@@ -128,7 +128,9 @@ import {
     GetDriftOpenMarginOrdersResponse,
     PostCancelDriftMarginOrderRequest,
     PostCancelDriftMarginOrderResponse,
-    PostDriftCancelPerpOrderResponse, GetDriftPerpPositionsResponse, GetDriftPerpOpenOrdersResponse
+    PostDriftCancelPerpOrderResponse,
+    GetDriftPerpPositionsResponse,
+    GetDriftPerpOpenOrdersResponse,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
