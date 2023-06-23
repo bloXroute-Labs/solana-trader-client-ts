@@ -118,10 +118,16 @@ import {
     PostModifyDriftOrderResponse,
     PostCancelDriftMarginOrderRequest,
     PostCancelDriftMarginOrderResponse,
+    GetDriftPerpOpenOrdersResponse,
+    GetDriftPerpPositionsResponse,
+    PostDriftCancelPerpOrderResponse
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
 import { RpcReturnType } from "../proto/runtime/rpc"
+import { Type as GetDriftPerpOpenOrdersRequest } from "../proto/messages/api/GetDriftPerpOpenOrdersRequest"
+import { Type as GetDriftPerpPositionsRequest } from "../proto/messages/api/GetDriftPerpPositionsRequest"
+import { Type as PostDriftCancelPerpOrderRequest } from "../proto/messages/api/PostDriftCancelPerpOrderRequest"
 
 export class WsProvider extends BaseProvider {
     private wsConnection: RpcWsConnection
@@ -156,6 +162,21 @@ export class WsProvider extends BaseProvider {
     }
 
     // Drift V2
+    async getDriftPerpOpenOrders(
+        request: GetDriftPerpOpenOrdersRequest
+    ): RpcReturnType<Promise<GetDriftPerpOpenOrdersResponse>, []> {
+        return await this.wsConnection.call("GetDriftPerpOpenOrders", request)
+    }
+    async getDriftPerpPositions(
+        request: GetDriftPerpPositionsRequest
+    ): RpcReturnType<Promise<GetDriftPerpPositionsResponse>, []> {
+        return await this.wsConnection.call("GetDriftPerpPositions", request)
+    }
+    async postDriftCancelPerpOrder(
+        request: PostDriftCancelPerpOrderRequest
+    ): RpcReturnType<Promise<PostDriftCancelPerpOrderResponse>, []> {
+        return await this.wsConnection.call("PostDriftCancelPerpOrder", request)
+    }
     async getDriftOpenMarginOrders(
         request: GetDriftOpenMarginOrdersRequest
     ): RpcReturnType<Promise<GetDriftOpenMarginOrdersResponse>, []> {

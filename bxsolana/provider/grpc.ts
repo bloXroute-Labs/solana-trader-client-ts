@@ -128,12 +128,18 @@ import {
     PostModifyDriftOrderResponse,
     PostCancelDriftMarginOrderRequest,
     PostCancelDriftMarginOrderResponse,
+    GetDriftPerpOpenOrdersResponse,
+    GetDriftPerpPositionsResponse,
+    PostDriftCancelPerpOrderResponse
 } from "../proto/messages/api"
 import { createServiceClient, Service } from "../proto/services/api/Api"
 import { BaseProvider } from "./base"
 import { CallMetadataOptions } from "@grpc/grpc-js/build/src/call-credentials"
 import { ConnectionOptions } from "tls"
 import { RpcReturnType } from "../proto/runtime/rpc"
+import { Type as GetDriftPerpOpenOrdersRequest } from "../proto/messages/api/GetDriftPerpOpenOrdersRequest"
+import { Type as GetDriftPerpPositionsRequest } from "../proto/messages/api/GetDriftPerpPositionsRequest"
+import { Type as PostDriftCancelPerpOrderRequest } from "../proto/messages/api/PostDriftCancelPerpOrderRequest"
 
 // built-in grpc.credentials.createInsecure() doesn't allow composition
 class insecureChannel extends grpc.ChannelCredentials {
@@ -212,6 +218,21 @@ export class GrpcProvider extends BaseProvider {
     }
 
     // Drift V2
+    getDriftPerpOpenOrders(
+        request: GetDriftPerpOpenOrdersRequest
+    ): RpcReturnType<Promise<GetDriftPerpOpenOrdersResponse>, []> {
+        return this.client.getDriftPerpOpenOrders(request)
+    }
+    getDriftPerpPositions(
+        request: GetDriftPerpPositionsRequest
+    ): RpcReturnType<Promise<GetDriftPerpPositionsResponse>, []> {
+        return this.client.getDriftPerpPositions(request)
+    }
+    postDriftCancelPerpOrder(
+        request: PostDriftCancelPerpOrderRequest
+    ): RpcReturnType<Promise<PostDriftCancelPerpOrderResponse>, []> {
+        return this.client.postDriftCancelPerpOrder(request)
+    }
     getDriftOpenMarginOrders(
         request: GetDriftOpenMarginOrdersRequest
     ): RpcReturnType<Promise<GetDriftOpenMarginOrdersResponse>, []> {
