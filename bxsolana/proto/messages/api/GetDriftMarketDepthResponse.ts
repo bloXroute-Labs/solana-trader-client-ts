@@ -1,12 +1,18 @@
 import {
-  Type as DriftMarketDepthItem,
+  Type as Context,
   encodeJson as encodeJson_1,
   decodeJson as decodeJson_1,
   encodeBinary as encodeBinary_1,
   decodeBinary as decodeBinary_1,
-} from "./DriftMarketDepthItem";
+} from "./Context";
 import {
-  tsValueToJsonValueFns,
+  Type as GetDriftMarketDepthValue,
+  encodeJson as encodeJson_2,
+  decodeJson as decodeJson_2,
+  encodeBinary as encodeBinary_2,
+  decodeBinary as decodeBinary_2,
+} from "./GetDriftMarketDepthValue";
+import {
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar";
 import {
@@ -17,27 +23,21 @@ import {
   default as serialize,
 } from "../../runtime/wire/serialize";
 import {
-  tsValueToWireValueFns,
-  wireValueToTsValueFns,
-} from "../../runtime/wire/scalar";
-import {
   default as deserialize,
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
   export interface GetDriftMarketDepthResponse {
-    contract: string;
-    bids: DriftMarketDepthItem[];
-    asks: DriftMarketDepthItem[];
+    context?: Context;
+    data?: GetDriftMarketDepthValue;
   }
 }
 export type Type = $.api.GetDriftMarketDepthResponse;
 
 export function getDefaultValue(): $.api.GetDriftMarketDepthResponse {
   return {
-    contract: "",
-    bids: [],
-    asks: [],
+    context: undefined,
+    data: undefined,
   };
 }
 
@@ -50,36 +50,30 @@ export function createValue(partialValue: Partial<$.api.GetDriftMarketDepthRespo
 
 export function encodeJson(value: $.api.GetDriftMarketDepthResponse): unknown {
   const result: any = {};
-  if (value.contract !== undefined) result.contract = tsValueToJsonValueFns.string(value.contract);
-  result.bids = value.bids.map(value => encodeJson_1(value));
-  result.asks = value.asks.map(value => encodeJson_1(value));
+  if (value.context !== undefined) result.context = encodeJson_1(value.context);
+  if (value.data !== undefined) result.data = encodeJson_2(value.data);
   return result;
 }
 
 export function decodeJson(value: any): $.api.GetDriftMarketDepthResponse {
   const result = getDefaultValue();
-  if (value.contract !== undefined) result.contract = jsonValueToTsValueFns.string(value.contract);
-  result.bids = value.bids?.map((value: any) => decodeJson_1(value)) ?? [];
-  result.asks = value.asks?.map((value: any) => decodeJson_1(value)) ?? [];
+  if (value.context !== undefined) result.context = decodeJson_1(value.context);
+  if (value.data !== undefined) result.data = decodeJson_2(value.data);
   return result;
 }
 
 export function encodeBinary(value: $.api.GetDriftMarketDepthResponse): Uint8Array {
   const result: WireMessage = [];
-  if (value.contract !== undefined) {
-    const tsValue = value.contract;
+  if (value.context !== undefined) {
+    const tsValue = value.context;
     result.push(
-      [1, tsValueToWireValueFns.string(tsValue)],
+      [1, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
     );
   }
-  for (const tsValue of value.bids) {
+  if (value.data !== undefined) {
+    const tsValue = value.data;
     result.push(
-      [2, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
-    );
-  }
-  for (const tsValue of value.asks) {
-    result.push(
-      [3, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
+      [2, { type: WireType.LengthDelimited as const, value: encodeBinary_2(tsValue) }],
     );
   }
   return serialize(result);
@@ -92,21 +86,16 @@ export function decodeBinary(binary: Uint8Array): $.api.GetDriftMarketDepthRespo
   field: {
     const wireValue = wireFields.get(1);
     if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.string(wireValue);
+    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined;
     if (value === undefined) break field;
-    result.contract = value;
+    result.context = value;
   }
-  collection: {
-    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 2).map(([, wireValue]) => wireValue);
-    const value = wireValues.map((wireValue) => wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined).filter(x => x !== undefined);
-    if (!value.length) break collection;
-    result.bids = value as any;
-  }
-  collection: {
-    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 3).map(([, wireValue]) => wireValue);
-    const value = wireValues.map((wireValue) => wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined).filter(x => x !== undefined);
-    if (!value.length) break collection;
-    result.asks = value as any;
+  field: {
+    const wireValue = wireFields.get(2);
+    if (wireValue === undefined) break field;
+    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_2(wireValue.value) : undefined;
+    if (value === undefined) break field;
+    result.data = value;
   }
   return result;
 }
