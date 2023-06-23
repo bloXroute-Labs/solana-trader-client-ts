@@ -133,7 +133,7 @@ import {
     GetDriftPerpOpenOrdersResponse,
     PostDriftCancelPerpOrderRequest,
     GetDriftPerpPositionsRequest,
-    GetDriftPerpOpenOrdersRequest
+    GetDriftPerpOpenOrdersRequest,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {

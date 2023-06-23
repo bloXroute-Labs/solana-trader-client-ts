@@ -133,7 +133,7 @@ import {
     PostDriftCancelPerpOrderResponse,
     GetDriftPerpOpenOrdersRequest,
     GetDriftPerpPositionsRequest,
-    PostDriftCancelPerpOrderRequest
+    PostDriftCancelPerpOrderRequest,
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
