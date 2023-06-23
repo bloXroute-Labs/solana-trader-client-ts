@@ -94,6 +94,9 @@ import {
     GetDriftPerpOpenOrdersResponse,
     GetDriftPerpPositionsResponse,
     PostDriftCancelPerpOrderResponse,
+    GetDriftPerpOpenOrdersRequest,
+    GetDriftPerpPositionsRequest,
+    PostDriftCancelPerpOrderRequest
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -103,9 +106,6 @@ import axios, {
     RawAxiosRequestHeaders,
 } from "axios"
 import { RpcReturnType } from "../proto/runtime/rpc"
-import { Type as GetDriftPerpOpenOrdersRequest } from "../proto/messages/api/GetDriftPerpOpenOrdersRequest"
-import { Type as GetDriftPerpPositionsRequest } from "../proto/messages/api/GetDriftPerpPositionsRequest"
-import { Type as PostDriftCancelPerpOrderRequest } from "../proto/messages/api/PostDriftCancelPerpOrderRequest"
 
 export class HttpProvider extends BaseProvider {
     private readonly baseUrl: string

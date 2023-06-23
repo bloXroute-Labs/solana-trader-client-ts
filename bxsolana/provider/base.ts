@@ -131,6 +131,9 @@ import {
     PostDriftCancelPerpOrderResponse,
     GetDriftPerpPositionsResponse,
     GetDriftPerpOpenOrdersResponse,
+    PostDriftCancelPerpOrderRequest,
+    GetDriftPerpPositionsRequest,
+    GetDriftPerpOpenOrdersRequest
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -142,9 +145,7 @@ import {
 import { Keypair } from "@solana/web3.js"
 import base58 from "bs58"
 import { RpcReturnType } from "../proto/runtime/rpc"
-import { Type as PostDriftCancelPerpOrderRequest } from "../proto/messages/api/PostDriftCancelPerpOrderRequest"
-import { Type as GetDriftPerpPositionsRequest } from "../proto/messages/api/GetDriftPerpPositionsRequest"
-import { Type as GetDriftPerpOpenOrdersRequest } from "../proto/messages/api/GetDriftPerpOpenOrdersRequest"
+
 /* eslint-disable */
 
 export abstract class BaseProvider implements Api {

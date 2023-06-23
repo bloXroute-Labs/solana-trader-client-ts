@@ -131,15 +131,16 @@ import {
     GetDriftPerpOpenOrdersResponse,
     GetDriftPerpPositionsResponse,
     PostDriftCancelPerpOrderResponse,
+    GetDriftPerpOpenOrdersRequest,
+    GetDriftPerpPositionsRequest,
+    PostDriftCancelPerpOrderRequest
 } from "../proto/messages/api"
+
 import { createServiceClient, Service } from "../proto/services/api/Api"
 import { BaseProvider } from "./base"
 import { CallMetadataOptions } from "@grpc/grpc-js/build/src/call-credentials"
 import { ConnectionOptions } from "tls"
 import { RpcReturnType } from "../proto/runtime/rpc"
-import { Type as GetDriftPerpOpenOrdersRequest } from "../proto/messages/api/GetDriftPerpOpenOrdersRequest"
-import { Type as GetDriftPerpPositionsRequest } from "../proto/messages/api/GetDriftPerpPositionsRequest"
-import { Type as PostDriftCancelPerpOrderRequest } from "../proto/messages/api/PostDriftCancelPerpOrderRequest"
 
 // built-in grpc.credentials.createInsecure() doesn't allow composition
 class insecureChannel extends grpc.ChannelCredentials {
