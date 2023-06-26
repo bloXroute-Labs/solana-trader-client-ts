@@ -138,7 +138,7 @@ export class HttpProvider extends BaseProvider {
         let path = `${this.baseUrlV2}/drift/perp-open-orders?ownerAddress=${request.ownerAddress}&accountAddress=${request.accountAddress}`
         const args = request.contracts.map((v) => `contracts=${v}`).join("&")
         if (args != "") {
-            path += `${args}`
+            path += `&${args}`
         }
         return this.get<GetDriftPerpOpenOrdersResponse>(path)
     }
@@ -148,7 +148,7 @@ export class HttpProvider extends BaseProvider {
         let path = `${this.baseUrlV2}/drift/perp-positions?ownerAddress=${request.ownerAddress}&accountAddress=${request.accountAddress}`
         const args = request.contracts.map((v) => `contracts=${v}`).join("&")
         if (args != "") {
-            path += `${args}`
+            path += `&${args}`
         }
         return this.get<GetDriftPerpPositionsResponse>(path)
     }
