@@ -6,12 +6,12 @@ import {
   decodeBinary as decodeBinary_1,
 } from "./Context";
 import {
-  Type as GetDriftMarketsValue,
+  Type as PostDriftCancelPerpOrderValue,
   encodeJson as encodeJson_2,
   decodeJson as decodeJson_2,
   encodeBinary as encodeBinary_2,
   decodeBinary as decodeBinary_2,
-} from "./GetDriftMarketsValue";
+} from "./PostDriftCancelPerpOrderValue";
 import {
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar";
@@ -27,42 +27,42 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface GetDriftMarketsResponse {
+  export interface PostDriftCancelPerpOrderResponse {
     context?: Context;
-    data?: GetDriftMarketsValue;
+    data?: PostDriftCancelPerpOrderValue;
   }
 }
-export type Type = $.api.GetDriftMarketsResponse;
+export type Type = $.api.PostDriftCancelPerpOrderResponse;
 
-export function getDefaultValue(): $.api.GetDriftMarketsResponse {
+export function getDefaultValue(): $.api.PostDriftCancelPerpOrderResponse {
   return {
     context: undefined,
     data: undefined,
   };
 }
 
-export function createValue(partialValue: Partial<$.api.GetDriftMarketsResponse>): $.api.GetDriftMarketsResponse {
+export function createValue(partialValue: Partial<$.api.PostDriftCancelPerpOrderResponse>): $.api.PostDriftCancelPerpOrderResponse {
   return {
     ...getDefaultValue(),
     ...partialValue,
   };
 }
 
-export function encodeJson(value: $.api.GetDriftMarketsResponse): unknown {
+export function encodeJson(value: $.api.PostDriftCancelPerpOrderResponse): unknown {
   const result: any = {};
   if (value.context !== undefined) result.context = encodeJson_1(value.context);
   if (value.data !== undefined) result.data = encodeJson_2(value.data);
   return result;
 }
 
-export function decodeJson(value: any): $.api.GetDriftMarketsResponse {
+export function decodeJson(value: any): $.api.PostDriftCancelPerpOrderResponse {
   const result = getDefaultValue();
   if (value.context !== undefined) result.context = decodeJson_1(value.context);
   if (value.data !== undefined) result.data = decodeJson_2(value.data);
   return result;
 }
 
-export function encodeBinary(value: $.api.GetDriftMarketsResponse): Uint8Array {
+export function encodeBinary(value: $.api.PostDriftCancelPerpOrderResponse): Uint8Array {
   const result: WireMessage = [];
   if (value.context !== undefined) {
     const tsValue = value.context;
@@ -79,7 +79,7 @@ export function encodeBinary(value: $.api.GetDriftMarketsResponse): Uint8Array {
   return serialize(result);
 }
 
-export function decodeBinary(binary: Uint8Array): $.api.GetDriftMarketsResponse {
+export function decodeBinary(binary: Uint8Array): $.api.PostDriftCancelPerpOrderResponse {
   const result = getDefaultValue();
   const wireMessage = deserialize(binary);
   const wireFields = new Map(wireMessage);

@@ -1,12 +1,18 @@
 import {
-  Type as GetDriftMarketDepthResponse,
+  Type as Context,
   encodeJson as encodeJson_1,
   decodeJson as decodeJson_1,
   encodeBinary as encodeBinary_1,
   decodeBinary as decodeBinary_1,
+} from "./Context";
+import {
+  Type as GetDriftMarketDepthResponse,
+  encodeJson as encodeJson_2,
+  decodeJson as decodeJson_2,
+  encodeBinary as encodeBinary_2,
+  decodeBinary as decodeBinary_2,
 } from "./GetDriftMarketDepthResponse";
 import {
-  tsValueToJsonValueFns,
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar";
 import {
@@ -17,25 +23,21 @@ import {
   default as serialize,
 } from "../../runtime/wire/serialize";
 import {
-  tsValueToWireValueFns,
-  wireValueToTsValueFns,
-} from "../../runtime/wire/scalar";
-import {
   default as deserialize,
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
   export interface GetDriftMarketDepthStreamResponse {
-    slot: string;
-    Data?: GetDriftMarketDepthResponse;
+    context?: Context;
+    data?: GetDriftMarketDepthResponse;
   }
 }
 export type Type = $.api.GetDriftMarketDepthStreamResponse;
 
 export function getDefaultValue(): $.api.GetDriftMarketDepthStreamResponse {
   return {
-    slot: "0",
-    Data: undefined,
+    context: undefined,
+    data: undefined,
   };
 }
 
@@ -48,30 +50,30 @@ export function createValue(partialValue: Partial<$.api.GetDriftMarketDepthStrea
 
 export function encodeJson(value: $.api.GetDriftMarketDepthStreamResponse): unknown {
   const result: any = {};
-  if (value.slot !== undefined) result.slot = tsValueToJsonValueFns.int64(value.slot);
-  if (value.Data !== undefined) result.Data = encodeJson_1(value.Data);
+  if (value.context !== undefined) result.context = encodeJson_1(value.context);
+  if (value.data !== undefined) result.data = encodeJson_2(value.data);
   return result;
 }
 
 export function decodeJson(value: any): $.api.GetDriftMarketDepthStreamResponse {
   const result = getDefaultValue();
-  if (value.slot !== undefined) result.slot = jsonValueToTsValueFns.int64(value.slot);
-  if (value.Data !== undefined) result.Data = decodeJson_1(value.Data);
+  if (value.context !== undefined) result.context = decodeJson_1(value.context);
+  if (value.data !== undefined) result.data = decodeJson_2(value.data);
   return result;
 }
 
 export function encodeBinary(value: $.api.GetDriftMarketDepthStreamResponse): Uint8Array {
   const result: WireMessage = [];
-  if (value.slot !== undefined) {
-    const tsValue = value.slot;
+  if (value.context !== undefined) {
+    const tsValue = value.context;
     result.push(
-      [1, tsValueToWireValueFns.int64(tsValue)],
+      [1, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
     );
   }
-  if (value.Data !== undefined) {
-    const tsValue = value.Data;
+  if (value.data !== undefined) {
+    const tsValue = value.data;
     result.push(
-      [2, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
+      [2, { type: WireType.LengthDelimited as const, value: encodeBinary_2(tsValue) }],
     );
   }
   return serialize(result);
@@ -84,16 +86,16 @@ export function decodeBinary(binary: Uint8Array): $.api.GetDriftMarketDepthStrea
   field: {
     const wireValue = wireFields.get(1);
     if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.int64(wireValue);
+    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined;
     if (value === undefined) break field;
-    result.slot = value;
+    result.context = value;
   }
   field: {
     const wireValue = wireFields.get(2);
     if (wireValue === undefined) break field;
-    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined;
+    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_2(wireValue.value) : undefined;
     if (value === undefined) break field;
-    result.Data = value;
+    result.data = value;
   }
   return result;
 }

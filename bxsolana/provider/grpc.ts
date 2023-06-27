@@ -128,7 +128,14 @@ import {
     PostModifyDriftOrderResponse,
     PostCancelDriftMarginOrderRequest,
     PostCancelDriftMarginOrderResponse,
+    GetDriftPerpOpenOrdersResponse,
+    GetDriftPerpPositionsResponse,
+    PostDriftCancelPerpOrderResponse,
+    GetDriftPerpOpenOrdersRequest,
+    GetDriftPerpPositionsRequest,
+    PostDriftCancelPerpOrderRequest,
 } from "../proto/messages/api"
+
 import { createServiceClient, Service } from "../proto/services/api/Api"
 import { BaseProvider } from "./base"
 import { CallMetadataOptions } from "@grpc/grpc-js/build/src/call-credentials"
@@ -212,6 +219,21 @@ export class GrpcProvider extends BaseProvider {
     }
 
     // Drift V2
+    getDriftPerpOpenOrders(
+        request: GetDriftPerpOpenOrdersRequest
+    ): RpcReturnType<Promise<GetDriftPerpOpenOrdersResponse>, []> {
+        return this.client.getDriftPerpOpenOrders(request)
+    }
+    getDriftPerpPositions(
+        request: GetDriftPerpPositionsRequest
+    ): RpcReturnType<Promise<GetDriftPerpPositionsResponse>, []> {
+        return this.client.getDriftPerpPositions(request)
+    }
+    postDriftCancelPerpOrder(
+        request: PostDriftCancelPerpOrderRequest
+    ): RpcReturnType<Promise<PostDriftCancelPerpOrderResponse>, []> {
+        return this.client.postDriftCancelPerpOrder(request)
+    }
     getDriftOpenMarginOrders(
         request: GetDriftOpenMarginOrdersRequest
     ): RpcReturnType<Promise<GetDriftOpenMarginOrdersResponse>, []> {

@@ -128,6 +128,12 @@ import {
     GetDriftOpenMarginOrdersResponse,
     PostCancelDriftMarginOrderRequest,
     PostCancelDriftMarginOrderResponse,
+    PostDriftCancelPerpOrderResponse,
+    GetDriftPerpPositionsResponse,
+    GetDriftPerpOpenOrdersResponse,
+    PostDriftCancelPerpOrderRequest,
+    GetDriftPerpPositionsRequest,
+    GetDriftPerpOpenOrdersRequest,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -139,6 +145,7 @@ import {
 import { Keypair } from "@solana/web3.js"
 import base58 from "bs58"
 import { RpcReturnType } from "../proto/runtime/rpc"
+
 /* eslint-disable */
 
 export abstract class BaseProvider implements Api {
@@ -152,6 +159,21 @@ export abstract class BaseProvider implements Api {
         }
     }
     // Drift V2
+    getDriftPerpOpenOrders(
+        request: GetDriftPerpOpenOrdersRequest
+    ): RpcReturnType<Promise<GetDriftPerpOpenOrdersResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    getDriftPerpPositions(
+        request: GetDriftPerpPositionsRequest
+    ): RpcReturnType<Promise<GetDriftPerpPositionsResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    postDriftCancelPerpOrder(
+        request: PostDriftCancelPerpOrderRequest
+    ): RpcReturnType<Promise<PostDriftCancelPerpOrderResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
     getDriftOpenMarginOrders(
         request: GetDriftOpenMarginOrdersRequest
     ): RpcReturnType<Promise<GetDriftOpenMarginOrdersResponse>, []> {

@@ -91,6 +91,12 @@ import {
     PostModifyDriftOrderResponse,
     PostCancelDriftMarginOrderRequest,
     PostCancelDriftMarginOrderResponse,
+    GetDriftPerpOpenOrdersResponse,
+    GetDriftPerpPositionsResponse,
+    PostDriftCancelPerpOrderResponse,
+    GetDriftPerpOpenOrdersRequest,
+    GetDriftPerpPositionsRequest,
+    PostDriftCancelPerpOrderRequest,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -126,6 +132,35 @@ export class HttpProvider extends BaseProvider {
     }
 
     // Drift V2
+    async getDriftPerpOpenOrders(
+        request: GetDriftPerpOpenOrdersRequest
+    ): RpcReturnType<Promise<GetDriftPerpOpenOrdersResponse>, []> {
+        let path = `${this.baseUrlV2}/drift/perp-open-orders?ownerAddress=${request.ownerAddress}&accountAddress=${request.accountAddress}`
+        const args = request.contracts.map((v) => `contracts=${v}`).join("&")
+        if (args != "") {
+            path += `&${args}`
+        }
+        return this.get<GetDriftPerpOpenOrdersResponse>(path)
+    }
+    async getDriftPerpPositions(
+        request: GetDriftPerpPositionsRequest
+    ): RpcReturnType<Promise<GetDriftPerpPositionsResponse>, []> {
+        let path = `${this.baseUrlV2}/drift/perp-positions?ownerAddress=${request.ownerAddress}&accountAddress=${request.accountAddress}`
+        const args = request.contracts.map((v) => `contracts=${v}`).join("&")
+        if (args != "") {
+            path += `&${args}`
+        }
+        return this.get<GetDriftPerpPositionsResponse>(path)
+    }
+    async postDriftCancelPerpOrder(
+        request: PostDriftCancelPerpOrderRequest
+    ): RpcReturnType<Promise<PostDriftCancelPerpOrderResponse>, []> {
+        const path = `${this.baseUrlV2}/drift/perp-cancel`
+        return this.post<
+            PostDriftCancelPerpOrderRequest,
+            PostDriftCancelPerpOrderResponse
+        >(path, request)
+    }
     async getDriftOpenMarginOrders(
         request: GetDriftOpenMarginOrdersRequest
     ): RpcReturnType<Promise<GetDriftOpenMarginOrdersResponse>, []> {

@@ -134,12 +134,12 @@ async function http() {
     if (runLongExamples) {
         console.info(" ----  HTTP Lifecycle  ----")
         await doHttpLifecycle(provider)
-        
+
         console.info(" ----  HTTP Cancel All  ----")
         await callCancelAll(provider)
         console.info(" ")
     }
-   
+
     return
 }
 
@@ -255,6 +255,18 @@ async function ws() {
 }
 
 async function runPerpRequests(provider: BaseProvider) {
+    await callPostDriftCancelPerpOrder(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetDriftPerpOpenOrders(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetDriftPerpPositions(provider)
+    console.info(" ")
+    console.info(" ")
+
     await callGetDriftOpenMarginOrders(provider)
     console.info(" ")
     console.info(" ")
@@ -884,6 +896,26 @@ async function callGetDriftOpenMarginOrders(provider: BaseProvider) {
     console.info(req)
 }
 
+async function callGetDriftPerpOpenOrders(provider: BaseProvider) {
+    console.info("get drift perp open orders")
+    const req = await provider.getDriftPerpOpenOrders({
+        ownerAddress: ownerAddress,
+        accountAddress: "",
+        contracts: ["SOL_PERP"],
+    })
+    console.info(req)
+}
+
+async function callGetDriftPerpPositions(provider: BaseProvider) {
+    console.info("get drift perp positions")
+    const req = await provider.getDriftPerpPositions({
+        ownerAddress: ownerAddress,
+        accountAddress: "",
+        contracts: ["SOL_PERP"],
+    })
+    console.info(req)
+}
+
 async function callPostModifyDriftOrder(provider: BaseProvider) {
     console.info("post modify drift order")
     const req = await provider.postModifyDriftOrder({
@@ -894,6 +926,18 @@ async function callPostModifyDriftOrder(provider: BaseProvider) {
         postOnly: "",
         newBaseAmount: 10,
         newLimitPrice: 0,
+    })
+    console.info(req)
+}
+
+async function callPostDriftCancelPerpOrder(provider: BaseProvider) {
+    console.info("post drift cancel perp order")
+    const req = await provider.postDriftCancelPerpOrder({
+        ownerAddress: ownerAddress,
+        accountAddress: "",
+        orderID: "1",
+        contract: "SOL_PERP",
+        clientOrderID: "0",
     })
     console.info(req)
 }
