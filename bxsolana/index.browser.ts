@@ -26,9 +26,7 @@ export {
 } from "./utils/constants"
 
 export {
-    addMemo,
     addMemoToSerializedTxn,
-    buildFullySignedTxn,
     createTraderAPIMemoInstruction,
 } from "./utils/memo"
 
