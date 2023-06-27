@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 import {
-    addMemo,
     addMemoToSerializedTxn,
     BaseProvider,
     loadFromEnv,
@@ -25,8 +24,14 @@ import {
     TESTNET_API_HTTP,
     TESTNET_API_WS,
     WsProvider,
+    signTx,
 } from "../bxsolana"
-import { Keypair } from "@solana/web3.js"
+import {
+    Keypair,
+    PublicKey,
+    Transaction,
+    VersionedTransaction,
+} from "@solana/web3.js"
 import base58 from "bs58"
 import {
     DEVNET_API_GRPC_HOST,
@@ -34,6 +39,7 @@ import {
 } from "../bxsolana/utils/constants"
 import { AxiosRequestConfig } from "axios"
 import { RpcReturnType } from "../bxsolana/proto/runtime/rpc"
+import { txToBase64 } from "../bxsolana/utils/transaction"
 
 const config = loadFromEnv()
 
@@ -128,11 +134,12 @@ async function http() {
     if (runLongExamples) {
         console.info(" ----  HTTP Lifecycle  ----")
         await doHttpLifecycle(provider)
+        
         console.info(" ----  HTTP Cancel All  ----")
         await callCancelAll(provider)
         console.info(" ")
     }
-
+   
     return
 }
 
@@ -1703,28 +1710,17 @@ async function submitTxWithMemo(provider: BaseProvider) {
     const recentBlockhash = await provider.getRecentBlockHash({})
     console.info(recentBlockhash.blockHash)
     const keypair = Keypair.fromSecretKey(base58.decode(config.privateKey))
-    const encodedTxn = addMemo(
-        [],
-        "new memo by dev",
+    const encodedTxn = buildUnsignedTxn(
         recentBlockhash.blockHash,
-        keypair.publicKey,
-        keypair
+        keypair.publicKey
     )
-    console.info("Submitting tx with one memo")
-    let response = await provider.postSubmit({
-        transaction: { content: encodedTxn, isCleanup: false },
-        skipPreFlight: true,
-    })
-    console.info(response.signature)
 
-    const encodedTxn2 = addMemoToSerializedTxn(
-        encodedTxn,
-        "new memo by dev2",
-        keypair.publicKey,
-        keypair
-    )
-    console.info("Submitting tx with two memos")
-    response = await provider.postSubmit({
+    let encodedTxn2 = addMemoToSerializedTxn(encodedTxn)
+    console.info("Submitting tx with memo")
+
+    const tx = signTx(encodedTxn2, keypair)
+    encodedTxn2 = txToBase64(tx)
+    const response = await provider.postSubmit({
         transaction: { content: encodedTxn2, isCleanup: false },
         skipPreFlight: true,
     })
@@ -1735,3 +1731,17 @@ run().then(() => {
     console.log("done!")
     process.exit(0)
 })
+
+function buildUnsignedTxn(
+    recentBlockHash: string | undefined,
+    owner: PublicKey
+): string {
+    const tx = new Transaction({
+        recentBlockhash: recentBlockHash,
+        feePayer: owner,
+    })
+
+    return Buffer.from(tx.serialize({ verifySignatures: false })).toString(
+        "base64"
+    )
+}
