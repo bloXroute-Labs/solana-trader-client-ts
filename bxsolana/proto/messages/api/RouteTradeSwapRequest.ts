@@ -37,6 +37,7 @@ export declare namespace $.api {
     project: Project;
     ownerAddress: string;
     steps: RouteStep[];
+    slippage: number;
   }
 }
 export type Type = $.api.RouteTradeSwapRequest;
@@ -46,6 +47,7 @@ export function getDefaultValue(): $.api.RouteTradeSwapRequest {
     project: "P_UNKNOWN",
     ownerAddress: "",
     steps: [],
+    slippage: 0,
   };
 }
 
@@ -61,6 +63,7 @@ export function encodeJson(value: $.api.RouteTradeSwapRequest): unknown {
   if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
   if (value.ownerAddress !== undefined) result.ownerAddress = tsValueToJsonValueFns.string(value.ownerAddress);
   result.steps = value.steps.map(value => encodeJson_1(value));
+  if (value.slippage !== undefined) result.slippage = tsValueToJsonValueFns.double(value.slippage);
   return result;
 }
 
@@ -69,6 +72,7 @@ export function decodeJson(value: any): $.api.RouteTradeSwapRequest {
   if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
   if (value.ownerAddress !== undefined) result.ownerAddress = jsonValueToTsValueFns.string(value.ownerAddress);
   result.steps = value.steps?.map((value: any) => decodeJson_1(value)) ?? [];
+  if (value.slippage !== undefined) result.slippage = jsonValueToTsValueFns.double(value.slippage);
   return result;
 }
 
@@ -89,6 +93,12 @@ export function encodeBinary(value: $.api.RouteTradeSwapRequest): Uint8Array {
   for (const tsValue of value.steps) {
     result.push(
       [3, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
+    );
+  }
+  if (value.slippage !== undefined) {
+    const tsValue = value.slippage;
+    result.push(
+      [4, tsValueToWireValueFns.double(tsValue)],
     );
   }
   return serialize(result);
@@ -117,6 +127,13 @@ export function decodeBinary(binary: Uint8Array): $.api.RouteTradeSwapRequest {
     const value = wireValues.map((wireValue) => wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined).filter(x => x !== undefined);
     if (!value.length) break collection;
     result.steps = value as any;
+  }
+  field: {
+    const wireValue = wireFields.get(4);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.double(wireValue);
+    if (value === undefined) break field;
+    result.slippage = value;
   }
   return result;
 }
