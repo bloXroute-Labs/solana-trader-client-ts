@@ -1604,6 +1604,7 @@ async function callPostRouteTradeSwap(provider: BaseProvider) {
             },
         ],
         project: "P_RAYDIUM",
+        slippage: 0.1,
     })
     console.info(response)
 }
@@ -1630,6 +1631,7 @@ async function callSubmitRouteTradeSwap(provider: BaseProvider) {
                 },
             ],
             project: "P_RAYDIUM",
+            slippage: 0.1,
         },
         "P_SUBMIT_ALL",
         true
