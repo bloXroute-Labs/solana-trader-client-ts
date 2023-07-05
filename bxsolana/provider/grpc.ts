@@ -128,12 +128,36 @@ import {
     PostModifyDriftOrderResponse,
     PostCancelDriftMarginOrderRequest,
     PostCancelDriftMarginOrderResponse,
-    GetDriftPerpOpenOrdersResponse,
+    GetDriftOpenPerpOrdersResponse,
     GetDriftPerpPositionsResponse,
     PostDriftCancelPerpOrderResponse,
-    GetDriftPerpOpenOrdersRequest,
+    GetDriftOpenPerpOrdersRequest,
     GetDriftPerpPositionsRequest,
     PostDriftCancelPerpOrderRequest,
+    PostCloseDriftPerpPositionsRequest,
+    PostCloseDriftPerpPositionsResponse,
+    PostCreateDriftUserRequest,
+    PostCreateDriftUserResponse,
+    PostDriftManageCollateralRequest,
+    PostDriftManageCollateralResponse,
+    PostDriftSettlePNLRequest,
+    PostDriftSettlePNLResponse,
+    PostDriftSettlePNLsRequest,
+    PostDriftSettlePNLsResponse,
+    PostLiquidateDriftPerpRequest,
+    PostLiquidateDriftPerpResponse,
+    GetDriftPerpOrderbookRequest,
+    GetDriftPerpOrderbookResponse,
+    GetDriftUserRequest,
+    GetDriftUserResponse,
+    GetDriftAssetsRequest,
+    GetDriftAssetsResponse,
+    GetDriftPerpContractsResponse,
+    GetDriftPerpContractsRequest,
+    GetDriftOpenPerpOrderRequest,
+    GetDriftOpenPerpOrderResponse,
+    GetDriftOpenMarginOrderRequest,
+    GetDriftOpenMarginOrderResponse
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
@@ -219,10 +243,70 @@ export class GrpcProvider extends BaseProvider {
     }
 
     // Drift V2
-    getDriftPerpOpenOrders(
-        request: GetDriftPerpOpenOrdersRequest
-    ): RpcReturnType<Promise<GetDriftPerpOpenOrdersResponse>, []> {
-        return this.client.getDriftPerpOpenOrders(request)
+    PostCloseDriftPerpPositions(
+        request: PostCloseDriftPerpPositionsRequest
+    ): RpcReturnType<Promise<PostCloseDriftPerpPositionsResponse>, []> {
+        return this.client.postCloseDriftPerpPositions(request)
+    }
+    PostCreateDriftUser(
+        request: PostCreateDriftUserRequest
+    ): RpcReturnType<Promise<PostCreateDriftUserResponse>, []> {
+        return this.client.postCreateDriftUser(request)
+    }
+    PostDriftManageCollateral(
+        request: PostDriftManageCollateralRequest
+    ): RpcReturnType<Promise<PostDriftManageCollateralResponse>, []> {
+        return this.client.postDriftManageCollateral(request)
+    }
+    PostDriftSettlePNL(
+        request: PostDriftSettlePNLRequest
+    ): RpcReturnType<Promise<PostDriftSettlePNLResponse>, []> {
+        return this.client.postDriftSettlePNL(request)
+    }
+    PostDriftSettlePNLs(
+        request: PostDriftSettlePNLsRequest
+    ): RpcReturnType<Promise<PostDriftSettlePNLsResponse>, []> {
+        return this.client.postDriftSettlePNLs(request)
+    }
+    PostLiquidateDriftPerp(
+        request: PostLiquidateDriftPerpRequest
+    ): RpcReturnType<Promise<PostLiquidateDriftPerpResponse>, []> {
+        return this.client.postLiquidateDriftPerp(request)
+    }
+    GetDriftPerpOrderbook(
+        request: GetDriftPerpOrderbookRequest
+    ): RpcReturnType<Promise<GetDriftPerpOrderbookResponse>, []> {
+        return this.client.getDriftPerpOrderbook(request)
+    }
+    GetDriftUser(
+        request: GetDriftUserRequest
+    ): RpcReturnType<Promise<GetDriftUserResponse>, []> {
+        return this.client.getDriftUser(request)
+    }
+    GetDriftAssets(
+        request: GetDriftAssetsRequest
+    ): RpcReturnType<Promise<GetDriftAssetsResponse>, []> {
+        return this.client.getDriftAssets(request)
+    }
+    GetDriftPerpContracts(
+        request: GetDriftPerpContractsRequest
+    ): RpcReturnType<Promise<GetDriftPerpContractsResponse>, []> {
+        return this.client.getDriftPerpContracts(request)
+    }
+    GetDriftOpenPerpOrder(
+        request: GetDriftOpenPerpOrderRequest
+    ): RpcReturnType<Promise<GetDriftOpenPerpOrderResponse>, []> {
+        return this.client.getDriftOpenPerpOrder(request)
+    }
+    GetDriftOpenMarginOrder(
+        request: GetDriftOpenMarginOrderRequest
+    ): RpcReturnType<Promise<GetDriftOpenMarginOrderResponse>, []> {
+        return this.client.getDriftOpenMarginOrder(request)
+    }
+    getDriftOpenPerpOrders(
+        request: GetDriftOpenPerpOrdersRequest
+    ): RpcReturnType<Promise<GetDriftOpenPerpOrdersResponse>, []> {
+        return this.client.getDriftOpenPerpOrders(request)
     }
     getDriftPerpPositions(
         request: GetDriftPerpPositionsRequest

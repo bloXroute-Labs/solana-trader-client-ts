@@ -91,12 +91,34 @@ import {
     PostModifyDriftOrderResponse,
     PostCancelDriftMarginOrderRequest,
     PostCancelDriftMarginOrderResponse,
-    GetDriftPerpOpenOrdersResponse,
+    GetDriftOpenPerpOrdersResponse,
     GetDriftPerpPositionsResponse,
     PostDriftCancelPerpOrderResponse,
-    GetDriftPerpOpenOrdersRequest,
+    GetDriftOpenPerpOrdersRequest,
     GetDriftPerpPositionsRequest,
     PostDriftCancelPerpOrderRequest,
+    GetDriftPerpOrderbookRequest,
+    GetDriftPerpOrderbookResponse,
+    GetDriftUserResponse,
+    GetDriftUserRequest,
+    GetDriftAssetsResponse,
+    GetDriftAssetsRequest,
+    GetDriftOpenMarginOrderRequest,
+    GetDriftOpenMarginOrderResponse,
+    GetDriftPerpContractsRequest,
+    GetDriftPerpContractsResponse,
+    GetDriftOpenPerpOrderRequest,
+    GetDriftOpenPerpOrderResponse,
+    PostCloseDriftPerpPositionsRequest,
+    PostCloseDriftPerpPositionsResponse,
+    PostCreateDriftUserResponse,
+    PostCreateDriftUserRequest,
+    PostDriftManageCollateralResponse,
+    PostDriftManageCollateralRequest,
+    PostDriftSettlePNLResponse,
+    PostDriftSettlePNLRequest,
+    PostDriftSettlePNLsResponse,
+    PostDriftSettlePNLsRequest, PostLiquidateDriftPerpRequest, PostLiquidateDriftPerpResponse
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -132,20 +154,124 @@ export class HttpProvider extends BaseProvider {
     }
 
     // Drift V2
-    async getDriftPerpOpenOrders(
-        request: GetDriftPerpOpenOrdersRequest
-    ): RpcReturnType<Promise<GetDriftPerpOpenOrdersResponse>, []> {
-        let path = `${this.baseUrlV2}/drift/perp-open-orders?ownerAddress=${request.ownerAddress}&accountAddress=${request.accountAddress}`
+    async PostCloseDriftPerpPositions(
+        request: PostCloseDriftPerpPositionsRequest
+    ): RpcReturnType<Promise<PostCloseDriftPerpPositionsResponse>, []> {
+        const path = `${this.baseUrlV2}/drift/perp/close`
+        return this.post<
+            PostCloseDriftPerpPositionsRequest,
+            PostCloseDriftPerpPositionsResponse
+            >(path, request)
+    }
+
+    async PostCreateDriftUser(
+        request: PostCreateDriftUserRequest
+    ): RpcReturnType<Promise<PostCreateDriftUserResponse>, []> {
+        const path = `${this.baseUrlV2}/drift/user`
+        return this.post<
+            PostCreateDriftUserRequest,
+            PostCreateDriftUserResponse
+            >(path, request)
+    }
+
+    async PostDriftManageCollateral(
+        request: PostDriftManageCollateralRequest
+    ): RpcReturnType<Promise<PostDriftManageCollateralResponse>, []> {
+        const path = `${this.baseUrlV2}/drift/manage-collateral`
+        return this.post<
+            PostDriftManageCollateralRequest,
+            PostDriftManageCollateralResponse
+            >(path, request)
+    }
+
+    async PostDriftSettlePNL(
+        request: PostDriftSettlePNLRequest
+    ): RpcReturnType<Promise<PostDriftSettlePNLResponse>, []> {
+        const path = `${this.baseUrlV2}/drift/perp/settle-pnl`
+        return this.post<
+            PostDriftSettlePNLRequest,
+            PostDriftSettlePNLResponse
+            >(path, request)
+    }
+
+    async PostDriftSettlePNLs(
+        request: PostDriftSettlePNLsRequest
+    ): RpcReturnType<Promise<PostDriftSettlePNLsResponse>, []> {
+        const path = `${this.baseUrlV2}/drift/perp/settle-pnls`
+        return this.post<
+            PostDriftSettlePNLsRequest,
+            PostDriftSettlePNLsResponse
+            >(path, request)
+    }
+
+    async PostLiquidateDriftPerp(
+        request: PostLiquidateDriftPerpRequest
+    ): RpcReturnType<Promise<PostLiquidateDriftPerpResponse>, []> {
+        const path = `${this.baseUrlV2}/drift/perp/liquidate`
+        return this.post<
+            PostLiquidateDriftPerpRequest,
+            PostLiquidateDriftPerpResponse
+            >(path, request)
+    }
+
+    async getDriftPerpOrderbook(
+        request: GetDriftPerpOrderbookRequest
+    ): RpcReturnType<Promise<GetDriftPerpOrderbookResponse>, []> {
+        const path = `${this.baseUrlV2}/drift/perp/orderbook/${request.contract}?limit=${request.limit}`
+        return this.get<GetDriftPerpOrderbookResponse>(path)
+    }
+
+    async getDriftUser(
+        request: GetDriftUserRequest
+    ): RpcReturnType<Promise<GetDriftUserResponse>, []> {
+        const path = `${this.baseUrlV2}/drift/user?ownerAddress=${request.ownerAddress}&accountAddress=${request.accountAddress}`
+        return this.get<GetDriftUserResponse>(path)
+    }
+
+    async getDriftAssets(
+        request: GetDriftAssetsRequest
+    ): RpcReturnType<Promise<GetDriftAssetsResponse>, []> {
+        const path = `${this.baseUrlV2}/drift/assets?ownerAddress=${request.ownerAddress}&accountAddress=${request.accountAddress}`
+        return this.get<GetDriftAssetsResponse>(path)
+    }
+
+    async getDriftPerpContracts(
+        request: GetDriftPerpContractsRequest
+    ): RpcReturnType<Promise<GetDriftPerpContractsResponse>, []> {
+        const path = `${this.baseUrlV2}/drift/perp/contracts`
+        return this.get<GetDriftPerpContractsResponse>(path)
+    }
+
+    async getDriftOpenPerpOrder(
+        request: GetDriftOpenPerpOrderRequest
+    ): RpcReturnType<Promise<GetDriftOpenPerpOrderResponse>, []> {
+        const path = `${this.baseUrlV2}/drift/perp/open-order?ownerAddress=${request.ownerAddress}&
+        accountAddress=${request.accountAddress}&clientOrderID=${request.clientOrderID}&orderID=${request.orderID}`
+        return this.get<GetDriftOpenPerpOrderResponse>(path)
+    }
+
+    async getDriftOpenMarginOrder(
+        request: GetDriftOpenMarginOrderRequest
+    ): RpcReturnType<Promise<GetDriftOpenMarginOrderResponse>, []> {
+        const path = `${this.baseUrlV2}/drift/margin/open-order?ownerAddress=${request.ownerAddress}&
+        accountAddress=${request.accountAddress}&clientOrderID=${request.clientOrderID}&orderID=${request.orderID}`
+        return this.get<GetDriftOpenMarginOrderResponse>(path)
+    }
+
+    async getDriftOpenPerpOrders(
+        request: GetDriftOpenPerpOrdersRequest
+    ): RpcReturnType<Promise<GetDriftOpenPerpOrdersResponse>, []> {
+        let path = `${this.baseUrlV2}/drift/perp/open-orders?ownerAddress=${request.ownerAddress}&accountAddress=${request.accountAddress}`
         const args = request.contracts.map((v) => `contracts=${v}`).join("&")
         if (args != "") {
             path += `&${args}`
         }
-        return this.get<GetDriftPerpOpenOrdersResponse>(path)
+        return this.get<GetDriftOpenPerpOrdersResponse>(path)
     }
     async getDriftPerpPositions(
         request: GetDriftPerpPositionsRequest
     ): RpcReturnType<Promise<GetDriftPerpPositionsResponse>, []> {
-        let path = `${this.baseUrlV2}/drift/perp-positions?ownerAddress=${request.ownerAddress}&accountAddress=${request.accountAddress}`
+        let path = `${this.baseUrlV2}/drift/perp/positions?ownerAddress=${request.ownerAddress}&accountAddress=${request.accountAddress}`
         const args = request.contracts.map((v) => `contracts=${v}`).join("&")
         if (args != "") {
             path += `&${args}`
@@ -155,7 +281,7 @@ export class HttpProvider extends BaseProvider {
     async postDriftCancelPerpOrder(
         request: PostDriftCancelPerpOrderRequest
     ): RpcReturnType<Promise<PostDriftCancelPerpOrderResponse>, []> {
-        const path = `${this.baseUrlV2}/drift/perp-cancel`
+        const path = `${this.baseUrlV2}/drift/perp/cancel`
         return this.post<
             PostDriftCancelPerpOrderRequest,
             PostDriftCancelPerpOrderResponse
@@ -164,7 +290,7 @@ export class HttpProvider extends BaseProvider {
     async getDriftOpenMarginOrders(
         request: GetDriftOpenMarginOrdersRequest
     ): RpcReturnType<Promise<GetDriftOpenMarginOrdersResponse>, []> {
-        let path = `${this.baseUrlV2}/drift/margin-open-orders?ownerAddress=${request.ownerAddress}&accountAddress=${request.accountAddress}`
+        let path = `${this.baseUrlV2}/drift/margin/open-orders?ownerAddress=${request.ownerAddress}&accountAddress=${request.accountAddress}`
         const args = request.markets.map((v) => `markets=${v}`).join("&")
         if (args != "") {
             path += `&${args}`
@@ -185,7 +311,7 @@ export class HttpProvider extends BaseProvider {
     async postCancelDriftMarginOrder(
         request: PostCancelDriftMarginOrderRequest
     ): RpcReturnType<Promise<PostCancelDriftMarginOrderResponse>, []> {
-        const path = `${this.baseUrlV2}/drift/margin-cancel`
+        const path = `${this.baseUrlV2}/drift/margin/cancel`
         return this.post<
             PostCancelDriftMarginOrderRequest,
             PostCancelDriftMarginOrderResponse
@@ -202,7 +328,7 @@ export class HttpProvider extends BaseProvider {
     async postDriftMarginOrder(
         request: PostDriftMarginOrderRequest
     ): RpcReturnType<Promise<PostDriftMarginOrderResponse>, []> {
-        const path = `${this.baseUrlV2}/drift/margin-place`
+        const path = `${this.baseUrlV2}/drift/margin/place`
         return this.post<
             PostDriftMarginOrderRequest,
             PostDriftMarginOrderResponse
@@ -212,7 +338,7 @@ export class HttpProvider extends BaseProvider {
     async postDriftEnableMarginTrading(
         request: PostDriftEnableMarginTradingRequest
     ): RpcReturnType<Promise<PostDriftEnableMarginTradingResponse>, []> {
-        const path = `${this.baseUrlV2}/drift/enable-margin`
+        const path = `${this.baseUrlV2}/drift/margin-enable`
         return this.post<
             PostDriftEnableMarginTradingRequest,
             PostDriftEnableMarginTradingResponse
@@ -222,14 +348,14 @@ export class HttpProvider extends BaseProvider {
     async getDriftMarginOrderbook(
         request: GetDriftMarginOrderbookRequest
     ): RpcReturnType<Promise<GetDriftMarginOrderbookResponse>, []> {
-        const path = `${this.baseUrlV2}/drift/margin-orderbooks/${request.market}?limit=${request.limit}`
+        const path = `${this.baseUrlV2}/drift/margin/orderbooks/${request.market}?limit=${request.limit}`
         return this.get<GetDriftMarginOrderbookResponse>(path)
     }
 
     async getDriftMarketDepth(
         request: GetDriftMarketDepthRequest
     ): RpcReturnType<Promise<GetDriftMarketDepthResponse>, []> {
-        const path = `${this.baseUrlV2}/drift/market-depth/${request.contract}?limit=${request.limit}`
+        const path = `${this.baseUrlV2}/drift/perp/market-depth/${request.contract}?limit=${request.limit}`
         return this.get<GetDriftMarketDepthResponse>(path)
     }
     // End of Drift V2
@@ -496,7 +622,7 @@ export class HttpProvider extends BaseProvider {
         request: GetOpenPerpOrderRequest
     ): Promise<GetOpenPerpOrderResponse> {
         const path = `${this.baseUrl}/trade/perp/open-order-by-id?ownerAddress=${request.ownerAddress}&accountAddress=${request.accountAddress}&project=${request.project}
-        &contract=${request.contract}&clientOrderID=${request.clientOrderID}&orderID=${request.orderID}`
+        &clientOrderID=${request.clientOrderID}&orderID=${request.orderID}`
         return this.get<GetOpenPerpOrderResponse>(path)
     }
 

@@ -6,12 +6,12 @@ import {
   decodeBinary as decodeBinary_1,
 } from "./Context";
 import {
-  Type as DriftMarginOrder,
+  Type as Asset,
   encodeJson as encodeJson_2,
   decodeJson as decodeJson_2,
   encodeBinary as encodeBinary_2,
   decodeBinary as decodeBinary_2,
-} from "./DriftMarginOrder";
+} from "./Asset";
 import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
@@ -32,46 +32,46 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface GetDriftOpenMarginOrdersResponse {
+  export interface GetDriftAssetsResponse {
     context?: Context;
     ownerAddress: string;
-    orders: DriftMarginOrder[];
+    assets: Asset[];
   }
 }
-export type Type = $.api.GetDriftOpenMarginOrdersResponse;
+export type Type = $.api.GetDriftAssetsResponse;
 
-export function getDefaultValue(): $.api.GetDriftOpenMarginOrdersResponse {
+export function getDefaultValue(): $.api.GetDriftAssetsResponse {
   return {
     context: undefined,
     ownerAddress: "",
-    orders: [],
+    assets: [],
   };
 }
 
-export function createValue(partialValue: Partial<$.api.GetDriftOpenMarginOrdersResponse>): $.api.GetDriftOpenMarginOrdersResponse {
+export function createValue(partialValue: Partial<$.api.GetDriftAssetsResponse>): $.api.GetDriftAssetsResponse {
   return {
     ...getDefaultValue(),
     ...partialValue,
   };
 }
 
-export function encodeJson(value: $.api.GetDriftOpenMarginOrdersResponse): unknown {
+export function encodeJson(value: $.api.GetDriftAssetsResponse): unknown {
   const result: any = {};
   if (value.context !== undefined) result.context = encodeJson_1(value.context);
   if (value.ownerAddress !== undefined) result.ownerAddress = tsValueToJsonValueFns.string(value.ownerAddress);
-  result.orders = value.orders.map(value => encodeJson_2(value));
+  result.assets = value.assets.map(value => encodeJson_2(value));
   return result;
 }
 
-export function decodeJson(value: any): $.api.GetDriftOpenMarginOrdersResponse {
+export function decodeJson(value: any): $.api.GetDriftAssetsResponse {
   const result = getDefaultValue();
   if (value.context !== undefined) result.context = decodeJson_1(value.context);
   if (value.ownerAddress !== undefined) result.ownerAddress = jsonValueToTsValueFns.string(value.ownerAddress);
-  result.orders = value.orders?.map((value: any) => decodeJson_2(value)) ?? [];
+  result.assets = value.assets?.map((value: any) => decodeJson_2(value)) ?? [];
   return result;
 }
 
-export function encodeBinary(value: $.api.GetDriftOpenMarginOrdersResponse): Uint8Array {
+export function encodeBinary(value: $.api.GetDriftAssetsResponse): Uint8Array {
   const result: WireMessage = [];
   if (value.context !== undefined) {
     const tsValue = value.context;
@@ -85,7 +85,7 @@ export function encodeBinary(value: $.api.GetDriftOpenMarginOrdersResponse): Uin
       [2, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  for (const tsValue of value.orders) {
+  for (const tsValue of value.assets) {
     result.push(
       [3, { type: WireType.LengthDelimited as const, value: encodeBinary_2(tsValue) }],
     );
@@ -93,7 +93,7 @@ export function encodeBinary(value: $.api.GetDriftOpenMarginOrdersResponse): Uin
   return serialize(result);
 }
 
-export function decodeBinary(binary: Uint8Array): $.api.GetDriftOpenMarginOrdersResponse {
+export function decodeBinary(binary: Uint8Array): $.api.GetDriftAssetsResponse {
   const result = getDefaultValue();
   const wireMessage = deserialize(binary);
   const wireFields = new Map(wireMessage);
@@ -115,7 +115,7 @@ export function decodeBinary(binary: Uint8Array): $.api.GetDriftOpenMarginOrders
     const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 3).map(([, wireValue]) => wireValue);
     const value = wireValues.map((wireValue) => wireValue.type === WireType.LengthDelimited ? decodeBinary_2(wireValue.value) : undefined).filter(x => x !== undefined);
     if (!value.length) break collection;
-    result.orders = value as any;
+    result.assets = value as any;
   }
   return result;
 }
