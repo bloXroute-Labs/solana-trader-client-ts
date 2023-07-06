@@ -255,7 +255,6 @@ async function ws() {
 }
 
 async function runPerpRequests(provider: BaseProvider) {
-
     await callPostDriftClosePerpPositions(provider)
     console.info(" ")
     console.info(" ")

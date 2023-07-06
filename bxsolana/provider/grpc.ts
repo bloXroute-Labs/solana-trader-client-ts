@@ -157,7 +157,7 @@ import {
     GetDriftOpenPerpOrderRequest,
     GetDriftOpenPerpOrderResponse,
     GetDriftOpenMarginOrderRequest,
-    GetDriftOpenMarginOrderResponse
+    GetDriftOpenMarginOrderResponse,
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"

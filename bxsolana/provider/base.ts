@@ -155,7 +155,7 @@ import {
     GetDriftOpenPerpOrderRequest,
     GetDriftOpenPerpOrderResponse,
     GetDriftOpenMarginOrderRequest,
-    GetDriftOpenMarginOrderResponse
+    GetDriftOpenMarginOrderResponse,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {

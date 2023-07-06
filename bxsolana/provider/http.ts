@@ -118,7 +118,9 @@ import {
     PostDriftSettlePNLResponse,
     PostDriftSettlePNLRequest,
     PostDriftSettlePNLsResponse,
-    PostDriftSettlePNLsRequest, PostLiquidateDriftPerpRequest, PostLiquidateDriftPerpResponse
+    PostDriftSettlePNLsRequest,
+    PostLiquidateDriftPerpRequest,
+    PostLiquidateDriftPerpResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -161,7 +163,7 @@ export class HttpProvider extends BaseProvider {
         return this.post<
             PostCloseDriftPerpPositionsRequest,
             PostCloseDriftPerpPositionsResponse
-            >(path, request)
+        >(path, request)
     }
 
     async PostCreateDriftUser(
@@ -171,7 +173,7 @@ export class HttpProvider extends BaseProvider {
         return this.post<
             PostCreateDriftUserRequest,
             PostCreateDriftUserResponse
-            >(path, request)
+        >(path, request)
     }
 
     async PostDriftManageCollateral(
@@ -181,17 +183,17 @@ export class HttpProvider extends BaseProvider {
         return this.post<
             PostDriftManageCollateralRequest,
             PostDriftManageCollateralResponse
-            >(path, request)
+        >(path, request)
     }
 
     async PostDriftSettlePNL(
         request: PostDriftSettlePNLRequest
     ): RpcReturnType<Promise<PostDriftSettlePNLResponse>, []> {
         const path = `${this.baseUrlV2}/drift/perp/settle-pnl`
-        return this.post<
-            PostDriftSettlePNLRequest,
-            PostDriftSettlePNLResponse
-            >(path, request)
+        return this.post<PostDriftSettlePNLRequest, PostDriftSettlePNLResponse>(
+            path,
+            request
+        )
     }
 
     async PostDriftSettlePNLs(
@@ -201,7 +203,7 @@ export class HttpProvider extends BaseProvider {
         return this.post<
             PostDriftSettlePNLsRequest,
             PostDriftSettlePNLsResponse
-            >(path, request)
+        >(path, request)
     }
 
     async PostLiquidateDriftPerp(
@@ -211,7 +213,7 @@ export class HttpProvider extends BaseProvider {
         return this.post<
             PostLiquidateDriftPerpRequest,
             PostLiquidateDriftPerpResponse
-            >(path, request)
+        >(path, request)
     }
 
     async getDriftPerpOrderbook(
