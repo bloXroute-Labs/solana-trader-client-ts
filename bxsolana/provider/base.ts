@@ -167,8 +167,6 @@ import {
 import { Keypair } from "@solana/web3.js"
 import base58 from "bs58"
 import { RpcReturnType } from "../proto/runtime/rpc"
-import { $ } from "../proto/messages/api/GetDriftPerpOpenOrdersRequest"
-import GetDriftPerpOpenOrdersRequest = $.api.GetDriftPerpOpenOrdersRequest
 
 /* eslint-disable */
 

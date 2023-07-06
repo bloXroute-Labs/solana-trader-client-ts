@@ -156,7 +156,7 @@ export class HttpProvider extends BaseProvider {
     }
 
     // Drift V2
-    async PostCloseDriftPerpPositions(
+    async postCloseDriftPerpPositions(
         request: PostCloseDriftPerpPositionsRequest
     ): RpcReturnType<Promise<PostCloseDriftPerpPositionsResponse>, []> {
         const path = `${this.baseUrlV2}/drift/perp/close`
@@ -166,7 +166,7 @@ export class HttpProvider extends BaseProvider {
         >(path, request)
     }
 
-    async PostCreateDriftUser(
+    async postCreateDriftUser(
         request: PostCreateDriftUserRequest
     ): RpcReturnType<Promise<PostCreateDriftUserResponse>, []> {
         const path = `${this.baseUrlV2}/drift/user`
@@ -176,7 +176,7 @@ export class HttpProvider extends BaseProvider {
         >(path, request)
     }
 
-    async PostDriftManageCollateral(
+    async postDriftManageCollateral(
         request: PostDriftManageCollateralRequest
     ): RpcReturnType<Promise<PostDriftManageCollateralResponse>, []> {
         const path = `${this.baseUrlV2}/drift/manage-collateral`
@@ -186,7 +186,7 @@ export class HttpProvider extends BaseProvider {
         >(path, request)
     }
 
-    async PostDriftSettlePNL(
+    async postDriftSettlePNL(
         request: PostDriftSettlePNLRequest
     ): RpcReturnType<Promise<PostDriftSettlePNLResponse>, []> {
         const path = `${this.baseUrlV2}/drift/perp/settle-pnl`
@@ -196,7 +196,7 @@ export class HttpProvider extends BaseProvider {
         )
     }
 
-    async PostDriftSettlePNLs(
+    async postDriftSettlePNLs(
         request: PostDriftSettlePNLsRequest
     ): RpcReturnType<Promise<PostDriftSettlePNLsResponse>, []> {
         const path = `${this.baseUrlV2}/drift/perp/settle-pnls`
@@ -206,7 +206,7 @@ export class HttpProvider extends BaseProvider {
         >(path, request)
     }
 
-    async PostLiquidateDriftPerp(
+    async postLiquidateDriftPerp(
         request: PostLiquidateDriftPerpRequest
     ): RpcReturnType<Promise<PostLiquidateDriftPerpResponse>, []> {
         const path = `${this.baseUrlV2}/drift/perp/liquidate`
