@@ -319,7 +319,6 @@ async function runPerpRequests(provider: BaseProvider) {
     console.info(" ")
     console.info(" ")
 
-
     await callPostModifyDriftOrder(provider)
     console.info(" ")
     console.info(" ")
