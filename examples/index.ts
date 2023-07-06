@@ -255,6 +255,10 @@ async function ws() {
 }
 
 async function runPerpRequests(provider: BaseProvider) {
+    await callGetDriftOpenMarginOrders(provider)
+    console.info(" ")
+    console.info(" ")
+    
     await callPostDriftClosePerpPositions(provider)
     console.info(" ")
     console.info(" ")
@@ -315,9 +319,6 @@ async function runPerpRequests(provider: BaseProvider) {
     console.info(" ")
     console.info(" ")
 
-    await callGetDriftOpenMarginOrders(provider)
-    console.info(" ")
-    console.info(" ")
 
     await callPostModifyDriftOrder(provider)
     console.info(" ")
@@ -1246,7 +1247,7 @@ async function callPostClosePerpPositions(provider: BaseProvider) {
 }
 
 async function callPostDriftClosePerpPositions(provider: BaseProvider) {
-    console.info("closing Driftperp positions")
+    console.info("closing Drift perp positions")
     const req = await provider.postCloseDriftPerpPositions({
         ownerAddress: ownerAddress,
         accountAddress: "",
