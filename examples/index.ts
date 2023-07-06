@@ -258,7 +258,7 @@ async function runPerpRequests(provider: BaseProvider) {
     await callGetDriftOpenMarginOrders(provider)
     console.info(" ")
     console.info(" ")
-    
+
     await callPostDriftClosePerpPositions(provider)
     console.info(" ")
     console.info(" ")
@@ -963,8 +963,8 @@ async function callGetDriftOpenMarginOrder(provider: BaseProvider) {
     const req = await provider.getDriftOpenMarginOrder({
         ownerAddress: ownerAddress,
         accountAddress: "",
-        clientOrderID: "12",
-        orderID: "12",
+        clientOrderID: "13",
+        orderID: "8",
     })
     console.info(req)
 }
