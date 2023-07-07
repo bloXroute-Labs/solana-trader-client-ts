@@ -147,7 +147,7 @@ import {
     GetDriftOpenPerpOrderRequest,
     GetDriftOpenPerpOrderResponse,
     GetDriftOpenMarginOrderRequest,
-    GetDriftOpenMarginOrderResponse
+    GetDriftOpenMarginOrderResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -189,7 +189,10 @@ export class WsProvider extends BaseProvider {
     async postCloseDriftPerpPositions(
         request: PostCloseDriftPerpPositionsRequest
     ): RpcReturnType<Promise<PostCloseDriftPerpPositionsResponse>, []> {
-        return this.client.postCloseDriftPerpPositions", request)
+        return await this.wsConnection.call(
+            "PostCloseDriftPerpPositions",
+            request
+        )
     }
     async postCreateDriftUser(
         request: PostCreateDriftUserRequest
@@ -199,7 +202,10 @@ export class WsProvider extends BaseProvider {
     async postDriftManageCollateral(
         request: PostDriftManageCollateralRequest
     ): RpcReturnType<Promise<PostDriftManageCollateralResponse>, []> {
-        return await this.wsConnection.call("PostDriftManageCollateral", request)
+        return await this.wsConnection.call(
+            "PostDriftManageCollateral",
+            request
+        )
     }
     async postDriftSettlePNL(
         request: PostDriftSettlePNLRequest
