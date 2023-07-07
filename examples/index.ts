@@ -869,7 +869,7 @@ async function callGetServerTime(provider: BaseProvider) {
 
 async function callGetPrices(provider: BaseProvider) {
     console.info("Retrieving price")
-    const resp = await provider.getPrice({ tokens: ["SOL", "USDC"] })
+    const resp = await provider.getPrice({ tokens: ["SOL", "USDT"] })
     console.info(resp)
 }
 
@@ -886,7 +886,7 @@ async function callGetQuotes(provider: BaseProvider) {
     console.info("Retrieving quotes")
     const resp = await provider.getQuotes({
         inToken: "SOL",
-        outToken: "USDC",
+        outToken: "USDT",
         inAmount: 1,
         slippage: 5,
         limit: 5,
@@ -1503,10 +1503,10 @@ async function callGetSwapsStream(provider: BaseProvider) {
 }
 
 async function callGetPricesStream(provider: BaseProvider) {
-    console.info("Subscribing for prices updates of SOL and USDC on Raydium")
+    console.info("Subscribing for prices updates of SOL and USDT on Raydium")
 
     const projects: Project[] = ["P_RAYDIUM", "P_JUPITER"]
-    const tokens: string[] = ["SOL", "USDC", "USDT"]
+    const tokens: string[] = ["SOL", "USDT", "USDT"]
     const stream = await provider.getPricesStream({
         projects: projects,
         tokens,
@@ -1721,7 +1721,7 @@ async function callPostTradeSwap(provider: BaseProvider) {
     console.info("Generating a trade swap")
     const response = await provider.postTradeSwap({
         ownerAddress: ownerAddress,
-        inToken: "USDC",
+        inToken: "USDT",
         outToken: "SOL",
         inAmount: 0.01,
         slippage: 0.1,
@@ -1735,7 +1735,7 @@ async function callSubmitTradeSwap(provider: BaseProvider) {
     const responses = await provider.submitTradeSwap(
         {
             ownerAddress: ownerAddress,
-            inToken: "USDC",
+            inToken: "USDT",
             outToken: "SOL",
             inAmount: 0.01,
             slippage: 0.1,
@@ -1776,7 +1776,7 @@ async function callPostRouteTradeSwap(provider: BaseProvider) {
                     label: "Raydium",
                 },
                 inToken: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
-                outToken: "USDC",
+                outToken: "USDT",
                 inAmount: 0.007505,
                 outAmount: 0.004043,
                 outAmountMin: 0.004,
@@ -1803,7 +1803,7 @@ async function callSubmitRouteTradeSwap(provider: BaseProvider) {
                 },
                 {
                     inToken: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
-                    outToken: "USDC",
+                    outToken: "USDT",
                     inAmount: 0.007505,
                     outAmount: 0.004043,
                     outAmountMin: 0.004,
