@@ -1,10 +1,10 @@
 import {
-  Type as UserDetail,
+  Type as TransactionMessage,
   encodeJson as encodeJson_1,
   decodeJson as decodeJson_1,
   encodeBinary as encodeBinary_1,
   decodeBinary as decodeBinary_1,
-} from "./UserDetail";
+} from "./TransactionMessage";
 import {
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar";
@@ -20,40 +20,40 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface GetUserResponse {
-    userAccounts: UserDetail[];
+  export interface PostDriftSettlePNLsResponse {
+    transactions: TransactionMessage[];
   }
 }
-export type Type = $.api.GetUserResponse;
+export type Type = $.api.PostDriftSettlePNLsResponse;
 
-export function getDefaultValue(): $.api.GetUserResponse {
+export function getDefaultValue(): $.api.PostDriftSettlePNLsResponse {
   return {
-    userAccounts: [],
+    transactions: [],
   };
 }
 
-export function createValue(partialValue: Partial<$.api.GetUserResponse>): $.api.GetUserResponse {
+export function createValue(partialValue: Partial<$.api.PostDriftSettlePNLsResponse>): $.api.PostDriftSettlePNLsResponse {
   return {
     ...getDefaultValue(),
     ...partialValue,
   };
 }
 
-export function encodeJson(value: $.api.GetUserResponse): unknown {
+export function encodeJson(value: $.api.PostDriftSettlePNLsResponse): unknown {
   const result: any = {};
-  result.userAccounts = value.userAccounts.map(value => encodeJson_1(value));
+  result.transactions = value.transactions.map(value => encodeJson_1(value));
   return result;
 }
 
-export function decodeJson(value: any): $.api.GetUserResponse {
+export function decodeJson(value: any): $.api.PostDriftSettlePNLsResponse {
   const result = getDefaultValue();
-  result.userAccounts = value.userAccounts?.map((value: any) => decodeJson_1(value)) ?? [];
+  result.transactions = value.transactions?.map((value: any) => decodeJson_1(value)) ?? [];
   return result;
 }
 
-export function encodeBinary(value: $.api.GetUserResponse): Uint8Array {
+export function encodeBinary(value: $.api.PostDriftSettlePNLsResponse): Uint8Array {
   const result: WireMessage = [];
-  for (const tsValue of value.userAccounts) {
+  for (const tsValue of value.transactions) {
     result.push(
       [1, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
     );
@@ -61,7 +61,7 @@ export function encodeBinary(value: $.api.GetUserResponse): Uint8Array {
   return serialize(result);
 }
 
-export function decodeBinary(binary: Uint8Array): $.api.GetUserResponse {
+export function decodeBinary(binary: Uint8Array): $.api.PostDriftSettlePNLsResponse {
   const result = getDefaultValue();
   const wireMessage = deserialize(binary);
   const wireFields = new Map(wireMessage);
@@ -69,7 +69,7 @@ export function decodeBinary(binary: Uint8Array): $.api.GetUserResponse {
     const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 1).map(([, wireValue]) => wireValue);
     const value = wireValues.map((wireValue) => wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined).filter(x => x !== undefined);
     if (!value.length) break collection;
-    result.userAccounts = value as any;
+    result.transactions = value as any;
   }
   return result;
 }

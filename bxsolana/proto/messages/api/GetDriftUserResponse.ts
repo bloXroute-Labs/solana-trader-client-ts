@@ -6,12 +6,12 @@ import {
   decodeBinary as decodeBinary_1,
 } from "./Context";
 import {
-  Type as GetPerpTradesResponse,
+  Type as UserDetail,
   encodeJson as encodeJson_2,
   decodeJson as decodeJson_2,
   encodeBinary as encodeBinary_2,
   decodeBinary as decodeBinary_2,
-} from "./GetPerpTradesResponse";
+} from "./UserDetail";
 import {
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar";
@@ -27,42 +27,42 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface GetPerpTradesStreamResponse {
+  export interface GetDriftUserResponse {
     context?: Context;
-    trade?: GetPerpTradesResponse;
+    userAccounts: UserDetail[];
   }
 }
-export type Type = $.api.GetPerpTradesStreamResponse;
+export type Type = $.api.GetDriftUserResponse;
 
-export function getDefaultValue(): $.api.GetPerpTradesStreamResponse {
+export function getDefaultValue(): $.api.GetDriftUserResponse {
   return {
     context: undefined,
-    trade: undefined,
+    userAccounts: [],
   };
 }
 
-export function createValue(partialValue: Partial<$.api.GetPerpTradesStreamResponse>): $.api.GetPerpTradesStreamResponse {
+export function createValue(partialValue: Partial<$.api.GetDriftUserResponse>): $.api.GetDriftUserResponse {
   return {
     ...getDefaultValue(),
     ...partialValue,
   };
 }
 
-export function encodeJson(value: $.api.GetPerpTradesStreamResponse): unknown {
+export function encodeJson(value: $.api.GetDriftUserResponse): unknown {
   const result: any = {};
   if (value.context !== undefined) result.context = encodeJson_1(value.context);
-  if (value.trade !== undefined) result.trade = encodeJson_2(value.trade);
+  result.userAccounts = value.userAccounts.map(value => encodeJson_2(value));
   return result;
 }
 
-export function decodeJson(value: any): $.api.GetPerpTradesStreamResponse {
+export function decodeJson(value: any): $.api.GetDriftUserResponse {
   const result = getDefaultValue();
   if (value.context !== undefined) result.context = decodeJson_1(value.context);
-  if (value.trade !== undefined) result.trade = decodeJson_2(value.trade);
+  result.userAccounts = value.userAccounts?.map((value: any) => decodeJson_2(value)) ?? [];
   return result;
 }
 
-export function encodeBinary(value: $.api.GetPerpTradesStreamResponse): Uint8Array {
+export function encodeBinary(value: $.api.GetDriftUserResponse): Uint8Array {
   const result: WireMessage = [];
   if (value.context !== undefined) {
     const tsValue = value.context;
@@ -70,8 +70,7 @@ export function encodeBinary(value: $.api.GetPerpTradesStreamResponse): Uint8Arr
       [1, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
     );
   }
-  if (value.trade !== undefined) {
-    const tsValue = value.trade;
+  for (const tsValue of value.userAccounts) {
     result.push(
       [2, { type: WireType.LengthDelimited as const, value: encodeBinary_2(tsValue) }],
     );
@@ -79,7 +78,7 @@ export function encodeBinary(value: $.api.GetPerpTradesStreamResponse): Uint8Arr
   return serialize(result);
 }
 
-export function decodeBinary(binary: Uint8Array): $.api.GetPerpTradesStreamResponse {
+export function decodeBinary(binary: Uint8Array): $.api.GetDriftUserResponse {
   const result = getDefaultValue();
   const wireMessage = deserialize(binary);
   const wireFields = new Map(wireMessage);
@@ -90,12 +89,11 @@ export function decodeBinary(binary: Uint8Array): $.api.GetPerpTradesStreamRespo
     if (value === undefined) break field;
     result.context = value;
   }
-  field: {
-    const wireValue = wireFields.get(2);
-    if (wireValue === undefined) break field;
-    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_2(wireValue.value) : undefined;
-    if (value === undefined) break field;
-    result.trade = value;
+  collection: {
+    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 2).map(([, wireValue]) => wireValue);
+    const value = wireValues.map((wireValue) => wireValue.type === WireType.LengthDelimited ? decodeBinary_2(wireValue.value) : undefined).filter(x => x !== undefined);
+    if (!value.length) break collection;
+    result.userAccounts = value as any;
   }
   return result;
 }

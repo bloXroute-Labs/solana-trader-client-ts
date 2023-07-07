@@ -255,19 +255,67 @@ async function ws() {
 }
 
 async function runPerpRequests(provider: BaseProvider) {
+    await callGetDriftOpenMarginOrders(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostDriftClosePerpPositions(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostCreateDriftUser(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostDriftManageCollateral(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostDriftSettlePNL(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostDriftSettlePNLs(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostLiquidateDriftPerp(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetDriftPerpOrderbook(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetDriftUser(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetDriftAssets(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetDriftPerpContracts(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetDriftOpenPerpOrder(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetDriftOpenMarginOrder(provider)
+    console.info(" ")
+    console.info(" ")
+
     await callPostDriftCancelPerpOrder(provider)
     console.info(" ")
     console.info(" ")
 
-    await callGetDriftPerpOpenOrders(provider)
+    await callGetDriftOpenPerpOrders(provider)
     console.info(" ")
     console.info(" ")
 
     await callGetDriftPerpPositions(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callGetDriftOpenMarginOrders(provider)
     console.info(" ")
     console.info(" ")
 
@@ -821,7 +869,7 @@ async function callGetServerTime(provider: BaseProvider) {
 
 async function callGetPrices(provider: BaseProvider) {
     console.info("Retrieving price")
-    const resp = await provider.getPrice({ tokens: ["SOL", "USDC"] })
+    const resp = await provider.getPrice({ tokens: ["SOL", "USDT"] })
     console.info(resp)
 }
 
@@ -838,7 +886,7 @@ async function callGetQuotes(provider: BaseProvider) {
     console.info("Retrieving quotes")
     const resp = await provider.getQuotes({
         inToken: "SOL",
-        outToken: "USDC",
+        outToken: "USDT",
         inAmount: 1,
         slippage: 5,
         limit: 5,
@@ -853,6 +901,19 @@ async function callGetPerpOrderbook(provider: BaseProvider) {
         const req = await provider.getPerpOrderbook({
             contract: "SOL_PERP",
             project: "P_DRIFT",
+            limit: 5,
+        })
+        console.info(req)
+    } catch (e) {
+        console.info(e)
+    }
+}
+
+async function callGetDriftPerpOrderbook(provider: BaseProvider) {
+    try {
+        console.info("Retrieving Drift orderbook for SOL-PERP market")
+        const req = await provider.getDriftPerpOrderbook({
+            contract: "SOL_PERP",
             limit: 5,
         })
         console.info(req)
@@ -896,9 +957,20 @@ async function callGetDriftOpenMarginOrders(provider: BaseProvider) {
     console.info(req)
 }
 
-async function callGetDriftPerpOpenOrders(provider: BaseProvider) {
+async function callGetDriftOpenMarginOrder(provider: BaseProvider) {
+    console.info("get drift open margin order")
+    const req = await provider.getDriftOpenMarginOrder({
+        ownerAddress: ownerAddress,
+        accountAddress: "",
+        clientOrderID: "13",
+        orderID: "8",
+    })
+    console.info(req)
+}
+
+async function callGetDriftOpenPerpOrders(provider: BaseProvider) {
     console.info("get drift perp open orders")
-    const req = await provider.getDriftPerpOpenOrders({
+    const req = await provider.getDriftOpenPerpOrders({
         ownerAddress: ownerAddress,
         accountAddress: "",
         contracts: ["SOL_PERP"],
@@ -963,11 +1035,26 @@ async function callGetAssets(provider: BaseProvider) {
     console.info(req)
 }
 
+async function callGetDriftAssets(provider: BaseProvider) {
+    console.info("get Drift assets")
+    const req = await provider.getDriftAssets({
+        ownerAddress: ownerAddress,
+        accountAddress: "",
+    })
+    console.info(req)
+}
+
 async function callGetPerpContracts(provider: BaseProvider) {
     console.info("get perp contracts")
     const req = await provider.getPerpContracts({
         project: "P_DRIFT",
     })
+    console.info(req)
+}
+
+async function callGetDriftPerpContracts(provider: BaseProvider) {
+    console.info("get Drift perp contracts")
+    const req = await provider.getDriftPerpContracts({})
     console.info(req)
 }
 
@@ -978,6 +1065,16 @@ async function callPostSettlePNL(provider: BaseProvider) {
         settleeAccountAddress: "9UnwdvTf5EfGeLyLrF4GZDUs7LKRUeJQzW7qsDVGQ8sS",
         contract: "SOL_PERP",
         project: "P_DRIFT",
+    })
+    console.info(req)
+}
+
+async function callPostDriftSettlePNL(provider: BaseProvider) {
+    console.info("post settle pnl")
+    const req = await provider.postDriftSettlePNL({
+        ownerAddress: ownerAddress,
+        settleeAccountAddress: "9UnwdvTf5EfGeLyLrF4GZDUs7LKRUeJQzW7qsDVGQ8sS",
+        contract: "SOL_PERP",
     })
     console.info(req)
 }
@@ -1005,6 +1102,18 @@ async function callPostSettlePNLs(provider: BaseProvider) {
     console.info(req)
 }
 
+async function callPostDriftSettlePNLs(provider: BaseProvider) {
+    console.info("post settle pnls")
+    const req = await provider.postDriftSettlePNLs({
+        ownerAddress: ownerAddress,
+        settleeAccountAddresses: [
+            "9UnwdvTf5EfGeLyLrF4GZDUs7LKRUeJQzW7qsDVGQ8sS",
+        ],
+        contract: "SOL_PERP",
+    })
+    console.info(req)
+}
+
 async function callPostLiquidatePerp(provider: BaseProvider) {
     console.info("post liquidate perp")
     const req = await provider.postLiquidatePerp({
@@ -1012,6 +1121,17 @@ async function callPostLiquidatePerp(provider: BaseProvider) {
         settleeAccountAddress: "9UnwdvTf5EfGeLyLrF4GZDUs7LKRUeJQzW7qsDVGQ8sS",
         contract: "SOL_PERP",
         project: "P_DRIFT",
+        amount: 1,
+    })
+    console.info(req)
+}
+
+async function callPostLiquidateDriftPerp(provider: BaseProvider) {
+    console.info("post liquidate Drift perp")
+    const req = await provider.postLiquidateDriftPerp({
+        ownerAddress: ownerAddress,
+        settleeAccountAddress: "9UnwdvTf5EfGeLyLrF4GZDUs7LKRUeJQzW7qsDVGQ8sS",
+        contract: "SOL_PERP",
         amount: 1,
     })
     console.info(req)
@@ -1076,6 +1196,18 @@ async function callGetOpenPerpOrders(provider: BaseProvider) {
     console.info(req)
 }
 
+async function callGetDriftOpenPerpOrder(provider: BaseProvider) {
+    console.info("get open perp order")
+    const req = await provider.getDriftOpenPerpOrder({
+        ownerAddress: ownerAddress,
+        accountAddress: "",
+        clientOrderID: "12",
+        orderID: "12",
+    })
+
+    console.info(req)
+}
+
 async function callPostCancelPerpOrder(provider: BaseProvider) {
     console.info("canceling perp order")
     const req = await provider.postCancelPerpOrder({
@@ -1113,12 +1245,37 @@ async function callPostClosePerpPositions(provider: BaseProvider) {
     console.info(req)
 }
 
+async function callPostDriftClosePerpPositions(provider: BaseProvider) {
+    console.info("closing Drift perp positions")
+    const req = await provider.postCloseDriftPerpPositions({
+        ownerAddress: ownerAddress,
+        accountAddress: "",
+        contracts: ["SOL_PERP"],
+    })
+    console.info(req)
+}
+
 async function callPostCreateUser(provider: BaseProvider) {
     console.info("creating user")
     try {
         const req = await provider.postCreateUser({
             ownerAddress: ownerAddress,
             project: "P_DRIFT",
+            accountName: "Second Account",
+            subAccountID: "2",
+            action: "CREATE",
+        })
+        console.info(req)
+    } catch (err) {
+        console.info(err)
+    }
+}
+
+async function callPostCreateDriftUser(provider: BaseProvider) {
+    console.info("creating Drift user")
+    try {
+        const req = await provider.postCreateDriftUser({
+            ownerAddress: ownerAddress,
             accountName: "Second Account",
             subAccountID: "2",
             action: "CREATE",
@@ -1139,6 +1296,15 @@ async function callGetUser(provider: BaseProvider) {
     console.info(req)
 }
 
+async function callGetDriftUser(provider: BaseProvider) {
+    console.info("getting Drift user")
+    const req = await provider.getDriftUser({
+        ownerAddress: ownerAddress,
+        accountAddress: "",
+    })
+    console.info(req)
+}
+
 async function callPostManageCollateral(provider: BaseProvider) {
     console.info("depositing perp collateral")
     const res = await provider.postManageCollateral({
@@ -1147,6 +1313,18 @@ async function callPostManageCollateral(provider: BaseProvider) {
         amount: 1,
         type: "PCT_DEPOSIT",
         token: "PCTK_USDC",
+        toAccountAddress: "",
+    })
+    console.info(res)
+}
+
+async function callPostDriftManageCollateral(provider: BaseProvider) {
+    console.info("depositing Drift perp collateral")
+    const res = await provider.postDriftManageCollateral({
+        accountAddress: "9UnwdvTf5EfGeLyLrF4GZDUs7LKRUeJQzW7qsDVGQ8sS",
+        amount: 1,
+        type: "DEPOSIT",
+        token: "USDC",
         toAccountAddress: "",
     })
     console.info(res)
@@ -1325,10 +1503,10 @@ async function callGetSwapsStream(provider: BaseProvider) {
 }
 
 async function callGetPricesStream(provider: BaseProvider) {
-    console.info("Subscribing for prices updates of SOL and USDC on Raydium")
+    console.info("Subscribing for prices updates of SOL and USDT on Raydium")
 
     const projects: Project[] = ["P_RAYDIUM", "P_JUPITER"]
-    const tokens: string[] = ["SOL", "USDC", "USDT"]
+    const tokens: string[] = ["SOL", "USDT", "USDT"]
     const stream = await provider.getPricesStream({
         projects: projects,
         tokens,
@@ -1543,7 +1721,7 @@ async function callPostTradeSwap(provider: BaseProvider) {
     console.info("Generating a trade swap")
     const response = await provider.postTradeSwap({
         ownerAddress: ownerAddress,
-        inToken: "USDC",
+        inToken: "USDT",
         outToken: "SOL",
         inAmount: 0.01,
         slippage: 0.1,
@@ -1557,7 +1735,7 @@ async function callSubmitTradeSwap(provider: BaseProvider) {
     const responses = await provider.submitTradeSwap(
         {
             ownerAddress: ownerAddress,
-            inToken: "USDC",
+            inToken: "USDT",
             outToken: "SOL",
             inAmount: 0.01,
             slippage: 0.1,
@@ -1576,6 +1754,7 @@ async function callPostRouteTradeSwap(provider: BaseProvider) {
     console.info("Generating a route trade swap")
     const response = await provider.postRouteTradeSwap({
         ownerAddress: ownerAddress,
+        slippage: 10,
         steps: [
             {
                 project: {
@@ -1597,14 +1776,13 @@ async function callPostRouteTradeSwap(provider: BaseProvider) {
                     label: "Raydium",
                 },
                 inToken: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
-                outToken: "USDC",
+                outToken: "USDT",
                 inAmount: 0.007505,
                 outAmount: 0.004043,
                 outAmountMin: 0.004,
             },
         ],
         project: "P_RAYDIUM",
-        slippage: 0.1,
     })
     console.info(response)
 }
@@ -1614,6 +1792,7 @@ async function callSubmitRouteTradeSwap(provider: BaseProvider) {
     const responses = await provider.submitRouteTradeSwap(
         {
             ownerAddress: ownerAddress,
+            slippage: 10,
             steps: [
                 {
                     inToken: "FIDA",
@@ -1624,14 +1803,13 @@ async function callSubmitRouteTradeSwap(provider: BaseProvider) {
                 },
                 {
                     inToken: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
-                    outToken: "USDC",
+                    outToken: "USDT",
                     inAmount: 0.007505,
                     outAmount: 0.004043,
                     outAmountMin: 0.004,
                 },
             ],
             project: "P_RAYDIUM",
-            slippage: 0.1,
         },
         "P_SUBMIT_ALL",
         true

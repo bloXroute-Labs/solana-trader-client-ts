@@ -20,38 +20,38 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface PostCreateUserResponse {
+  export interface PostDriftManageCollateralResponse {
     transaction?: TransactionMessage;
   }
 }
-export type Type = $.api.PostCreateUserResponse;
+export type Type = $.api.PostDriftManageCollateralResponse;
 
-export function getDefaultValue(): $.api.PostCreateUserResponse {
+export function getDefaultValue(): $.api.PostDriftManageCollateralResponse {
   return {
     transaction: undefined,
   };
 }
 
-export function createValue(partialValue: Partial<$.api.PostCreateUserResponse>): $.api.PostCreateUserResponse {
+export function createValue(partialValue: Partial<$.api.PostDriftManageCollateralResponse>): $.api.PostDriftManageCollateralResponse {
   return {
     ...getDefaultValue(),
     ...partialValue,
   };
 }
 
-export function encodeJson(value: $.api.PostCreateUserResponse): unknown {
+export function encodeJson(value: $.api.PostDriftManageCollateralResponse): unknown {
   const result: any = {};
   if (value.transaction !== undefined) result.transaction = encodeJson_1(value.transaction);
   return result;
 }
 
-export function decodeJson(value: any): $.api.PostCreateUserResponse {
+export function decodeJson(value: any): $.api.PostDriftManageCollateralResponse {
   const result = getDefaultValue();
   if (value.transaction !== undefined) result.transaction = decodeJson_1(value.transaction);
   return result;
 }
 
-export function encodeBinary(value: $.api.PostCreateUserResponse): Uint8Array {
+export function encodeBinary(value: $.api.PostDriftManageCollateralResponse): Uint8Array {
   const result: WireMessage = [];
   if (value.transaction !== undefined) {
     const tsValue = value.transaction;
@@ -62,7 +62,7 @@ export function encodeBinary(value: $.api.PostCreateUserResponse): Uint8Array {
   return serialize(result);
 }
 
-export function decodeBinary(binary: Uint8Array): $.api.PostCreateUserResponse {
+export function decodeBinary(binary: Uint8Array): $.api.PostDriftManageCollateralResponse {
   const result = getDefaultValue();
   const wireMessage = deserialize(binary);
   const wireFields = new Map(wireMessage);

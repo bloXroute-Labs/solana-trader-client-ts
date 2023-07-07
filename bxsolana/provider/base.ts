@@ -68,8 +68,6 @@ import {
     TradeSwapRequest,
     TradeSwapResponse,
     TransactionMessage,
-    GetNewPerpOrdersStreamRequest,
-    GetNewPerpOrdersStreamResponse,
     GetOpenPerpOrdersRequest,
     GetOpenPerpOrdersResponse,
     GetPerpOrderbookRequest,
@@ -130,10 +128,34 @@ import {
     PostCancelDriftMarginOrderResponse,
     PostDriftCancelPerpOrderResponse,
     GetDriftPerpPositionsResponse,
-    GetDriftPerpOpenOrdersResponse,
+    GetDriftOpenPerpOrdersResponse,
     PostDriftCancelPerpOrderRequest,
     GetDriftPerpPositionsRequest,
-    GetDriftPerpOpenOrdersRequest,
+    GetDriftOpenPerpOrdersRequest,
+    PostLiquidateDriftPerpRequest,
+    PostLiquidateDriftPerpResponse,
+    PostCloseDriftPerpPositionsRequest,
+    PostCloseDriftPerpPositionsResponse,
+    PostCreateDriftUserRequest,
+    PostCreateDriftUserResponse,
+    PostDriftManageCollateralRequest,
+    PostDriftManageCollateralResponse,
+    PostDriftSettlePNLRequest,
+    PostDriftSettlePNLResponse,
+    PostDriftSettlePNLsRequest,
+    PostDriftSettlePNLsResponse,
+    GetDriftPerpOrderbookRequest,
+    GetDriftPerpOrderbookResponse,
+    GetDriftUserRequest,
+    GetDriftUserResponse,
+    GetDriftAssetsRequest,
+    GetDriftAssetsResponse,
+    GetDriftPerpContractsResponse,
+    GetDriftPerpContractsRequest,
+    GetDriftOpenPerpOrderRequest,
+    GetDriftOpenPerpOrderResponse,
+    GetDriftOpenMarginOrderRequest,
+    GetDriftOpenMarginOrderResponse,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -159,9 +181,71 @@ export abstract class BaseProvider implements Api {
         }
     }
     // Drift V2
-    getDriftPerpOpenOrders(
-        request: GetDriftPerpOpenOrdersRequest
-    ): RpcReturnType<Promise<GetDriftPerpOpenOrdersResponse>, []> {
+    postCloseDriftPerpPositions(
+        request: PostCloseDriftPerpPositionsRequest
+    ): RpcReturnType<Promise<PostCloseDriftPerpPositionsResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    postCreateDriftUser(
+        request: PostCreateDriftUserRequest
+    ): RpcReturnType<Promise<PostCreateDriftUserResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    postDriftManageCollateral(
+        request: PostDriftManageCollateralRequest
+    ): RpcReturnType<Promise<PostDriftManageCollateralResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    postDriftSettlePNL(
+        request: PostDriftSettlePNLRequest
+    ): RpcReturnType<Promise<PostDriftSettlePNLResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    postDriftSettlePNLs(
+        request: PostDriftSettlePNLsRequest
+    ): RpcReturnType<Promise<PostDriftSettlePNLsResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    postLiquidateDriftPerp(
+        request: PostLiquidateDriftPerpRequest
+    ): RpcReturnType<Promise<PostLiquidateDriftPerpResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    getDriftPerpOrderbook(
+        request: GetDriftPerpOrderbookRequest
+    ): RpcReturnType<Promise<GetDriftPerpOrderbookResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    getDriftUser(
+        request: GetDriftUserRequest
+    ): RpcReturnType<Promise<GetDriftUserResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    getDriftAssets(
+        request: GetDriftAssetsRequest
+    ): RpcReturnType<Promise<GetDriftAssetsResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    getDriftPerpContracts(
+        request: GetDriftPerpContractsRequest
+    ): RpcReturnType<Promise<GetDriftPerpContractsResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    getDriftOpenPerpOrder(
+        request: GetDriftOpenPerpOrderRequest
+    ): RpcReturnType<Promise<GetDriftOpenPerpOrderResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    getDriftOpenMarginOrder(
+        request: GetDriftOpenMarginOrderRequest
+    ): RpcReturnType<Promise<GetDriftOpenMarginOrderResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    getDriftOpenPerpOrders(
+        request: GetDriftOpenPerpOrdersRequest
+    ): RpcReturnType<Promise<GetDriftOpenPerpOrdersResponse>, []> {
         throw new Error("Method not implemented.")
     }
     getDriftPerpPositions(
@@ -343,14 +427,6 @@ export abstract class BaseProvider implements Api {
         request: GetPerpOrderbooksRequest
     ): RpcReturnType<
         AsyncGenerator<GetPerpOrderbooksStreamResponse, any, unknown>,
-        []
-    > {
-        throw new Error("Method not implemented.")
-    }
-    getNewPerpOrdersStream(
-        request: GetNewPerpOrdersStreamRequest
-    ): RpcReturnType<
-        AsyncGenerator<GetNewPerpOrdersStreamResponse, any, unknown>,
         []
     > {
         throw new Error("Method not implemented.")
