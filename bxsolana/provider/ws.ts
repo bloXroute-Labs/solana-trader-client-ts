@@ -148,6 +148,21 @@ import {
     GetDriftOpenPerpOrderResponse,
     GetDriftOpenMarginOrderRequest,
     GetDriftOpenMarginOrderResponse,
+    GetMarketDepthRequestV2,
+    GetMarketDepthResponseV2,
+    GetMarketsRequestV2,
+    GetMarketsResponseV2,
+    GetOpenOrdersRequestV2,
+    GetOrderbookRequestV2,
+    GetOrderbookResponseV2,
+    GetTickersRequestV2,
+    GetTickersResponseV2,
+    GetUnsettledRequestV2,
+    PostCancelOrderRequestV2,
+    PostCancelOrderResponseV2,
+    PostOrderRequestV2,
+    PostReplaceOrderRequestV2,
+    PostSettleRequestV2,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -330,6 +345,67 @@ export class WsProvider extends BaseProvider {
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
     // End of Drift V2
+
+    // Oenbook V2
+    async getOrderbookV2(
+        request: GetOrderbookRequestV2
+    ): Promise<GetOrderbookResponseV2> {
+        return await this.wsConnection.call("GetOrderbookV2", request)
+    }
+
+    async getMarketDepthV2(
+        request: GetMarketDepthRequestV2
+    ): Promise<GetMarketDepthResponseV2> {
+        return await this.wsConnection.call("GetMarketDepthV2", request)
+    }
+
+    async getMarketsV2(
+        request: GetMarketsRequestV2
+    ): Promise<GetMarketsResponseV2> {
+        return await this.wsConnection.call("GetMarketsV2", request)
+    }
+
+    async getTickersV2(
+        request: GetTickersRequestV2
+    ): Promise<GetTickersResponseV2> {
+        return await this.wsConnection.call("GetTickersV2", request)
+    }
+
+    async getOpenOrdersV2(
+        request: GetOpenOrdersRequestV2
+    ): Promise<GetOpenOrdersResponse> {
+        return await this.wsConnection.call("GetOpenOrdersV2", request)
+    }
+
+    async getUnsettledV2(
+        request: GetUnsettledRequestV2
+    ): Promise<GetUnsettledResponse> {
+        return await this.wsConnection.call("GetUnsettledV2", request)
+    }
+
+    async postOrderV2(request: PostOrderRequestV2): Promise<PostOrderResponse> {
+        return this.wsConnection.call("PostOrderV2", request)
+    }
+
+    async postCancelOrderV2(
+        request: PostCancelOrderRequestV2
+    ): Promise<PostCancelOrderResponseV2> {
+        return this.wsConnection.call("PostCancelOrderV2", request)
+    }
+
+    async postSettleV2(
+        request: PostSettleRequestV2
+    ): Promise<PostSettleResponse> {
+        return this.wsConnection.call("PostSettleV2", request)
+    }
+
+    async postReplaceOrderV2(
+        request: PostReplaceOrderRequestV2
+    ): Promise<PostOrderResponse> {
+        return this.wsConnection.call("PostReplaceOrderV2", request)
+    }
+
+    //End  of Openbook V2
 
     async getOrderbook(
         request: GetOrderbookRequest
