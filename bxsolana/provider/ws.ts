@@ -163,6 +163,24 @@ import {
     PostOrderRequestV2,
     PostReplaceOrderRequestV2,
     PostSettleRequestV2,
+    GetJupiterPricesRequest,
+    GetJupiterPricesResponse,
+    GetJupiterQuotesRequest,
+    GetJupiterQuotesResponse,
+    PostJupiterRouteSwapRequest,
+    PostJupiterRouteSwapResponse,
+    PostJupiterSwapRequest,
+    PostJupiterSwapResponse,
+    PostRaydiumRouteSwapRequest,
+    PostRaydiumRouteSwapResponse,
+    PostRaydiumSwapRequest,
+    PostRaydiumSwapResponse,
+    GetRaydiumPoolsRequest,
+    GetRaydiumPoolsResponse,
+    GetRaydiumPricesRequest,
+    GetRaydiumPricesResponse,
+    GetRaydiumQuotesRequest,
+    GetRaydiumQuotesResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -200,6 +218,60 @@ export class WsProvider extends BaseProvider {
         this.wsConnection.close()
     }
 
+    async getJupiterPrices(
+        request: GetJupiterPricesRequest
+    ): RpcReturnType<Promise<GetJupiterPricesResponse>, []> {
+        return await this.wsConnection.call("GetJupiterPrices", request)
+    }
+
+    async getJupiterQuotes(
+        request: GetJupiterQuotesRequest
+    ): RpcReturnType<Promise<GetJupiterQuotesResponse>, []> {
+        return await this.wsConnection.call("GetJupiterQuotes", request)
+    }
+
+    async postJupiterRouteSwap(
+        request: PostJupiterRouteSwapRequest
+    ): RpcReturnType<Promise<PostJupiterRouteSwapResponse>, []> {
+        return await this.wsConnection.call("PostJupiterRouteSwap", request)
+    }
+
+    async postJupiterSwap(
+        request: PostJupiterSwapRequest
+    ): RpcReturnType<Promise<PostJupiterSwapResponse>, []> {
+        return await this.wsConnection.call("PostJupiterSwap", request)
+    }
+
+    async postRaydiumRouteSwap(
+        request: PostRaydiumRouteSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumRouteSwapResponse>, []> {
+        return await this.wsConnection.call("PostRaydiumRouteSwap", request)
+    }
+
+    async postRaydiumSwap(
+        request: PostRaydiumSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumSwapResponse>, []> {
+        return await this.wsConnection.call("PostRaydiumSwap", request)
+    }
+
+    async getRaydiumPools(
+        request: GetRaydiumPoolsRequest
+    ): RpcReturnType<Promise<GetRaydiumPoolsResponse>, []> {
+        return await this.wsConnection.call("GetRaydiumPools", request)
+    }
+
+    async getRaydiumPrices(
+        request: GetRaydiumPricesRequest
+    ): RpcReturnType<Promise<GetRaydiumPricesResponse>, []> {
+        return await this.wsConnection.call("GetRaydiumPrices", request)
+    }
+
+    async getRaydiumQuotes(
+        request: GetRaydiumQuotesRequest
+    ): RpcReturnType<Promise<GetRaydiumQuotesResponse>, []> {
+        return await this.wsConnection.call("GetRaydiumQuotes", request)
+    }
+
     // Drift V2
     async postCloseDriftPerpPositions(
         request: PostCloseDriftPerpPositionsRequest
@@ -209,11 +281,13 @@ export class WsProvider extends BaseProvider {
             request
         )
     }
+
     async postCreateDriftUser(
         request: PostCreateDriftUserRequest
     ): RpcReturnType<Promise<PostCreateDriftUserResponse>, []> {
         return await this.wsConnection.call("PostCreateDriftUser", request)
     }
+
     async postDriftManageCollateral(
         request: PostDriftManageCollateralRequest
     ): RpcReturnType<Promise<PostDriftManageCollateralResponse>, []> {
@@ -222,76 +296,91 @@ export class WsProvider extends BaseProvider {
             request
         )
     }
+
     async postDriftSettlePNL(
         request: PostDriftSettlePNLRequest
     ): RpcReturnType<Promise<PostDriftSettlePNLResponse>, []> {
         return await this.wsConnection.call("PostDriftSettlePNL", request)
     }
+
     async postDriftSettlePNLs(
         request: PostDriftSettlePNLsRequest
     ): RpcReturnType<Promise<PostDriftSettlePNLsResponse>, []> {
         return await this.wsConnection.call("PostDriftSettlePNLs", request)
     }
+
     async postLiquidateDriftPerp(
         request: PostLiquidateDriftPerpRequest
     ): RpcReturnType<Promise<PostLiquidateDriftPerpResponse>, []> {
         return await this.wsConnection.call("PostLiquidateDriftPerp", request)
     }
+
     async getDriftPerpOrderbook(
         request: GetDriftPerpOrderbookRequest
     ): RpcReturnType<Promise<GetDriftPerpOrderbookResponse>, []> {
         return await this.wsConnection.call("GetDriftPerpOrderbook", request)
     }
+
     async getDriftUser(
         request: GetDriftUserRequest
     ): RpcReturnType<Promise<GetDriftUserResponse>, []> {
         return await this.wsConnection.call("GetDriftUser", request)
     }
+
     async getDriftAssets(
         request: GetDriftAssetsRequest
     ): RpcReturnType<Promise<GetDriftAssetsResponse>, []> {
         return await this.wsConnection.call("GetDriftAssets", request)
     }
+
     async getDriftPerpContracts(
         request: GetDriftPerpContractsRequest
     ): RpcReturnType<Promise<GetDriftPerpContractsResponse>, []> {
         return await this.wsConnection.call("GetDriftPerpContracts", request)
     }
+
     async getDriftOpenPerpOrder(
         request: GetDriftOpenPerpOrderRequest
     ): RpcReturnType<Promise<GetDriftOpenPerpOrderResponse>, []> {
         return await this.wsConnection.call("GetDriftOpenPerpOrder", request)
     }
+
     async getDriftOpenMarginOrder(
         request: GetDriftOpenMarginOrderRequest
     ): RpcReturnType<Promise<GetDriftOpenMarginOrderResponse>, []> {
         return await this.wsConnection.call("GetDriftOpenMarginOrder", request)
     }
+
     async getDriftOpenPerpOrders(
         request: GetDriftOpenPerpOrdersRequest
     ): RpcReturnType<Promise<GetDriftOpenPerpOrdersResponse>, []> {
         return await this.wsConnection.call("GetDriftOpenPerpOrders", request)
     }
+
     async getDriftPerpPositions(
         request: GetDriftPerpPositionsRequest
     ): RpcReturnType<Promise<GetDriftPerpPositionsResponse>, []> {
         return await this.wsConnection.call("GetDriftPerpPositions", request)
     }
+
     async postDriftCancelPerpOrder(
         request: PostDriftCancelPerpOrderRequest
     ): RpcReturnType<Promise<PostDriftCancelPerpOrderResponse>, []> {
         return await this.wsConnection.call("PostDriftCancelPerpOrder", request)
     }
+
     async getDriftOpenMarginOrders(
         request: GetDriftOpenMarginOrdersRequest
     ): RpcReturnType<Promise<GetDriftOpenMarginOrdersResponse>, []> {
         return await this.wsConnection.call("GetDriftOpenMarginOrders", request)
     }
+
     async postModifyDriftOrder(
         request: PostModifyDriftOrderRequest
     ): RpcReturnType<Promise<PostModifyDriftOrderResponse>, []> {
         return await this.wsConnection.call("PostModifyDriftOrder", request)
     }
+
     async postCancelDriftMarginOrder(
         request: PostCancelDriftMarginOrderRequest
     ): RpcReturnType<Promise<PostCancelDriftMarginOrderResponse>, []> {
@@ -300,6 +389,7 @@ export class WsProvider extends BaseProvider {
             request
         )
     }
+
     async getDriftMarkets(
         request: GetDriftMarketsRequest
     ): RpcReturnType<Promise<GetDriftMarketsResponse>, []> {

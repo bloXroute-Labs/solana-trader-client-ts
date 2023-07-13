@@ -487,6 +487,38 @@ async function doAmmRequests(provider: BaseProvider) {
     await callPostRouteTradeSwap(provider)
     console.info(" ")
     console.info(" ")
+
+    await callGetRaydiumPrices(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetJupiterPrices(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetRaydiumPools(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetRaydiumQuotes(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetJupiterQuotes(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostRaydiumSwap(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostJupiterSwap(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostRaydiumRouteSwap(provider)
+    console.info(" ")
+    console.info(" ")
 }
 
 async function doStreams(provider: BaseProvider) {
@@ -869,10 +901,30 @@ async function callGetPrices(provider: BaseProvider) {
     console.info(resp)
 }
 
+async function callGetRaydiumPrices(provider: BaseProvider) {
+    console.info("Retrieving Raydium price")
+    const resp = await provider.getRaydiumPrices({ tokens: ["SOL", "USDT"] })
+    console.info(resp)
+}
+
+async function callGetJupiterPrices(provider: BaseProvider) {
+    console.info("Retrieving Jupiter price")
+    const resp = await provider.getJupiterPrices({ tokens: ["SOL", "USDT"] })
+    console.info(resp)
+}
+
 async function callGetPools(provider: BaseProvider) {
     console.info("Retrieving pools")
     const resp = await provider.getPools({
         projects: ["P_RAYDIUM"],
+        pairOrAddress: "",
+    })
+    console.info(resp)
+}
+
+async function callGetRaydiumPools(provider: BaseProvider) {
+    console.info("Retrieving Raydium pools")
+    const resp = await provider.getRaydiumPools({
         pairOrAddress: "",
     })
     console.info(resp)
@@ -887,6 +939,30 @@ async function callGetQuotes(provider: BaseProvider) {
         slippage: 5,
         limit: 5,
         projects: ["P_RAYDIUM", "P_JUPITER"],
+    })
+    console.info(resp)
+}
+
+async function callGetJupiterQuotes(provider: BaseProvider) {
+    console.info("Retrieving Jupiter quotes")
+    const resp = await provider.getJupiterQuotes({
+        inToken: "SOL",
+        outToken: "USDT",
+        inAmount: 1,
+        slippage: 5,
+        limit: 5,
+    })
+    console.info(resp)
+}
+
+async function callGetRaydiumQuotes(provider: BaseProvider) {
+    console.info("Retrieving Raydium quotes")
+    const resp = await provider.getRaydiumQuotes({
+        inToken: "SOL",
+        outToken: "USDT",
+        inAmount: 1,
+        slippage: 5,
+        limit: 5,
     })
     console.info(resp)
 }
@@ -1729,6 +1805,30 @@ async function callPostTradeSwap(provider: BaseProvider) {
     console.info(response)
 }
 
+async function callPostRaydiumSwap(provider: BaseProvider) {
+    console.info("Generating a Raydium swap")
+    const response = await provider.postRaydiumSwap({
+        ownerAddress: ownerAddress,
+        inToken: "USDT",
+        outToken: "SOL",
+        inAmount: 0.01,
+        slippage: 0.1,
+    })
+    console.info(response)
+}
+
+async function callPostJupiterSwap(provider: BaseProvider) {
+    console.info("Generating a Jupiter swap")
+    const response = await provider.postJupiterSwap({
+        ownerAddress: ownerAddress,
+        inToken: "USDT",
+        outToken: "SOL",
+        inAmount: 0.01,
+        slippage: 0.1,
+    })
+    console.info(response)
+}
+
 async function callSubmitTradeSwap(provider: BaseProvider) {
     console.info("Submitting a trade swap")
     const responses = await provider.submitTradeSwap(
@@ -1782,6 +1882,35 @@ async function callPostRouteTradeSwap(provider: BaseProvider) {
             },
         ],
         project: "P_RAYDIUM",
+    })
+    console.info(response)
+}
+
+async function callPostRaydiumRouteSwap(provider: BaseProvider) {
+    console.info("Generating a Raydium route swap")
+    const response = await provider.postRaydiumRouteSwap({
+        ownerAddress: ownerAddress,
+        slippage: 10,
+        steps: [
+            {
+                poolAddress: "",
+                inToken: "FIDA",
+                // RAY token address
+                // can be omitted if project.id is specified
+                outToken: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+                inAmount: 0.01,
+                outAmount: 0.007505,
+                outAmountMin: 0.074,
+            },
+            {
+                poolAddress: "",
+                inToken: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+                outToken: "USDT",
+                inAmount: 0.007505,
+                outAmount: 0.004043,
+                outAmountMin: 0.004,
+            },
+        ],
     })
     console.info(response)
 }
