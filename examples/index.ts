@@ -84,8 +84,8 @@ function getRandom() {
 }
 
 async function run() {
-    // console.info("---- STARTING HTTP TESTS ----")
-    // await http()
+    console.info("---- STARTING HTTP TESTS ----")
+    await http()
     console.info("---- STARTING GRPC TESTS ----")
     await grpc()
     console.info("---- STARTING WS TESTS ----")
@@ -123,14 +123,14 @@ async function http() {
         )
     }
 
-    // console.info(" ----  HTTP PERP Requests  ----")
-    // await runPerpRequests(provider)
+    console.info(" ----  HTTP PERP Requests  ----")
+    await runPerpRequests(provider)
 
-    // console.info(" ----  HTTP Requests  ----")
-    // await doOrderbookRequests(provider)
+    console.info(" ----  HTTP Requests  ----")
+    await doOrderbookRequests(provider)
 
-    // console.info(" ----  HTTP Amm Requests  ----")
-    // await doAmmRequests(provider)
+    console.info(" ----  HTTP Amm Requests  ----")
+    await doAmmRequests(provider)
 
     if (runLongExamples) {
         console.info(" ----  HTTP Lifecycle  ----")
@@ -177,21 +177,21 @@ async function grpc() {
         )
     }
 
-    // console.info(" ----  GRPC PERP Requests  ----")
-    // await runPerpRequests(provider)
+    console.info(" ----  GRPC PERP Requests  ----")
+    await runPerpRequests(provider)
 
-    // console.info(" ----  GRPC Requests  ----")
-    // await doOrderbookRequests(provider)
+    console.info(" ----  GRPC Requests  ----")
+    await doOrderbookRequests(provider)
 
-    // console.info(" ----  GRPC Amm Requests  ----")
-    // await doAmmRequests(provider)
+    console.info(" ----  GRPC Amm Requests  ----")
+    await doAmmRequests(provider)
 
-    // if (runStreams) {
-    //     console.info(" ----  GRPC Streams  ----")
-    //     await doStreams(provider)
-    //     console.info(" ----  GRPC Amm Streams  ----")
-    //     await doAmmStreams(provider)
-    // }
+    if (runStreams) {
+        console.info(" ----  GRPC Streams  ----")
+        await doStreams(provider)
+        console.info(" ----  GRPC Amm Streams  ----")
+        await doAmmStreams(provider)
+    }
 
     if (runLongExamples) {
         console.info(" ----  GRPC Cancel All  ----")
@@ -228,21 +228,21 @@ async function ws() {
     }
 
     await provider.connect()
-    // console.info(" ----  WS PERP Requests  ----")
-    // await runPerpRequests(provider)
+    console.info(" ----  WS PERP Requests  ----")
+    await runPerpRequests(provider)
 
-    // console.info(" ----  WS Requests  ----")
-    // await doOrderbookRequests(provider)
+    console.info(" ----  WS Requests  ----")
+    await doOrderbookRequests(provider)
 
-    // console.info(" ----  WS Amm Requests  ----")
-    // await doAmmRequests(provider)
+    console.info(" ----  WS Amm Requests  ----")
+    await doAmmRequests(provider)
 
-    // if (runStreams) {
-    //     console.info(" ----  WS Streams  ----")
-    //     await doStreams(provider)
-    //     console.info(" ----  WS Amm Streams  ----")
-    //     await doAmmStreams(provider)
-    // }
+    if (runStreams) {
+        console.info(" ----  WS Streams  ----")
+        await doStreams(provider)
+        console.info(" ----  WS Amm Streams  ----")
+        await doAmmStreams(provider)
+    }
 
     if (runLongExamples) {
         console.info(" ----  WS Cancel All  ----")
