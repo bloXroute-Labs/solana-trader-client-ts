@@ -121,6 +121,21 @@ import {
     PostDriftSettlePNLsRequest,
     PostLiquidateDriftPerpRequest,
     PostLiquidateDriftPerpResponse,
+    GetMarketDepthRequestV2,
+    GetMarketDepthResponseV2,
+    GetMarketsRequestV2,
+    GetMarketsResponseV2,
+    GetOpenOrdersRequestV2,
+    GetOrderbookRequestV2,
+    GetOrderbookResponseV2,
+    GetTickersRequestV2,
+    GetTickersResponseV2,
+    GetUnsettledRequestV2,
+    PostCancelOrderRequestV2,
+    PostCancelOrderResponseV2,
+    PostOrderRequestV2,
+    PostReplaceOrderRequestV2,
+    PostSettleRequestV2,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -361,6 +376,76 @@ export class HttpProvider extends BaseProvider {
         return this.get<GetDriftMarketDepthResponse>(path)
     }
     // End of Drift V2
+
+    // Openbook V2
+    getOrderbookV2 = (
+        request: GetOrderbookRequestV2
+    ): Promise<GetOrderbookResponseV2> => {
+        const path = `${this.baseUrlV2}/openbook/orderbooks/${request.market}?limit=${request.limit}`
+        return this.get<GetOrderbookResponseV2>(path)
+    }
+
+    getMarketDepthV2(
+        request: GetMarketDepthRequestV2
+    ): Promise<GetMarketDepthResponseV2> {
+        const path = `${this.baseUrlV2}/openbook/depth/${request.market}?limit=${request.limit}`
+        return this.get<GetMarketDepthResponseV2>(path)
+    }
+
+    getMarketsV2(request: GetMarketsRequestV2): Promise<GetMarketsResponseV2> {
+        const path = `${this.baseUrlV2}/openbook/markets`
+        return this.get<GetMarketsResponseV2>(path)
+    }
+
+    getTickersV2(request: GetTickersRequestV2): Promise<GetTickersResponseV2> {
+        const path = `${this.baseUrlV2}/openbook/tickers/${request.market}`
+        return this.get<GetTickersResponseV2>(path)
+    }
+
+    getOpenOrdersV2(
+        request: GetOpenOrdersRequestV2
+    ): Promise<GetOpenOrdersResponse> {
+        const path = `${this.baseUrlV2}/openbook/open-orders/${request.market}?address=${request.address}&limit=${request.limit}&openOrdersAddress=${request.openOrdersAddress}&orderID=${request.orderID}&clientOrderID=${request.clientOrderID}`
+        return this.get<GetOpenOrdersResponse>(path)
+    }
+
+    getUnsettledV2(
+        request: GetUnsettledRequestV2
+    ): Promise<GetUnsettledResponse> {
+        const path = `${this.baseUrlV2}/openbook/unsettled/${request.market}?ownerAddress=${request.ownerAddress}`
+        return this.get<GetUnsettledResponse>(path)
+    }
+
+    postOrderV2(request: PostOrderRequestV2): Promise<PostOrderResponse> {
+        const path = `${this.baseUrlV2}/openbook/place`
+        return this.post<PostOrderRequestV2, PostOrderResponse>(path, request)
+    }
+
+    postCancelOrderV2(
+        request: PostCancelOrderRequestV2
+    ): Promise<PostCancelOrderResponseV2> {
+        const path = `${this.baseUrlV2}/openbook/cancel`
+        return this.post<PostCancelOrderRequestV2, PostCancelOrderResponseV2>(
+            path,
+            request
+        )
+    }
+
+    postSettleV2(request: PostSettleRequestV2): Promise<PostSettleResponse> {
+        const path = `${this.baseUrlV2}/openbook/settle`
+        return this.post<PostSettleRequestV2, PostSettleResponse>(path, request)
+    }
+
+    postReplaceOrderV2(
+        request: PostReplaceOrderRequestV2
+    ): Promise<PostOrderResponse> {
+        const path = `${this.baseUrlV2}/openbook/replace`
+        return this.post<PostReplaceOrderRequestV2, PostOrderResponse>(
+            path,
+            request
+        )
+    }
+    // End of Openbook V2
 
     getOrderbook = (
         request: GetOrderbookRequest

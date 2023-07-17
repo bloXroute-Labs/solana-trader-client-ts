@@ -156,6 +156,21 @@ import {
     GetDriftOpenPerpOrderResponse,
     GetDriftOpenMarginOrderRequest,
     GetDriftOpenMarginOrderResponse,
+    GetMarketDepthRequestV2,
+    GetMarketDepthResponseV2,
+    GetMarketsRequestV2,
+    GetMarketsResponseV2,
+    GetOpenOrdersRequestV2,
+    GetOrderbookRequestV2,
+    GetOrderbookResponseV2,
+    GetTickersRequestV2,
+    GetTickersResponseV2,
+    GetUnsettledRequestV2,
+    PostCancelOrderRequestV2,
+    PostCancelOrderResponseV2,
+    PostOrderRequestV2,
+    PostReplaceOrderRequestV2,
+    PostSettleRequestV2,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -180,6 +195,59 @@ export abstract class BaseProvider implements Api {
             this.privateKey = Keypair.fromSecretKey(base58.decode(privateKey))
         }
     }
+    // Openbook V2
+    getMarketsV2(
+        request: GetMarketsRequestV2
+    ): RpcReturnType<Promise<GetMarketsResponseV2>, []> {
+        throw new Error("Method not implemented.")
+    }
+    getTickersV2(
+        request: GetTickersRequestV2
+    ): RpcReturnType<Promise<GetTickersResponseV2>, []> {
+        throw new Error("Method not implemented.")
+    }
+    getOrderbookV2(
+        request: GetOrderbookRequestV2
+    ): RpcReturnType<Promise<GetOrderbookResponseV2>, []> {
+        throw new Error("Method not implemented.")
+    }
+    getMarketDepthV2(
+        request: GetMarketDepthRequestV2
+    ): RpcReturnType<Promise<GetMarketDepthResponseV2>, []> {
+        throw new Error("Method not implemented.")
+    }
+    postOrderV2(
+        request: PostOrderRequestV2
+    ): RpcReturnType<Promise<PostOrderResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    postCancelOrderV2(
+        request: PostCancelOrderRequestV2
+    ): RpcReturnType<Promise<PostCancelOrderResponseV2>, []> {
+        throw new Error("Method not implemented.")
+    }
+    postReplaceOrderV2(
+        request: PostReplaceOrderRequestV2
+    ): RpcReturnType<Promise<PostOrderResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    postSettleV2(
+        request: PostSettleRequestV2
+    ): RpcReturnType<Promise<PostSettleResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    getOpenOrdersV2(
+        request: GetOpenOrdersRequestV2
+    ): RpcReturnType<Promise<GetOpenOrdersResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    getUnsettledV2(
+        request: GetUnsettledRequestV2
+    ): RpcReturnType<Promise<GetUnsettledResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    // End Openbook V2
+
     // Drift V2
     postCloseDriftPerpPositions(
         request: PostCloseDriftPerpPositionsRequest
@@ -573,6 +641,56 @@ export abstract class BaseProvider implements Api {
     ): Promise<PostSubmitBatchResponse> {
         throw new Error("Not implemented")
     }
+
+    // Openbook V2 util functions
+    async submitOrderV2(
+        request: PostOrderRequestV2,
+        skipPreFlight = false
+    ): Promise<SubmitTransactionResponse> {
+        const res = await this.postOrderV2(request)
+
+        const submitResponse = await this.signAndSubmitTx(
+            res.transaction,
+            skipPreFlight
+        )
+
+        return {
+            signature: submitResponse.signature,
+            openOrdersAccount: res.openOrdersAddress,
+        }
+    }
+
+    async submitCancelOrderV2(
+        request: PostCancelOrderRequestV2,
+        skipPreFlight = false
+    ): Promise<PostSubmitBatchResponse> {
+        const res = await this.postCancelOrderV2(request)
+
+        return this.signAndSubmitTxs(
+            res.transactions,
+            "P_SUBMIT_ALL",
+            skipPreFlight
+        )
+    }
+
+    async submitSettleV2(
+        request: PostSettleRequestV2,
+        skipPreFlight = true
+    ): Promise<PostSubmitResponse> {
+        const res = await this.postSettleV2(request)
+
+        return this.signAndSubmitTx(res.transaction, skipPreFlight)
+    }
+
+    async submitReplaceOrderV2(
+        request: PostReplaceOrderRequestV2,
+        skipPreFlight = true
+    ): Promise<PostSubmitResponse> {
+        const res = await this.postReplaceOrderV2(request)
+
+        return this.signAndSubmitTx(res.transaction, skipPreFlight)
+    }
+    // End of Openbook V2 util functions
 
     async submitOrder(
         request: PostOrderRequest,

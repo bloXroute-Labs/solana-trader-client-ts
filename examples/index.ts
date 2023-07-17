@@ -25,6 +25,9 @@ import {
     TESTNET_API_WS,
     WsProvider,
     signTx,
+    GetOpenOrdersRequestV2,
+    PostCancelOrderRequestV2,
+    PostOrderRequestV2,
 } from "../bxsolana"
 import {
     Keypair,
@@ -47,24 +50,22 @@ const config = loadFromEnv()
 const runLongExamples = process.env.RUN_LIFECYCLE === "true"
 const runStreams = process.env.RUN_STREAMS === "true"
 
-const marketAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"
+const marketAddress = "8BnEgHoWFysVcuFFX7QztDmzuH8r5ZFvyP3sYwn1XTh6"
 const ownerAddress = config.publicKey
 const payerAddress = config.publicKey
-const openOrdersAddress = "4zeos6Mg48sXGVE3XhdSeff72aLrSXayyzAM81QRegGz"
+const openOrdersAddress = "DwoXdF8kjt9RS6yPfpzp1yHBKtFMDpHQPCRgy1JhKgFt"
 const baseTokenWallet = config.publicKey
 const quoteTokenWallet = "4raJjCwLLqw8TciQXYruDEF4YhDkGwoEnwnAdwJSjcgv"
 
-const testOrder: PostOrderRequest = {
+const testOrder: PostOrderRequestV2 = {
     ownerAddress: ownerAddress,
     payerAddress: payerAddress,
     market: "SOLUSDC",
     side: "S_ASK",
-    type: ["OT_LIMIT"],
     amount: 0.1,
     price: 200,
-    openOrdersAddress: "",
-    project: "P_UNKNOWN",
-    clientOrderID: "",
+    openOrdersAddress: openOrdersAddress,
+    clientOrderID: "0",
 }
 
 const transactionWaitTimeS = 60
@@ -750,17 +751,15 @@ async function doHttpLifecycle(provider: BaseProvider) {
 
 async function callGetOrderbook(provider: BaseProvider) {
     console.info("Retrieving orderbook for SOLUSDC market")
-    let req = await provider.getOrderbook({
+    let req = await provider.getOrderbookV2({
         market: "SOLUSDC",
-        project: "P_OPENBOOK",
         limit: 5,
     })
     console.info(req)
 
     console.info("Retrieving orderbook for SOL-USDC market")
-    req = await provider.getOrderbook({
+    req = await provider.getOrderbookV2({
         market: "SOL-USDC",
-        project: "P_OPENBOOK",
         limit: 5,
     })
     console.info(req)
@@ -778,17 +777,15 @@ async function callGetDriftMarginOrderbook(provider: BaseProvider) {
 
 async function callGetMarketDepth(provider: BaseProvider) {
     console.info("Retrieving market depth data for SOLUSDC market")
-    let req = await provider.getMarketDepth({
+    let req = await provider.getMarketDepthV2({
         market: "SOLUSDC",
-        project: "P_OPENBOOK",
         limit: 5,
     })
     console.info(req)
 
     console.info("Retrieving market depth data for SOL-USDC market")
-    req = await provider.getMarketDepth({
+    req = await provider.getMarketDepthV2({
         market: "SOL-USDC",
-        project: "P_OPENBOOK",
         limit: 5,
     })
     console.info(req)
@@ -796,18 +793,19 @@ async function callGetMarketDepth(provider: BaseProvider) {
 
 async function callGetMarkets(provider: BaseProvider) {
     console.info("Retrieving all supported markets")
-    const req = await provider.getMarkets({})
+    const req = await provider.getMarketsV2({})
     console.info(req)
 }
 
 async function callGetOpenOrders(provider: BaseProvider) {
     console.info("Retrieving all open orders in SOLUSDC market")
-    const req = await provider.getOpenOrders({
+    const req = await provider.getOpenOrdersV2({
         market: "SOLUSDC",
-        project: "P_OPENBOOK",
-        address: ownerAddress,
         limit: 0,
+        address: ownerAddress,
         openOrdersAddress: "",
+        orderID: "",
+        clientOrderID: "0",
     })
     console.info(req)
     return req.orders
@@ -815,9 +813,8 @@ async function callGetOpenOrders(provider: BaseProvider) {
 
 async function callGetUnsettled(provider: BaseProvider) {
     console.info("Retrieving unsettled funds in SOLUSDC market")
-    const req = await provider.getUnsettled({
+    const req = await provider.getUnsettledV2({
         market: "SOLUSDC",
-        project: "P_OPENBOOK",
         ownerAddress: ownerAddress,
     })
     console.info(req)
@@ -854,9 +851,8 @@ async function callGetTrades(provider: BaseProvider) {
 
 async function callGetTickers(provider: BaseProvider) {
     console.info("Retrieving tickers for SOL/USDC market ")
-    const req = await provider.getTickers({
+    const req = await provider.getTickersV2({
         market: "SOLUSDC",
-        project: "P_OPENBOOK",
     })
     console.info(req)
 }
@@ -1637,7 +1633,7 @@ async function callPostOrder(provider: BaseProvider) {
         useGrouping: false,
     })
     testOrder.openOrdersAddress = openOrdersAddress
-    const req = await provider.postOrder(testOrder)
+    const req = await provider.postOrderV2(testOrder)
     console.info(req)
 }
 
@@ -1647,18 +1643,19 @@ async function callSubmitOrder(provider: BaseProvider) {
     testOrder.clientOrderID = clientOrderID.toLocaleString("fullwide", {
         useGrouping: false,
     })
-    const req = await provider.submitOrder(testOrder)
+    const req = await provider.submitOrderV2(testOrder)
     console.info(req)
 }
 
 async function callPostCancelByClientOrderID(provider: BaseProvider) {
     console.info("Generating and Cancel by Client Order ID transaction")
-    const req = await provider.postCancelByClientOrderID({
+    const req = await provider.postCancelOrderV2({
         marketAddress: marketAddress,
         ownerAddress: ownerAddress,
         openOrdersAddress: openOrdersAddress,
         clientOrderID: testOrder.clientOrderID,
-        project: "P_OPENBOOK",
+        orderID: "",
+        side: "S_ASK",
     })
     console.info(req)
 }
@@ -1667,38 +1664,40 @@ async function callSubmitCancelByClientOrderID(provider: BaseProvider) {
     console.info(
         "Generating and submitting a Cancel by Client Order ID transaction"
     )
-    const req = await provider.submitCancelOrderByClientOrderID({
-        marketAddress: marketAddress,
-        ownerAddress: ownerAddress,
-        openOrdersAddress: openOrdersAddress,
-        clientOrderID: testOrder.clientOrderID,
-        project: "P_OPENBOOK",
-    })
+    const req = await provider.submitCancelOrderV2(
+        {
+            marketAddress: marketAddress,
+            ownerAddress: ownerAddress,
+            openOrdersAddress: openOrdersAddress,
+            clientOrderID: testOrder.clientOrderID,
+            orderID: "",
+            side: "S_ASK",
+        },
+        true
+    )
     console.info(req)
 }
 
 async function callPostSettleFunds(provider: BaseProvider) {
     console.info("Generating a Settle transaction")
-    const req = await provider.postSettle({
+    const req = await provider.postSettleV2({
         market: marketAddress,
         openOrdersAddress: openOrdersAddress,
         baseTokenWallet: baseTokenWallet,
         quoteTokenWallet: quoteTokenWallet,
         ownerAddress: ownerAddress,
-        project: "P_OPENBOOK",
     })
     console.info(req)
 }
 
 async function callSubmitSettleFunds(provider: BaseProvider) {
     console.info("Generating and submitting a Settle transaction")
-    const req = await provider.submitSettle({
+    const req = await provider.submitSettleV2({
         market: marketAddress,
         openOrdersAddress: openOrdersAddress,
         baseTokenWallet: baseTokenWallet,
         quoteTokenWallet: quoteTokenWallet,
         ownerAddress: ownerAddress,
-        project: "P_OPENBOOK",
     })
     console.info(req)
 }
@@ -1707,13 +1706,13 @@ async function callReplaceByClientOrderID(provider: BaseProvider) {
     console.info(
         "Generating and submitting a Cancel and Replace by Client Order ID transaction"
     )
-    const clientOrderID = getRandom()
-    testOrder.clientOrderID = clientOrderID.toLocaleString("fullwide", {
-        useGrouping: false,
-    })
+
     testOrder.price -= 1
 
-    const req = await provider.submitReplaceByClientOrderID(testOrder)
+    const req = await provider.submitReplaceOrderV2({
+        ...testOrder,
+        orderID: "",
+    })
     console.info(req)
 }
 
@@ -1830,7 +1829,7 @@ async function callReplaceOrder(provider: BaseProvider) {
     })
     testOrder.price -= 1
 
-    const req = await provider.submitReplaceOrder({
+    const req = await provider.submitReplaceOrderV2({
         orderID: "",
         ...testOrder,
     })
@@ -1848,11 +1847,11 @@ async function callCancelAll(provider: BaseProvider) {
 
     // placing orders
     testOrder.clientOrderID = clientOrderID1
-    const resp1 = await provider.submitOrder(testOrder)
+    const resp1 = await provider.submitOrderV2(testOrder)
     console.info(`Order 1 placed ${resp1.signature}`)
 
     testOrder.clientOrderID = clientOrderID2
-    const resp2 = await provider.submitOrder(testOrder)
+    const resp2 = await provider.submitOrderV2(testOrder)
     console.info(`Order 2 placed ${resp2.signature}`)
 
     console.info(
@@ -1860,17 +1859,18 @@ async function callCancelAll(provider: BaseProvider) {
     )
 
     // checking orders placed
-    const openOrdersRequest: GetOpenOrdersRequest = {
+    const openOrdersRequest: GetOpenOrdersRequestV2 = {
         market: marketAddress,
         limit: 0,
         address: ownerAddress,
         openOrdersAddress: "",
-        project: "P_OPENBOOK",
+        orderID: "",
+        clientOrderID: "0",
     }
 
     await delay(transactionWaitTimeS * 1000)
     const openOrdersResponse1: GetOpenOrdersResponse =
-        await provider.getOpenOrders(openOrdersRequest)
+        await provider.getOpenOrdersV2(openOrdersRequest)
 
     let found1 = false
     let found2 = false
@@ -1889,13 +1889,15 @@ async function callCancelAll(provider: BaseProvider) {
     console.info("Both orders placed successfully\n")
 
     // cancelling orders
-    const cancelAllRequest: PostCancelAllRequest = {
-        market: marketAddress,
+    const cancelAllRequest: PostCancelOrderRequestV2 = {
         ownerAddress: ownerAddress,
-        openOrdersAddresses: [openOrdersAddress],
-        project: "P_OPENBOOK",
+        openOrdersAddress: openOrdersAddress,
+        orderID: "",
+        side: "S_UNKNOWN",
+        marketAddress: marketAddress,
+        clientOrderID: "0",
     }
-    const response = await provider.submitCancelAll(cancelAllRequest)
+    const response = await provider.submitCancelOrderV2(cancelAllRequest)
 
     const signatures: string[] = []
     for (const transaction of response.transactions) {
@@ -1913,7 +1915,9 @@ async function callCancelAll(provider: BaseProvider) {
 
     // checking all orders cancelled
     await delay(transactionWaitTimeS * 1000)
-    const openOrdersResponse2 = await provider.getOpenOrders(openOrdersRequest)
+    const openOrdersResponse2 = await provider.getOpenOrdersV2(
+        openOrdersRequest
+    )
 
     if (openOrdersResponse2.orders.length !== 0) {
         console.error(

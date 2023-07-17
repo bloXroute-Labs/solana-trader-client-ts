@@ -158,6 +158,21 @@ import {
     GetDriftOpenPerpOrderResponse,
     GetDriftOpenMarginOrderRequest,
     GetDriftOpenMarginOrderResponse,
+    GetOrderbookRequestV2,
+    GetOrderbookResponseV2,
+    GetMarketDepthRequestV2,
+    GetMarketDepthResponseV2,
+    GetMarketsRequestV2,
+    GetMarketsResponseV2,
+    GetTickersRequestV2,
+    GetTickersResponseV2,
+    GetOpenOrdersRequestV2,
+    GetUnsettledRequestV2,
+    PostOrderRequestV2,
+    PostCancelOrderRequestV2,
+    PostCancelOrderResponseV2,
+    PostSettleRequestV2,
+    PostReplaceOrderRequestV2,
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
@@ -381,6 +396,62 @@ export class GrpcProvider extends BaseProvider {
         return this.client.getDriftMarketDepthsStream(request)
     }
     // End of Drift V2
+
+    // Openbook V2
+    getOrderbookV2 = (
+        request: GetOrderbookRequestV2
+    ): Promise<GetOrderbookResponseV2> => {
+        return this.client.getOrderbookV2(request)
+    }
+
+    getMarketDepthV2(
+        request: GetMarketDepthRequestV2
+    ): Promise<GetMarketDepthResponseV2> {
+        return this.client.getMarketDepthV2(request)
+    }
+
+    getMarketsV2 = (
+        request: GetMarketsRequestV2
+    ): Promise<GetMarketsResponseV2> => {
+        return this.client.getMarketsV2(request)
+    }
+
+    getTickersV2(request: GetTickersRequestV2): Promise<GetTickersResponseV2> {
+        return this.client.getTickersV2(request)
+    }
+
+    getOpenOrdersV2(
+        request: GetOpenOrdersRequestV2
+    ): Promise<GetOpenOrdersResponse> {
+        return this.client.getOpenOrdersV2(request)
+    }
+
+    getUnsettledV2(
+        request: GetUnsettledRequestV2
+    ): Promise<GetUnsettledResponse> {
+        return this.client.getUnsettledV2(request)
+    }
+
+    postOrderV2(request: PostOrderRequestV2): Promise<PostOrderResponse> {
+        return this.client.postOrderV2(request)
+    }
+
+    postCancelOrderV2(
+        request: PostCancelOrderRequestV2
+    ): Promise<PostCancelOrderResponseV2> {
+        return this.client.postCancelOrderV2(request)
+    }
+
+    postSettleV2(request: PostSettleRequestV2): Promise<PostSettleResponse> {
+        return this.client.postSettleV2(request)
+    }
+
+    postReplaceOrderV2(
+        request: PostReplaceOrderRequestV2
+    ): Promise<PostOrderResponse> {
+        return this.client.postReplaceOrderV2(request)
+    }
+    // End of Openbook V2
 
     getOrderbook = (
         request: GetOrderbookRequest
