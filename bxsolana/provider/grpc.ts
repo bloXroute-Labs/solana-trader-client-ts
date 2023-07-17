@@ -168,11 +168,29 @@ import {
     GetTickersResponseV2,
     GetOpenOrdersRequestV2,
     GetUnsettledRequestV2,
-    PostOrderRequestV2,
     PostCancelOrderRequestV2,
     PostCancelOrderResponseV2,
     PostSettleRequestV2,
     PostReplaceOrderRequestV2,
+    GetJupiterPricesRequest,
+    GetJupiterPricesResponse,
+    GetJupiterQuotesRequest,
+    GetJupiterQuotesResponse,
+    GetRaydiumPoolsRequest,
+    GetRaydiumPoolsResponse,
+    GetRaydiumPricesRequest,
+    GetRaydiumPricesResponse,
+    GetRaydiumQuotesRequest,
+    GetRaydiumQuotesResponse,
+    PostJupiterRouteSwapRequest,
+    PostJupiterRouteSwapResponse,
+    PostJupiterSwapRequest,
+    PostJupiterSwapResponse,
+    PostOrderRequestV2,
+    PostRaydiumRouteSwapRequest,
+    PostRaydiumRouteSwapResponse,
+    PostRaydiumSwapRequest,
+    PostRaydiumSwapResponse,
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
@@ -255,6 +273,60 @@ export class GrpcProvider extends BaseProvider {
 
     close = () => {
         this.grpcClient.close()
+    }
+
+    getJupiterPrices(
+        request: GetJupiterPricesRequest
+    ): RpcReturnType<Promise<GetJupiterPricesResponse>, []> {
+        return this.client.getJupiterPrices(request)
+    }
+
+    getJupiterQuotes(
+        request: GetJupiterQuotesRequest
+    ): RpcReturnType<Promise<GetJupiterQuotesResponse>, []> {
+        return this.client.getJupiterQuotes(request)
+    }
+
+    postJupiterRouteSwap(
+        request: PostJupiterRouteSwapRequest
+    ): RpcReturnType<Promise<PostJupiterRouteSwapResponse>, []> {
+        return this.client.postJupiterRouteSwap(request)
+    }
+
+    postJupiterSwap(
+        request: PostJupiterSwapRequest
+    ): RpcReturnType<Promise<PostJupiterSwapResponse>, []> {
+        return this.client.postJupiterSwap(request)
+    }
+
+    postRaydiumRouteSwap(
+        request: PostRaydiumRouteSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumRouteSwapResponse>, []> {
+        return this.client.postRaydiumRouteSwap(request)
+    }
+
+    postRaydiumSwap(
+        request: PostRaydiumSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumSwapResponse>, []> {
+        return this.client.postRaydiumSwap(request)
+    }
+
+    getRaydiumPools(
+        request: GetRaydiumPoolsRequest
+    ): RpcReturnType<Promise<GetRaydiumPoolsResponse>, []> {
+        return this.client.getRaydiumPools(request)
+    }
+
+    getRaydiumPrices(
+        request: GetRaydiumPricesRequest
+    ): RpcReturnType<Promise<GetRaydiumPricesResponse>, []> {
+        return this.client.getRaydiumPrices(request)
+    }
+
+    getRaydiumQuotes(
+        request: GetRaydiumQuotesRequest
+    ): RpcReturnType<Promise<GetRaydiumQuotesResponse>, []> {
+        return this.client.getRaydiumQuotes(request)
     }
 
     // Drift V2

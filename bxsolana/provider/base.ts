@@ -156,6 +156,18 @@ import {
     GetDriftOpenPerpOrderResponse,
     GetDriftOpenMarginOrderRequest,
     GetDriftOpenMarginOrderResponse,
+    PostRaydiumSwapRequest,
+    PostRaydiumSwapResponse,
+    PostRaydiumRouteSwapRequest,
+    PostRaydiumRouteSwapResponse,
+    PostJupiterSwapRequest,
+    PostJupiterSwapResponse,
+    PostJupiterRouteSwapRequest,
+    PostJupiterRouteSwapResponse,
+    GetRaydiumQuotesRequest,
+    GetRaydiumQuotesResponse,
+    GetRaydiumPricesRequest,
+    GetRaydiumPricesResponse,
     GetMarketDepthRequestV2,
     GetMarketDepthResponseV2,
     GetMarketsRequestV2,
@@ -163,14 +175,20 @@ import {
     GetOpenOrdersRequestV2,
     GetOrderbookRequestV2,
     GetOrderbookResponseV2,
+    PostReplaceOrderRequestV2,
+    PostSettleRequestV2,
+    GetRaydiumPoolsRequest,
+    GetRaydiumPoolsResponse,
+    GetJupiterQuotesRequest,
+    GetJupiterQuotesResponse,
+    GetJupiterPricesRequest,
+    GetJupiterPricesResponse,
     GetTickersRequestV2,
     GetTickersResponseV2,
     GetUnsettledRequestV2,
     PostCancelOrderRequestV2,
     PostCancelOrderResponseV2,
     PostOrderRequestV2,
-    PostReplaceOrderRequestV2,
-    PostSettleRequestV2,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -201,52 +219,114 @@ export abstract class BaseProvider implements Api {
     ): RpcReturnType<Promise<GetMarketsResponseV2>, []> {
         throw new Error("Method not implemented.")
     }
-    getTickersV2(
-        request: GetTickersRequestV2
-    ): RpcReturnType<Promise<GetTickersResponseV2>, []> {
+
+    getJupiterPrices(
+        request: GetJupiterPricesRequest
+    ): RpcReturnType<Promise<GetJupiterPricesResponse>, []> {
         throw new Error("Method not implemented.")
     }
-    getOrderbookV2(
-        request: GetOrderbookRequestV2
-    ): RpcReturnType<Promise<GetOrderbookResponseV2>, []> {
+
+    getJupiterQuotes(
+        request: GetJupiterQuotesRequest
+    ): RpcReturnType<Promise<GetJupiterQuotesResponse>, []> {
         throw new Error("Method not implemented.")
     }
+
     getMarketDepthV2(
         request: GetMarketDepthRequestV2
     ): RpcReturnType<Promise<GetMarketDepthResponseV2>, []> {
         throw new Error("Method not implemented.")
     }
-    postOrderV2(
-        request: PostOrderRequestV2
-    ): RpcReturnType<Promise<PostOrderResponse>, []> {
-        throw new Error("Method not implemented.")
-    }
-    postCancelOrderV2(
-        request: PostCancelOrderRequestV2
-    ): RpcReturnType<Promise<PostCancelOrderResponseV2>, []> {
-        throw new Error("Method not implemented.")
-    }
-    postReplaceOrderV2(
-        request: PostReplaceOrderRequestV2
-    ): RpcReturnType<Promise<PostOrderResponse>, []> {
-        throw new Error("Method not implemented.")
-    }
-    postSettleV2(
-        request: PostSettleRequestV2
-    ): RpcReturnType<Promise<PostSettleResponse>, []> {
-        throw new Error("Method not implemented.")
-    }
+
     getOpenOrdersV2(
         request: GetOpenOrdersRequestV2
     ): RpcReturnType<Promise<GetOpenOrdersResponse>, []> {
         throw new Error("Method not implemented.")
     }
+
+    getOrderbookV2(
+        request: GetOrderbookRequestV2
+    ): RpcReturnType<Promise<GetOrderbookResponseV2>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    getRaydiumPools(
+        request: GetRaydiumPoolsRequest
+    ): RpcReturnType<Promise<GetRaydiumPoolsResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    getRaydiumPrices(
+        request: GetRaydiumPricesRequest
+    ): RpcReturnType<Promise<GetRaydiumPricesResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    getRaydiumQuotes(
+        request: GetRaydiumQuotesRequest
+    ): RpcReturnType<Promise<GetRaydiumQuotesResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    getTickersV2(
+        request: GetTickersRequestV2
+    ): RpcReturnType<Promise<GetTickersResponseV2>, []> {
+        throw new Error("Method not implemented.")
+    }
+
     getUnsettledV2(
         request: GetUnsettledRequestV2
     ): RpcReturnType<Promise<GetUnsettledResponse>, []> {
         throw new Error("Method not implemented.")
     }
-    // End Openbook V2
+
+    postCancelOrderV2(
+        request: PostCancelOrderRequestV2
+    ): RpcReturnType<Promise<PostCancelOrderResponseV2>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postJupiterRouteSwap(
+        request: PostJupiterRouteSwapRequest
+    ): RpcReturnType<Promise<PostJupiterRouteSwapResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postJupiterSwap(
+        request: PostJupiterSwapRequest
+    ): RpcReturnType<Promise<PostJupiterSwapResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postOrderV2(
+        request: PostOrderRequestV2
+    ): RpcReturnType<Promise<PostOrderResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postRaydiumRouteSwap(
+        request: PostRaydiumRouteSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumRouteSwapResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postRaydiumSwap(
+        request: PostRaydiumSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumSwapResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postReplaceOrderV2(
+        request: PostReplaceOrderRequestV2
+    ): RpcReturnType<Promise<PostOrderResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postSettleV2(
+        request: PostSettleRequestV2
+    ): RpcReturnType<Promise<PostSettleResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
 
     // Drift V2
     postCloseDriftPerpPositions(

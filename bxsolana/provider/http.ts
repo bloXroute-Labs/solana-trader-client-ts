@@ -136,6 +136,24 @@ import {
     PostOrderRequestV2,
     PostReplaceOrderRequestV2,
     PostSettleRequestV2,
+    GetJupiterPricesRequest,
+    GetJupiterPricesResponse,
+    GetJupiterQuotesRequest,
+    GetJupiterQuotesResponse,
+    PostJupiterRouteSwapRequest,
+    PostJupiterRouteSwapResponse,
+    PostJupiterSwapRequest,
+    PostJupiterSwapResponse,
+    PostRaydiumRouteSwapRequest,
+    PostRaydiumRouteSwapResponse,
+    PostRaydiumSwapRequest,
+    PostRaydiumSwapResponse,
+    GetRaydiumPoolsRequest,
+    GetRaydiumPoolsResponse,
+    GetRaydiumPricesRequest,
+    GetRaydiumPricesResponse,
+    GetRaydiumQuotesRequest,
+    GetRaydiumQuotesResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -168,6 +186,89 @@ export class HttpProvider extends BaseProvider {
 
     close = () => {
         // no need
+    }
+
+    getJupiterPrices(
+        request: GetJupiterPricesRequest
+    ): RpcReturnType<Promise<GetJupiterPricesResponse>, []> {
+        let path = `${this.baseUrlV2}/jupiter/prices`
+        const args = request.tokens.map((v) => `tokens=${v}`).join("&")
+        if (args != "") {
+            path += `?${args}`
+        }
+        return this.get<GetJupiterPricesResponse>(path)
+    }
+
+    getJupiterQuotes(
+        request: GetJupiterQuotesRequest
+    ): RpcReturnType<Promise<GetJupiterQuotesResponse>, []> {
+        const path = `${this.baseUrlV2}/jupiter/quotes?inToken=${request.inToken}&outToken=${request.outToken}&inAmount=${request.inAmount}&slippage=${request.slippage}&limit=${request.limit}`
+        return this.get<GetJupiterQuotesResponse>(path)
+    }
+
+    postJupiterRouteSwap(
+        request: PostJupiterRouteSwapRequest
+    ): RpcReturnType<Promise<PostJupiterRouteSwapResponse>, []> {
+        const path = `${this.baseUrlV2}/jupiter/route-swap`
+        return this.post<
+            PostJupiterRouteSwapRequest,
+            PostJupiterRouteSwapResponse
+        >(path, request)
+    }
+
+    postJupiterSwap(
+        request: PostJupiterSwapRequest
+    ): RpcReturnType<Promise<PostJupiterSwapResponse>, []> {
+        const path = `${this.baseUrlV2}/jupiter/swap`
+        return this.post<PostJupiterSwapRequest, PostJupiterSwapResponse>(
+            path,
+            request
+        )
+    }
+
+    postRaydiumRouteSwap(
+        request: PostRaydiumRouteSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumRouteSwapResponse>, []> {
+        const path = `${this.baseUrlV2}/raydium/route-swap`
+        return this.post<
+            PostRaydiumRouteSwapRequest,
+            PostRaydiumRouteSwapResponse
+        >(path, request)
+    }
+
+    postRaydiumSwap(
+        request: PostRaydiumSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumSwapResponse>, []> {
+        const path = `${this.baseUrlV2}/raydium/swap`
+        return this.post<PostRaydiumSwapRequest, PostRaydiumSwapResponse>(
+            path,
+            request
+        )
+    }
+
+    getRaydiumPools(
+        request: GetRaydiumPoolsRequest
+    ): RpcReturnType<Promise<GetRaydiumPoolsResponse>, []> {
+        const path = `${this.baseUrlV2}/raydium/pools?pairOrAddress=${request.pairOrAddress}`
+        return this.get<GetRaydiumPoolsResponse>(path)
+    }
+
+    getRaydiumPrices(
+        request: GetRaydiumPricesRequest
+    ): RpcReturnType<Promise<GetRaydiumPricesResponse>, []> {
+        let path = `${this.baseUrlV2}/raydium/prices`
+        const args = request.tokens.map((v) => `tokens=${v}`).join("&")
+        if (args != "") {
+            path += `?${args}`
+        }
+        return this.get<GetRaydiumPricesResponse>(path)
+    }
+
+    getRaydiumQuotes(
+        request: GetRaydiumQuotesRequest
+    ): RpcReturnType<Promise<GetRaydiumQuotesResponse>, []> {
+        const path = `${this.baseUrlV2}/raydium/quotes?inToken=${request.inToken}&outToken=${request.outToken}&inAmount=${request.inAmount}&slippage=${request.slippage}&limit=${request.limit}`
+        return this.get<GetRaydiumQuotesResponse>(path)
     }
 
     // Drift V2
