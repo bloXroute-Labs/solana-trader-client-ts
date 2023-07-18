@@ -962,7 +962,6 @@ async function callGetRaydiumQuotes(provider: BaseProvider) {
         outToken: "USDT",
         inAmount: 1,
         slippage: 5,
-        limit: 5,
     })
     console.info(resp)
 }
