@@ -42,6 +42,7 @@ export declare namespace $.api {
     liquidationPrice: number;
     accountAddress: string;
     subAccountID: string;
+    unrealizedPNL: number;
   }
 }
 export type Type = $.api.PerpPosition;
@@ -58,6 +59,7 @@ export function getDefaultValue(): $.api.PerpPosition {
     liquidationPrice: 0,
     accountAddress: "",
     subAccountID: "0",
+    unrealizedPNL: 0,
   };
 }
 
@@ -80,6 +82,7 @@ export function encodeJson(value: $.api.PerpPosition): unknown {
   if (value.liquidationPrice !== undefined) result.liquidationPrice = tsValueToJsonValueFns.double(value.liquidationPrice);
   if (value.accountAddress !== undefined) result.accountAddress = tsValueToJsonValueFns.string(value.accountAddress);
   if (value.subAccountID !== undefined) result.subAccountID = tsValueToJsonValueFns.int64(value.subAccountID);
+  if (value.unrealizedPNL !== undefined) result.unrealizedPNL = tsValueToJsonValueFns.double(value.unrealizedPNL);
   return result;
 }
 
@@ -95,6 +98,7 @@ export function decodeJson(value: any): $.api.PerpPosition {
   if (value.liquidationPrice !== undefined) result.liquidationPrice = jsonValueToTsValueFns.double(value.liquidationPrice);
   if (value.accountAddress !== undefined) result.accountAddress = jsonValueToTsValueFns.string(value.accountAddress);
   if (value.subAccountID !== undefined) result.subAccountID = jsonValueToTsValueFns.int64(value.subAccountID);
+  if (value.unrealizedPNL !== undefined) result.unrealizedPNL = jsonValueToTsValueFns.double(value.unrealizedPNL);
   return result;
 }
 
@@ -158,6 +162,12 @@ export function encodeBinary(value: $.api.PerpPosition): Uint8Array {
     const tsValue = value.subAccountID;
     result.push(
       [10, tsValueToWireValueFns.int64(tsValue)],
+    );
+  }
+  if (value.unrealizedPNL !== undefined) {
+    const tsValue = value.unrealizedPNL;
+    result.push(
+      [11, tsValueToWireValueFns.double(tsValue)],
     );
   }
   return serialize(result);
@@ -236,6 +246,13 @@ export function decodeBinary(binary: Uint8Array): $.api.PerpPosition {
     const value = wireValueToTsValueFns.int64(wireValue);
     if (value === undefined) break field;
     result.subAccountID = value;
+  }
+  field: {
+    const wireValue = wireFields.get(11);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.double(wireValue);
+    if (value === undefined) break field;
+    result.unrealizedPNL = value;
   }
   return result;
 }

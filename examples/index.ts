@@ -344,6 +344,10 @@ async function runPerpRequests(provider: BaseProvider) {
     console.info(" ")
     console.info(" ")
 
+    await callPostDriftPerpOrder(provider)
+    console.info(" ")
+    console.info(" ")
+
     await callGetDriftMarginOrderbook(provider)
     console.info(" ")
     console.info(" ")
@@ -1239,6 +1243,23 @@ async function callPostDriftMarginOrder(provider: BaseProvider) {
         price: 232,
         clientOrderID: "1",
         postOnly: "PO_NONE",
+    })
+    console.info(req)
+}
+
+async function callPostDriftPerpOrder(provider: BaseProvider) {
+    console.info("post drift perp order")
+    const req = await provider.postDriftPerpOrder({
+        ownerAddress: ownerAddress,
+        accountAddress: "",
+        positionSide: "LONG",
+        slippage: 5,
+        type: "LIMIT",
+        contract: "SOL_PERP",
+        amount: 1,
+        price: 232,
+        clientOrderID: "1",
+        postOnly: "NONE",
     })
     console.info(req)
 }

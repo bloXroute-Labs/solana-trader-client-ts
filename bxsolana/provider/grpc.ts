@@ -190,7 +190,7 @@ import {
     PostRaydiumRouteSwapRequest,
     PostRaydiumRouteSwapResponse,
     PostRaydiumSwapRequest,
-    PostRaydiumSwapResponse,
+    PostRaydiumSwapResponse, PostDriftPerpOrderRequest, PostDriftPerpOrderResponse
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
@@ -433,6 +433,12 @@ export class GrpcProvider extends BaseProvider {
         request: PostDriftMarginOrderRequest
     ): RpcReturnType<Promise<PostDriftMarginOrderResponse>, []> {
         return this.client.postDriftMarginOrder(request)
+    }
+
+    postDriftPerpOrder(
+        request: PostDriftPerpOrderRequest
+    ): RpcReturnType<Promise<PostDriftPerpOrderResponse>, []> {
+        return this.client.postDriftPerpOrder(request)
     }
 
     postDriftEnableMarginTrading(

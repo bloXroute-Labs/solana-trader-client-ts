@@ -188,7 +188,7 @@ import {
     GetUnsettledRequestV2,
     PostCancelOrderRequestV2,
     PostCancelOrderResponseV2,
-    PostOrderRequestV2,
+    PostOrderRequestV2, PostDriftPerpOrderResponse, PostDriftPerpOrderRequest
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -430,6 +430,12 @@ export abstract class BaseProvider implements Api {
     postDriftMarginOrder(
         request: PostDriftMarginOrderRequest
     ): RpcReturnType<Promise<PostDriftMarginOrderResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postDriftPerpOrder(
+        request: PostDriftPerpOrderRequest
+    ): RpcReturnType<Promise<PostDriftPerpOrderResponse>, []> {
         throw new Error("Method not implemented.")
     }
 

@@ -169,6 +169,8 @@ export type { Type as PostClosePerpPositionsResponse } from "./PostClosePerpPosi
 export type { Type as PerpPosition } from "./PerpPosition";
 export type { Type as PostPerpOrderRequest } from "./PostPerpOrderRequest";
 export type { Type as PostPerpOrderResponse } from "./PostPerpOrderResponse";
+export type { Type as PostDriftPerpOrderRequest } from "./PostDriftPerpOrderRequest";
+export type { Type as PostDriftPerpOrderResponse } from "./PostDriftPerpOrderResponse";
 export type { Type as PostDriftMarginOrderRequest } from "./PostDriftMarginOrderRequest";
 export type { Type as PostDriftMarginOrderResponse } from "./PostDriftMarginOrderResponse";
 export type { Type as PostDriftEnableMarginTradingRequest } from "./PostDriftEnableMarginTradingRequest";

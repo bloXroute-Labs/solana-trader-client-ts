@@ -28,6 +28,7 @@ export declare namespace $.api {
     notionalValue: number;
     indexPrice: number;
     liquidationPrice: number;
+    unrealizedPNL: number;
   }
 }
 export type Type = $.api.DriftPerpPosition;
@@ -44,6 +45,7 @@ export function getDefaultValue(): $.api.DriftPerpPosition {
     notionalValue: 0,
     indexPrice: 0,
     liquidationPrice: 0,
+    unrealizedPNL: 0,
   };
 }
 
@@ -66,6 +68,7 @@ export function encodeJson(value: $.api.DriftPerpPosition): unknown {
   if (value.notionalValue !== undefined) result.notionalValue = tsValueToJsonValueFns.double(value.notionalValue);
   if (value.indexPrice !== undefined) result.indexPrice = tsValueToJsonValueFns.double(value.indexPrice);
   if (value.liquidationPrice !== undefined) result.liquidationPrice = tsValueToJsonValueFns.double(value.liquidationPrice);
+  if (value.unrealizedPNL !== undefined) result.unrealizedPNL = tsValueToJsonValueFns.double(value.unrealizedPNL);
   return result;
 }
 
@@ -81,6 +84,7 @@ export function decodeJson(value: any): $.api.DriftPerpPosition {
   if (value.notionalValue !== undefined) result.notionalValue = jsonValueToTsValueFns.double(value.notionalValue);
   if (value.indexPrice !== undefined) result.indexPrice = jsonValueToTsValueFns.double(value.indexPrice);
   if (value.liquidationPrice !== undefined) result.liquidationPrice = jsonValueToTsValueFns.double(value.liquidationPrice);
+  if (value.unrealizedPNL !== undefined) result.unrealizedPNL = jsonValueToTsValueFns.double(value.unrealizedPNL);
   return result;
 }
 
@@ -144,6 +148,12 @@ export function encodeBinary(value: $.api.DriftPerpPosition): Uint8Array {
     const tsValue = value.liquidationPrice;
     result.push(
       [10, tsValueToWireValueFns.double(tsValue)],
+    );
+  }
+  if (value.unrealizedPNL !== undefined) {
+    const tsValue = value.unrealizedPNL;
+    result.push(
+      [11, tsValueToWireValueFns.double(tsValue)],
     );
   }
   return serialize(result);
@@ -222,6 +232,13 @@ export function decodeBinary(binary: Uint8Array): $.api.DriftPerpPosition {
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
     result.liquidationPrice = value;
+  }
+  field: {
+    const wireValue = wireFields.get(11);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.double(wireValue);
+    if (value === undefined) break field;
+    result.unrealizedPNL = value;
   }
   return result;
 }
