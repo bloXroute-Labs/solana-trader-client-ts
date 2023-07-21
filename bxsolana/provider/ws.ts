@@ -180,7 +180,9 @@ import {
     GetRaydiumPricesRequest,
     GetRaydiumPricesResponse,
     GetRaydiumQuotesRequest,
-    GetRaydiumQuotesResponse, PostDriftPerpOrderRequest, PostDriftPerpOrderResponse
+    GetRaydiumQuotesResponse,
+    PostDriftPerpOrderRequest,
+    PostDriftPerpOrderResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"

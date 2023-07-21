@@ -188,7 +188,9 @@ import {
     GetUnsettledRequestV2,
     PostCancelOrderRequestV2,
     PostCancelOrderResponseV2,
-    PostOrderRequestV2, PostDriftPerpOrderResponse, PostDriftPerpOrderRequest
+    PostOrderRequestV2,
+    PostDriftPerpOrderResponse,
+    PostDriftPerpOrderRequest,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
