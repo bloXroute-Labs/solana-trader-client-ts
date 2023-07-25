@@ -1,4 +1,5 @@
 .env_private_key
+.bx_api_data.json
 .idea
 # Logs
 logs

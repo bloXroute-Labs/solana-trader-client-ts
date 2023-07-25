@@ -29,7 +29,7 @@
         "./examples/"
     ],
     "scripts": {
-        "start": "node --experimental-specifier-resolution=node --loader ts-node/esm ./examples/benchmark.ts",
+        "start": "node --experimental-specifier-resolution=node --loader ts-node/esm examples/benchmark_bx_api.ts",
         "test": "echo \"No test specified\"",
         "build": "npm run esbuild && npm run types",
         "clean": "rm -rf dist",

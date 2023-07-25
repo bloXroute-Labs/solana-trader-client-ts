@@ -5,19 +5,20 @@ import base58 from "bs58";
 // const bs58 = require('bs58');
 
 // Polling from api
-const dlobApiClient = new DLOBApiClient({
-    url: 'https://dlob.drift.trade/orders/idlWithSlot',
-});
+// const dlobApiClient = new DLOBApiClient({
+//     url: 'https://dlob.drift.trade/orders/idlWithSlot',
+// });
 import {Wallet, loadKeypair, DriftClient} from "@drift-labs/sdk";
 import { readFileSync } from "fs"
-import { MAINNET_API_VIRGINIA_WS, WsProvider } from "../bxsolana"
+import { GetPerpOrderbooksStreamResponse, MAINNET_API_VIRGINIA_WS, WsProvider } from "../bxsolana"
+import * as fs from "fs"
 // const connection = new Connection('https://44.192.126.28:8545');
 // const connection = new Connection('https://api.mainnet-beta.solana.com');
-const connection = new Connection('https://boldest-damp-needle.solana-mainnet.discover.quiknode.pro/747abd1674e918c0611f6e284a0f9f41f7845967');
+// const connection = new Connection('https://boldest-damp-needle.solana-mainnet.discover.quiknode.pro/747abd1674e918c0611f6e284a0f9f41f7845967');
 const authHeader = "ZDIxYzE0NmItZWYxNi00ZmFmLTg5YWUtMzYwMTk4YzUyZmM4OjEwOWE5MzEzZDc2Yjg3MzczYjdjZDdhNmZkZGE3ZDg5"
 const httpHeaders = { Authorization: authHeader }
-// const connection = new Connection('https://virginia.solana.dex.blxrbdn.com',
-//     {httpHeaders});
+const connection = new Connection('https://virginia.solana.dex.blxrbdn.com',
+    {httpHeaders});
 
 const slotSubscriber = new SlotSubscriber(connection);
 const wallet = new Wallet(Keypair.fromSecretKey(
@@ -29,22 +30,54 @@ const provider = new WsProvider(
     readFileSync("./.env_private_key").toString(),
     MAINNET_API_VIRGINIA_WS
 )
-// await provider.connect()
-// console.info("Retrieving Drift orderbook for SOL-PERP market")
-// const req = await provider.getDriftPerpOrderbook({
-//     contract: "SOL_PERP",
-//     limit: 5,
-// })
-// console.info(req)
+await provider.connect()
+console.info("Retrieving Drift orderbook for SOL-PERP market")
 
-const driftClient = new DriftClient({
-    connection,
-    wallet,
-    env: 'mainnet-beta',
-});
+const req = await provider.getPerpOrderbooksStream({
+    contracts: ["SOL_PERP"],
+    project: "P_DRIFT",
+    limit: 0,
+})
 
-console.log("before driftClient.subscribe()")
-await driftClient.subscribe();
+interface WrappedObject {
+    timestamp: number;
+    data: GetPerpOrderbooksStreamResponse;
+}
+
+const data: WrappedObject[] = [];
+let count = 0
+for await (const ob of req) {
+    console.info(ob)
+    count++
+    const wrappedObject: WrappedObject = {
+        timestamp: Date.now(),
+        data: ob,
+    };
+
+    data.push(wrappedObject);
+    if (count == 20) {
+        break
+    }
+}
+
+const filePath = 'bx_api_data.json';
+const updatedDataJSON = JSON.stringify(data, null, 2); // The third argument (2) adds indentation for readability (optional)
+fs.writeFileSync(filePath, updatedDataJSON, 'utf8');
+
+console.log("finished writing to file")
+
+provider.close()
+
+// }
+
+// const driftClient = new DriftClient({
+//     connection,
+//     wallet,
+//     env: 'mainnet-beta',
+// });
+//
+// console.log("before driftClient.subscribe()")
+// await driftClient.subscribe();
 //
 // console.log("before slotSubscriber.subscribe()")
 // await slotSubscriber.subscribe();
