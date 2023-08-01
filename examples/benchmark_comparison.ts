@@ -70,10 +70,11 @@ function compareResponseMaps(bxTraderApiMap: Map<number, WrappedPerpTradesRespon
                     if (traderApiEvent.data == undefined || driftEvent.data == undefined) {
                         continue
                     }
-                    if (parseInt(traderApiEvent.data.marketIndex, 10) == driftEvent.data.marketIndex &&
-                        (driftEvent.data.maker != null && traderApiEvent.data.maker.toString() == driftEvent.data.maker?.toString()) &&
-                        (driftEvent.data.filler != null && traderApiEvent.data.filler.toString() == driftEvent.data.filler?.toString()) &&
-                        (driftEvent.data.taker != null && traderApiEvent.data.taker.toString() == driftEvent.data.taker?.toString())) {
+                    if (parseInt(traderApiEvent.data.marketIndex, 10) == driftEvent.data.marketIndex) {
+                        // TODO improve this later
+                        // (driftEvent.data.maker != null && traderApiEvent.data.maker.toString() == driftEvent.data.maker?.toString()) &&
+                        // (driftEvent.data.filler != null && traderApiEvent.data.filler.toString() == driftEvent.data.filler?.toString()) &&
+                        // (driftEvent.data.taker != null && traderApiEvent.data.taker.toString() == driftEvent.data.taker?.toString())) {
                         // parseInt(traderApiEvent.data.takerOrderID, 10) == driftEvent.data.takerOrderId) {
                         // parseInt(traderApiEvent.data.makerOrderID, 10) == driftEvent.data.makerOrderId) {
                         console.log("comparing matching records, driftEvent.ts : " + driftEvent.ts +
