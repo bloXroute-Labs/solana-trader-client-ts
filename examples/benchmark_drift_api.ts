@@ -131,18 +131,10 @@ eventSubscriber.eventEmitter.on('newEvent', (event) => {
     const val: WrappedDriftEvent[] | undefined = mapOfData.get(slot);
     if (val !== undefined) {
         val.push(wrappedItem);
-        // console.log("val1 : " + JSON.stringify(val));
         mapOfData.set(slot, val);
     } else {
         const val = [wrappedItem]
         mapOfData.set(slot, val);
-        if (mapOfData.has(slot)) {
-            // console.log("mapOfData has : " + JSON.stringify(mapOfData.get(slot)));
-        }
-        //console.log("val : " + JSON.stringify(val));
     }
-
-    // console.log("mapOfData set : " + JSON.stringify(mapOfData.get(slot)));
-    // console.log("mapOfData : " + JSON.stringify(mapOfData));
 });
 
