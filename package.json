@@ -29,8 +29,9 @@
         "./examples/"
     ],
     "scripts": {
-        "start": "node --experimental-specifier-resolution=node --loader ts-node/esm examples/benchmark_bx_api.ts",
-        "start_drift": "node --experimental-specifier-resolution=node --loader ts-node/esm examples/benchmark_drift_api.ts",
+        "start_trader_api": "node --experimental-specifier-resolution=node --loader ts-node/esm examples/benchmark_bx_api.ts 100",
+        "start_drift": "node --experimental-specifier-resolution=node --loader ts-node/esm examples/benchmark_drift_api.ts 100",
+        "run_comparison": "node --experimental-specifier-resolution=node --loader ts-node/esm examples/benchmark_comparison.ts",
         "test": "echo \"No test specified\"",
         "build": "npm run esbuild && npm run types",
         "clean": "rm -rf dist",
@@ -71,7 +72,7 @@
         "ws": "^8.8.0"
     },
     "devDependencies": {
-        "@drift-labs/sdk": "^2.35.1-beta.1",
+        "@drift-labs/sdk": "2.36.1-beta.5",
         "@protobuf-ts/plugin": "^2.7.0",
         "@types/google-protobuf": "^3.15.6",
         "@types/node": "^18.7.18",
