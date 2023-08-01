@@ -19,7 +19,6 @@ import {
 } from "../bxsolana"
 import * as fs from "fs"
 import { OrderRecord } from "@drift-labs/sdk/src/index"
-import { Type as GetPerpTradesResponse } from "../bxsolana/proto/messages/api/GetPerpTradesResponse"
 // const connection = new Connection('https://44.192.126.28:8545');
 // const connection = new Connection('https://api.mainnet-beta.solana.com');
 // const connection = new Connection('https://boldest-damp-needle.solana-mainnet.discover.quiknode.pro/747abd1674e918c0611f6e284a0f9f41f7845967');
@@ -41,28 +40,29 @@ const provider = new WsProvider(
 await provider.connect()
 console.info("Retrieving Drift orderbook for SOL-PERP market")
 
-const req = await provider.getPerpTradesStream({
+const req = await provider.getPerpOrderbooksStream({
     contracts: ["SOL_PERP"],
     project: "P_DRIFT",
+    limit: 0,
 })
 
-interface Wrapped {
+interface WrappedPerpOrderbookItem {
     ts: number;
-    data: GetPerpTradesResponse;
+    data: PerpOrderbookItem;
 }
 
-const mapOfData:  Map<number, Wrapped[]> = new Map();
+const mapOfData:  Map<number, WrappedPerpOrderbookItem[]> = new Map();
 let count = 0
 const time = Date.now().valueOf();
 let firstSlot = 0;
 for await (const ob of req) {
     console.log(JSON.stringify(ob));
-    if (ob.trade == undefined) {
+    if (ob.orderbook == undefined) {
         continue
     }
     for (const bid of ob.orderbook.bids) {
 
-        const wrappedItem: Wrapped = {
+        const wrappedItem: WrappedPerpOrderbookItem = {
             ts: time,
             data: bid,
         };
@@ -81,7 +81,7 @@ for await (const ob of req) {
         }
     }
     for (const ask of ob.orderbook.asks) {
-        const wrappedItem: Wrapped = {
+        const wrappedItem: WrappedPerpOrderbookItem = {
             ts: time,
             data: ask,
         };
