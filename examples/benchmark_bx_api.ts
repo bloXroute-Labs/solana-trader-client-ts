@@ -81,7 +81,7 @@ const serializedData :SerializedData = {};
 for (const [key , value] of mapOfData) {
     serializedData[key] = value;
 }
-const updatedDataJSON = JSON.stringify(serializedData);
+const updatedDataJSON = JSON.stringify(serializedData, null, 2);
 await fs.truncate(filePath, (err) => {
     if (err) {
         console.error('Error deleting old content:', err);

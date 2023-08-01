@@ -122,9 +122,9 @@ eventSubscriber.eventEmitter.on('newEvent', (event) => {
                 for (const [key , value] of mapOfData) {
                     serializedData[key] = value;
                 }
-                const updatedDataJSON = JSON.stringify(serializedData); // The third argument (2) adds indentation for readability (optional)
+                const updatedDataJSON = JSON.stringify(serializedData,null, 2);
                 fs.writeFileSync(filePath, updatedDataJSON, 'utf8');
-                console.log("finished writing to file " + filePath + ", updatedDataJSON: " + updatedDataJSON)
+                console.log("finished writing to file " + filePath)
                 process.exit(0);
             }
         });
