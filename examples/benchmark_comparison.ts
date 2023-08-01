@@ -55,7 +55,7 @@ function readDriftFile(filePath: string): Map<number, WrappedDriftEvent[]> {
 let faster = 0;
 let slower = 0;
 let sameTime = 0;
-let notMatching = 0;
+let notOfComparisons = 0;
 let notFound = 0;
 
 function compareResponseMaps(bxTraderApiMap: Map<number, WrappedPerpTradesResponse[]>,
@@ -71,10 +71,12 @@ function compareResponseMaps(bxTraderApiMap: Map<number, WrappedPerpTradesRespon
                         continue
                     }
                     if (parseInt(traderApiEvent.data.marketIndex, 10) == driftEvent.data.marketIndex &&
-                        traderApiEvent.data.filler.toString() == driftEvent.data.filler?.toString() &&
-                        traderApiEvent.data.baseAssetAmountFilled.toString() == driftEvent.data.baseAssetAmountFilled.toString()) {
-                        console.log("comparing matching records, driftEvent.ts : " + driftEvent.ts +
-                            ", traderApiEvent.ts : " + traderApiEvent.ts);
+                        traderApiEvent.data.filler.toString() == driftEvent.data.filler?.toString()
+                        && traderApiEvent.data.baseAssetAmountFilled == (parseInt(driftEvent.data.baseAssetAmountFilled.toString(), 16) / (10 ** 9))
+                    ) {
+                        console.log("comparing matching records diff, faster time : " + (driftEvent.ts - traderApiEvent.ts) / 1000);
+                        notOfComparisons++
+
                         if (traderApiEvent.ts < driftEvent.ts) {
                             faster++;
                         } else if (traderApiEvent.ts > driftEvent.ts ) {
@@ -82,11 +84,10 @@ function compareResponseMaps(bxTraderApiMap: Map<number, WrappedPerpTradesRespon
                         } else {
                             sameTime++
                         }
-                    } else {
-                        notMatching++
                     }
                 }
             }
+
         } else {
             notFound++
         }
@@ -102,5 +103,5 @@ compareResponseMaps(traderApiMap, driftMap)
 console.log("faster : " + faster)
 console.log("slower : " + slower)
 console.log("sameTime : " + sameTime)
-console.log("notMatching : " + notMatching)
+console.log("notOfComparisons : " + notOfComparisons)
 console.log("notFound : " + notFound)

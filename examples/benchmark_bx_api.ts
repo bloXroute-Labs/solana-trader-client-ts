@@ -30,7 +30,7 @@ interface WrappedPerpTradesResponse {
 
 const mapOfData:  Map<number, WrappedPerpTradesResponse[]> = new Map();
 let count = 0
-const time = Date.now().valueOf();
+
 let firstSlot = 0;
 for await (const ob of req) {
     console.log(JSON.stringify(ob));
@@ -40,7 +40,7 @@ for await (const ob of req) {
     }
 
     const wrappedItem: WrappedPerpTradesResponse = {
-        ts: time,
+        ts: Date.now().valueOf(),
         data: ob.trade,
     };
     const slot = parseInt(ob.context.slot, 10);

@@ -35,14 +35,8 @@ const driftClient = new DriftClient({
 });
 
 const slotSubscriber = new SlotSubscriber(connection);
-
-console.log("before driftClient.subscribe()")
 await driftClient.subscribe();
-
-console.log("before slotSubscriber.subscribe()")
 await slotSubscriber.subscribe();
-
-console.log("after slotSubscriber.subscribe()")
 const numberOfSlots = parseInt(process.argv[2], 10);
 console.log("numberOfSlots to check : " + numberOfSlots);
 const dlobSubscriber = new DLOBSubscriber({
