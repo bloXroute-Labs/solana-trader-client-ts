@@ -58,11 +58,10 @@ let sameTime = 0;
 let notOfComparisons = 0;
 let notFound = 0;
 
+const dataArray: { diff: number; slot: number; trader_api_ts: number; drift_api_ts: number; }[] = [];
 function compareResponseMaps(bxTraderApiMap: Map<number, WrappedPerpTradesResponse[]>,
                              driftMap: Map<number, WrappedDriftEvent[]>): boolean {
-
     for (const [key, traderApiEvents] of bxTraderApiMap) {
-        console.log("trader api key " + key);
         const driftEvents = driftMap.get(key);
         if (driftEvents != undefined) {
             for (const traderApiEvent of traderApiEvents) {
@@ -74,7 +73,14 @@ function compareResponseMaps(bxTraderApiMap: Map<number, WrappedPerpTradesRespon
                         traderApiEvent.data.filler.toString() == driftEvent.data.filler?.toString()
                         && traderApiEvent.data.baseAssetAmountFilled == (parseInt(driftEvent.data.baseAssetAmountFilled.toString(), 16) / (10 ** 9))
                     ) {
-                        console.log("comparing matching records diff, faster time : " + (driftEvent.ts - traderApiEvent.ts) / 1000);
+
+                        dataArray.push({
+                            diff : (driftEvent.ts - traderApiEvent.ts) / 1000,
+                            slot: key,
+                            trader_api_ts: traderApiEvent.ts,
+                            drift_api_ts: driftEvent.ts,
+                        })
+
                         notOfComparisons++
 
                         if (traderApiEvent.ts < driftEvent.ts) {
@@ -100,6 +106,7 @@ const traderApiMap = readTraderApiFile(bxTraderApifilePath)
 const driftMap = readDriftFile(driftApiFilePath)
 compareResponseMaps(traderApiMap, driftMap)
 
+console.table(dataArray);
 console.log("faster : " + faster)
 console.log("slower : " + slower)
 console.log("sameTime : " + sameTime)

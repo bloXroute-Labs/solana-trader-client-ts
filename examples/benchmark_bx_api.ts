@@ -47,7 +47,8 @@ for await (const ob of req) {
     if (firstSlot == 0) {
         firstSlot = slot;
     }
-    if (slot >= firstSlot + numberOfSlots) {
+    console.log("slot - firstSlot : " + (slot - firstSlot));
+    if (slot - firstSlot >= numberOfSlots) {
         break
     }
     const val = mapOfData.get(slot);
