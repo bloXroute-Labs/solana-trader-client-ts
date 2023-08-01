@@ -1,28 +1,16 @@
-import { DLOBApiClient, DLOBSubscriber, isVariant, OrderActionRecord } from "@drift-labs/sdk"
-import { Connection, ConnectionConfig, Keypair } from "@solana/web3.js"
-import {SlotSubscriber} from "@drift-labs/sdk";
-import base58 from "bs58";
-
-import {Wallet, loadKeypair, DriftClient} from "@drift-labs/sdk";
-import { readFileSync, WriteFileOptions } from "fs"
+import { readFileSync } from "fs"
 import {
+    loadFromEnv,
     MAINNET_API_VIRGINIA_WS,
     WsProvider
 } from "../bxsolana"
 import * as fs from "fs"
 import { Type as GetPerpTradesResponse } from "../bxsolana/proto/messages/api/GetPerpTradesResponse"
-const authHeader = "ZDIxYzE0NmItZWYxNi00ZmFmLTg5YWUtMzYwMTk4YzUyZmM4OjEwOWE5MzEzZDc2Yjg3MzczYjdjZDdhNmZkZGE3ZDg5"
-const httpHeaders = { Authorization: authHeader }
-const connection = new Connection('https://virginia.solana.dex.blxrbdn.com',
-    {httpHeaders});
 
-const slotSubscriber = new SlotSubscriber(connection);
-const wallet = new Wallet(Keypair.fromSecretKey(
-    base58.decode(readFileSync("./.env_private_key").toString())
-))
+const config = loadFromEnv()
 
 const provider = new WsProvider(
-    authHeader,
+    config.authHeader,
     readFileSync("./.env_private_key").toString(),
     MAINNET_API_VIRGINIA_WS
 )

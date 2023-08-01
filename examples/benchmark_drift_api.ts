@@ -3,15 +3,14 @@ import { Connection, Keypair } from "@solana/web3.js"
 import {SlotSubscriber} from "@drift-labs/sdk";
 import base58 from "bs58";
 
-import {Wallet, loadKeypair, DriftClient} from "@drift-labs/sdk";
+import {Wallet, DriftClient} from "@drift-labs/sdk";
 import { readFileSync } from "fs"
 import * as fs from "fs"
 import {
    OrderActionRecord,
 } from "@drift-labs/sdk/lib"
-import { Event, EventSubscriptionOptions } from "@drift-labs/sdk/src/events/types"
-const authHeader = "ZDIxYzE0NmItZWYxNi00ZmFmLTg5YWUtMzYwMTk4YzUyZmM4OjEwOWE5MzEzZDc2Yjg3MzczYjdjZDdhNmZkZGE3ZDg5"
-const httpHeaders = { Authorization: authHeader }
+import { EventSubscriptionOptions } from "@drift-labs/sdk/src/events/types"
+const httpHeaders = { }
 const connection = new Connection('https://proud-fabled-crater.solana-mainnet.quiknode.pro/e3bfb432b5b982fb3e296b8fd1ec3a2d91124d76/',
     {httpHeaders});
 const wallet = new Wallet(Keypair.fromSecretKey(
