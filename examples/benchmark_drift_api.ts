@@ -37,8 +37,8 @@ const driftClient = new DriftClient({
 const slotSubscriber = new SlotSubscriber(connection);
 await driftClient.subscribe();
 await slotSubscriber.subscribe();
-const numberOfSlots = parseInt(process.argv[2], 10);
-console.log("numberOfSlots to check : " + numberOfSlots);
+const numberOfSeconds = parseInt(process.argv[2], 10);
+console.log("numberOfSeconds to check : " + numberOfSeconds);
 const dlobSubscriber = new DLOBSubscriber({
     driftClient,
     dlobSource: dlobApiClient,
@@ -65,7 +65,7 @@ export const options: EventSubscriptionOptions = {
 
 const eventSubscriber = new EventSubscriber(connection, driftClient.program, options);
 await eventSubscriber.subscribe();
-let firstSlot = 0;
+const startTime = Date.now();
 
 interface WrappedDriftEvent {
     ts: number;
@@ -88,12 +88,8 @@ eventSubscriber.eventEmitter.on('newEvent', (event) => {
     event.ts = new BN(Date.now().valueOf());
     console.log("OrderActionRecord: " + JSON.stringify(e));
 
-    if (firstSlot == 0) {
-        firstSlot = slot;
-    }
-
-    console.log("slot - firstSlot : " + (slot - firstSlot));
-    if (slot - firstSlot >= numberOfSlots) {
+    console.log("checking time : " + (Date.now() - startTime) / 1000);
+    if ((Date.now() - startTime) / 1000 >= numberOfSeconds) {
         eventSubscriber.eventEmitter.removeAllListeners('newEvent');
         eventSubscriber.eventEmitter.removeListener('newEvent', (event) => {
             console.log("newEvent Listener removed");

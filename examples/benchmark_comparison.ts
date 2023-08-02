@@ -1,10 +1,6 @@
-import { DLOBApiClient, DLOBSubscriber, OrderActionRecord } from "@drift-labs/sdk"
-import { Connection, ConnectionConfig, Keypair } from "@solana/web3.js"
-import {SlotSubscriber} from "@drift-labs/sdk";
-import base58 from "bs58";
-
-import {Wallet, loadKeypair, DriftClient} from "@drift-labs/sdk";
-import { readFileSync } from "fs"
+import { OrderActionRecord } from "@drift-labs/sdk"
+import { Connection} from "@solana/web3.js"
+import moment from 'moment';
 import * as fs from "fs"
 import { Type as GetPerpTradesResponse } from "../bxsolana/proto/messages/api/GetPerpTradesResponse"
 const authHeader = "ZDIxYzE0NmItZWYxNi00ZmFmLTg5YWUtMzYwMTk4YzUyZmM4OjEwOWE5MzEzZDc2Yjg3MzczYjdjZDdhNmZkZGE3ZDg5"
@@ -58,7 +54,7 @@ let sameTime = 0;
 let notOfComparisons = 0;
 let notFound = 0;
 
-const dataArray: { diff: number; slot: number; trader_api_ts: number; drift_api_ts: number; }[] = [];
+const dataArray: { diff: number; slot: number; trader_api_ts: string; drift_api_ts: string; }[] = [];
 function compareResponseMaps(bxTraderApiMap: Map<number, WrappedPerpTradesResponse[]>,
                              driftMap: Map<number, WrappedDriftEvent[]>): boolean {
     for (const [key, traderApiEvents] of bxTraderApiMap) {
@@ -73,12 +69,14 @@ function compareResponseMaps(bxTraderApiMap: Map<number, WrappedPerpTradesRespon
                         traderApiEvent.data.filler.toString() == driftEvent.data.filler?.toString()
                         && traderApiEvent.data.baseAssetAmountFilled == (parseInt(driftEvent.data.baseAssetAmountFilled.toString(), 16) / (10 ** 9))
                     ) {
+                        const driftEventFormatted = moment(new Date(driftEvent.ts)).format('DD-MM-YYYY HH:mm:ss');
+                        const traderApiEventFormatted = moment(new Date(traderApiEvent.ts)).format('DD-MM-YYYY HH:mm:ss');
 
                         dataArray.push({
                             diff : (driftEvent.ts - traderApiEvent.ts) / 1000,
                             slot: key,
-                            trader_api_ts: traderApiEvent.ts,
-                            drift_api_ts: driftEvent.ts,
+                            trader_api_ts: traderApiEventFormatted,
+                            drift_api_ts: driftEventFormatted,
                         })
 
                         notOfComparisons++

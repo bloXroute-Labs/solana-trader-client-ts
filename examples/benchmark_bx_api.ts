@@ -15,8 +15,8 @@ const provider = new WsProvider(
     MAINNET_API_VIRGINIA_WS
 )
 await provider.connect()
-const numberOfSlots = parseInt(process.argv[2], 10);
-console.log("numberOfSlots to check : " + numberOfSlots);
+const numberOfSeconds = parseInt(process.argv[2], 10);
+console.log("numberOfSeconds to check : " + numberOfSeconds);
 
 const req = await provider.getPerpTradesStream({
     contracts: ["ALL"],
@@ -31,7 +31,7 @@ interface WrappedPerpTradesResponse {
 const mapOfData:  Map<number, WrappedPerpTradesResponse[]> = new Map();
 let count = 0
 
-let firstSlot = 0;
+const startTime = Date.now();
 for await (const ob of req) {
     console.log(JSON.stringify(ob));
 
@@ -40,15 +40,12 @@ for await (const ob of req) {
     }
 
     const wrappedItem: WrappedPerpTradesResponse = {
-        ts: Date.now().valueOf(),
+        ts: Date.now(),
         data: ob.trade,
     };
     const slot = parseInt(ob.context.slot, 10);
-    if (firstSlot == 0) {
-        firstSlot = slot;
-    }
-    console.log("slot - firstSlot : " + (slot - firstSlot));
-    if (slot - firstSlot >= numberOfSlots) {
+    console.log("checking time : " + (Date.now() - startTime) / 1000);
+    if ((Date.now() - startTime) / 1000 >= numberOfSeconds) {
         break
     }
     const val = mapOfData.get(slot);
