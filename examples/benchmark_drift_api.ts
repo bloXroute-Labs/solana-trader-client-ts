@@ -24,6 +24,18 @@ process
         console.log("Uncaught Exception thrown", err)
     })
 
+const filePath = 'drift_api_data.json';
+console.log("truncating file " + filePath);
+await fs.truncate(filePath, (err) => {
+    if (err) {
+        console.error('Error deleting old content:', err);
+    } else {
+        console.log('Old content deleted.');
+
+
+    }
+});
+
 const dlobApiClient = new DLOBApiClient({
     url: 'https://dlob.drift.trade/orders/idlWithSlot',
 });
@@ -73,6 +85,21 @@ interface WrappedDriftEvent {
 }
 const mapOfData:  Map<number, WrappedDriftEvent[]> = new Map();
 
+function writeToFile() {
+    type SerializedData = {
+        [key: number]: WrappedDriftEvent[];
+    };
+
+    const serializedData :SerializedData = {};
+
+    for (const [key , value] of mapOfData) {
+        serializedData[key] = value;
+    }
+    const updatedDataJSON = JSON.stringify(serializedData,null, 2);
+    fs.writeFileSync(filePath, updatedDataJSON, 'utf8');
+    console.log("finished writing to file " + filePath)
+}
+
 eventSubscriber.eventEmitter.on('newEvent', (event) => {
 
     const e = event as OrderActionRecord
@@ -95,29 +122,12 @@ eventSubscriber.eventEmitter.on('newEvent', (event) => {
             console.log("newEvent Listener removed");
         });
 
-        const filePath = 'drift_api_data.json';
-        console.log("truncating file " + filePath);
-        fs.truncate(filePath, (err) => {
-            if (err) {
-                console.error('Error deleting old content:', err);
-            } else {
-                console.log('Old content deleted.');
-                type SerializedData = {
-                    [key: number]: WrappedDriftEvent[];
-                };
 
-                const serializedData :SerializedData = {};
-
-                for (const [key , value] of mapOfData) {
-                    serializedData[key] = value;
-                }
-                const updatedDataJSON = JSON.stringify(serializedData,null, 2);
-                fs.writeFileSync(filePath, updatedDataJSON, 'utf8');
-                console.log("finished writing to file " + filePath)
-                process.exit(0);
-            }
-        });
+        process.exit(0);
     }
+
+
+
     const val: WrappedDriftEvent[] | undefined = mapOfData.get(slot);
     if (val !== undefined) {
         val.push(wrappedItem);
@@ -126,5 +136,7 @@ eventSubscriber.eventEmitter.on('newEvent', (event) => {
         const val = [wrappedItem]
         mapOfData.set(slot, val);
     }
+
+    writeToFile()
 });
 

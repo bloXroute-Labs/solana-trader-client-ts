@@ -1,12 +1,7 @@
 import { OrderActionRecord } from "@drift-labs/sdk"
-import { Connection} from "@solana/web3.js"
 import moment from 'moment';
 import * as fs from "fs"
 import { Type as GetPerpTradesResponse } from "../bxsolana/proto/messages/api/GetPerpTradesResponse"
-const authHeader = "ZDIxYzE0NmItZWYxNi00ZmFmLTg5YWUtMzYwMTk4YzUyZmM4OjEwOWE5MzEzZDc2Yjg3MzczYjdjZDdhNmZkZGE3ZDg5"
-const httpHeaders = { Authorization: authHeader }
-const connection = new Connection('https://virginia.solana.dex.blxrbdn.com',
-    {httpHeaders});
 
 interface WrappedDriftEvent {
     ts: number;
@@ -51,7 +46,7 @@ function readDriftFile(filePath: string): Map<number, WrappedDriftEvent[]> {
 let faster = 0;
 let slower = 0;
 let sameTime = 0;
-let notOfComparisons = 0;
+let noOfComparisons = 0;
 let notFound = 0;
 
 const dataArray: { diff: number; slot: number; trader_api_ts: string; drift_api_ts: string; }[] = [];
@@ -79,7 +74,7 @@ function compareResponseMaps(bxTraderApiMap: Map<number, WrappedPerpTradesRespon
                             drift_api_ts: driftEventFormatted,
                         })
 
-                        notOfComparisons++
+                        noOfComparisons++
 
                         if (traderApiEvent.ts < driftEvent.ts) {
                             faster++;
@@ -108,5 +103,5 @@ console.table(dataArray);
 console.log("faster : " + faster)
 console.log("slower : " + slower)
 console.log("sameTime : " + sameTime)
-console.log("notOfComparisons : " + notOfComparisons)
+console.log("noOfComparisons : " + noOfComparisons)
 console.log("notFound : " + notFound)

@@ -2,6 +2,8 @@ import { readFileSync } from "fs"
 import {
     loadFromEnv,
     MAINNET_API_VIRGINIA_WS,
+    MAINNET_API_NY_WS,
+    TESTNET_API_WS,
     WsProvider
 } from "../bxsolana"
 import * as fs from "fs"
@@ -12,9 +14,19 @@ const config = loadFromEnv()
 const provider = new WsProvider(
     config.authHeader,
     readFileSync("./.env_private_key").toString(),
-    MAINNET_API_VIRGINIA_WS
+    MAINNET_API_NY_WS
 )
+
 await provider.connect()
+const filePath = 'bx_api_data.json';
+await fs.truncate(filePath, (err) => {
+    if (err) {
+        console.error('Error deleting old content:', err);
+    } else {
+        console.log('Old content deleted.');
+    }
+});
+
 const numberOfSeconds = parseInt(process.argv[2], 10);
 console.log("numberOfSeconds to check : " + numberOfSeconds);
 
@@ -32,6 +44,23 @@ const mapOfData:  Map<number, WrappedPerpTradesResponse[]> = new Map();
 let count = 0
 
 const startTime = Date.now();
+
+function writeToFile() {
+
+    type SerializedData = {
+        [key: number]: WrappedPerpTradesResponse[];
+    };
+
+    const serializedData :SerializedData = {};
+
+    for (const [key , value] of mapOfData) {
+        serializedData[key] = value;
+    }
+    const updatedDataJSON = JSON.stringify(serializedData, null, 2);
+    fs.writeFileSync(filePath, updatedDataJSON, 'utf8');
+    console.log("finished writing to file " + filePath)
+}
+
 for await (const ob of req) {
     console.log(JSON.stringify(ob));
 
@@ -54,28 +83,11 @@ for await (const ob of req) {
     } else {
         mapOfData.set(slot, [wrappedItem]);
     }
+    // we write to file every time we get some value, to have the latest data in file
+    writeToFile()
     count++
 }
 
-const filePath = 'bx_api_data.json';
-type SerializedData = {
-    [key: number]: WrappedPerpTradesResponse[];
-};
 
-const serializedData :SerializedData = {};
-
-for (const [key , value] of mapOfData) {
-    serializedData[key] = value;
-}
-const updatedDataJSON = JSON.stringify(serializedData, null, 2);
-await fs.truncate(filePath, (err) => {
-    if (err) {
-        console.error('Error deleting old content:', err);
-    } else {
-        console.log('Old content deleted.');
-        fs.writeFileSync(filePath, updatedDataJSON, 'utf8');
-        console.log("finished writing to file " + filePath + ", updatedDataJSON: " + updatedDataJSON)
-    }
-});
 
 provider.close()
