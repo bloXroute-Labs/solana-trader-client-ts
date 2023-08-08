@@ -154,6 +154,8 @@ import {
     GetRaydiumPricesResponse,
     GetRaydiumQuotesRequest,
     GetRaydiumQuotesResponse,
+    PostDriftPerpOrderRequest,
+    PostDriftPerpOrderResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -451,6 +453,16 @@ export class HttpProvider extends BaseProvider {
             PostDriftMarginOrderRequest,
             PostDriftMarginOrderResponse
         >(path, request)
+    }
+
+    async postDriftPerpOrder(
+        request: PostDriftPerpOrderRequest
+    ): RpcReturnType<Promise<PostDriftPerpOrderResponse>, []> {
+        const path = `${this.baseUrlV2}/drift/perp/place`
+        return this.post<PostDriftPerpOrderRequest, PostDriftPerpOrderResponse>(
+            path,
+            request
+        )
     }
 
     async postDriftEnableMarginTrading(

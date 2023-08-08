@@ -17,10 +17,10 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface PostDriftMarginOrderRequest {
+  export interface PostDriftPerpOrderRequest {
     ownerAddress: string;
+    contract: string;
     accountAddress: string;
-    market: string;
     positionSide: string;
     slippage: number;
     type: string;
@@ -30,13 +30,13 @@ export declare namespace $.api {
     postOnly: string;
   }
 }
-export type Type = $.api.PostDriftMarginOrderRequest;
+export type Type = $.api.PostDriftPerpOrderRequest;
 
-export function getDefaultValue(): $.api.PostDriftMarginOrderRequest {
+export function getDefaultValue(): $.api.PostDriftPerpOrderRequest {
   return {
     ownerAddress: "",
+    contract: "",
     accountAddress: "",
-    market: "",
     positionSide: "",
     slippage: 0,
     type: "",
@@ -47,18 +47,18 @@ export function getDefaultValue(): $.api.PostDriftMarginOrderRequest {
   };
 }
 
-export function createValue(partialValue: Partial<$.api.PostDriftMarginOrderRequest>): $.api.PostDriftMarginOrderRequest {
+export function createValue(partialValue: Partial<$.api.PostDriftPerpOrderRequest>): $.api.PostDriftPerpOrderRequest {
   return {
     ...getDefaultValue(),
     ...partialValue,
   };
 }
 
-export function encodeJson(value: $.api.PostDriftMarginOrderRequest): unknown {
+export function encodeJson(value: $.api.PostDriftPerpOrderRequest): unknown {
   const result: any = {};
   if (value.ownerAddress !== undefined) result.ownerAddress = tsValueToJsonValueFns.string(value.ownerAddress);
+  if (value.contract !== undefined) result.contract = tsValueToJsonValueFns.string(value.contract);
   if (value.accountAddress !== undefined) result.accountAddress = tsValueToJsonValueFns.string(value.accountAddress);
-  if (value.market !== undefined) result.market = tsValueToJsonValueFns.string(value.market);
   if (value.positionSide !== undefined) result.positionSide = tsValueToJsonValueFns.string(value.positionSide);
   if (value.slippage !== undefined) result.slippage = tsValueToJsonValueFns.double(value.slippage);
   if (value.type !== undefined) result.type = tsValueToJsonValueFns.string(value.type);
@@ -69,11 +69,11 @@ export function encodeJson(value: $.api.PostDriftMarginOrderRequest): unknown {
   return result;
 }
 
-export function decodeJson(value: any): $.api.PostDriftMarginOrderRequest {
+export function decodeJson(value: any): $.api.PostDriftPerpOrderRequest {
   const result = getDefaultValue();
   if (value.ownerAddress !== undefined) result.ownerAddress = jsonValueToTsValueFns.string(value.ownerAddress);
+  if (value.contract !== undefined) result.contract = jsonValueToTsValueFns.string(value.contract);
   if (value.accountAddress !== undefined) result.accountAddress = jsonValueToTsValueFns.string(value.accountAddress);
-  if (value.market !== undefined) result.market = jsonValueToTsValueFns.string(value.market);
   if (value.positionSide !== undefined) result.positionSide = jsonValueToTsValueFns.string(value.positionSide);
   if (value.slippage !== undefined) result.slippage = jsonValueToTsValueFns.double(value.slippage);
   if (value.type !== undefined) result.type = jsonValueToTsValueFns.string(value.type);
@@ -84,7 +84,7 @@ export function decodeJson(value: any): $.api.PostDriftMarginOrderRequest {
   return result;
 }
 
-export function encodeBinary(value: $.api.PostDriftMarginOrderRequest): Uint8Array {
+export function encodeBinary(value: $.api.PostDriftPerpOrderRequest): Uint8Array {
   const result: WireMessage = [];
   if (value.ownerAddress !== undefined) {
     const tsValue = value.ownerAddress;
@@ -92,14 +92,14 @@ export function encodeBinary(value: $.api.PostDriftMarginOrderRequest): Uint8Arr
       [1, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.accountAddress !== undefined) {
-    const tsValue = value.accountAddress;
+  if (value.contract !== undefined) {
+    const tsValue = value.contract;
     result.push(
       [2, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.market !== undefined) {
-    const tsValue = value.market;
+  if (value.accountAddress !== undefined) {
+    const tsValue = value.accountAddress;
     result.push(
       [3, tsValueToWireValueFns.string(tsValue)],
     );
@@ -149,7 +149,7 @@ export function encodeBinary(value: $.api.PostDriftMarginOrderRequest): Uint8Arr
   return serialize(result);
 }
 
-export function decodeBinary(binary: Uint8Array): $.api.PostDriftMarginOrderRequest {
+export function decodeBinary(binary: Uint8Array): $.api.PostDriftPerpOrderRequest {
   const result = getDefaultValue();
   const wireMessage = deserialize(binary);
   const wireFields = new Map(wireMessage);
@@ -165,14 +165,14 @@ export function decodeBinary(binary: Uint8Array): $.api.PostDriftMarginOrderRequ
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
-    result.accountAddress = value;
+    result.contract = value;
   }
   field: {
     const wireValue = wireFields.get(3);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
-    result.market = value;
+    result.accountAddress = value;
   }
   field: {
     const wireValue = wireFields.get(4);

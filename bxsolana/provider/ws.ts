@@ -181,6 +181,8 @@ import {
     GetRaydiumPricesResponse,
     GetRaydiumQuotesRequest,
     GetRaydiumQuotesResponse,
+    PostDriftPerpOrderRequest,
+    PostDriftPerpOrderResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -400,6 +402,12 @@ export class WsProvider extends BaseProvider {
         request: PostDriftMarginOrderRequest
     ): RpcReturnType<Promise<PostDriftMarginOrderResponse>, []> {
         return await this.wsConnection.call("PostDriftMarginOrder", request)
+    }
+
+    async postDriftPerpOrder(
+        request: PostDriftPerpOrderRequest
+    ): RpcReturnType<Promise<PostDriftPerpOrderResponse>, []> {
+        return await this.wsConnection.call("PostDriftPerpOrder", request)
     }
 
     async postDriftEnableMarginTrading(
