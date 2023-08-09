@@ -1,15 +1,9 @@
 import {
-  Type as Side,
-  name2num,
-  num2name,
-} from "./Side";
-import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar";
 import {
   WireMessage,
-  WireType,
 } from "../../runtime/wire/index";
 import {
   default as serialize,
@@ -19,9 +13,6 @@ import {
   wireValueToTsValueFns,
 } from "../../runtime/wire/scalar";
 import {
-  default as Long,
-} from "../../runtime/Long";
-import {
   default as deserialize,
 } from "../../runtime/wire/deserialize";
 
@@ -30,7 +21,8 @@ export declare namespace $.api {
     ownerAddress: string;
     payerAddress: string;
     market: string;
-    side: Side;
+    side: string;
+    type: string;
     amount: number;
     price: number;
     openOrdersAddress: string;
@@ -44,7 +36,8 @@ export function getDefaultValue(): $.api.PostOrderRequestV2 {
     ownerAddress: "",
     payerAddress: "",
     market: "",
-    side: "S_UNKNOWN",
+    side: "",
+    type: "",
     amount: 0,
     price: 0,
     openOrdersAddress: "",
@@ -64,7 +57,8 @@ export function encodeJson(value: $.api.PostOrderRequestV2): unknown {
   if (value.ownerAddress !== undefined) result.ownerAddress = tsValueToJsonValueFns.string(value.ownerAddress);
   if (value.payerAddress !== undefined) result.payerAddress = tsValueToJsonValueFns.string(value.payerAddress);
   if (value.market !== undefined) result.market = tsValueToJsonValueFns.string(value.market);
-  if (value.side !== undefined) result.side = tsValueToJsonValueFns.enum(value.side);
+  if (value.side !== undefined) result.side = tsValueToJsonValueFns.string(value.side);
+  if (value.type !== undefined) result.type = tsValueToJsonValueFns.string(value.type);
   if (value.amount !== undefined) result.amount = tsValueToJsonValueFns.double(value.amount);
   if (value.price !== undefined) result.price = tsValueToJsonValueFns.double(value.price);
   if (value.openOrdersAddress !== undefined) result.openOrdersAddress = tsValueToJsonValueFns.string(value.openOrdersAddress);
@@ -77,7 +71,8 @@ export function decodeJson(value: any): $.api.PostOrderRequestV2 {
   if (value.ownerAddress !== undefined) result.ownerAddress = jsonValueToTsValueFns.string(value.ownerAddress);
   if (value.payerAddress !== undefined) result.payerAddress = jsonValueToTsValueFns.string(value.payerAddress);
   if (value.market !== undefined) result.market = jsonValueToTsValueFns.string(value.market);
-  if (value.side !== undefined) result.side = jsonValueToTsValueFns.enum(value.side) as Side;
+  if (value.side !== undefined) result.side = jsonValueToTsValueFns.string(value.side);
+  if (value.type !== undefined) result.type = jsonValueToTsValueFns.string(value.type);
   if (value.amount !== undefined) result.amount = jsonValueToTsValueFns.double(value.amount);
   if (value.price !== undefined) result.price = jsonValueToTsValueFns.double(value.price);
   if (value.openOrdersAddress !== undefined) result.openOrdersAddress = jsonValueToTsValueFns.string(value.openOrdersAddress);
@@ -108,7 +103,13 @@ export function encodeBinary(value: $.api.PostOrderRequestV2): Uint8Array {
   if (value.side !== undefined) {
     const tsValue = value.side;
     result.push(
-      [4, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
+      [4, tsValueToWireValueFns.string(tsValue)],
+    );
+  }
+  if (value.type !== undefined) {
+    const tsValue = value.type;
+    result.push(
+      [5, tsValueToWireValueFns.string(tsValue)],
     );
   }
   if (value.amount !== undefined) {
@@ -166,9 +167,16 @@ export function decodeBinary(binary: Uint8Array): $.api.PostOrderRequestV2 {
   field: {
     const wireValue = wireFields.get(4);
     if (wireValue === undefined) break field;
-    const value = wireValue.type === WireType.Varint ? num2name[wireValue.value[0] as keyof typeof num2name] : undefined;
+    const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
     result.side = value;
+  }
+  field: {
+    const wireValue = wireFields.get(5);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.type = value;
   }
   field: {
     const wireValue = wireFields.get(6);

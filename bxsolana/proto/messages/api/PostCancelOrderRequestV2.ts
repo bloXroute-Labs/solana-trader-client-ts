@@ -1,15 +1,9 @@
 import {
-  Type as Side,
-  name2num,
-  num2name,
-} from "./Side";
-import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar";
 import {
   WireMessage,
-  WireType,
 } from "../../runtime/wire/index";
 import {
   default as serialize,
@@ -19,16 +13,13 @@ import {
   wireValueToTsValueFns,
 } from "../../runtime/wire/scalar";
 import {
-  default as Long,
-} from "../../runtime/Long";
-import {
   default as deserialize,
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
   export interface PostCancelOrderRequestV2 {
     orderID: string;
-    side: Side;
+    side: string;
     marketAddress: string;
     ownerAddress: string;
     openOrdersAddress: string;
@@ -40,7 +31,7 @@ export type Type = $.api.PostCancelOrderRequestV2;
 export function getDefaultValue(): $.api.PostCancelOrderRequestV2 {
   return {
     orderID: "",
-    side: "S_UNKNOWN",
+    side: "",
     marketAddress: "",
     ownerAddress: "",
     openOrdersAddress: "",
@@ -58,7 +49,7 @@ export function createValue(partialValue: Partial<$.api.PostCancelOrderRequestV2
 export function encodeJson(value: $.api.PostCancelOrderRequestV2): unknown {
   const result: any = {};
   if (value.orderID !== undefined) result.orderID = tsValueToJsonValueFns.string(value.orderID);
-  if (value.side !== undefined) result.side = tsValueToJsonValueFns.enum(value.side);
+  if (value.side !== undefined) result.side = tsValueToJsonValueFns.string(value.side);
   if (value.marketAddress !== undefined) result.marketAddress = tsValueToJsonValueFns.string(value.marketAddress);
   if (value.ownerAddress !== undefined) result.ownerAddress = tsValueToJsonValueFns.string(value.ownerAddress);
   if (value.openOrdersAddress !== undefined) result.openOrdersAddress = tsValueToJsonValueFns.string(value.openOrdersAddress);
@@ -69,7 +60,7 @@ export function encodeJson(value: $.api.PostCancelOrderRequestV2): unknown {
 export function decodeJson(value: any): $.api.PostCancelOrderRequestV2 {
   const result = getDefaultValue();
   if (value.orderID !== undefined) result.orderID = jsonValueToTsValueFns.string(value.orderID);
-  if (value.side !== undefined) result.side = jsonValueToTsValueFns.enum(value.side) as Side;
+  if (value.side !== undefined) result.side = jsonValueToTsValueFns.string(value.side);
   if (value.marketAddress !== undefined) result.marketAddress = jsonValueToTsValueFns.string(value.marketAddress);
   if (value.ownerAddress !== undefined) result.ownerAddress = jsonValueToTsValueFns.string(value.ownerAddress);
   if (value.openOrdersAddress !== undefined) result.openOrdersAddress = jsonValueToTsValueFns.string(value.openOrdersAddress);
@@ -88,7 +79,7 @@ export function encodeBinary(value: $.api.PostCancelOrderRequestV2): Uint8Array 
   if (value.side !== undefined) {
     const tsValue = value.side;
     result.push(
-      [2, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
+      [2, tsValueToWireValueFns.string(tsValue)],
     );
   }
   if (value.marketAddress !== undefined) {
@@ -132,7 +123,7 @@ export function decodeBinary(binary: Uint8Array): $.api.PostCancelOrderRequestV2
   field: {
     const wireValue = wireFields.get(2);
     if (wireValue === undefined) break field;
-    const value = wireValue.type === WireType.Varint ? num2name[wireValue.value[0] as keyof typeof num2name] : undefined;
+    const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
     result.side = value;
   }

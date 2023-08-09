@@ -165,6 +165,8 @@ import axios, {
     RawAxiosRequestHeaders,
 } from "axios"
 import { RpcReturnType } from "../proto/runtime/rpc"
+import {$} from "../proto/messages/api/GetOpenOrdersResponseV2";
+import GetOpenOrdersResponseV2 = $.api.GetOpenOrdersResponseV2;
 
 export class HttpProvider extends BaseProvider {
     private readonly baseUrl: string
@@ -517,9 +519,9 @@ export class HttpProvider extends BaseProvider {
 
     getOpenOrdersV2(
         request: GetOpenOrdersRequestV2
-    ): Promise<GetOpenOrdersResponse> {
+    ): Promise<GetOpenOrdersResponseV2> {
         const path = `${this.baseUrlV2}/openbook/open-orders/${request.market}?address=${request.address}&limit=${request.limit}&openOrdersAddress=${request.openOrdersAddress}&orderID=${request.orderID}&clientOrderID=${request.clientOrderID}`
-        return this.get<GetOpenOrdersResponse>(path)
+        return this.get<GetOpenOrdersResponseV2>(path)
     }
 
     getUnsettledV2(

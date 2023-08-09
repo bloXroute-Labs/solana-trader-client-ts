@@ -200,6 +200,8 @@ import { BaseProvider } from "./base"
 import { CallMetadataOptions } from "@grpc/grpc-js/build/src/call-credentials"
 import { ConnectionOptions } from "tls"
 import { RpcReturnType } from "../proto/runtime/rpc"
+import {$} from "../proto/messages/api/GetOpenOrdersResponseV2";
+import GetOpenOrdersResponseV2 = $.api.GetOpenOrdersResponseV2;
 
 // built-in grpc.credentials.createInsecure() doesn't allow composition
 class insecureChannel extends grpc.ChannelCredentials {
@@ -502,7 +504,7 @@ export class GrpcProvider extends BaseProvider {
 
     getOpenOrdersV2(
         request: GetOpenOrdersRequestV2
-    ): Promise<GetOpenOrdersResponse> {
+    ): Promise<GetOpenOrdersResponseV2> {
         return this.client.getOpenOrdersV2(request)
     }
 
