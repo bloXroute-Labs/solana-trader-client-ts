@@ -43,8 +43,8 @@ import {
 import { AxiosRequestConfig } from "axios"
 import { RpcReturnType } from "../bxsolana/proto/runtime/rpc"
 import { txToBase64 } from "../bxsolana/utils/transaction"
-import {$} from "../bxsolana/proto/messages/api/GetOpenOrdersResponseV2";
-import GetOpenOrdersResponseV2 = $.api.GetOpenOrdersResponseV2;
+import { $ } from "../bxsolana/proto/messages/api/GetOpenOrdersResponseV2"
+import GetOpenOrdersResponseV2 = $.api.GetOpenOrdersResponseV2
 
 const config = loadFromEnv()
 
@@ -60,7 +60,6 @@ const baseTokenWallet = config.publicKey
 const quoteTokenWallet = "4raJjCwLLqw8TciQXYruDEF4YhDkGwoEnwnAdwJSjcgv"
 const side = "ask"
 const typeLimit = "limit"
-
 
 const testOrder: PostOrderRequestV2 = {
     ownerAddress: ownerAddress,
