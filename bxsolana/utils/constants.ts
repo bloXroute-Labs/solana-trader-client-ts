@@ -1,20 +1,12 @@
-const mainnetVirginia = "virginia.solana.dex.blxrbdn.com"
 const mainnetNy = "ny.solana.dex.blxrbdn.com"
-const mainnetFrankfurt = "frankfurt.solana.dex.blxrbdn.com"
 const mainnetUk = "uk.solana.dex.blxrbdn.com"
 const testnet = "serum-nlb-5a2c3912804344a3.elb.us-east-1.amazonaws.com"
 const devnet =
     "solana-trader-api-nlb-6b0f765f2fc759e1.elb.us-east-1.amazonaws.com"
 
-export const MAINNET_API_VIRGINIA_HTTP = httpEndpoint(mainnetVirginia, true)
-export const MAINNET_API_VIRGINIA_WS = wsEndpoint(mainnetVirginia, true)
-export const MAINNET_API_VIRGINIA_GRPC = mainnetVirginia
 export const MAINNET_API_NY_HTTP = httpEndpoint(mainnetNy, true)
 export const MAINNET_API_NY_WS = wsEndpoint(mainnetNy, true)
 export const MAINNET_API_NY_GRPC = mainnetNy
-export const MAINNET_API_FRANKFURT_HTTP = httpEndpoint(mainnetFrankfurt, true)
-export const MAINNET_API_FRANKFURT_WS = wsEndpoint(mainnetFrankfurt, true)
-export const MAINNET_API_FRANKFURT_GRPC = mainnetFrankfurt
 export const MAINNET_API_UK_HTTP = httpEndpoint(mainnetUk, true)
 export const MAINNET_API_UK_WS = wsEndpoint(mainnetUk, true)
 export const MAINNET_API_UK_GRPC = mainnetUk
