@@ -43,6 +43,8 @@ function readDriftFile(filePath: string): Map<number, WrappedDriftEvent[]> {
     return map
 }
 
+let total_fast = 0;
+let total_slow = 0;
 let faster = 0;
 let slower = 0;
 let sameTime = 0;
@@ -78,8 +80,10 @@ function compareResponseMaps(bxTraderApiMap: Map<number, WrappedPerpTradesRespon
 
                         if (traderApiEvent.ts < driftEvent.ts) {
                             faster++;
+                            total_fast += driftEvent.ts - traderApiEvent.ts
                         } else if (traderApiEvent.ts > driftEvent.ts ) {
                             slower++
+                            total_slow += driftEvent.ts - traderApiEvent.ts
                         } else {
                             sameTime++
                         }
@@ -101,7 +105,11 @@ compareResponseMaps(traderApiMap, driftMap)
 
 console.table(dataArray);
 console.log("faster : " + faster)
+console.log("faster % : " + faster * 100 / noOfComparisons)
+console.log("faster on avg(ms): " + total_fast / faster)
 console.log("slower : " + slower)
-console.log("sameTime : " + sameTime)
-console.log("noOfComparisons : " + noOfComparisons)
+console.log("slower % : " + slower * 100 / noOfComparisons)
+console.log("slower on avg(ms): " + total_slow / slower)
+console.log("equal : " + sameTime)
+console.log("numOfComparisons : " + noOfComparisons)
 console.log("notFound : " + notFound)
