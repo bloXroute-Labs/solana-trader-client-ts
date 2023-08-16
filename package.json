@@ -30,6 +30,11 @@
     ],
     "scripts": {
         "start": "node --experimental-specifier-resolution=node --loader ts-node/esm ./examples/index.ts",
+        "start_benchmark_trader_api": "node --experimental-specifier-resolution=node --loader ts-node/esm examples/benchmark_bx_api.ts 3600",
+        "start_benchmark_drift": "node --experimental-specifier-resolution=node --loader ts-node/esm examples/benchmark_drift_api.ts 3600",
+        "start_benchmark_bx_raydium_get_price_stream": "node --experimental-specifier-resolution=node --loader ts-node/esm examples/benchmark_bx_raydium_get_price_stream.ts 3600",
+        "start_benchmark_quicknode_raydium_get_price_stream": "node --experimental-specifier-resolution=node --loader ts-node/esm examples/benchmark_quicknode_raydium_get_price_stream.ts 3600",
+        "run_benchmark_comparison": "node --experimental-specifier-resolution=node --loader ts-node/esm examples/benchmark_comparison.ts",
         "test": "echo \"No test specified\"",
         "build": "npm run esbuild && npm run types",
         "clean": "rm -rf dist",
@@ -70,6 +75,7 @@
         "ws": "^8.8.0"
     },
     "devDependencies": {
+        "@drift-labs/sdk": "2.36.1-beta.5",
         "@protobuf-ts/plugin": "^2.7.0",
         "@types/google-protobuf": "^3.15.6",
         "@types/node": "^18.7.18",
@@ -81,6 +87,7 @@
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-prettier": "^4.2.1",
         "husky": "^8.0.1",
+        "moment": "^2.29.4",
         "prettier": "^2.7.1",
         "ts-proto": "^1.115.5"
     }
