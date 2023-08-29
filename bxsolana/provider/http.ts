@@ -1,4 +1,4 @@
-import { MAINNET_API_VIRGINIA_HTTP } from "../utils/constants"
+import {MAINNET_API_NY_HTTP} from "../utils/constants"
 import {
     GetAccountBalanceRequest,
     GetAccountBalanceResponse,
@@ -176,7 +176,7 @@ export class HttpProvider extends BaseProvider {
     constructor(
         authHeader: string,
         privateKey = "",
-        address: string = MAINNET_API_VIRGINIA_HTTP,
+        address: string = MAINNET_API_NY_HTTP,
         requestConfig: AxiosRequestConfig = {}
     ) {
         super(authHeader, privateKey)

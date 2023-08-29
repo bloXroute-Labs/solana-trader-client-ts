@@ -13,9 +13,6 @@ import {
     LOCAL_API_HTTP,
     LOCAL_API_WS,
     MAINNET_API_GRPC_PORT,
-    MAINNET_API_VIRGINIA_GRPC,
-    MAINNET_API_VIRGINIA_HTTP,
-    MAINNET_API_VIRGINIA_WS,
     PostCancelAllRequest,
     PostOrderRequest,
     Project,
@@ -27,7 +24,7 @@ import {
     signTx,
     GetOpenOrdersRequestV2,
     PostCancelOrderRequestV2,
-    PostOrderRequestV2,
+    PostOrderRequestV2, MAINNET_API_NY_HTTP, MAINNET_API_NY_GRPC, MAINNET_API_NY_WS,
 } from "../bxsolana"
 import {
     Keypair,
@@ -116,7 +113,7 @@ async function http() {
         provider = new HttpProvider(
             config.authHeader,
             config.privateKey,
-            MAINNET_API_VIRGINIA_HTTP,
+            MAINNET_API_NY_HTTP,
             requestConfig
         )
     } else {
@@ -170,7 +167,7 @@ async function grpc() {
         provider = new GrpcProvider(
             config.authHeader,
             config.privateKey,
-            `${MAINNET_API_VIRGINIA_GRPC}:${MAINNET_API_GRPC_PORT}`,
+            `${MAINNET_API_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
             true
         )
     } else {
@@ -222,7 +219,7 @@ async function ws() {
         provider = new WsProvider(
             config.authHeader,
             config.privateKey,
-            MAINNET_API_VIRGINIA_WS
+            MAINNET_API_NY_WS
         )
     } else {
         provider = new WsProvider(

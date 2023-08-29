@@ -1,6 +1,5 @@
 import {
-    MAINNET_API_VIRGINIA_GRPC,
-    MAINNET_API_GRPC_PORT,
+    MAINNET_API_GRPC_PORT, MAINNET_API_NY_GRPC,
 } from "../utils/constants"
 import * as grpc from "@grpc/grpc-js"
 import { Client } from "@grpc/grpc-js"
@@ -233,7 +232,7 @@ export class GrpcProvider extends BaseProvider {
     constructor(
         authHeader: string,
         privateKey = "",
-        address = `${MAINNET_API_VIRGINIA_GRPC}:${MAINNET_API_GRPC_PORT}`,
+        address = `${MAINNET_API_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
         useTls: boolean,
         options: grpc.ClientOptions = {
             "grpc.keepalive_time_ms": 10000,
