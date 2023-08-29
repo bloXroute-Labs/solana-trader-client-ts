@@ -41,7 +41,7 @@ jobs:
       - checkout
       - run:
           name: format
-          command: npm run formatCI
+          command: npm run format
 
   lint:
     executor: node/default
