@@ -1,5 +1,4 @@
 import {
-    MAINNET_API_VIRGINIA_GRPC,
     MAINNET_API_GRPC_PORT, MAINNET_API_NY_GRPC,
 } from "../utils/constants"
 import * as grpc from "@grpc/grpc-js"

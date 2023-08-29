@@ -1,4 +1,4 @@
-import {MAINNET_API_NY_HTTP, MAINNET_API_VIRGINIA_HTTP} from "../utils/constants"
+import {MAINNET_API_NY_HTTP} from "../utils/constants"
 import {
     GetAccountBalanceRequest,
     GetAccountBalanceResponse,
