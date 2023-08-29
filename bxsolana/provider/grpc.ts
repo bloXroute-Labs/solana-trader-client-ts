@@ -236,17 +236,20 @@ export class GrpcProvider extends BaseProvider {
         address = `${MAINNET_API_VIRGINIA_GRPC}:${MAINNET_API_GRPC_PORT}`,
         useTls: boolean,
         options: grpc.ClientOptions = {
-            "grpc.keepalive_time_ms": 10000, // 10s keep alive so connection isn't closed from lack of activity
+            "grpc.keepalive_time_ms": 10000,
+            // 10s keep alive so connection isn't closed from lack of activity
             "grpc.keepalive_timeout_ms": 5000, // 5s allowance for keepalive to respond
         }
     ) {
         super(authHeader, privateKey)
+
         const metaCallback = (
             options: CallMetadataOptions,
             cb: (err: Error | null, metadata?: grpc.Metadata) => void
         ) => {
             const meta = new grpc.Metadata()
             meta.add("Authorization", authHeader)
+
             cb(null, meta)
         }
 
