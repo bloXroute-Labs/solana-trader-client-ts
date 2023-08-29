@@ -187,6 +187,8 @@ import {
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
 import { RpcReturnType } from "../proto/runtime/rpc"
+import {$} from "../proto/messages/api/GetOpenOrdersResponseV2";
+import GetOpenOrdersResponseV2 = $.api.GetOpenOrdersResponseV2;
 
 export class WsProvider extends BaseProvider {
     private wsConnection: RpcWsConnection
@@ -208,6 +210,7 @@ export class WsProvider extends BaseProvider {
     ) {
         super(authHeader, privateKey)
         this.wsConnection = new RpcWsConnection(address, authHeader)
+
         this.address = address
     }
 
@@ -471,7 +474,7 @@ export class WsProvider extends BaseProvider {
 
     async getOpenOrdersV2(
         request: GetOpenOrdersRequestV2
-    ): Promise<GetOpenOrdersResponse> {
+    ): Promise<GetOpenOrdersResponseV2> {
         return await this.wsConnection.call("GetOpenOrdersV2", request)
     }
 

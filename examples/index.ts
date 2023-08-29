@@ -43,6 +43,8 @@ import {
 import { AxiosRequestConfig } from "axios"
 import { RpcReturnType } from "../bxsolana/proto/runtime/rpc"
 import { txToBase64 } from "../bxsolana/utils/transaction"
+import { $ } from "../bxsolana/proto/messages/api/GetOpenOrdersResponseV2"
+import GetOpenOrdersResponseV2 = $.api.GetOpenOrdersResponseV2
 
 const config = loadFromEnv()
 
@@ -56,12 +58,15 @@ const payerAddress = config.publicKey
 const openOrdersAddress = "DwoXdF8kjt9RS6yPfpzp1yHBKtFMDpHQPCRgy1JhKgFt"
 const baseTokenWallet = config.publicKey
 const quoteTokenWallet = "4raJjCwLLqw8TciQXYruDEF4YhDkGwoEnwnAdwJSjcgv"
+const side = "ask"
+const typeLimit = "limit"
 
 const testOrder: PostOrderRequestV2 = {
     ownerAddress: ownerAddress,
     payerAddress: payerAddress,
     market: "SOLUSDC",
-    side: "S_ASK",
+    side: side,
+    type: typeLimit,
     amount: 0.1,
     price: 200,
     openOrdersAddress: openOrdersAddress,
@@ -2018,7 +2023,7 @@ async function callCancelAll(provider: BaseProvider) {
     }
 
     await delay(transactionWaitTimeS * 1000)
-    const openOrdersResponse1: GetOpenOrdersResponse =
+    const openOrdersResponse1: GetOpenOrdersResponseV2 =
         await provider.getOpenOrdersV2(openOrdersRequest)
 
     let found1 = false

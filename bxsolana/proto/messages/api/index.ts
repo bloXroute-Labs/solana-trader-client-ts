@@ -255,3 +255,5 @@ export type { Type as PostCancelOrderResponseV2 } from "./PostCancelOrderRespons
 export type { Type as PostSettleRequestV2 } from "./PostSettleRequestV2";
 export type { Type as GetOpenOrdersRequestV2 } from "./GetOpenOrdersRequestV2";
 export type { Type as GetUnsettledRequestV2 } from "./GetUnsettledRequestV2";
+export type { Type as GetOpenOrdersResponseV2 } from "./GetOpenOrdersResponseV2";
+export type { Type as OrderV2 } from "./OrderV2";
