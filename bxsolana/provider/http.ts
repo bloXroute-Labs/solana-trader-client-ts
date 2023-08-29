@@ -198,6 +198,9 @@ export class HttpProvider extends BaseProvider {
         let path = `${this.baseUrlV2}/jupiter/prices`
         const args = request.tokens.map((v) => `tokens=${v}`).join("&")
         if (args != "") {
+
+
+
             path += `?${args}`
         }
         return this.get<GetJupiterPricesResponse>(path)

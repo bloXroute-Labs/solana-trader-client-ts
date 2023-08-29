@@ -210,6 +210,7 @@ export class WsProvider extends BaseProvider {
     ) {
         super(authHeader, privateKey)
         this.wsConnection = new RpcWsConnection(address, authHeader)
+
         this.address = address
     }
 

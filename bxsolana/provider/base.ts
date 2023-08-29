@@ -236,7 +236,8 @@ export abstract class BaseProvider implements Api {
 
     getMarketDepthV2(
         request: GetMarketDepthRequestV2
-    ): RpcReturnType<Promise<GetMarketDepthResponseV2>, []> {
+    ):
+        RpcReturnType<Promise<GetMarketDepthResponseV2>, []> {
         throw new Error("Method not implemented.")
     }
 
