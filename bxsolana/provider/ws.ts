@@ -182,13 +182,11 @@ import {
     GetRaydiumQuotesRequest,
     GetRaydiumQuotesResponse,
     PostDriftPerpOrderRequest,
-    PostDriftPerpOrderResponse,
+    PostDriftPerpOrderResponse, GetOpenOrdersResponseV2
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
 import { RpcReturnType } from "../proto/runtime/rpc"
-import {$} from "../proto/messages/api/GetOpenOrdersResponseV2";
-import GetOpenOrdersResponseV2 = $.api.GetOpenOrdersResponseV2;
 
 export class WsProvider extends BaseProvider {
     private wsConnection: RpcWsConnection

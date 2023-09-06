@@ -190,7 +190,7 @@ import {
     PostCancelOrderResponseV2,
     PostOrderRequestV2,
     PostDriftPerpOrderResponse,
-    PostDriftPerpOrderRequest, GetOpenOrdersResponseV2,
+    PostDriftPerpOrderRequest, GetOpenOrdersResponseV2
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {

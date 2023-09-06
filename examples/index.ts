@@ -4,8 +4,6 @@ import {
     addMemoToSerializedTxn,
     BaseProvider,
     loadFromEnv,
-    GetOpenOrdersRequest,
-    GetOpenOrdersResponse,
     GrpcProvider,
     HttpProvider,
     LOCAL_API_GRPC_HOST,
@@ -13,8 +11,6 @@ import {
     LOCAL_API_HTTP,
     LOCAL_API_WS,
     MAINNET_API_GRPC_PORT,
-    PostCancelAllRequest,
-    PostOrderRequest,
     Project,
     TESTNET_API_GRPC_HOST,
     TESTNET_API_GRPC_PORT,
@@ -30,7 +26,6 @@ import {
     Keypair,
     PublicKey,
     Transaction,
-    VersionedTransaction,
 } from "@solana/web3.js"
 import base58 from "bs58"
 import {
@@ -1237,14 +1232,14 @@ async function callPostDriftMarginOrder(provider: BaseProvider) {
     const req = await provider.postDriftMarginOrder({
         ownerAddress: ownerAddress,
         accountAddress: "",
-        positionSide: "LONG",
+        positionSide: "BUY",
         slippage: 5,
         type: "LIMIT",
         market: "SOL",
         amount: 1,
         price: 232,
         clientOrderID: "1",
-        postOnly: "PO_NONE",
+        postOnly: "none",
     })
     console.info(req)
 }
@@ -1445,7 +1440,7 @@ async function callPostTransferCollateral(provider: BaseProvider) {
         amount: 1,
         type: "PCT_TRANSFER",
         token: "PCTK_USDC",
-        toAccountAddress: "AbnwAQGrYnvktT4ihhX5np8RbgtfXJfPwpgMJnCFa4MT",
+        toAccountAddress: "9UnwdvTf5EfGeLyLrF4GZDUs7LKRUeJQzW7qsDVGQ8sS",
     })
     console.info(req)
 }
