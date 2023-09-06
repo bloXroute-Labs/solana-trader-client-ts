@@ -190,7 +190,8 @@ import {
     PostCancelOrderResponseV2,
     PostOrderRequestV2,
     PostDriftPerpOrderResponse,
-    PostDriftPerpOrderRequest, GetOpenOrdersResponseV2
+    PostDriftPerpOrderRequest,
+    GetOpenOrdersResponseV2,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -236,8 +237,7 @@ export abstract class BaseProvider implements Api {
 
     getMarketDepthV2(
         request: GetMarketDepthRequestV2
-    ):
-        RpcReturnType<Promise<GetMarketDepthResponseV2>, []> {
+    ): RpcReturnType<Promise<GetMarketDepthResponseV2>, []> {
         throw new Error("Method not implemented.")
     }
 

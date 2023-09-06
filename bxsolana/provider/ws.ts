@@ -1,4 +1,4 @@
-import {MAINNET_API_NY_WS} from "../utils/constants"
+import { MAINNET_API_NY_WS } from "../utils/constants"
 
 import {
     GetAccountBalanceRequest,
@@ -182,7 +182,8 @@ import {
     GetRaydiumQuotesRequest,
     GetRaydiumQuotesResponse,
     PostDriftPerpOrderRequest,
-    PostDriftPerpOrderResponse, GetOpenOrdersResponseV2
+    PostDriftPerpOrderResponse,
+    GetOpenOrdersResponseV2,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"

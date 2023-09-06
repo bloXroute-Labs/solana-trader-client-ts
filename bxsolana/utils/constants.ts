@@ -4,7 +4,6 @@ const testnet = "serum-nlb-5a2c3912804344a3.elb.us-east-1.amazonaws.com"
 const devnet =
     "solana-trader-api-nlb-6b0f765f2fc759e1.elb.us-east-1.amazonaws.com"
 
-
 export const MAINNET_API_NY_HTTP = httpEndpoint(mainnetNy, true)
 export const MAINNET_API_NY_WS = wsEndpoint(mainnetNy, true)
 export const MAINNET_API_NY_GRPC = mainnetNy

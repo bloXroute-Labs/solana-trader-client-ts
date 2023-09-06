@@ -1,6 +1,4 @@
-import {
-    MAINNET_API_GRPC_PORT, MAINNET_API_NY_GRPC,
-} from "../utils/constants"
+import { MAINNET_API_GRPC_PORT, MAINNET_API_NY_GRPC } from "../utils/constants"
 import * as grpc from "@grpc/grpc-js"
 import { Client } from "@grpc/grpc-js"
 import {
@@ -191,7 +189,8 @@ import {
     PostRaydiumSwapRequest,
     PostRaydiumSwapResponse,
     PostDriftPerpOrderRequest,
-    PostDriftPerpOrderResponse, GetOpenOrdersResponseV2
+    PostDriftPerpOrderResponse,
+    GetOpenOrdersResponseV2,
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"

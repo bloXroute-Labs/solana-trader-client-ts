@@ -1,4 +1,4 @@
-import {MAINNET_API_NY_HTTP} from "../utils/constants"
+import { MAINNET_API_NY_HTTP } from "../utils/constants"
 import {
     GetAccountBalanceRequest,
     GetAccountBalanceResponse,
@@ -156,7 +156,7 @@ import {
     GetRaydiumQuotesResponse,
     PostDriftPerpOrderRequest,
     PostDriftPerpOrderResponse,
-    GetOpenOrdersResponseV2
+    GetOpenOrdersResponseV2,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -197,9 +197,6 @@ export class HttpProvider extends BaseProvider {
         let path = `${this.baseUrlV2}/jupiter/prices`
         const args = request.tokens.map((v) => `tokens=${v}`).join("&")
         if (args != "") {
-
-
-
             path += `?${args}`
         }
         return this.get<GetJupiterPricesResponse>(path)

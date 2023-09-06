@@ -20,13 +20,12 @@ import {
     signTx,
     GetOpenOrdersRequestV2,
     PostCancelOrderRequestV2,
-    PostOrderRequestV2, MAINNET_API_NY_HTTP, MAINNET_API_NY_GRPC, MAINNET_API_NY_WS,
+    PostOrderRequestV2,
+    MAINNET_API_NY_HTTP,
+    MAINNET_API_NY_GRPC,
+    MAINNET_API_NY_WS,
 } from "../bxsolana"
-import {
-    Keypair,
-    PublicKey,
-    Transaction,
-} from "@solana/web3.js"
+import { Keypair, PublicKey, Transaction } from "@solana/web3.js"
 import base58 from "bs58"
 import {
     DEVNET_API_GRPC_HOST,
