@@ -1,4 +1,4 @@
-import {MAINNET_API_NY_HTTP} from "../utils/constants"
+import { MAINNET_API_NY_HTTP } from "../utils/constants"
 import {
     GetAccountBalanceRequest,
     GetAccountBalanceResponse,
@@ -156,6 +156,7 @@ import {
     GetRaydiumQuotesResponse,
     PostDriftPerpOrderRequest,
     PostDriftPerpOrderResponse,
+    GetOpenOrdersResponseV2,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -165,8 +166,6 @@ import axios, {
     RawAxiosRequestHeaders,
 } from "axios"
 import { RpcReturnType } from "../proto/runtime/rpc"
-import {$} from "../proto/messages/api/GetOpenOrdersResponseV2";
-import GetOpenOrdersResponseV2 = $.api.GetOpenOrdersResponseV2;
 
 export class HttpProvider extends BaseProvider {
     private readonly baseUrl: string
@@ -198,9 +197,6 @@ export class HttpProvider extends BaseProvider {
         let path = `${this.baseUrlV2}/jupiter/prices`
         const args = request.tokens.map((v) => `tokens=${v}`).join("&")
         if (args != "") {
-
-
-
             path += `?${args}`
         }
         return this.get<GetJupiterPricesResponse>(path)
@@ -446,7 +442,7 @@ export class HttpProvider extends BaseProvider {
     async getDriftMarkets(
         request: GetDriftMarketsRequest
     ): RpcReturnType<Promise<GetDriftMarketsResponse>, []> {
-        const path = `${this.baseUrlV2}/drift/markets/?metadata=${request.metadata}`
+        const path = `${this.baseUrlV2}/drift/markets?metadata=${request.metadata}`
         return this.get<GetDriftMarketsResponse>(path)
     }
 

@@ -1,6 +1,4 @@
-import {
-    MAINNET_API_GRPC_PORT, MAINNET_API_NY_GRPC,
-} from "../utils/constants"
+import { MAINNET_API_GRPC_PORT, MAINNET_API_NY_GRPC } from "../utils/constants"
 import * as grpc from "@grpc/grpc-js"
 import { Client } from "@grpc/grpc-js"
 import {
@@ -192,6 +190,7 @@ import {
     PostRaydiumSwapResponse,
     PostDriftPerpOrderRequest,
     PostDriftPerpOrderResponse,
+    GetOpenOrdersResponseV2,
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
@@ -199,8 +198,6 @@ import { BaseProvider } from "./base"
 import { CallMetadataOptions } from "@grpc/grpc-js/build/src/call-credentials"
 import { ConnectionOptions } from "tls"
 import { RpcReturnType } from "../proto/runtime/rpc"
-import {$} from "../proto/messages/api/GetOpenOrdersResponseV2";
-import GetOpenOrdersResponseV2 = $.api.GetOpenOrdersResponseV2;
 
 // built-in grpc.credentials.createInsecure() doesn't allow composition
 class insecureChannel extends grpc.ChannelCredentials {

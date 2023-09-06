@@ -1,4 +1,4 @@
-import {MAINNET_API_NY_WS} from "../utils/constants"
+import { MAINNET_API_NY_WS } from "../utils/constants"
 
 import {
     GetAccountBalanceRequest,
@@ -183,12 +183,11 @@ import {
     GetRaydiumQuotesResponse,
     PostDriftPerpOrderRequest,
     PostDriftPerpOrderResponse,
+    GetOpenOrdersResponseV2,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
 import { RpcReturnType } from "../proto/runtime/rpc"
-import {$} from "../proto/messages/api/GetOpenOrdersResponseV2";
-import GetOpenOrdersResponseV2 = $.api.GetOpenOrdersResponseV2;
 
 export class WsProvider extends BaseProvider {
     private wsConnection: RpcWsConnection
