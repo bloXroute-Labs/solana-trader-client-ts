@@ -192,6 +192,11 @@ import {
     PostDriftPerpOrderResponse,
     PostDriftPerpOrderRequest,
     GetOpenOrdersResponseV2,
+    PostRaydiumCLMMSwapRequest,
+    PostRaydiumCLMMSwapResponse,
+    PostRaydiumCLMMRouteSwapRequest,
+    PostRaydiumCLMMRouteSwapResponse,
+    GetRaydiumCLMMQuotesRequest, GetRaydiumCLMMQuotesResponse, GetRaydiumCLMMPoolsRequest, GetRaydiumCLMMPoolsResponse
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -216,6 +221,27 @@ export abstract class BaseProvider implements Api {
             this.privateKey = Keypair.fromSecretKey(base58.decode(privateKey))
         }
     }
+
+    getRaydiumCLMMPools(request: GetRaydiumCLMMPoolsRequest
+    ): RpcReturnType<Promise<GetRaydiumCLMMPoolsResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    getRaydiumCLMMQuotes(request: GetRaydiumCLMMQuotesRequest
+    ): RpcReturnType<Promise<GetRaydiumCLMMQuotesResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postRaydiumCLMMRouteSwap(request: PostRaydiumCLMMRouteSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumCLMMRouteSwapResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postRaydiumCLMMSwap(request: PostRaydiumCLMMSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumCLMMSwapResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
     // Openbook V2
     getMarketsV2(
         request: GetMarketsRequestV2

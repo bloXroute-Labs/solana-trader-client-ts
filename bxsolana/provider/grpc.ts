@@ -191,6 +191,13 @@ import {
     PostDriftPerpOrderRequest,
     PostDriftPerpOrderResponse,
     GetOpenOrdersResponseV2,
+    GetRaydiumCLMMPoolsRequest,
+    GetRaydiumCLMMPoolsResponse,
+    GetRaydiumCLMMQuotesRequest,
+    GetRaydiumCLMMQuotesResponse,
+    PostRaydiumCLMMRouteSwapRequest,
+    PostRaydiumCLMMRouteSwapResponse,
+    PostRaydiumCLMMSwapRequest, PostRaydiumCLMMSwapResponse
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
@@ -300,6 +307,26 @@ export class GrpcProvider extends BaseProvider {
         request: PostJupiterSwapRequest
     ): RpcReturnType<Promise<PostJupiterSwapResponse>, []> {
         return this.client.postJupiterSwap(request)
+    }
+
+    getRaydiumCLMMPools(request: GetRaydiumCLMMPoolsRequest
+    ): RpcReturnType<Promise<GetRaydiumCLMMPoolsResponse>, []> {
+        return this.client.getRaydiumCLMMPools(request)
+    }
+
+    getRaydiumCLMMQuotes(request: GetRaydiumCLMMQuotesRequest
+    ): RpcReturnType<Promise<GetRaydiumCLMMQuotesResponse>, []> {
+        return this.client.getRaydiumCLMMQuotes(request)
+    }
+
+    postRaydiumCLMMRouteSwap(request: PostRaydiumCLMMRouteSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumCLMMRouteSwapResponse>, []> {
+        return this.client.postRaydiumCLMMRouteSwap(request)
+    }
+
+    postRaydiumCLMMSwap(request: PostRaydiumCLMMSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumCLMMSwapResponse>, []> {
+        return this.client.postRaydiumCLMMSwap(request)
     }
 
     postRaydiumRouteSwap(

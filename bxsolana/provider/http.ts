@@ -157,6 +157,13 @@ import {
     PostDriftPerpOrderRequest,
     PostDriftPerpOrderResponse,
     GetOpenOrdersResponseV2,
+    GetRaydiumCLMMPoolsRequest,
+    GetRaydiumCLMMPoolsResponse,
+    GetRaydiumCLMMQuotesRequest,
+    GetRaydiumCLMMQuotesResponse,
+    PostRaydiumCLMMRouteSwapRequest,
+    PostRaydiumCLMMRouteSwapResponse,
+    PostRaydiumCLMMSwapRequest, PostRaydiumCLMMSwapResponse
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -227,6 +234,36 @@ export class HttpProvider extends BaseProvider {
             path,
             request
         )
+    }
+
+    getRaydiumCLMMPools(request: GetRaydiumCLMMPoolsRequest
+    ): RpcReturnType<Promise<GetRaydiumCLMMPoolsResponse>, []> {
+        const path = `${this.baseUrlV2}/raydium/clmm-pools?pairOrAddress=${request.pairOrAddress}`
+        return this.get<GetRaydiumCLMMPoolsResponse>(path)
+    }
+
+    getRaydiumCLMMQuotes(request: GetRaydiumCLMMQuotesRequest
+    ): RpcReturnType<Promise<GetRaydiumCLMMQuotesResponse>, []> {
+        const path = `${this.baseUrlV2}/raydium/clmm-quotes?inToken=${request.inToken}&outToken=${request.outToken}&inAmount=${request.inAmount}&slippage=${request.slippage}`
+        return this.get<GetRaydiumCLMMQuotesResponse>(path)
+    }
+
+    postRaydiumCLMMRouteSwap(request: PostRaydiumCLMMRouteSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumCLMMRouteSwapResponse>, []> {
+        const path = `${this.baseUrlV2}/raydium/clmm-route-swap`
+        return this.post<
+            PostRaydiumCLMMRouteSwapRequest,
+            PostRaydiumCLMMRouteSwapResponse
+            >(path, request)
+    }
+
+    postRaydiumCLMMSwap(request: PostRaydiumCLMMSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumCLMMSwapResponse>, []> {
+        const path = `${this.baseUrlV2}/raydium/clmm-swap`
+        return this.post<
+            PostRaydiumCLMMSwapRequest,
+            PostRaydiumCLMMSwapResponse
+            >(path, request)
     }
 
     postRaydiumRouteSwap(
