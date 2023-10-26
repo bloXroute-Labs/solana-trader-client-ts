@@ -1110,14 +1110,18 @@ async function callPostModifyDriftOrder(provider: BaseProvider) {
 
 async function callPostDriftCancelPerpOrder(provider: BaseProvider) {
     console.info("post drift cancel perp order")
-    const req = await provider.postDriftCancelPerpOrder({
-        ownerAddress: ownerAddress,
-        accountAddress: "",
-        orderID: "1",
-        contract: "SOL_PERP",
-        clientOrderID: "0",
-    })
-    console.info(req)
+    try {
+        const req = await provider.postDriftCancelPerpOrder({
+            ownerAddress: ownerAddress,
+            accountAddress: "",
+            orderID: "1",
+            contract: "SOL_PERP",
+            clientOrderID: "0",
+        })
+        console.info(req)
+    } catch (err) {
+        console.log(err)
+    }
 }
 
 async function callPostCancelDriftMarginOrder(provider: BaseProvider) {
@@ -1332,17 +1336,21 @@ async function callGetDriftOpenPerpOrder(provider: BaseProvider) {
 }
 
 async function callPostCancelPerpOrder(provider: BaseProvider) {
-    console.info("canceling perp order")
-    const req = await provider.postCancelPerpOrder({
-        orderID: "0",
-        clientOrderID: "12",
-        accountAddress: "",
-        ownerAddress: ownerAddress,
-        project: "P_DRIFT",
-        contract: "SOL_PERP",
-    })
+    try {
+        console.info("canceling perp order")
+        const req = await provider.postCancelPerpOrder({
+            orderID: "0",
+            clientOrderID: "12",
+            accountAddress: "",
+            ownerAddress: ownerAddress,
+            project: "P_DRIFT",
+            contract: "SOL_PERP",
+        })
 
-    console.info(req)
+        console.info(req)
+    } catch (err) {
+        console.log(err)
+    }
 }
 
 async function callPostCancelPerpOrders(provider: BaseProvider) {
@@ -1872,11 +1880,11 @@ async function callPostRaydiumCLMMSwap(provider: BaseProvider) {
     console.info("Generating a Raydium CLMM swap")
     const response = await provider.postRaydiumCLMMSwap({
         ownerAddress: ownerAddress,
-        inToken: "USDT",
+        inToken: "USDC",
         outToken: "SOL",
         poolAddress: "",
-        inAmount: 0.01,
-        slippage: 0.1,
+        inAmount: 32,
+        slippage: 10,
     })
     console.info(response)
 }
@@ -1987,21 +1995,11 @@ async function callPostRaydiumCLMMRouteSwap(provider: BaseProvider) {
         steps: [
             {
                 poolAddress: "",
-                inToken: "FIDA",
-                // RAY token address
-                // can be omitted if project.id is specified
-                outToken: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
-                inAmount: 0.01,
-                outAmount: 0.007505,
-                outAmountMin: 0.074,
-            },
-            {
-                poolAddress: "",
-                inToken: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
-                outToken: "USDT",
-                inAmount: 0.007505,
-                outAmount: 0.004043,
-                outAmountMin: 0.004,
+                inToken: "SOL",
+                outToken: "USDC",
+                inAmount: 32,
+                outAmount: 0,
+                outAmountMin: 0,
             },
         ],
     })
