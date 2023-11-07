@@ -508,15 +508,31 @@ async function doAmmRequests(provider: BaseProvider) {
     console.info(" ")
     console.info(" ")
 
-    await callPostRaydiumSwap(provider)
-    console.info(" ")
-    console.info(" ")
-
     await callPostJupiterSwap(provider)
     console.info(" ")
     console.info(" ")
 
+    await callPostRaydiumSwap(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostRaydiumCLMMSwap(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetRaydiumCLMMPools(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetRaydiumCLMMQuotes(provider)
+    console.info(" ")
+    console.info(" ")
+
     await callPostRaydiumRouteSwap(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostRaydiumCLMMRouteSwap(provider)
     console.info(" ")
     console.info(" ")
 }
@@ -930,6 +946,14 @@ async function callGetRaydiumPools(provider: BaseProvider) {
     console.info(resp)
 }
 
+async function callGetRaydiumCLMMPools(provider: BaseProvider) {
+    console.info("Retrieving Raydium CLMM pools")
+    const resp = await provider.getRaydiumCLMMPools({
+        pairOrAddress: "",
+    })
+    console.info(resp)
+}
+
 async function callGetQuotes(provider: BaseProvider) {
     console.info("Retrieving quotes")
     const resp = await provider.getQuotes({
@@ -960,6 +984,17 @@ async function callGetRaydiumQuotes(provider: BaseProvider) {
     const resp = await provider.getRaydiumQuotes({
         inToken: "SOL",
         outToken: "USDT",
+        inAmount: 1,
+        slippage: 5,
+    })
+    console.info(resp)
+}
+
+async function callGetRaydiumCLMMQuotes(provider: BaseProvider) {
+    console.info("Retrieving Raydium CLMM quotes")
+    const resp = await provider.getRaydiumCLMMQuotes({
+        inToken: "SOL",
+        outToken: "USDC",
         inAmount: 1,
         slippage: 5,
     })
@@ -1075,14 +1110,18 @@ async function callPostModifyDriftOrder(provider: BaseProvider) {
 
 async function callPostDriftCancelPerpOrder(provider: BaseProvider) {
     console.info("post drift cancel perp order")
-    const req = await provider.postDriftCancelPerpOrder({
-        ownerAddress: ownerAddress,
-        accountAddress: "",
-        orderID: "1",
-        contract: "SOL_PERP",
-        clientOrderID: "0",
-    })
-    console.info(req)
+    try {
+        const req = await provider.postDriftCancelPerpOrder({
+            ownerAddress: ownerAddress,
+            accountAddress: "",
+            orderID: "1",
+            contract: "SOL_PERP",
+            clientOrderID: "0",
+        })
+        console.info(req)
+    } catch (err) {
+        console.log(err)
+    }
 }
 
 async function callPostCancelDriftMarginOrder(provider: BaseProvider) {
@@ -1297,17 +1336,21 @@ async function callGetDriftOpenPerpOrder(provider: BaseProvider) {
 }
 
 async function callPostCancelPerpOrder(provider: BaseProvider) {
-    console.info("canceling perp order")
-    const req = await provider.postCancelPerpOrder({
-        orderID: "0",
-        clientOrderID: "12",
-        accountAddress: "",
-        ownerAddress: ownerAddress,
-        project: "P_DRIFT",
-        contract: "SOL_PERP",
-    })
+    try {
+        console.info("canceling perp order")
+        const req = await provider.postCancelPerpOrder({
+            orderID: "0",
+            clientOrderID: "12",
+            accountAddress: "",
+            ownerAddress: ownerAddress,
+            project: "P_DRIFT",
+            contract: "SOL_PERP",
+        })
 
-    console.info(req)
+        console.info(req)
+    } catch (err) {
+        console.log(err)
+    }
 }
 
 async function callPostCancelPerpOrders(provider: BaseProvider) {
@@ -1833,6 +1876,19 @@ async function callPostRaydiumSwap(provider: BaseProvider) {
     console.info(response)
 }
 
+async function callPostRaydiumCLMMSwap(provider: BaseProvider) {
+    console.info("Generating a Raydium CLMM swap")
+    const response = await provider.postRaydiumCLMMSwap({
+        ownerAddress: ownerAddress,
+        inToken: "USDC",
+        outToken: "SOL",
+        poolAddress: "",
+        inAmount: 32,
+        slippage: 10,
+    })
+    console.info(response)
+}
+
 async function callPostJupiterSwap(provider: BaseProvider) {
     console.info("Generating a Jupiter swap")
     const response = await provider.postJupiterSwap({
@@ -1925,6 +1981,25 @@ async function callPostRaydiumRouteSwap(provider: BaseProvider) {
                 inAmount: 0.007505,
                 outAmount: 0.004043,
                 outAmountMin: 0.004,
+            },
+        ],
+    })
+    console.info(response)
+}
+
+async function callPostRaydiumCLMMRouteSwap(provider: BaseProvider) {
+    console.info("Generating a Raydium CLMM route swap")
+    const response = await provider.postRaydiumCLMMRouteSwap({
+        ownerAddress: ownerAddress,
+        slippage: 10,
+        steps: [
+            {
+                poolAddress: "",
+                inToken: "SOL",
+                outToken: "USDC",
+                inAmount: 32,
+                outAmount: 0,
+                outAmountMin: 0,
             },
         ],
     })
