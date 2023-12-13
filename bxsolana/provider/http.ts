@@ -684,6 +684,21 @@ export class HttpProvider extends BaseProvider {
         )
     }
 
+    postSubmitV2(request: PostSubmitRequest): Promise<PostSubmitResponse> {
+        const path = `${this.baseUrlV2}/submit`
+        return this.post<PostSubmitRequest, PostSubmitResponse>(path, request)
+    }
+
+    postSubmitBatchV2(
+        request: PostSubmitBatchRequest
+    ): Promise<PostSubmitBatchResponse> {
+        const path = `${this.baseUrlV2}/submit-batch`
+        return this.post<PostSubmitBatchRequest, PostSubmitBatchResponse>(
+            path,
+            request
+        )
+    }
+
     postCancelOrder(
         request: PostCancelOrderRequest
     ): Promise<PostCancelOrderResponse> {

@@ -743,6 +743,16 @@ export class WsProvider extends BaseProvider {
         return this.wsConnection.call("PostSubmitBatch", request)
     }
 
+    async postSubmitV2(request: PostSubmitRequest): Promise<PostSubmitResponse> {
+        return this.wsConnection.call("PostSubmitV2", request)
+    }
+
+    async postSubmitBatchV2(
+        request: PostSubmitBatchRequest
+    ): Promise<PostSubmitBatchResponse> {
+        return this.wsConnection.call("PostSubmitBatchV2", request)
+    }
+
     async postCancelOrder(
         request: PostCancelOrderRequest
     ): Promise<PostCancelOrderResponse> {
