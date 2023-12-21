@@ -594,6 +594,16 @@ export class GrpcProvider extends BaseProvider {
         return this.client.postSubmitBatch(request)
     }
 
+    postSubmitV2(request: PostSubmitRequest): Promise<PostSubmitResponse> {
+        return this.client.postSubmitV2(request)
+    }
+
+    postSubmitBatchV2(
+        request: PostSubmitBatchRequest
+    ): Promise<PostSubmitBatchResponse> {
+        return this.client.postSubmitBatchV2(request)
+    }
+
     postCancelOrder(
         request: PostCancelOrderRequest
     ): Promise<PostCancelOrderResponse> {

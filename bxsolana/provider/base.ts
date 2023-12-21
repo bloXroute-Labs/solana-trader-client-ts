@@ -695,6 +695,14 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
+    postSubmitBatchV2(request: PostSubmitBatchRequest): Promise<PostSubmitBatchResponse> {
+        throw new Error("Not implemented")
+    }
+
+    postSubmitV2(request: PostSubmitRequest): Promise<PostSubmitResponse> {
+        throw new Error("Not implemented")
+    }
+
     getAccountBalance(
         request: GetAccountBalanceRequest
     ): Promise<GetAccountBalanceResponse> {
