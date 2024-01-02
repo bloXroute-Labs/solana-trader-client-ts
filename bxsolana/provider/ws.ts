@@ -183,11 +183,13 @@ import {
     GetRaydiumQuotesResponse,
     PostDriftPerpOrderRequest,
     PostDriftPerpOrderResponse,
-    GetOpenOrdersResponseV2,
+    GetOpenOrdersResponseV2, GetNewRaydiumPoolsResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
 import { RpcReturnType } from "../proto/runtime/rpc"
+import {$} from "../proto/messages/api/GetNewRaydiumPoolsRequest";
+import GetNewRaydiumPoolsRequest = $.api.GetNewRaydiumPoolsRequest;
 
 export class WsProvider extends BaseProvider {
     private wsConnection: RpcWsConnection
@@ -728,6 +730,19 @@ export class WsProvider extends BaseProvider {
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
+    getNewRaydiumPoolsStream = async (
+        request: GetNewRaydiumPoolsRequest
+    ): Promise<AsyncGenerator<GetNewRaydiumPoolsResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetNewRaydiumPoolsStream",
+            request
+        )
+
+        this.manageGetStreamMaps("GetNewRaydiumPoolsStream", subscriptionId)
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
+    }
+
+
     //POST requests
     async postOrder(request: PostOrderRequest): Promise<PostOrderResponse> {
         return this.wsConnection.call("PostOrder", request)
@@ -936,6 +951,15 @@ export class WsProvider extends BaseProvider {
         )
     }
 
+    cancelGetNewRaydiumPoolsStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
+        return this.cancelStreamByCount(
+            "GetNewRaydiumPoolsStream",
+            streamNumber
+        )
+    }
+
     cancelGetQuotesStreamByCount = async (
         streamNumber: number
     ): Promise<boolean> => {
@@ -969,6 +993,10 @@ export class WsProvider extends BaseProvider {
 
     cancelAllGetOrderStatusStream = async (): Promise<Awaited<boolean>[]> => {
         return this.cancelAllStreams("GetOrderStatusStream")
+    }
+
+    cancelAllGetNewRaydiumPoolsStream = async (): Promise<Awaited<boolean>[]> => {
+        return this.cancelAllStreams("GetNewRaydiumPoolsStream")
     }
 
     cancelAllGetRecentBlockhashStream = async (): Promise<

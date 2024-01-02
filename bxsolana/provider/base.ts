@@ -192,6 +192,8 @@ import {
     PostDriftPerpOrderResponse,
     PostDriftPerpOrderRequest,
     GetOpenOrdersResponseV2,
+    GetNewRaydiumPoolsRequest,
+    GetNewRaydiumPoolsResponse,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -1010,6 +1012,12 @@ export abstract class BaseProvider implements Api {
         throw new Error("Method not implemented.")
     }
 
+    getNewRaydiumPoolsStream(
+        request: GetNewRaydiumPoolsRequest
+    ): Promise<AsyncGenerator<GetNewRaydiumPoolsResponse>> {
+        throw new Error("Not implemented")
+    }
+
     getPoolReservesStream(
         request: GetPoolReservesStreamRequest
     ): Promise<AsyncGenerator<GetPoolReservesStreamResponse>> {
@@ -1100,4 +1108,16 @@ export abstract class BaseProvider implements Api {
     ): Promise<boolean> => {
         throw new Error("Not implemented")
     }
+
+    cancelAllGetNewRaydiumPoolsStream = async (): Promise<Awaited<boolean>[]> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetNewRaydiumPoolsStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
 }
+
+
