@@ -190,7 +190,8 @@ import {
     PostRaydiumSwapResponse,
     PostDriftPerpOrderRequest,
     PostDriftPerpOrderResponse,
-    GetOpenOrdersResponseV2, GetNewRaydiumPoolsRequest,
+    GetOpenOrdersResponseV2,
+    GetNewRaydiumPoolsRequest,
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
