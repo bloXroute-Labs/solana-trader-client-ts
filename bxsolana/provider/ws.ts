@@ -189,8 +189,8 @@ import {
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
 import { RpcReturnType } from "../proto/runtime/rpc"
-import {$} from "../proto/messages/api/GetNewRaydiumPoolsRequest";
-import GetNewRaydiumPoolsRequest = $.api.GetNewRaydiumPoolsRequest;
+import { $ } from "../proto/messages/api/GetNewRaydiumPoolsRequest"
+import GetNewRaydiumPoolsRequest = $.api.GetNewRaydiumPoolsRequest
 
 export class WsProvider extends BaseProvider {
     private wsConnection: RpcWsConnection
@@ -743,7 +743,6 @@ export class WsProvider extends BaseProvider {
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
-
     //POST requests
     async postOrder(request: PostOrderRequest): Promise<PostOrderResponse> {
         return this.wsConnection.call("PostOrder", request)
@@ -759,7 +758,9 @@ export class WsProvider extends BaseProvider {
         return this.wsConnection.call("PostSubmitBatch", request)
     }
 
-    async postSubmitV2(request: PostSubmitRequest): Promise<PostSubmitResponse> {
+    async postSubmitV2(
+        request: PostSubmitRequest
+    ): Promise<PostSubmitResponse> {
         return this.wsConnection.call("PostSubmitV2", request)
     }
 
@@ -996,7 +997,9 @@ export class WsProvider extends BaseProvider {
         return this.cancelAllStreams("GetOrderStatusStream")
     }
 
-    cancelAllGetNewRaydiumPoolsStream = async (): Promise<Awaited<boolean>[]> => {
+    cancelAllGetNewRaydiumPoolsStream = async (): Promise<
+        Awaited<boolean>[]
+    > => {
         return this.cancelAllStreams("GetNewRaydiumPoolsStream")
     }
 

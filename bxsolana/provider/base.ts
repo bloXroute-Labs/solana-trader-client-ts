@@ -697,7 +697,9 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    postSubmitBatchV2(request: PostSubmitBatchRequest): Promise<PostSubmitBatchResponse> {
+    postSubmitBatchV2(
+        request: PostSubmitBatchRequest
+    ): Promise<PostSubmitBatchResponse> {
         throw new Error("Not implemented")
     }
 
@@ -1109,7 +1111,9 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    cancelAllGetNewRaydiumPoolsStream = async (): Promise<Awaited<boolean>[]> => {
+    cancelAllGetNewRaydiumPoolsStream = async (): Promise<
+        Awaited<boolean>[]
+    > => {
         throw new Error("Not implemented")
     }
 
@@ -1119,5 +1123,3 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 }
-
-

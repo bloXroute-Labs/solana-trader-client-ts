@@ -120,7 +120,7 @@ async function http() {
     }
 
     console.info(" ----  HTTP PERP Requests  ----")
-    gawait runPerpRequests(provider)
+    await runPerpRequests(provider)
 
     console.info(" ----  HTTP Requests  ----")
     await doOrderbookRequests(provider)
