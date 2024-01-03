@@ -538,6 +538,10 @@ async function doStreams(provider: BaseProvider) {
         await callGetTradesStream(provider)
         console.info(" ")
         console.info(" ")
+
+        await callGetNewRaydiumPoolsStream(provider)
+        console.info(" ")
+        console.info(" ")
     }
 
     await callGetRecentBlockHashStream(provider)
@@ -585,6 +589,9 @@ async function cancelWsStreams(provider: BaseProvider) {
     await provider.cancelAllGetTradesStream()
     console.info(" ")
     console.info(" ")
+
+    console.info("Cancelling raydium new pools stream")
+    await provider.cancelAllGetNewRaydiumPoolsStream()
 }
 
 async function doAmmStreams(provider: BaseProvider) {
@@ -1561,6 +1568,20 @@ async function callGetTradesStream(provider: BaseProvider) {
         limit: 5,
         project: "P_OPENBOOK",
     })
+
+    let count = 0
+    for await (const tr of req) {
+        console.info(tr)
+        count++
+        if (count == 1) {
+            break
+        }
+    }
+}
+
+async function callGetNewRaydiumPoolsStream(provider: BaseProvider) {
+    console.info("Subscribing for new raydium pool updates")
+    const req = await provider.getNewRaydiumPoolsStream({})
 
     let count = 0
     for await (const tr of req) {

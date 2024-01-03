@@ -191,6 +191,7 @@ import {
     PostDriftPerpOrderRequest,
     PostDriftPerpOrderResponse,
     GetOpenOrdersResponseV2,
+    GetNewRaydiumPoolsRequest,
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
@@ -198,6 +199,8 @@ import { BaseProvider } from "./base"
 import { CallMetadataOptions } from "@grpc/grpc-js/build/src/call-credentials"
 import { ConnectionOptions } from "tls"
 import { RpcReturnType } from "../proto/runtime/rpc"
+import { $ } from "../proto/messages/api/GetNewRaydiumPoolsResponse"
+import GetNewRaydiumPoolsResponse = $.api.GetNewRaydiumPoolsResponse
 
 // built-in grpc.credentials.createInsecure() doesn't allow composition
 class insecureChannel extends grpc.ChannelCredentials {
@@ -819,6 +822,12 @@ export class GrpcProvider extends BaseProvider {
         request: GetBlockStreamRequest
     ): Promise<AsyncGenerator<GetBlockStreamResponse>> {
         return this.client.getBlockStream(request)
+    }
+
+    getNewRaydiumPoolsStream(
+        request: GetNewRaydiumPoolsRequest
+    ): Promise<AsyncGenerator<GetNewRaydiumPoolsResponse>> {
+        return this.client.getNewRaydiumPoolsStream(request)
     }
 
     getPerpOrderbooksStream(

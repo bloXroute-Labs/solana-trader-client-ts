@@ -104,6 +104,8 @@ export type { Type as GetBlockStreamRequest } from "./GetBlockStreamRequest";
 export type { Type as GetBlockStreamResponse } from "./GetBlockStreamResponse";
 export type { Type as GetPoolsRequest } from "./GetPoolsRequest";
 export type { Type as GetPoolsResponse } from "./GetPoolsResponse";
+export type { Type as GetNewRaydiumPoolsRequest } from "./GetNewRaydiumPoolsRequest";
+export type { Type as GetNewRaydiumPoolsResponse } from "./GetNewRaydiumPoolsResponse";
 export type { Type as GetRaydiumPoolsRequest } from "./GetRaydiumPoolsRequest";
 export type { Type as GetRaydiumPoolsResponse } from "./GetRaydiumPoolsResponse";
 export type { Type as ProjectPools } from "./ProjectPools";

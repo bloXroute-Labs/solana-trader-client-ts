@@ -1114,40 +1114,52 @@ import {
   encodeJson as encodeJson_184,
 } from "../../messages/api/GetPricesStreamResponse";
 import {
-  Type as GetSwapsStreamRequest,
+  Type as GetNewRaydiumPoolsRequest,
   encodeBinary as encodeBinary_185,
   decodeBinary as decodeBinary_185,
   encodeJson as encodeJson_185,
-} from "../../messages/api/GetSwapsStreamRequest";
+} from "../../messages/api/GetNewRaydiumPoolsRequest";
 import {
-  Type as GetSwapsStreamResponse,
+  Type as GetNewRaydiumPoolsResponse,
   encodeBinary as encodeBinary_186,
   decodeBinary as decodeBinary_186,
   encodeJson as encodeJson_186,
-} from "../../messages/api/GetSwapsStreamResponse";
+} from "../../messages/api/GetNewRaydiumPoolsResponse";
 import {
-  Type as GetPerpOrderbooksRequest,
+  Type as GetSwapsStreamRequest,
   encodeBinary as encodeBinary_187,
   decodeBinary as decodeBinary_187,
   encodeJson as encodeJson_187,
-} from "../../messages/api/GetPerpOrderbooksRequest";
+} from "../../messages/api/GetSwapsStreamRequest";
 import {
-  Type as GetPerpOrderbooksStreamResponse,
+  Type as GetSwapsStreamResponse,
   encodeBinary as encodeBinary_188,
   decodeBinary as decodeBinary_188,
   encodeJson as encodeJson_188,
-} from "../../messages/api/GetPerpOrderbooksStreamResponse";
+} from "../../messages/api/GetSwapsStreamResponse";
 import {
-  Type as GetPerpTradesStreamRequest,
+  Type as GetPerpOrderbooksRequest,
   encodeBinary as encodeBinary_189,
   decodeBinary as decodeBinary_189,
   encodeJson as encodeJson_189,
-} from "../../messages/api/GetPerpTradesStreamRequest";
+} from "../../messages/api/GetPerpOrderbooksRequest";
 import {
-  Type as GetPerpTradesStreamResponse,
+  Type as GetPerpOrderbooksStreamResponse,
   encodeBinary as encodeBinary_190,
   decodeBinary as decodeBinary_190,
   encodeJson as encodeJson_190,
+} from "../../messages/api/GetPerpOrderbooksStreamResponse";
+import {
+  Type as GetPerpTradesStreamRequest,
+  encodeBinary as encodeBinary_191,
+  decodeBinary as decodeBinary_191,
+  encodeJson as encodeJson_191,
+} from "../../messages/api/GetPerpTradesStreamRequest";
+import {
+  Type as GetPerpTradesStreamResponse,
+  encodeBinary as encodeBinary_192,
+  decodeBinary as decodeBinary_192,
+  encodeJson as encodeJson_192,
 } from "../../messages/api/GetPerpTradesStreamResponse";
 import {
   fromSingle,
@@ -1260,6 +1272,7 @@ export interface Service<TReqArgs extends any[] = [], TResArgs extends any[] = [
   getQuotesStream(request: GetQuotesStreamRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetQuotesStreamResponse>, TResArgs>;
   getPoolReservesStream(request: GetPoolReservesStreamRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetPoolReservesStreamResponse>, TResArgs>;
   getPricesStream(request: GetPricesStreamRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetPricesStreamResponse>, TResArgs>;
+  getNewRaydiumPoolsStream(request: GetNewRaydiumPoolsRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetNewRaydiumPoolsResponse>, TResArgs>;
   getSwapsStream(request: GetSwapsStreamRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetSwapsStreamResponse>, TResArgs>;
   getPerpOrderbooksStream(request: GetPerpOrderbooksRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetPerpOrderbooksStreamResponse>, TResArgs>;
   getPerpTradesStream(request: GetPerpTradesStreamRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetPerpTradesStreamResponse>, TResArgs>;
@@ -2883,20 +2896,36 @@ export const methodDescriptors = {
       serializeJson: (value: GetPricesStreamResponse) => JSON.stringify(encodeJson_184(value)),
     },
   },
-  getSwapsStream: {
-    methodName: "GetSwapsStream",
+  getNewRaydiumPoolsStream: {
+    methodName: "GetNewRaydiumPoolsStream",
     service: { serviceName: "api.Api" },
     requestStream: false,
     responseStream: true,
     requestType: {
       serializeBinary: encodeBinary_185,
       deserializeBinary: decodeBinary_185,
-      serializeJson: (value: GetSwapsStreamRequest) => JSON.stringify(encodeJson_185(value)),
+      serializeJson: (value: GetNewRaydiumPoolsRequest) => JSON.stringify(encodeJson_185(value)),
     },
     responseType: {
       serializeBinary: encodeBinary_186,
       deserializeBinary: decodeBinary_186,
-      serializeJson: (value: GetSwapsStreamResponse) => JSON.stringify(encodeJson_186(value)),
+      serializeJson: (value: GetNewRaydiumPoolsResponse) => JSON.stringify(encodeJson_186(value)),
+    },
+  },
+  getSwapsStream: {
+    methodName: "GetSwapsStream",
+    service: { serviceName: "api.Api" },
+    requestStream: false,
+    responseStream: true,
+    requestType: {
+      serializeBinary: encodeBinary_187,
+      deserializeBinary: decodeBinary_187,
+      serializeJson: (value: GetSwapsStreamRequest) => JSON.stringify(encodeJson_187(value)),
+    },
+    responseType: {
+      serializeBinary: encodeBinary_188,
+      deserializeBinary: decodeBinary_188,
+      serializeJson: (value: GetSwapsStreamResponse) => JSON.stringify(encodeJson_188(value)),
     },
   },
   getPerpOrderbooksStream: {
@@ -2905,14 +2934,14 @@ export const methodDescriptors = {
     requestStream: false,
     responseStream: true,
     requestType: {
-      serializeBinary: encodeBinary_187,
-      deserializeBinary: decodeBinary_187,
-      serializeJson: (value: GetPerpOrderbooksRequest) => JSON.stringify(encodeJson_187(value)),
+      serializeBinary: encodeBinary_189,
+      deserializeBinary: decodeBinary_189,
+      serializeJson: (value: GetPerpOrderbooksRequest) => JSON.stringify(encodeJson_189(value)),
     },
     responseType: {
-      serializeBinary: encodeBinary_188,
-      deserializeBinary: decodeBinary_188,
-      serializeJson: (value: GetPerpOrderbooksStreamResponse) => JSON.stringify(encodeJson_188(value)),
+      serializeBinary: encodeBinary_190,
+      deserializeBinary: decodeBinary_190,
+      serializeJson: (value: GetPerpOrderbooksStreamResponse) => JSON.stringify(encodeJson_190(value)),
     },
   },
   getPerpTradesStream: {
@@ -2921,14 +2950,14 @@ export const methodDescriptors = {
     requestStream: false,
     responseStream: true,
     requestType: {
-      serializeBinary: encodeBinary_189,
-      deserializeBinary: decodeBinary_189,
-      serializeJson: (value: GetPerpTradesStreamRequest) => JSON.stringify(encodeJson_189(value)),
+      serializeBinary: encodeBinary_191,
+      deserializeBinary: decodeBinary_191,
+      serializeJson: (value: GetPerpTradesStreamRequest) => JSON.stringify(encodeJson_191(value)),
     },
     responseType: {
-      serializeBinary: encodeBinary_190,
-      deserializeBinary: decodeBinary_190,
-      serializeJson: (value: GetPerpTradesStreamResponse) => JSON.stringify(encodeJson_190(value)),
+      serializeBinary: encodeBinary_192,
+      deserializeBinary: decodeBinary_192,
+      serializeJson: (value: GetPerpTradesStreamResponse) => JSON.stringify(encodeJson_192(value)),
     },
   },
 } as const;
