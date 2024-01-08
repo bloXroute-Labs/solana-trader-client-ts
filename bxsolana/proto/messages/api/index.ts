@@ -104,8 +104,6 @@ export type { Type as GetBlockStreamRequest } from "./GetBlockStreamRequest";
 export type { Type as GetBlockStreamResponse } from "./GetBlockStreamResponse";
 export type { Type as GetPoolsRequest } from "./GetPoolsRequest";
 export type { Type as GetPoolsResponse } from "./GetPoolsResponse";
-export type { Type as GetNewRaydiumPoolsRequest } from "./GetNewRaydiumPoolsRequest";
-export type { Type as GetNewRaydiumPoolsResponse } from "./GetNewRaydiumPoolsResponse";
 export type { Type as GetRaydiumPoolsRequest } from "./GetRaydiumPoolsRequest";
 export type { Type as GetRaydiumPoolsResponse } from "./GetRaydiumPoolsResponse";
 export type { Type as ProjectPools } from "./ProjectPools";
@@ -115,6 +113,8 @@ export type { Type as GetQuotesStreamResponse } from "./GetQuotesStreamResponse"
 export type { Type as GetQuotesStreamUpdate } from "./GetQuotesStreamUpdate";
 export type { Type as GetSwapsStreamRequest } from "./GetSwapsStreamRequest";
 export type { Type as GetSwapsStreamResponse } from "./GetSwapsStreamResponse";
+export type { Type as GetNewRaydiumPoolsRequest } from "./GetNewRaydiumPoolsRequest";
+export type { Type as GetNewRaydiumPoolsResponse } from "./GetNewRaydiumPoolsResponse";
 export type { Type as GetSwapsStreamUpdate } from "./GetSwapsStreamUpdate";
 export type { Type as TokenPair } from "./TokenPair";
 export type { Type as GetPriceRequest } from "./GetPriceRequest";
