@@ -33,7 +33,11 @@ export class RpcWsConnection {
     }
 
     async connect() {
-        const headers = { Authorization: this.authHeader }
+        const headers = {
+            Authorization: this.authHeader,
+            "X-SDK": process.env.PACKAGE_NAME,
+            "X-SDK-VERSION": process.env.SDK_VERSION,
+        }
         const socket = new WebSocket(this.address, {
             headers,
         })
