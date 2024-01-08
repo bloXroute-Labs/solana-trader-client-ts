@@ -183,11 +183,7 @@ export class HttpProvider extends BaseProvider {
         this.baseUrlV2 = address + "/api/v2"
         this.requestConfig = {
             ...requestConfig,
-            headers: {
-                Authorization: this.authHeader,
-                "X-SDK": process.env.PACKAGE_NAME ?? "",
-                "X-SDK-VERSION": process.env.SDK_VERSION ?? "",
-            },
+            headers: { Authorization: this.authHeader },
         }
     }
 
