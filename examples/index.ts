@@ -62,6 +62,8 @@ const testOrder: PostOrderRequestV2 = {
     price: 200,
     openOrdersAddress: openOrdersAddress,
     clientOrderID: "0",
+    computeLimit: 1_400_000,
+    computePrice: "1000",
 }
 
 const transactionWaitTimeS = 60
@@ -1769,6 +1771,8 @@ async function callPostCancelByClientOrderID(provider: BaseProvider) {
         clientOrderID: testOrder.clientOrderID,
         orderID: "",
         side: "S_ASK",
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
     })
     console.info(req)
 }
@@ -1785,6 +1789,8 @@ async function callSubmitCancelByClientOrderID(provider: BaseProvider) {
             clientOrderID: testOrder.clientOrderID,
             orderID: "",
             side: "S_ASK",
+            computeLimit: testOrder.computeLimit,
+            computePrice: testOrder.computePrice,
         },
         true
     )
@@ -1799,6 +1805,8 @@ async function callPostSettleFunds(provider: BaseProvider) {
         baseTokenWallet: baseTokenWallet,
         quoteTokenWallet: quoteTokenWallet,
         ownerAddress: ownerAddress,
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
     })
     console.info(req)
 }
@@ -1811,6 +1819,8 @@ async function callSubmitSettleFunds(provider: BaseProvider) {
         baseTokenWallet: baseTokenWallet,
         quoteTokenWallet: quoteTokenWallet,
         ownerAddress: ownerAddress,
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
     })
     console.info(req)
 }
@@ -1838,6 +1848,8 @@ async function callPostTradeSwap(provider: BaseProvider) {
         inAmount: 0.01,
         slippage: 0.1,
         project: "P_RAYDIUM",
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
     })
     console.info(response)
 }
@@ -1850,6 +1862,8 @@ async function callPostRaydiumSwap(provider: BaseProvider) {
         outToken: "SOL",
         inAmount: 0.01,
         slippage: 0.1,
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
     })
     console.info(response)
 }
@@ -1862,6 +1876,8 @@ async function callPostJupiterSwap(provider: BaseProvider) {
         outToken: "SOL",
         inAmount: 0.01,
         slippage: 0.1,
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
     })
     console.info(response)
 }
@@ -1876,6 +1892,8 @@ async function callSubmitTradeSwap(provider: BaseProvider) {
             inAmount: 0.01,
             slippage: 0.1,
             project: "P_RAYDIUM",
+            computeLimit: testOrder.computeLimit,
+            computePrice: testOrder.computePrice,
         },
         "P_SUBMIT_ALL",
         true
@@ -1919,6 +1937,8 @@ async function callPostRouteTradeSwap(provider: BaseProvider) {
             },
         ],
         project: "P_RAYDIUM",
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
     })
     console.info(response)
 }
@@ -1948,6 +1968,8 @@ async function callPostRaydiumRouteSwap(provider: BaseProvider) {
                 outAmountMin: 0.004,
             },
         ],
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
     })
     console.info(response)
 }
@@ -1975,6 +1997,8 @@ async function callSubmitRouteTradeSwap(provider: BaseProvider) {
                 },
             ],
             project: "P_RAYDIUM",
+            computeLimit: testOrder.computeLimit,
+            computePrice: testOrder.computePrice,
         },
         "P_SUBMIT_ALL",
         true
@@ -2062,6 +2086,8 @@ async function callCancelAll(provider: BaseProvider) {
         side: "S_UNKNOWN",
         marketAddress: marketAddress,
         clientOrderID: "0",
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
     }
     const response = await provider.submitCancelOrderV2(cancelAllRequest)
 
