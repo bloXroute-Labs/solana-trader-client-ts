@@ -62,8 +62,8 @@ const testOrder: PostOrderRequestV2 = {
     price: 200,
     openOrdersAddress: openOrdersAddress,
     clientOrderID: "0",
-    computeLimit: 1_400_000,
-    computePrice: "1000",
+    computeLimit: 0,
+    computePrice: "0",
 }
 
 const transactionWaitTimeS = 60
