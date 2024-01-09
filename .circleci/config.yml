@@ -1,7 +1,6 @@
 version: 2.1
 orbs:
   node: circleci/node@5.0.2
-  slack: circleci/slack@4.1
 jobs:
   build:
     executor: node/default
@@ -91,39 +90,6 @@ jobs:
             unset PRIVATE_KEY
             npm start
           no_output_timeout: 30m
-      - slack/notify:
-          branch_pattern: develop
-          custom: |
-            {
-              "text": "solana-trader-client-ts Build failed [develop]",
-              "blocks": [
-                {
-                  "type": "header",
-                  "text": {
-                    "type": "plain_text",
-                    "text": "solana-trader-client-ts Build failed",
-                    "emoji": true
-                  }
-                },
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "@here The latest merge seems to have broken builds.\n\nLast commit: <https://github.com/bloXroute-Labs/solana-trader-client-ts/commit/$COMMIT_HASH|$COMMIT_HASH> \nAuthor: $COMMIT_AUTHOR"
-                  },
-                  "accessory": {
-                    "type": "button",
-                    "text": {
-                      "type": "plain_text",
-                      "text": "CircleCI",
-                      "emoji": true
-                    },
-                    "url": "https://app.circleci.com/pipelines/github/bloXroute-Labs/solana-trader-client-ts?branch=develop"
-                  }
-                }
-              ]
-            }
-          event: fail
 
 workflows:
   build_and_test:
@@ -147,7 +113,6 @@ workflows:
             - build
       - integration-mainnet:
           context:
-            - slack
             - trader-api-sdk
           requires:
             - build
@@ -171,7 +136,6 @@ workflows:
             - build
       - integration-mainnet:
           context:
-            - slack
             - trader-api-sdk
           requires:
             - build
