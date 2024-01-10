@@ -47,6 +47,8 @@ export declare namespace $.api {
     price: number;
     openOrdersAddress: string;
     clientOrderID: string;
+    computeLimit: number;
+    computePrice: string;
     project: Project;
   }
 }
@@ -63,6 +65,8 @@ export function getDefaultValue(): $.api.PostOrderRequest {
     price: 0,
     openOrdersAddress: "",
     clientOrderID: "0",
+    computeLimit: 0,
+    computePrice: "0",
     project: "P_UNKNOWN",
   };
 }
@@ -85,6 +89,8 @@ export function encodeJson(value: $.api.PostOrderRequest): unknown {
   if (value.price !== undefined) result.price = tsValueToJsonValueFns.double(value.price);
   if (value.openOrdersAddress !== undefined) result.openOrdersAddress = tsValueToJsonValueFns.string(value.openOrdersAddress);
   if (value.clientOrderID !== undefined) result.clientOrderID = tsValueToJsonValueFns.uint64(value.clientOrderID);
+  if (value.computeLimit !== undefined) result.computeLimit = tsValueToJsonValueFns.uint32(value.computeLimit);
+  if (value.computePrice !== undefined) result.computePrice = tsValueToJsonValueFns.uint64(value.computePrice);
   if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
   return result;
 }
@@ -100,6 +106,8 @@ export function decodeJson(value: any): $.api.PostOrderRequest {
   if (value.price !== undefined) result.price = jsonValueToTsValueFns.double(value.price);
   if (value.openOrdersAddress !== undefined) result.openOrdersAddress = jsonValueToTsValueFns.string(value.openOrdersAddress);
   if (value.clientOrderID !== undefined) result.clientOrderID = jsonValueToTsValueFns.uint64(value.clientOrderID);
+  if (value.computeLimit !== undefined) result.computeLimit = jsonValueToTsValueFns.uint32(value.computeLimit);
+  if (value.computePrice !== undefined) result.computePrice = jsonValueToTsValueFns.uint64(value.computePrice);
   if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
   return result;
 }
@@ -159,10 +167,22 @@ export function encodeBinary(value: $.api.PostOrderRequest): Uint8Array {
       [9, tsValueToWireValueFns.uint64(tsValue)],
     );
   }
+  if (value.computeLimit !== undefined) {
+    const tsValue = value.computeLimit;
+    result.push(
+      [10, tsValueToWireValueFns.uint32(tsValue)],
+    );
+  }
+  if (value.computePrice !== undefined) {
+    const tsValue = value.computePrice;
+    result.push(
+      [11, tsValueToWireValueFns.uint64(tsValue)],
+    );
+  }
   if (value.project !== undefined) {
     const tsValue = value.project;
     result.push(
-      [10, { type: WireType.Varint as const, value: new Long(name2num_2[tsValue as keyof typeof name2num_2]) }],
+      [12, { type: WireType.Varint as const, value: new Long(name2num_2[tsValue as keyof typeof name2num_2]) }],
     );
   }
   return serialize(result);
@@ -236,6 +256,20 @@ export function decodeBinary(binary: Uint8Array): $.api.PostOrderRequest {
   }
   field: {
     const wireValue = wireFields.get(10);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.uint32(wireValue);
+    if (value === undefined) break field;
+    result.computeLimit = value;
+  }
+  field: {
+    const wireValue = wireFields.get(11);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.uint64(wireValue);
+    if (value === undefined) break field;
+    result.computePrice = value;
+  }
+  field: {
+    const wireValue = wireFields.get(12);
     if (wireValue === undefined) break field;
     const value = wireValue.type === WireType.Varint ? num2name_2[wireValue.value[0] as keyof typeof num2name_2] : undefined;
     if (value === undefined) break field;

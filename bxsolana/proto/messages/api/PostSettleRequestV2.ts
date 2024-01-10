@@ -23,6 +23,8 @@ export declare namespace $.api {
     baseTokenWallet: string;
     quoteTokenWallet: string;
     openOrdersAddress: string;
+    computeLimit: number;
+    computePrice: string;
   }
 }
 export type Type = $.api.PostSettleRequestV2;
@@ -34,6 +36,8 @@ export function getDefaultValue(): $.api.PostSettleRequestV2 {
     baseTokenWallet: "",
     quoteTokenWallet: "",
     openOrdersAddress: "",
+    computeLimit: 0,
+    computePrice: "0",
   };
 }
 
@@ -51,6 +55,8 @@ export function encodeJson(value: $.api.PostSettleRequestV2): unknown {
   if (value.baseTokenWallet !== undefined) result.baseTokenWallet = tsValueToJsonValueFns.string(value.baseTokenWallet);
   if (value.quoteTokenWallet !== undefined) result.quoteTokenWallet = tsValueToJsonValueFns.string(value.quoteTokenWallet);
   if (value.openOrdersAddress !== undefined) result.openOrdersAddress = tsValueToJsonValueFns.string(value.openOrdersAddress);
+  if (value.computeLimit !== undefined) result.computeLimit = tsValueToJsonValueFns.uint32(value.computeLimit);
+  if (value.computePrice !== undefined) result.computePrice = tsValueToJsonValueFns.uint64(value.computePrice);
   return result;
 }
 
@@ -61,6 +67,8 @@ export function decodeJson(value: any): $.api.PostSettleRequestV2 {
   if (value.baseTokenWallet !== undefined) result.baseTokenWallet = jsonValueToTsValueFns.string(value.baseTokenWallet);
   if (value.quoteTokenWallet !== undefined) result.quoteTokenWallet = jsonValueToTsValueFns.string(value.quoteTokenWallet);
   if (value.openOrdersAddress !== undefined) result.openOrdersAddress = jsonValueToTsValueFns.string(value.openOrdersAddress);
+  if (value.computeLimit !== undefined) result.computeLimit = jsonValueToTsValueFns.uint32(value.computeLimit);
+  if (value.computePrice !== undefined) result.computePrice = jsonValueToTsValueFns.uint64(value.computePrice);
   return result;
 }
 
@@ -94,6 +102,18 @@ export function encodeBinary(value: $.api.PostSettleRequestV2): Uint8Array {
     const tsValue = value.openOrdersAddress;
     result.push(
       [5, tsValueToWireValueFns.string(tsValue)],
+    );
+  }
+  if (value.computeLimit !== undefined) {
+    const tsValue = value.computeLimit;
+    result.push(
+      [6, tsValueToWireValueFns.uint32(tsValue)],
+    );
+  }
+  if (value.computePrice !== undefined) {
+    const tsValue = value.computePrice;
+    result.push(
+      [7, tsValueToWireValueFns.uint64(tsValue)],
     );
   }
   return serialize(result);
@@ -137,6 +157,20 @@ export function decodeBinary(binary: Uint8Array): $.api.PostSettleRequestV2 {
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
     result.openOrdersAddress = value;
+  }
+  field: {
+    const wireValue = wireFields.get(6);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.uint32(wireValue);
+    if (value === undefined) break field;
+    result.computeLimit = value;
+  }
+  field: {
+    const wireValue = wireFields.get(7);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.uint64(wireValue);
+    if (value === undefined) break field;
+    result.computePrice = value;
   }
   return result;
 }
