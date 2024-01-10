@@ -32,7 +32,6 @@ import {
     DEVNET_API_GRPC_PORT,
 } from "../bxsolana/utils/constants"
 import { AxiosRequestConfig } from "axios"
-import { RpcReturnType } from "../bxsolana/proto/runtime/rpc"
 import { txToBase64 } from "../bxsolana/utils/transaction"
 import { $ } from "../bxsolana/proto/messages/api/GetOpenOrdersResponseV2"
 import GetOpenOrdersResponseV2 = $.api.GetOpenOrdersResponseV2
@@ -42,6 +41,7 @@ const config = loadFromEnv()
 // if longer examples (placing and canceling transactions, etc. should be run)
 const runLongExamples = process.env.RUN_LIFECYCLE === "true"
 const runStreams = process.env.RUN_STREAMS === "true"
+const runPerpetualExamples = process.env.RUN_PERPETUAL === "true"
 
 const marketAddress = "8BnEgHoWFysVcuFFX7QztDmzuH8r5ZFvyP3sYwn1XTh6"
 const ownerAddress = config.publicKey
@@ -49,6 +49,7 @@ const payerAddress = config.publicKey
 const openOrdersAddress = "DwoXdF8kjt9RS6yPfpzp1yHBKtFMDpHQPCRgy1JhKgFt"
 const baseTokenWallet = config.publicKey
 const quoteTokenWallet = "4raJjCwLLqw8TciQXYruDEF4YhDkGwoEnwnAdwJSjcgv"
+const tokenAddress = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" // USDC
 const side = "ask"
 const typeLimit = "limit"
 
@@ -62,6 +63,8 @@ const testOrder: PostOrderRequestV2 = {
     price: 200,
     openOrdersAddress: openOrdersAddress,
     clientOrderID: "0",
+    computeLimit: 0,
+    computePrice: "0",
 }
 
 const transactionWaitTimeS = 60
@@ -119,8 +122,10 @@ async function http() {
         )
     }
 
-    console.info(" ----  HTTP PERP Requests  ----")
-    await runPerpRequests(provider)
+    if (runPerpetualExamples) {
+        console.info(" ----  HTTP PERP Requests  ----")
+        await runPerpRequests(provider)
+    }
 
     console.info(" ----  HTTP Requests  ----")
     await doOrderbookRequests(provider)
@@ -173,8 +178,10 @@ async function grpc() {
         )
     }
 
-    console.info(" ----  GRPC PERP Requests  ----")
-    await runPerpRequests(provider)
+    if (runPerpetualExamples) {
+        console.info(" ----  GRPC PERP Requests  ----")
+        await runPerpRequests(provider)
+    }
 
     console.info(" ----  GRPC Requests  ----")
     await doOrderbookRequests(provider)
@@ -224,8 +231,11 @@ async function ws() {
     }
 
     await provider.connect()
-    console.info(" ----  WS PERP Requests  ----")
-    await runPerpRequests(provider)
+
+    if (runPerpetualExamples) {
+        console.info(" ----  WS PERP Requests  ----")
+        await runPerpRequests(provider)
+    }
 
     console.info(" ----  WS Requests  ----")
     await doOrderbookRequests(provider)
@@ -458,6 +468,10 @@ async function doOrderbookRequests(provider: BaseProvider) {
     console.info(" ")
     console.info(" ")
 
+    await callPostOrderWithPriorityFee(provider)
+    console.info(" ")
+    console.info(" ")
+
     await callPostCancelByClientOrderID(provider)
     console.info(" ")
     console.info(" ")
@@ -481,6 +495,10 @@ async function doAmmRequests(provider: BaseProvider) {
     console.info(" ")
 
     await callPostTradeSwap(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostTradeSwapWithPriorityFee(provider)
     console.info(" ")
     console.info(" ")
 
@@ -904,19 +922,19 @@ async function callGetServerTime(provider: BaseProvider) {
 
 async function callGetPrices(provider: BaseProvider) {
     console.info("Retrieving price")
-    const resp = await provider.getPrice({ tokens: ["SOL", "USDT"] })
+    const resp = await provider.getPrice({ tokens: ["SOL"] })
     console.info(resp)
 }
 
 async function callGetRaydiumPrices(provider: BaseProvider) {
     console.info("Retrieving Raydium price")
-    const resp = await provider.getRaydiumPrices({ tokens: ["SOL", "USDT"] })
+    const resp = await provider.getRaydiumPrices({ tokens: ["SOL"] })
     console.info(resp)
 }
 
 async function callGetJupiterPrices(provider: BaseProvider) {
     console.info("Retrieving Jupiter price")
-    const resp = await provider.getJupiterPrices({ tokens: ["SOL", "USDT"] })
+    const resp = await provider.getJupiterPrices({ tokens: ["SOL"] })
     console.info(resp)
 }
 
@@ -941,7 +959,7 @@ async function callGetQuotes(provider: BaseProvider) {
     console.info("Retrieving quotes")
     const resp = await provider.getQuotes({
         inToken: "SOL",
-        outToken: "USDT",
+        outToken: tokenAddress,
         inAmount: 1,
         slippage: 5,
         limit: 5,
@@ -954,7 +972,7 @@ async function callGetJupiterQuotes(provider: BaseProvider) {
     console.info("Retrieving Jupiter quotes")
     const resp = await provider.getJupiterQuotes({
         inToken: "SOL",
-        outToken: "USDT",
+        outToken: tokenAddress,
         inAmount: 1,
         slippage: 5,
         limit: 5,
@@ -966,7 +984,7 @@ async function callGetRaydiumQuotes(provider: BaseProvider) {
     console.info("Retrieving Raydium quotes")
     const resp = await provider.getRaydiumQuotes({
         inToken: "SOL",
-        outToken: "USDT",
+        outToken: tokenAddress,
         inAmount: 1,
         slippage: 5,
     })
@@ -1419,7 +1437,7 @@ async function callPostDriftManageCollateral(provider: BaseProvider) {
         accountAddress: "9UnwdvTf5EfGeLyLrF4GZDUs7LKRUeJQzW7qsDVGQ8sS",
         amount: 1,
         type: "DEPOSIT",
-        token: "USDC",
+        token: tokenAddress,
         toAccountAddress: "",
     })
     console.info(res)
@@ -1615,7 +1633,7 @@ async function callGetPricesStream(provider: BaseProvider) {
     console.info("Subscribing for prices updates of SOL and USDT on Raydium")
 
     const projects: Project[] = ["P_RAYDIUM", "P_JUPITER"]
-    const tokens: string[] = ["SOL", "USDT", "USDT"]
+    const tokens: string[] = ["SOL", tokenAddress]
     const stream = await provider.getPricesStream({
         projects: projects,
         tokens,
@@ -1750,6 +1768,21 @@ async function callPostOrder(provider: BaseProvider) {
     console.info(req)
 }
 
+async function callPostOrderWithPriorityFee(provider: BaseProvider) {
+    console.info("generating New Order transaction with priority fee")
+    const clientOrderID = getRandom()
+    testOrder.clientOrderID = clientOrderID.toLocaleString("fullwide", {
+        useGrouping: false,
+    })
+    testOrder.openOrdersAddress = openOrdersAddress
+    const req = await provider.postOrderV2({
+        ...testOrder,
+        computeLimit: 10000,
+        computePrice: "2000",
+    })
+    console.info(req)
+}
+
 async function callSubmitOrder(provider: BaseProvider) {
     console.info("Generating and submitting a New Order transaction")
     const clientOrderID = getRandom()
@@ -1769,6 +1802,8 @@ async function callPostCancelByClientOrderID(provider: BaseProvider) {
         clientOrderID: testOrder.clientOrderID,
         orderID: "",
         side: "S_ASK",
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
     })
     console.info(req)
 }
@@ -1785,6 +1820,8 @@ async function callSubmitCancelByClientOrderID(provider: BaseProvider) {
             clientOrderID: testOrder.clientOrderID,
             orderID: "",
             side: "S_ASK",
+            computeLimit: testOrder.computeLimit,
+            computePrice: testOrder.computePrice,
         },
         true
     )
@@ -1799,6 +1836,8 @@ async function callPostSettleFunds(provider: BaseProvider) {
         baseTokenWallet: baseTokenWallet,
         quoteTokenWallet: quoteTokenWallet,
         ownerAddress: ownerAddress,
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
     })
     console.info(req)
 }
@@ -1811,6 +1850,8 @@ async function callSubmitSettleFunds(provider: BaseProvider) {
         baseTokenWallet: baseTokenWallet,
         quoteTokenWallet: quoteTokenWallet,
         ownerAddress: ownerAddress,
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
     })
     console.info(req)
 }
@@ -1833,11 +1874,28 @@ async function callPostTradeSwap(provider: BaseProvider) {
     console.info("Generating a trade swap")
     const response = await provider.postTradeSwap({
         ownerAddress: ownerAddress,
-        inToken: "USDT",
+        inToken: tokenAddress,
         outToken: "SOL",
         inAmount: 0.01,
         slippage: 0.1,
         project: "P_RAYDIUM",
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
+    })
+    console.info(response)
+}
+
+async function callPostTradeSwapWithPriorityFee(provider: BaseProvider) {
+    console.info("Generating a trade swap")
+    const response = await provider.postTradeSwap({
+        ownerAddress: ownerAddress,
+        inToken: tokenAddress,
+        outToken: "SOL",
+        inAmount: 0.01,
+        slippage: 0.1,
+        project: "P_RAYDIUM",
+        computeLimit: 10000,
+        computePrice: "2000",
     })
     console.info(response)
 }
@@ -1846,10 +1904,12 @@ async function callPostRaydiumSwap(provider: BaseProvider) {
     console.info("Generating a Raydium swap")
     const response = await provider.postRaydiumSwap({
         ownerAddress: ownerAddress,
-        inToken: "USDT",
+        inToken: tokenAddress,
         outToken: "SOL",
         inAmount: 0.01,
         slippage: 0.1,
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
     })
     console.info(response)
 }
@@ -1858,10 +1918,12 @@ async function callPostJupiterSwap(provider: BaseProvider) {
     console.info("Generating a Jupiter swap")
     const response = await provider.postJupiterSwap({
         ownerAddress: ownerAddress,
-        inToken: "USDT",
+        inToken: tokenAddress,
         outToken: "SOL",
         inAmount: 0.01,
         slippage: 0.1,
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
     })
     console.info(response)
 }
@@ -1871,11 +1933,13 @@ async function callSubmitTradeSwap(provider: BaseProvider) {
     const responses = await provider.submitTradeSwap(
         {
             ownerAddress: ownerAddress,
-            inToken: "USDT",
+            inToken: tokenAddress,
             outToken: "SOL",
             inAmount: 0.01,
             slippage: 0.1,
             project: "P_RAYDIUM",
+            computeLimit: testOrder.computeLimit,
+            computePrice: testOrder.computePrice,
         },
         "P_SUBMIT_ALL",
         true
@@ -1898,10 +1962,10 @@ async function callPostRouteTradeSwap(provider: BaseProvider) {
                     id: "",
                     label: "Raydium",
                 },
-                inToken: "FIDA",
+                inToken: "SOL",
                 // RAY token address
                 // can be omitted if project.id is specified
-                outToken: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+                outToken: tokenAddress,
                 inAmount: 0.01,
                 outAmount: 0.007505,
                 outAmountMin: 0.074,
@@ -1911,14 +1975,16 @@ async function callPostRouteTradeSwap(provider: BaseProvider) {
                     id: "",
                     label: "Raydium",
                 },
-                inToken: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
-                outToken: "USDT",
+                inToken: tokenAddress,
+                outToken: "SOL",
                 inAmount: 0.007505,
                 outAmount: 0.004043,
                 outAmountMin: 0.004,
             },
         ],
         project: "P_RAYDIUM",
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
     })
     console.info(response)
 }
@@ -1931,23 +1997,25 @@ async function callPostRaydiumRouteSwap(provider: BaseProvider) {
         steps: [
             {
                 poolAddress: "",
-                inToken: "FIDA",
+                inToken: "SOL",
                 // RAY token address
                 // can be omitted if project.id is specified
-                outToken: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+                outToken: tokenAddress,
                 inAmount: 0.01,
                 outAmount: 0.007505,
                 outAmountMin: 0.074,
             },
             {
                 poolAddress: "",
-                inToken: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
-                outToken: "USDT",
+                inToken: "SOL",
+                outToken: tokenAddress,
                 inAmount: 0.007505,
                 outAmount: 0.004043,
                 outAmountMin: 0.004,
             },
         ],
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
     })
     console.info(response)
 }
@@ -1960,21 +2028,23 @@ async function callSubmitRouteTradeSwap(provider: BaseProvider) {
             slippage: 10,
             steps: [
                 {
-                    inToken: "FIDA",
-                    outToken: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+                    inToken: "SOL",
+                    outToken: tokenAddress,
                     inAmount: 0.01,
                     outAmount: 0.007505,
                     outAmountMin: 0.074,
                 },
                 {
-                    inToken: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
-                    outToken: "USDT",
+                    inToken: tokenAddress,
+                    outToken: "SOL",
                     inAmount: 0.007505,
                     outAmount: 0.004043,
                     outAmountMin: 0.004,
                 },
             ],
             project: "P_RAYDIUM",
+            computeLimit: testOrder.computeLimit,
+            computePrice: testOrder.computePrice,
         },
         "P_SUBMIT_ALL",
         true
@@ -2062,6 +2132,8 @@ async function callCancelAll(provider: BaseProvider) {
         side: "S_UNKNOWN",
         marketAddress: marketAddress,
         clientOrderID: "0",
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
     }
     const response = await provider.submitCancelOrderV2(cancelAllRequest)
 
