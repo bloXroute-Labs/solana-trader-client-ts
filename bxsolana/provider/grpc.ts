@@ -248,7 +248,8 @@ export class GrpcProvider extends BaseProvider {
         ) => {
             const meta = new grpc.Metadata()
             meta.add("Authorization", authHeader)
-
+            meta.add("X-SDK", process.env.PACKAGE_NAME ?? "")
+            meta.add("X-SDK-VERSION", process.env.PACKAGE_NAME ?? "")
             cb(null, meta)
         }
 

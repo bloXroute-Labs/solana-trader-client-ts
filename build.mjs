@@ -1,4 +1,5 @@
 import esbuild from "esbuild"
+import packageJson from "./package.json"
 
 const external = ["dotenv", "@grpc/grpc-js"]
 
@@ -11,6 +12,10 @@ esbuild.buildSync({
     bundle: true,
     outfile: "dist/browser/index.js",
     external,
+    define: {
+        'process.env.PACKAGE_NAME': JSON.stringify(packageJson.name),
+        'process.env.PACKAGE_VERSION': JSON.stringify(packageJson.version),
+    },
 })
 
 // CJS for browser
@@ -22,6 +27,10 @@ esbuild.buildSync({
     bundle: true,
     outfile: "dist/browser/index.cjs",
     external,
+    define: {
+        'process.env.PACKAGE_NAME': JSON.stringify(packageJson.name),
+        'process.env.PACKAGE_VERSION': JSON.stringify(packageJson.version),
+    },
 })
 
 // ESM for node
@@ -43,6 +52,10 @@ const __dirname = path.dirname(__filename);
 `,
     },
     outfile: "dist/node/index.js",
+    define: {
+        'process.env.PACKAGE_NAME': JSON.stringify(packageJson.name),
+        'process.env.PACKAGE_VERSION': JSON.stringify(packageJson.version),
+    },
 })
 
 // CJS for node
@@ -53,4 +66,8 @@ esbuild.buildSync({
     sourcemap: true,
     bundle: true,
     outfile: "dist/node/index.cjs",
+    define: {
+        'process.env.PACKAGE_NAME': JSON.stringify(packageJson.name),
+        'process.env.PACKAGE_VERSION': JSON.stringify(packageJson.version),
+    },
 })
