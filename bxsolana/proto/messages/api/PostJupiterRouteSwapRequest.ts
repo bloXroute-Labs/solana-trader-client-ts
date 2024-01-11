@@ -29,6 +29,8 @@ export declare namespace $.api {
     ownerAddress: string;
     steps: JupiterRouteStep[];
     slippage: number;
+    computeLimit: number;
+    computePrice: string;
   }
 }
 export type Type = $.api.PostJupiterRouteSwapRequest;
@@ -38,6 +40,8 @@ export function getDefaultValue(): $.api.PostJupiterRouteSwapRequest {
     ownerAddress: "",
     steps: [],
     slippage: 0,
+    computeLimit: 0,
+    computePrice: "0",
   };
 }
 
@@ -53,6 +57,8 @@ export function encodeJson(value: $.api.PostJupiterRouteSwapRequest): unknown {
   if (value.ownerAddress !== undefined) result.ownerAddress = tsValueToJsonValueFns.string(value.ownerAddress);
   result.steps = value.steps.map(value => encodeJson_1(value));
   if (value.slippage !== undefined) result.slippage = tsValueToJsonValueFns.double(value.slippage);
+  if (value.computeLimit !== undefined) result.computeLimit = tsValueToJsonValueFns.uint32(value.computeLimit);
+  if (value.computePrice !== undefined) result.computePrice = tsValueToJsonValueFns.uint64(value.computePrice);
   return result;
 }
 
@@ -61,6 +67,8 @@ export function decodeJson(value: any): $.api.PostJupiterRouteSwapRequest {
   if (value.ownerAddress !== undefined) result.ownerAddress = jsonValueToTsValueFns.string(value.ownerAddress);
   result.steps = value.steps?.map((value: any) => decodeJson_1(value)) ?? [];
   if (value.slippage !== undefined) result.slippage = jsonValueToTsValueFns.double(value.slippage);
+  if (value.computeLimit !== undefined) result.computeLimit = jsonValueToTsValueFns.uint32(value.computeLimit);
+  if (value.computePrice !== undefined) result.computePrice = jsonValueToTsValueFns.uint64(value.computePrice);
   return result;
 }
 
@@ -81,6 +89,18 @@ export function encodeBinary(value: $.api.PostJupiterRouteSwapRequest): Uint8Arr
     const tsValue = value.slippage;
     result.push(
       [3, tsValueToWireValueFns.double(tsValue)],
+    );
+  }
+  if (value.computeLimit !== undefined) {
+    const tsValue = value.computeLimit;
+    result.push(
+      [4, tsValueToWireValueFns.uint32(tsValue)],
+    );
+  }
+  if (value.computePrice !== undefined) {
+    const tsValue = value.computePrice;
+    result.push(
+      [5, tsValueToWireValueFns.uint64(tsValue)],
     );
   }
   return serialize(result);
@@ -109,6 +129,20 @@ export function decodeBinary(binary: Uint8Array): $.api.PostJupiterRouteSwapRequ
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
     result.slippage = value;
+  }
+  field: {
+    const wireValue = wireFields.get(4);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.uint32(wireValue);
+    if (value === undefined) break field;
+    result.computeLimit = value;
+  }
+  field: {
+    const wireValue = wireFields.get(5);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.uint64(wireValue);
+    if (value === undefined) break field;
+    result.computePrice = value;
   }
   return result;
 }
