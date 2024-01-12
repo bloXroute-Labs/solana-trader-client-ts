@@ -189,8 +189,8 @@ import {
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
 import { RpcReturnType } from "../proto/runtime/rpc"
-import { $ } from "../proto/messages/api/GetNewRaydiumPoolsRequest"
-import GetNewRaydiumPoolsRequest = $.api.GetNewRaydiumPoolsRequest
+import * as rpr from "../proto/messages/api/GetNewRaydiumPoolsRequest"
+import GetNewRaydiumPoolsRequest = rpr.$.api.GetNewRaydiumPoolsRequest
 
 export class WsProvider extends BaseProvider {
     private wsConnection: RpcWsConnection
