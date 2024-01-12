@@ -1,5 +1,5 @@
 import esbuild from "esbuild"
-import packageJson from "./package.json"
+import packageJson from './package.json' assert { type: 'json' };
 
 const external = ["dotenv", "@grpc/grpc-js"]
 

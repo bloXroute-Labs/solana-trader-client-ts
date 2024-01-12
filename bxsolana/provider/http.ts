@@ -186,7 +186,7 @@ export class HttpProvider extends BaseProvider {
             headers: {
                 Authorization: this.authHeader,
                 "X-SDK": process.env.PACKAGE_NAME ?? "",
-                "X-SDK-VERSION": process.env.SDK_VERSION ?? "",
+                "X-SDK-VERSION": process.env.PACKAGE_VERSION ?? "",
             },
         }
     }

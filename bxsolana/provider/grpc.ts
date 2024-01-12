@@ -199,8 +199,8 @@ import { BaseProvider } from "./base"
 import { CallMetadataOptions } from "@grpc/grpc-js/build/src/call-credentials"
 import { ConnectionOptions } from "tls"
 import { RpcReturnType } from "../proto/runtime/rpc"
-import { $ } from "../proto/messages/api/GetNewRaydiumPoolsResponse"
-import GetNewRaydiumPoolsResponse = $.api.GetNewRaydiumPoolsResponse
+import * as rpr from "../proto/messages/api/GetNewRaydiumPoolsResponse"
+import GetNewRaydiumPoolsResponse = rpr.$.api.GetNewRaydiumPoolsResponse
 
 // built-in grpc.credentials.createInsecure() doesn't allow composition
 class insecureChannel extends grpc.ChannelCredentials {
@@ -249,7 +249,7 @@ export class GrpcProvider extends BaseProvider {
             const meta = new grpc.Metadata()
             meta.add("Authorization", authHeader)
             meta.add("X-SDK", process.env.PACKAGE_NAME ?? "")
-            meta.add("X-SDK-VERSION", process.env.PACKAGE_NAME ?? "")
+            meta.add("X-SDK-VERSION", process.env.PACKAGE_VERSION ?? "")
             cb(null, meta)
         }
 
