@@ -20,6 +20,8 @@ export class RpcWsConnection {
     private socket?: WebSocket
     private readonly address: string
     private readonly authHeader: string
+    private pingInterval?: NodeJS.Timeout;
+    private readonly PING_INTERVAL = 30000;
 
     private requestId = 1
     private requestMap: Map<number, ResolveReject> = new Map()
@@ -48,9 +50,10 @@ export class RpcWsConnection {
         })
 
         socket.onopen = () => {
-            this.socket = socket
-            connectResolver(undefined)
-        }
+            this.socket = socket;
+            connectResolver(undefined);
+            this.pingInterval = setInterval(() => this.sendPing(), this.PING_INTERVAL);
+        };
 
         socket.onmessage = (msg: unknown) => {
             const { id, result, method, params, error } = JSON.parse(
@@ -91,6 +94,9 @@ export class RpcWsConnection {
     }
 
     close() {
+        if (this.pingInterval) {
+            clearInterval(this.pingInterval);
+        }
         this.socket?.close()
     }
 
@@ -180,6 +186,12 @@ export class RpcWsConnection {
 
         for await (const item of read) {
             yield item as T
+        }
+    }
+
+    sendPing() {
+        if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+            this.socket.ping();
         }
     }
 }
