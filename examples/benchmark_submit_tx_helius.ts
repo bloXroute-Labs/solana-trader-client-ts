@@ -9,7 +9,7 @@ import {
     signTxMessage,
     WsProvider
 } from "../bxsolana"
-import { txToBase64 } from "../bxsolana/utils/transaction"
+import { randomInt } from "crypto"
 
 const httpHeaders = { }
 const connection = new Connection('https://mainnet.helius-rpc.com/?api-key=88e7c870-b0e3-4a59-b80f-8d78f01e5e4a',
@@ -29,17 +29,29 @@ type RequestPair = {
     hPromise: Promise<string>;
     tBlockNumber: number;
     hBlockNumber: number;
+    tSignature: string;
+    hSignature: string;
 };
 let blx_win = 0;
 let helius_win = 0;
 let equal = 0;
 let total_diff = 0;
-const noOfComparisons = 10;
-const dataArray: { diff: number; trader_api_slot: number; helius_slot: number; }[] = [];
+const noOfComparisons = 100;
+const dataArray: { diff: number; trader_api_slot: number; helius_slot: number; tSignature: string, hSignature: string}[] = [];
 await provider.connect()
 
 function sleep(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function getRandomNumber(): number {
+
+    const randomValue = Math.random();
+    const minValue = 1.00;
+    const maxValue = 2.00;
+    const randomInRange = minValue + (randomValue * (maxValue - minValue));
+    // console.log("randomInRange : ", randomInRange)
+    return randomInRange;
 }
 
 async function submitTx() {
@@ -52,18 +64,18 @@ async function submitTx() {
     for (let i = 1; i <= noOfComparisons; i++) {
         const resHelius = await provider.postTradeSwap({
             ownerAddress: config.publicKey,
-            inToken: "USDC",
-            outToken: BONK,
-            inAmount: 0.00012,
+            inToken: BONK,
+            outToken: "USDC",
+            inAmount: getRandomNumber(),
             slippage: 30,
             project: "P_RAYDIUM",
         })
 
         const resTraderAPI = await provider.postTradeSwap({
             ownerAddress: config.publicKey,
-            inToken: "USDC",
-            outToken: BONK,
-            inAmount: 0.00011,
+            inToken: BONK,
+            outToken: "USDC",
+            inAmount: getRandomNumber(),
             slippage: 30,
             project: "P_RAYDIUM",
         })
@@ -91,7 +103,6 @@ async function submitTx() {
             txHContent = txH.content;
         }
         const hPromise = connection.sendEncodedTransaction(txHContent, {
-            // preflightCommitment: 'confirmed',
             preflightCommitment: 'processed',
 
         });
@@ -107,25 +118,66 @@ async function submitTx() {
             hPromise,
             hBlockNumber : 0,
             tBlockNumber : 0,
+            tSignature: "",
+            hSignature: "",
         };
         requestPairs.push(newPair);
+        console.log("submitted tx to trader api and helius : " + i)
     } // for loop
     const allResults = []
-    const wait = noOfComparisons * 6000
+    const wait = 60000
     console.log("sleeping for ", wait , " millis ")
     await sleep(wait);
+    let tSignature
     for (const requestPair of requestPairs) {
         console.log("waiting for tx from helius")
-        const hSignature = await requestPair.hPromise
+        let hSignature = ""
+        for (let i = 0; i < 10; i++) {
+            try {
+                hSignature = await requestPair.hPromise
+                break
+            } catch (e) {
+                await sleep(10000)
+                console.log(e)
+            }
+        }
+        let tSignature : PostSubmitResponse = {signature: ""}
+        for (let i = 0; i < 10; i++) {
+            try {
+                tSignature = await requestPair.tPromise
+                break
+            } catch (e) {
+                await sleep(10000)
+                console.log(e)
+            }
+        }
         console.log("waiting for tx from trader api")
-        const tSignature = await requestPair.tPromise
-        await connection.confirmTransaction(hSignature);
-        await connection.confirmTransaction(tSignature.signature);
+        for (let i = 0; i < 10; i++) {
+            try {
+                await connection.confirmTransaction(hSignature)
+                break
+            } catch (e) {
+            await sleep(10000)
+            console.log(e)
+            }
+        }
+        for (let i = 0; i < 10; i++) {
+            try {
+                await connection.confirmTransaction(tSignature.signature)
+                break
+            } catch (e) {
+                await sleep(10000)
+                console.log(e)
+            }
+        }
+
         allResults.push({
             tResult: tSignature,
             hResult: hSignature,
+            tSignature: tSignature.signature,
+            hSignature: hSignature,
             tBlockNumber: requestPair.tBlockNumber,
-            hBlockNumber: requestPair.hBlockNumber,
+            hBlockNumber: requestPair.hBlockNumber
         })
     }
 
@@ -153,7 +205,9 @@ async function submitTx() {
         dataArray.push({
             diff : res.tBlockNumber - res.hBlockNumber,
             trader_api_slot: res.tBlockNumber,
-            helius_slot: res.hBlockNumber
+            helius_slot: res.hBlockNumber,
+            tSignature: res.tSignature,
+            hSignature: res.hSignature,
         })
 
     }
@@ -161,19 +215,28 @@ async function submitTx() {
 }
 
 async function getBlockNumber(signature: string) {
-    const transactionInfo = await connection.getTransaction(signature, {
-        commitment: 'confirmed',
-    });
+    for (let i = 0; i < 10; i++) {
+        try {
+            const transactionInfo = await connection.getTransaction(signature, {
+                commitment: 'confirmed',
+            });
 
-    const blockNumber = transactionInfo?.slot;
+            const blockNumber = transactionInfo?.slot;
 
-    if (blockNumber !== undefined) {
-        // console.log(`Transaction with signature ${signature} confirmed in block number ${blockNumber}`);
-    } else {
-        // console.log(`Transaction with signature ${signature} not found or not confirmed yet.`);
+            if (blockNumber !== undefined) {
+                // console.log(`Transaction with signature ${signature} confirmed in block number ${blockNumber}`);
+            } else {
+                // console.log(`Transaction with signature ${signature} not found or not confirmed yet.`);
+            }
+
+            return blockNumber;
+        } catch (e) {
+            await sleep(10000)
+            console.log(e)
+        }
     }
 
-    return blockNumber;
+    return 0
 }
 
 await submitTx()
