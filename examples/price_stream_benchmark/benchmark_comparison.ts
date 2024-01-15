@@ -1,7 +1,7 @@
 import { OrderActionRecord } from "@drift-labs/sdk"
 import moment from 'moment';
 import * as fs from "fs"
-import { Type as GetPerpTradesResponse } from "../bxsolana/proto/messages/api/GetPerpTradesResponse"
+import { Type as GetPerpTradesResponse } from "../../bxsolana/proto/messages/api/GetPerpTradesResponse"
 
 interface WrappedDriftEvent {
     ts: number;

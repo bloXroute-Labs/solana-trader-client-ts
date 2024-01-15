@@ -5,21 +5,23 @@ import {
     MAINNET_API_NY_WS,
     TESTNET_API_WS,
     WsProvider, LOCAL_API_WS, GetPricesStreamResponse
-} from "../bxsolana"
+} from "../../bxsolana"
 import * as fs from "fs"
-import { Type as GetPerpTradesResponse } from "../bxsolana/proto/messages/api/GetPerpTradesResponse"
-import { Type as Project } from "../bxsolana/proto/messages/api/Project"
+import { Type as GetPerpTradesResponse } from "../../bxsolana/proto/messages/api/GetPerpTradesResponse"
+import { Type as Project } from "../../bxsolana/proto/messages/api/Project"
 
 const config = loadFromEnv()
 
 const provider = new WsProvider(
-    config.authHeader,
+    // config.authHeader
+    "",
     readFileSync("./.env_private_key").toString(),
-    MAINNET_API_NY_WS
-    // LOCAL_API_WS
+    // "wss://proud-fabled-crater.solana-mainnet.quiknode.pro/e3bfb432b5b982fb3e296b8fd1ec3a2d91124d76/"
+    LOCAL_API_WS
 )
-
+console.log('before connected');
 await provider.connect()
+console.log('connected');
 const filePath = 'raydium_get_price_stream.json';
 await fs.truncate(filePath, (err) => {
     if (err) {

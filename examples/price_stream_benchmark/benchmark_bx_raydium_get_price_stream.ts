@@ -4,10 +4,11 @@ import {
     MAINNET_API_VIRGINIA_WS,
     MAINNET_API_NY_WS,
     TESTNET_API_WS,
-    WsProvider, LOCAL_API_WS
-} from "../bxsolana"
+    WsProvider, LOCAL_API_WS, GetPricesStreamResponse
+} from "../../bxsolana"
 import * as fs from "fs"
-import { Type as GetPerpTradesResponse } from "../bxsolana/proto/messages/api/GetPerpTradesResponse"
+import { Type as GetPerpTradesResponse } from "../../bxsolana/proto/messages/api/GetPerpTradesResponse"
+import { Type as Project } from "../../bxsolana/proto/messages/api/Project"
 
 const config = loadFromEnv()
 
@@ -19,7 +20,7 @@ const provider = new WsProvider(
 )
 
 await provider.connect()
-const filePath = 'bx_api_data.json';
+const filePath = 'raydium_get_price_stream.json';
 await fs.truncate(filePath, (err) => {
     if (err) {
         console.error('Error deleting old content:', err);
@@ -31,14 +32,14 @@ await fs.truncate(filePath, (err) => {
 const numberOfSeconds = parseInt(process.argv[2], 10);
 console.log("numberOfSeconds to check : " + numberOfSeconds);
 
-const req = await provider.getPerpTradesStream({
-    contracts: ["ALL"],
-    project: "P_DRIFT",
+const req = await provider.getPricesStream({
+    projects: ['P_RAYDIUM'],
+    tokens: ['RAY', 'SOL', 'USDT', 'USDC']
 })
 
 interface WrappedPerpTradesResponse {
     ts: number;
-    data: GetPerpTradesResponse | undefined;
+    data: GetPricesStreamResponse | undefined;
 }
 
 const mapOfData:  Map<number, WrappedPerpTradesResponse[]> = new Map();
@@ -65,15 +66,11 @@ function writeToFile() {
 for await (const ob of req) {
     console.log(JSON.stringify(ob));
 
-    if (ob.trade  == undefined || ob.context == undefined) {
-        continue
-    }
-
     const wrappedItem: WrappedPerpTradesResponse = {
         ts: Date.now(),
-        data: ob.trade,
+        data: ob,
     };
-    const slot = parseInt(ob.context.slot, 10);
+    const slot = parseInt(ob.slot, 10);
     console.log("checking time : " + (Date.now() - startTime) / 1000);
     if ((Date.now() - startTime) / 1000 >= numberOfSeconds) {
         break
