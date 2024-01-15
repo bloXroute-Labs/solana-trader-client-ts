@@ -36,10 +36,11 @@ let blx_win = 0;
 let helius_win = 0;
 let equal = 0;
 let total_diff = 0;
-const noOfComparisons = 100;
+const noOfComparisons = 10;
 const dataArray: { diff: number; trader_api_slot: number; helius_slot: number; tSignature: string, hSignature: string}[] = [];
+console.log("connecting to trader api")
 await provider.connect()
-
+console.log("connected to trader api")
 function sleep(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
