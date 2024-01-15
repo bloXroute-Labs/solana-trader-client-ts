@@ -91,7 +91,9 @@ async function submitTx() {
             txHContent = txH.content;
         }
         const hPromise = connection.sendEncodedTransaction(txHContent, {
-            preflightCommitment: 'confirmed',
+            // preflightCommitment: 'confirmed',
+            preflightCommitment: 'processed',
+
         });
         const tPromise = provider.postSubmit({
             transaction: {
@@ -109,8 +111,9 @@ async function submitTx() {
         requestPairs.push(newPair);
     } // for loop
     const allResults = []
-    console.log("sleeping for ", noOfComparisons * 500 , " millis ")
-    await sleep(noOfComparisons * 500);
+    const wait = noOfComparisons * 6000
+    console.log("sleeping for ", wait , " millis ")
+    await sleep(wait);
     for (const requestPair of requestPairs) {
         console.log("waiting for tx from helius")
         const hSignature = await requestPair.hPromise
