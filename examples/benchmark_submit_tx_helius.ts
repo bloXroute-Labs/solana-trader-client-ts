@@ -13,7 +13,10 @@ import {
 import { randomInt } from "crypto"
 
 const httpHeaders = { }
-const connection = new Connection('https://mainnet.helius-rpc.com/?api-key=88e7c870-b0e3-4a59-b80f-8d78f01e5e4a',
+const endpoint = 'https://proud-fabled-crater.solana-mainnet.quiknode.pro/e3bfb432b5b982fb3e296b8fd1ec3a2d91124d76/'
+// const endpoint = 'https://mainnet.competitor-rpc.com/?api-key=88e7c870-b0e3-4a59-b80f-8d78f01e5e4a'
+const connection = new Connection(
+    endpoint,
     {httpHeaders});
 
 const config = loadFromEnv()
@@ -35,11 +38,11 @@ type RequestPair = {
     hSignature: string;
 };
 let blx_win = 0;
-let helius_win = 0;
+let competitor_win = 0;
 let equal = 0;
 let total_diff = 0;
 const noOfComparisons = 100;
-const dataArray: { diff: number; trader_api_slot: number; helius_slot: number; tSignature: string, hSignature: string}[] = [];
+const dataArray: { diff: number; trader_api_slot: number; competitor_slot: number; tSignature: string, hSignature: string}[] = [];
 console.log("connecting to trader api")
 await provider.connect()
 console.log("connected to trader api")
@@ -65,7 +68,7 @@ async function submitTx() {
     const requestPairs: RequestPair[] = []
     const BONK = "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263"
     for (let i = 1; i <= noOfComparisons; i++) {
-        const resHelius = await provider.postTradeSwap({
+        const rescompetitor = await provider.postTradeSwap({
             ownerAddress: config.publicKey,
             inToken: BONK,
             outToken: "USDC",
@@ -89,7 +92,7 @@ async function submitTx() {
         ));
 
 
-        const serializedTransactions = resHelius.transactions.map((tx) => signTxMessage(
+        const serializedTransactions = rescompetitor.transactions.map((tx) => signTxMessage(
             tx,
             privateKey,
         ));
@@ -125,7 +128,7 @@ async function submitTx() {
             hSignature: "",
         };
         requestPairs.push(newPair);
-        console.log("submitted tx to trader api and helius : " + i)
+        console.log("submitted tx to trader api and competitor : " + i)
     } // for loop
     const allResults = []
     const wait = 60000
@@ -133,7 +136,7 @@ async function submitTx() {
     await sleep(wait);
     let tSignature
     for (const requestPair of requestPairs) {
-        console.log("waiting for tx from helius")
+        console.log("waiting for tx from competitor")
         let hSignature = ""
         for (let i = 0; i < 10; i++) {
             try {
@@ -206,7 +209,7 @@ async function submitTx() {
         if (res.tBlockNumber < res.hBlockNumber) {
             blx_win++
         } else if (res.tBlockNumber > res.hBlockNumber) {
-            helius_win++
+            competitor_win++
         } else {
             equal++
         }
@@ -216,7 +219,7 @@ async function submitTx() {
         dataArray.push({
             diff : res.tBlockNumber - res.hBlockNumber,
             trader_api_slot: res.tBlockNumber,
-            helius_slot: res.hBlockNumber,
+            competitor_slot: res.hBlockNumber,
             tSignature: res.tSignature,
             hSignature: res.hSignature,
         })
@@ -252,10 +255,11 @@ async function getBlockNumber(signature: string) {
 
 await submitTx()
 console.table(dataArray);
+console.log("endpoint : " + endpoint)
 console.log("blx_win : " + blx_win)
 console.log("blx_win % : " + blx_win * 100 / noOfComparisons)
-console.log("helius_win : " + helius_win)
-console.log("helius_win % : " + helius_win * 100 / noOfComparisons)
+console.log("competitor_win : " + competitor_win)
+console.log("competitor_win % : " + competitor_win * 100 / noOfComparisons)
 console.log("equal : " + equal)
 console.log("equal % : " + equal * 100 / noOfComparisons)
 console.log("total_diff on avg(block distance): " + total_diff / noOfComparisons)
