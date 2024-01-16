@@ -4,6 +4,7 @@ import { readFileSync } from "fs"
 import {
     loadFromEnv,
     MAINNET_API_NY_WS,
+    // MAINNET_API_UK_WS,
     PostSubmitRequestEntry, PostSubmitResponse,
     signTx,
     signTxMessage,
@@ -21,6 +22,7 @@ const provider = new WsProvider(
     config.authHeader,
     config.privateKey.toString(),
     MAINNET_API_NY_WS
+    // MAINNET_API_UK_WS,
     // LOCAL_API_WS
 )
 
@@ -36,7 +38,7 @@ let blx_win = 0;
 let helius_win = 0;
 let equal = 0;
 let total_diff = 0;
-const noOfComparisons = 10;
+const noOfComparisons = 100;
 const dataArray: { diff: number; trader_api_slot: number; helius_slot: number; tSignature: string, hSignature: string}[] = [];
 console.log("connecting to trader api")
 await provider.connect()
@@ -186,10 +188,18 @@ async function submitTx() {
     for (const res of allResults) {
         const tBlockNumber = await getBlockNumber(res.tResult.signature)
         if (tBlockNumber) {
+            if (tBlockNumber == -1) {
+                continue
+            }
             res.tBlockNumber = tBlockNumber
         }
+
         const hBlockNumber = await getBlockNumber(res.hResult)
         if (hBlockNumber) {
+            if (hBlockNumber == -1) {
+                continue
+            }
+
             res.hBlockNumber = hBlockNumber
         }
 
@@ -216,7 +226,7 @@ async function submitTx() {
 }
 
 async function getBlockNumber(signature: string) {
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 2; i++) {
         try {
             const transactionInfo = await connection.getTransaction(signature, {
                 commitment: 'confirmed',
@@ -237,7 +247,7 @@ async function getBlockNumber(signature: string) {
         }
     }
 
-    return 0
+    return -1
 }
 
 await submitTx()
