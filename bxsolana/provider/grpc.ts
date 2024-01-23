@@ -191,7 +191,7 @@ import {
     PostDriftPerpOrderRequest,
     PostDriftPerpOrderResponse,
     GetOpenOrdersResponseV2,
-    GetNewRaydiumPoolsRequest,
+    GetNewRaydiumPoolsRequest, GetTransactionRequest, GetTransactionResponse
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
@@ -280,6 +280,12 @@ export class GrpcProvider extends BaseProvider {
 
     close = () => {
         this.grpcClient.close()
+    }
+
+    getTransaction(
+        request: GetTransactionRequest
+    ): RpcReturnType<Promise<GetTransactionResponse>, []> {
+        return this.client.getTransaction(request)
     }
 
     getJupiterPrices(

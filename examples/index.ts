@@ -482,6 +482,10 @@ async function doOrderbookRequests(provider: BaseProvider) {
 }
 
 async function doAmmRequests(provider: BaseProvider) {
+    await callGetTransaction(provider)
+    console.info(" ")
+    console.info(" ")
+
     await callGetPrices(provider)
     console.info(" ")
     console.info(" ")
@@ -923,6 +927,12 @@ async function callGetServerTime(provider: BaseProvider) {
 async function callGetPrices(provider: BaseProvider) {
     console.info("Retrieving price")
     const resp = await provider.getPrice({ tokens: ["SOL"] })
+    console.info(resp)
+}
+
+async function callGetTransaction(provider: BaseProvider) {
+    console.info("Retrieving transaction")
+    const resp = await provider.getTransaction({ signature: "2s48MnhH54GfJbRwwiEK7iWKoEh3uNbS2zDEVBPNu7DaCjPXe3bfqo6RuCg9NgHRFDn3L28sMVfEh65xevf4o5W3" })
     console.info(resp)
 }
 

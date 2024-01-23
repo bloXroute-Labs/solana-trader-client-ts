@@ -184,7 +184,7 @@ import {
     PostDriftPerpOrderRequest,
     PostDriftPerpOrderResponse,
     GetOpenOrdersResponseV2,
-    GetNewRaydiumPoolsResponse,
+    GetNewRaydiumPoolsResponse, GetTransactionResponse, GetTransactionRequest
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -223,6 +223,12 @@ export class WsProvider extends BaseProvider {
     close = () => {
         this.isClosed = true
         this.wsConnection.close()
+    }
+
+    async getTransaction(
+        request: GetTransactionRequest
+    ): RpcReturnType<Promise<GetTransactionResponse>, []> {
+        return await this.wsConnection.call("GetTransaction", request)
     }
 
     async getJupiterPrices(
