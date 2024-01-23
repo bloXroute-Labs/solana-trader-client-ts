@@ -156,7 +156,7 @@ import {
     GetRaydiumQuotesResponse,
     PostDriftPerpOrderRequest,
     PostDriftPerpOrderResponse,
-    GetOpenOrdersResponseV2,
+    GetOpenOrdersResponseV2, GetTransactionRequest, GetTransactionResponse
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -193,6 +193,13 @@ export class HttpProvider extends BaseProvider {
 
     close = () => {
         // no need
+    }
+
+    getTransaction(
+        request: GetTransactionRequest
+    ): RpcReturnType<Promise<GetTransactionResponse>, []> {
+        const path = `${this.baseUrlV2}/transaction?signature=${request.signature}`
+        return this.get<GetTransactionResponse>(path)
     }
 
     getJupiterPrices(

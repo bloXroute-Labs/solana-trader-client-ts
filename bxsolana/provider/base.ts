@@ -193,7 +193,7 @@ import {
     PostDriftPerpOrderRequest,
     GetOpenOrdersResponseV2,
     GetNewRaydiumPoolsRequest,
-    GetNewRaydiumPoolsResponse,
+    GetNewRaydiumPoolsResponse, GetTransactionRequest, GetTransactionResponse
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -222,6 +222,12 @@ export abstract class BaseProvider implements Api {
     getMarketsV2(
         request: GetMarketsRequestV2
     ): RpcReturnType<Promise<GetMarketsResponseV2>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    getTransaction(
+        request: GetTransactionRequest
+    ): RpcReturnType<Promise<GetTransactionResponse>, []> {
         throw new Error("Method not implemented.")
     }
 
