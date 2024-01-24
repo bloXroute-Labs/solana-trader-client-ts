@@ -1205,7 +1205,7 @@ async function callPostRouteTradeSwap(provider: BaseProvider) {
         steps: [
             {
                 project: {
-                    id: "61acRgpURKTU8LKPJKs6WQa18KzD9ogavXzjxfD84KLu",
+                    id: "",
                     label: "Raydium",
                 },
                 inToken: "SOL",
@@ -1216,7 +1216,7 @@ async function callPostRouteTradeSwap(provider: BaseProvider) {
             },
             {
                 project: {
-                    id: "61acRgpURKTU8LKPJKs6WQa18KzD9ogavXzjxfD84KLu",
+                    id: "",
                     label: "Raydium",
                 },
                 inToken: tokenAddress,
