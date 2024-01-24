@@ -391,7 +391,6 @@ async function doStreams(provider: BaseProvider) {
     await callGetBlockStream(provider)
     console.info(" ")
     console.info(" ")
-
 }
 
 async function cancelWsStreams(provider: BaseProvider) {
@@ -725,7 +724,10 @@ async function callGetPrices(provider: BaseProvider) {
 
 async function callGetTransaction(provider: BaseProvider) {
     console.info("Retrieving transaction")
-    const resp = await provider.getTransaction({ signature: "2s48MnhH54GfJbRwwiEK7iWKoEh3uNbS2zDEVBPNu7DaCjPXe3bfqo6RuCg9NgHRFDn3L28sMVfEh65xevf4o5W3" })
+    const resp = await provider.getTransaction({
+        signature:
+            "2s48MnhH54GfJbRwwiEK7iWKoEh3uNbS2zDEVBPNu7DaCjPXe3bfqo6RuCg9NgHRFDn3L28sMVfEh65xevf4o5W3",
+    })
     console.info(resp)
 }
 
@@ -1285,7 +1287,7 @@ async function callSubmitRouteTradeSwap(provider: BaseProvider) {
                         amount: 0.000025,
                         mint: tokenAddress,
                         percent: 0.0025062656,
-                    }
+                    },
                 },
             ],
             project: "P_JUPITER",

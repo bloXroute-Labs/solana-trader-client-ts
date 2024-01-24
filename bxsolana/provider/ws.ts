@@ -96,7 +96,9 @@ import {
     GetRaydiumQuotesRequest,
     GetRaydiumQuotesResponse,
     GetOpenOrdersResponseV2,
-    GetNewRaydiumPoolsResponse, GetTransactionResponse, GetTransactionRequest
+    GetNewRaydiumPoolsResponse,
+    GetTransactionResponse,
+    GetTransactionRequest,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
