@@ -18,8 +18,6 @@ import {
     GetMarketsResponse,
     GetOpenOrdersRequest,
     GetOpenOrdersResponse,
-    GetOpenPerpOrdersRequest,
-    GetOpenPerpOrdersResponse,
     GetOrderbookRequest,
     GetOrderbookResponse,
     GetOrderbooksRequest,
@@ -28,10 +26,6 @@ import {
     GetOrdersResponse,
     GetOrderStatusStreamRequest,
     GetOrderStatusStreamResponse,
-    GetPerpOrderbookRequest,
-    GetPerpOrderbookResponse,
-    GetPerpOrderbooksRequest,
-    GetPerpOrderbooksStreamResponse,
     GetPoolReservesStreamRequest,
     GetPoolReservesStreamResponse,
     GetPoolsRequest,
@@ -58,17 +52,11 @@ import {
     GetTradesStreamResponse,
     GetUnsettledRequest,
     GetUnsettledResponse,
-    GetUserRequest,
-    GetUserResponse,
     PostCancelAllRequest,
     PostCancelAllResponse,
     PostCancelByClientOrderIDRequest,
     PostCancelOrderRequest,
     PostCancelOrderResponse,
-    PostClosePerpPositionsRequest,
-    PostClosePerpPositionsResponse,
-    PostManageCollateralRequest,
-    PostManageCollateralResponse,
     PostOrderRequest,
     PostOrderResponse,
     PostReplaceOrderRequest,
@@ -81,80 +69,6 @@ import {
     RouteTradeSwapRequest,
     TradeSwapRequest,
     TradeSwapResponse,
-    PostCancelPerpOrderRequest,
-    PostCancelPerpOrderResponse,
-    PostCreateUserRequest,
-    PostCreateUserResponse,
-    PostCancelPerpOrdersRequest,
-    PostCancelPerpOrdersResponse,
-    PostPerpOrderRequest,
-    PostPerpOrderResponse,
-    GetOpenPerpOrderRequest,
-    GetOpenPerpOrderResponse,
-    GetAssetsRequest,
-    GetAssetsResponse,
-    GetPerpContractsRequest,
-    GetPerpContractsResponse,
-    PostSettlePNLRequest,
-    PostSettlePNLResponse,
-    PostSettlePNLsRequest,
-    PostSettlePNLsResponse,
-    PostLiquidatePerpRequest,
-    PostLiquidatePerpResponse,
-    GetPerpPositionsRequest,
-    GetPerpPositionsResponse,
-    GetPerpTradesStreamResponse,
-    GetPerpTradesStreamRequest,
-    GetDriftMarketDepthRequest,
-    GetDriftMarketDepthResponse,
-    GetDriftMarketDepthsStreamRequest,
-    GetDriftMarketDepthStreamResponse,
-    GetDriftMarketsRequest,
-    GetDriftMarketsResponse,
-    PostDriftMarginOrderRequest,
-    PostDriftMarginOrderResponse,
-    PostDriftEnableMarginTradingRequest,
-    PostDriftEnableMarginTradingResponse,
-    GetDriftMarginOrderbookRequest,
-    GetDriftMarginOrderbookResponse,
-    GetDriftMarginOrderbooksRequest,
-    GetDriftMarginOrderbooksStreamResponse,
-    GetDriftOpenMarginOrdersRequest,
-    GetDriftOpenMarginOrdersResponse,
-    PostModifyDriftOrderRequest,
-    PostModifyDriftOrderResponse,
-    PostCancelDriftMarginOrderRequest,
-    PostCancelDriftMarginOrderResponse,
-    GetDriftOpenPerpOrdersResponse,
-    GetDriftPerpPositionsResponse,
-    PostDriftCancelPerpOrderResponse,
-    GetDriftOpenPerpOrdersRequest,
-    GetDriftPerpPositionsRequest,
-    PostDriftCancelPerpOrderRequest,
-    PostCloseDriftPerpPositionsRequest,
-    PostCloseDriftPerpPositionsResponse,
-    PostCreateDriftUserRequest,
-    PostCreateDriftUserResponse,
-    PostDriftManageCollateralRequest,
-    PostDriftManageCollateralResponse,
-    PostDriftSettlePNLRequest,
-    PostDriftSettlePNLResponse,
-    PostDriftSettlePNLsRequest,
-    PostDriftSettlePNLsResponse,
-    PostLiquidateDriftPerpRequest,
-    PostLiquidateDriftPerpResponse,
-    GetDriftPerpOrderbookRequest,
-    GetDriftPerpOrderbookResponse,
-    GetDriftUserRequest,
-    GetDriftUserResponse,
-    GetDriftAssetsRequest,
-    GetDriftAssetsResponse,
-    GetDriftPerpContractsResponse,
-    GetDriftPerpContractsRequest,
-    GetDriftOpenPerpOrderRequest,
-    GetDriftOpenPerpOrderResponse,
-    GetDriftOpenMarginOrderRequest,
-    GetDriftOpenMarginOrderResponse,
     GetOrderbookRequestV2,
     GetOrderbookResponseV2,
     GetMarketDepthRequestV2,
@@ -188,8 +102,6 @@ import {
     PostRaydiumRouteSwapResponse,
     PostRaydiumSwapRequest,
     PostRaydiumSwapResponse,
-    PostDriftPerpOrderRequest,
-    PostDriftPerpOrderResponse,
     GetOpenOrdersResponseV2,
     GetNewRaydiumPoolsRequest, GetTransactionRequest, GetTransactionResponse
 } from "../proto/messages/api"
@@ -341,152 +253,6 @@ export class GrpcProvider extends BaseProvider {
     ): RpcReturnType<Promise<GetRaydiumQuotesResponse>, []> {
         return this.client.getRaydiumQuotes(request)
     }
-
-    // Drift V2
-    postCloseDriftPerpPositions(
-        request: PostCloseDriftPerpPositionsRequest
-    ): RpcReturnType<Promise<PostCloseDriftPerpPositionsResponse>, []> {
-        return this.client.postCloseDriftPerpPositions(request)
-    }
-    postCreateDriftUser(
-        request: PostCreateDriftUserRequest
-    ): RpcReturnType<Promise<PostCreateDriftUserResponse>, []> {
-        return this.client.postCreateDriftUser(request)
-    }
-    postDriftManageCollateral(
-        request: PostDriftManageCollateralRequest
-    ): RpcReturnType<Promise<PostDriftManageCollateralResponse>, []> {
-        return this.client.postDriftManageCollateral(request)
-    }
-    postDriftSettlePNL(
-        request: PostDriftSettlePNLRequest
-    ): RpcReturnType<Promise<PostDriftSettlePNLResponse>, []> {
-        return this.client.postDriftSettlePNL(request)
-    }
-    postDriftSettlePNLs(
-        request: PostDriftSettlePNLsRequest
-    ): RpcReturnType<Promise<PostDriftSettlePNLsResponse>, []> {
-        return this.client.postDriftSettlePNLs(request)
-    }
-    postLiquidateDriftPerp(
-        request: PostLiquidateDriftPerpRequest
-    ): RpcReturnType<Promise<PostLiquidateDriftPerpResponse>, []> {
-        return this.client.postLiquidateDriftPerp(request)
-    }
-    getDriftPerpOrderbook(
-        request: GetDriftPerpOrderbookRequest
-    ): RpcReturnType<Promise<GetDriftPerpOrderbookResponse>, []> {
-        return this.client.getDriftPerpOrderbook(request)
-    }
-    getDriftUser(
-        request: GetDriftUserRequest
-    ): RpcReturnType<Promise<GetDriftUserResponse>, []> {
-        return this.client.getDriftUser(request)
-    }
-    getDriftAssets(
-        request: GetDriftAssetsRequest
-    ): RpcReturnType<Promise<GetDriftAssetsResponse>, []> {
-        return this.client.getDriftAssets(request)
-    }
-    getDriftPerpContracts(
-        request: GetDriftPerpContractsRequest
-    ): RpcReturnType<Promise<GetDriftPerpContractsResponse>, []> {
-        return this.client.getDriftPerpContracts(request)
-    }
-    getDriftOpenPerpOrder(
-        request: GetDriftOpenPerpOrderRequest
-    ): RpcReturnType<Promise<GetDriftOpenPerpOrderResponse>, []> {
-        return this.client.getDriftOpenPerpOrder(request)
-    }
-    getDriftOpenMarginOrder(
-        request: GetDriftOpenMarginOrderRequest
-    ): RpcReturnType<Promise<GetDriftOpenMarginOrderResponse>, []> {
-        return this.client.getDriftOpenMarginOrder(request)
-    }
-    getDriftOpenPerpOrders(
-        request: GetDriftOpenPerpOrdersRequest
-    ): RpcReturnType<Promise<GetDriftOpenPerpOrdersResponse>, []> {
-        return this.client.getDriftOpenPerpOrders(request)
-    }
-    getDriftPerpPositions(
-        request: GetDriftPerpPositionsRequest
-    ): RpcReturnType<Promise<GetDriftPerpPositionsResponse>, []> {
-        return this.client.getDriftPerpPositions(request)
-    }
-    postDriftCancelPerpOrder(
-        request: PostDriftCancelPerpOrderRequest
-    ): RpcReturnType<Promise<PostDriftCancelPerpOrderResponse>, []> {
-        return this.client.postDriftCancelPerpOrder(request)
-    }
-    getDriftOpenMarginOrders(
-        request: GetDriftOpenMarginOrdersRequest
-    ): RpcReturnType<Promise<GetDriftOpenMarginOrdersResponse>, []> {
-        return this.client.getDriftOpenMarginOrders(request)
-    }
-
-    postModifyDriftOrder(
-        request: PostModifyDriftOrderRequest
-    ): RpcReturnType<Promise<PostModifyDriftOrderResponse>, []> {
-        return this.client.postModifyDriftOrder(request)
-    }
-
-    postCancelDriftMarginOrder(
-        request: PostCancelDriftMarginOrderRequest
-    ): RpcReturnType<Promise<PostCancelDriftMarginOrderResponse>, []> {
-        return this.client.postCancelDriftMarginOrder(request)
-    }
-
-    getDriftMarkets(
-        request: GetDriftMarketsRequest
-    ): RpcReturnType<Promise<GetDriftMarketsResponse>, []> {
-        return this.client.getDriftMarkets(request)
-    }
-
-    postDriftMarginOrder(
-        request: PostDriftMarginOrderRequest
-    ): RpcReturnType<Promise<PostDriftMarginOrderResponse>, []> {
-        return this.client.postDriftMarginOrder(request)
-    }
-
-    postDriftPerpOrder(
-        request: PostDriftPerpOrderRequest
-    ): RpcReturnType<Promise<PostDriftPerpOrderResponse>, []> {
-        return this.client.postDriftPerpOrder(request)
-    }
-
-    postDriftEnableMarginTrading(
-        request: PostDriftEnableMarginTradingRequest
-    ): RpcReturnType<Promise<PostDriftEnableMarginTradingResponse>, []> {
-        return this.client.postDriftEnableMarginTrading(request)
-    }
-
-    getDriftMarginOrderbook(
-        request: GetDriftMarginOrderbookRequest
-    ): RpcReturnType<Promise<GetDriftMarginOrderbookResponse>, []> {
-        return this.client.getDriftMarginOrderbook(request)
-    }
-
-    getDriftMarketDepth(
-        request: GetDriftMarketDepthRequest
-    ): RpcReturnType<Promise<GetDriftMarketDepthResponse>, []> {
-        return this.client.getDriftMarketDepth(request)
-    }
-
-    getDriftMarginOrderbooksStream(
-        request: GetDriftMarginOrderbooksRequest
-    ): RpcReturnType<
-        AsyncGenerator<GetDriftMarginOrderbooksStreamResponse>,
-        []
-    > {
-        return this.client.getDriftMarginOrderbooksStream(request)
-    }
-
-    getDriftMarketDepthsStream(
-        request: GetDriftMarketDepthsStreamRequest
-    ): RpcReturnType<AsyncGenerator<GetDriftMarketDepthStreamResponse>, []> {
-        return this.client.getDriftMarketDepthsStream(request)
-    }
-    // End of Drift V2
 
     // Openbook V2
     getOrderbookV2 = (
@@ -675,94 +441,9 @@ export class GrpcProvider extends BaseProvider {
     ): Promise<TradeSwapResponse> {
         return this.client.postRouteTradeSwap(request)
     }
-    getOpenPerpOrder(
-        request: GetOpenPerpOrderRequest
-    ): RpcReturnType<Promise<GetOpenPerpOrderResponse>, []> {
-        return this.client.getOpenPerpOrder(request)
-    }
-    getAssets(
-        request: GetAssetsRequest
-    ): RpcReturnType<Promise<GetAssetsResponse>, []> {
-        return this.client.getAssets(request)
-    }
-    getPerpContracts(
-        request: GetPerpContractsRequest
-    ): RpcReturnType<Promise<GetPerpContractsResponse>, []> {
-        return this.client.getPerpContracts(request)
-    }
-    postSettlePNL(
-        request: PostSettlePNLRequest
-    ): RpcReturnType<Promise<PostSettlePNLResponse>, []> {
-        return this.client.postSettlePNL(request)
-    }
-    postSettlePNLs(
-        request: PostSettlePNLsRequest
-    ): RpcReturnType<Promise<PostSettlePNLsResponse>, []> {
-        return this.client.postSettlePNLs(request)
-    }
-    postLiquidatePerp(
-        request: PostLiquidatePerpRequest
-    ): RpcReturnType<Promise<PostLiquidatePerpResponse>, []> {
-        return this.client.postLiquidatePerp(request)
-    }
-    postPerpOrder(
-        request: PostPerpOrderRequest
-    ): Promise<PostPerpOrderResponse> {
-        return this.client.postPerpOrder(request)
-    }
-    getPerpPositions(
-        request: GetPerpPositionsRequest
-    ): Promise<GetPerpPositionsResponse> {
-        return this.client.getPerpPositions(request)
-    }
-    getOpenPerpOrders(
-        request: GetOpenPerpOrdersRequest
-    ): Promise<GetOpenPerpOrdersResponse> {
-        return this.client.getOpenPerpOrders(request)
-    }
-
-    postCancelPerpOrder(
-        request: PostCancelPerpOrderRequest
-    ): Promise<PostCancelPerpOrderResponse> {
-        return this.client.postCancelPerpOrder(request)
-    }
-
-    postCancelPerpOrders(
-        request: PostCancelPerpOrdersRequest
-    ): Promise<PostCancelPerpOrdersResponse> {
-        return this.client.postCancelPerpOrders(request)
-    }
-
-    postClosePerpPositions(
-        request: PostClosePerpPositionsRequest
-    ): Promise<PostClosePerpPositionsResponse> {
-        return this.client.postClosePerpPositions(request)
-    }
-
-    postCreateUser(
-        request: PostCreateUserRequest
-    ): Promise<PostCreateUserResponse> {
-        return this.client.postCreateUser(request)
-    }
-
-    getUser(request: GetUserRequest): Promise<GetUserResponse> {
-        return this.client.getUser(request)
-    }
-
-    postManageCollateral(
-        request: PostManageCollateralRequest
-    ): Promise<PostManageCollateralResponse> {
-        return this.client.postManageCollateral(request)
-    }
 
     getOrders(request: GetOrdersRequest): Promise<GetOrdersResponse> {
         return this.client.getOrders(request)
-    }
-
-    getPerpOrderbook(
-        request: GetPerpOrderbookRequest
-    ): RpcReturnType<Promise<GetPerpOrderbookResponse>, []> {
-        return this.client.getPerpOrderbook(request)
     }
 
     // streams
@@ -770,12 +451,6 @@ export class GrpcProvider extends BaseProvider {
         request: GetOrderbooksRequest
     ): Promise<AsyncGenerator<GetOrderbooksStreamResponse>> => {
         return this.client.getOrderbooksStream(request)
-    }
-
-    getPerpTradesStream = (
-        request: GetPerpTradesStreamRequest
-    ): Promise<AsyncGenerator<GetPerpTradesStreamResponse>> => {
-        return this.client.getPerpTradesStream(request)
     }
 
     getMarketDepthsStream = (
@@ -835,11 +510,5 @@ export class GrpcProvider extends BaseProvider {
         request: GetNewRaydiumPoolsRequest
     ): Promise<AsyncGenerator<GetNewRaydiumPoolsResponse>> {
         return this.client.getNewRaydiumPoolsStream(request)
-    }
-
-    getPerpOrderbooksStream(
-        request: GetPerpOrderbooksRequest
-    ): Promise<AsyncGenerator<GetPerpOrderbooksStreamResponse>> {
-        return this.client.getPerpOrderbooksStream(request)
     }
 }

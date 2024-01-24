@@ -6,6 +6,13 @@ import {
   decodeBinary as decodeBinary_1,
 } from "./StepProject";
 import {
+  Type as Fee,
+  encodeJson as encodeJson_2,
+  decodeJson as decodeJson_2,
+  encodeBinary as encodeBinary_2,
+  decodeBinary as decodeBinary_2,
+} from "../common/Fee";
+import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar";
@@ -32,6 +39,7 @@ export declare namespace $.api {
     outAmount: number;
     outAmountMin: number;
     project?: StepProject;
+    fee?: Fee;
   }
 }
 export type Type = $.api.RouteStep;
@@ -44,6 +52,7 @@ export function getDefaultValue(): $.api.RouteStep {
     outAmount: 0,
     outAmountMin: 0,
     project: undefined,
+    fee: undefined,
   };
 }
 
@@ -62,6 +71,7 @@ export function encodeJson(value: $.api.RouteStep): unknown {
   if (value.outAmount !== undefined) result.outAmount = tsValueToJsonValueFns.double(value.outAmount);
   if (value.outAmountMin !== undefined) result.outAmountMin = tsValueToJsonValueFns.double(value.outAmountMin);
   if (value.project !== undefined) result.project = encodeJson_1(value.project);
+  if (value.fee !== undefined) result.fee = encodeJson_2(value.fee);
   return result;
 }
 
@@ -73,6 +83,7 @@ export function decodeJson(value: any): $.api.RouteStep {
   if (value.outAmount !== undefined) result.outAmount = jsonValueToTsValueFns.double(value.outAmount);
   if (value.outAmountMin !== undefined) result.outAmountMin = jsonValueToTsValueFns.double(value.outAmountMin);
   if (value.project !== undefined) result.project = decodeJson_1(value.project);
+  if (value.fee !== undefined) result.fee = decodeJson_2(value.fee);
   return result;
 }
 
@@ -112,6 +123,12 @@ export function encodeBinary(value: $.api.RouteStep): Uint8Array {
     const tsValue = value.project;
     result.push(
       [6, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
+    );
+  }
+  if (value.fee !== undefined) {
+    const tsValue = value.fee;
+    result.push(
+      [7, { type: WireType.LengthDelimited as const, value: encodeBinary_2(tsValue) }],
     );
   }
   return serialize(result);
@@ -162,6 +179,13 @@ export function decodeBinary(binary: Uint8Array): $.api.RouteStep {
     const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined;
     if (value === undefined) break field;
     result.project = value;
+  }
+  field: {
+    const wireValue = wireFields.get(7);
+    if (wireValue === undefined) break field;
+    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_2(wireValue.value) : undefined;
+    if (value === undefined) break field;
+    result.fee = value;
   }
   return result;
 }
