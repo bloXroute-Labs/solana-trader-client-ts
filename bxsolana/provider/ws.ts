@@ -15,10 +15,6 @@ import {
     GetOrderbooksStreamResponse,
     GetOrderStatusStreamRequest,
     GetOrderStatusStreamResponse,
-    GetPerpOrderbookRequest,
-    GetPerpOrderbookResponse,
-    GetPerpOrderbooksRequest,
-    GetPerpOrderbooksStreamResponse,
     GetPoolReservesStreamRequest,
     GetPoolReservesStreamResponse,
     GetPoolsRequest,
@@ -66,88 +62,6 @@ import {
     GetMarketDepthResponse,
     GetMarketDepthsRequest,
     GetMarketDepthsStreamResponse,
-    GetOpenPerpOrdersRequest,
-    GetOpenPerpOrdersResponse,
-    PostClosePerpPositionsResponse,
-    PostClosePerpPositionsRequest,
-    GetUserResponse,
-    GetUserRequest,
-    PostManageCollateralRequest,
-    PostManageCollateralResponse,
-    PostCancelPerpOrderRequest,
-    PostCancelPerpOrderResponse,
-    PostCreateUserRequest,
-    PostCreateUserResponse,
-    PostCancelPerpOrdersRequest,
-    PostCancelPerpOrdersResponse,
-    PostPerpOrderRequest,
-    PostPerpOrderResponse,
-    GetAssetsRequest,
-    GetAssetsResponse,
-    GetPerpContractsRequest,
-    GetPerpContractsResponse,
-    PostSettlePNLRequest,
-    PostSettlePNLResponse,
-    PostSettlePNLsRequest,
-    PostSettlePNLsResponse,
-    PostLiquidatePerpRequest,
-    PostLiquidatePerpResponse,
-    GetPerpPositionsRequest,
-    GetPerpPositionsResponse,
-    GetOpenPerpOrderRequest,
-    GetOpenPerpOrderResponse,
-    GetPerpTradesStreamResponse,
-    GetPerpTradesStreamRequest,
-    GetDriftMarketDepthRequest,
-    GetDriftMarketDepthResponse,
-    GetDriftMarketDepthsStreamRequest,
-    GetDriftMarketDepthStreamResponse,
-    GetDriftMarginOrderbooksRequest,
-    GetDriftMarginOrderbooksStreamResponse,
-    GetDriftMarketsRequest,
-    GetDriftMarketsResponse,
-    PostDriftMarginOrderRequest,
-    PostDriftMarginOrderResponse,
-    PostDriftEnableMarginTradingRequest,
-    PostDriftEnableMarginTradingResponse,
-    GetDriftMarginOrderbookRequest,
-    GetDriftMarginOrderbookResponse,
-    GetDriftOpenMarginOrdersRequest,
-    GetDriftOpenMarginOrdersResponse,
-    PostModifyDriftOrderRequest,
-    PostModifyDriftOrderResponse,
-    PostCancelDriftMarginOrderRequest,
-    PostCancelDriftMarginOrderResponse,
-    GetDriftOpenPerpOrdersResponse,
-    GetDriftPerpPositionsResponse,
-    PostDriftCancelPerpOrderResponse,
-    GetDriftOpenPerpOrdersRequest,
-    GetDriftPerpPositionsRequest,
-    PostDriftCancelPerpOrderRequest,
-    PostCloseDriftPerpPositionsRequest,
-    PostCloseDriftPerpPositionsResponse,
-    PostCreateDriftUserRequest,
-    PostCreateDriftUserResponse,
-    PostDriftManageCollateralRequest,
-    PostDriftManageCollateralResponse,
-    PostDriftSettlePNLRequest,
-    PostDriftSettlePNLResponse,
-    PostDriftSettlePNLsRequest,
-    PostDriftSettlePNLsResponse,
-    PostLiquidateDriftPerpRequest,
-    PostLiquidateDriftPerpResponse,
-    GetDriftPerpOrderbookRequest,
-    GetDriftPerpOrderbookResponse,
-    GetDriftUserRequest,
-    GetDriftUserResponse,
-    GetDriftAssetsRequest,
-    GetDriftAssetsResponse,
-    GetDriftPerpContractsRequest,
-    GetDriftPerpContractsResponse,
-    GetDriftOpenPerpOrderRequest,
-    GetDriftOpenPerpOrderResponse,
-    GetDriftOpenMarginOrderRequest,
-    GetDriftOpenMarginOrderResponse,
     GetMarketDepthRequestV2,
     GetMarketDepthResponseV2,
     GetMarketsRequestV2,
@@ -181,10 +95,10 @@ import {
     GetRaydiumPricesResponse,
     GetRaydiumQuotesRequest,
     GetRaydiumQuotesResponse,
-    PostDriftPerpOrderRequest,
-    PostDriftPerpOrderResponse,
     GetOpenOrdersResponseV2,
-    GetNewRaydiumPoolsResponse, GetTransactionResponse, GetTransactionRequest
+    GetNewRaydiumPoolsResponse,
+    GetTransactionResponse,
+    GetTransactionRequest,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -284,176 +198,6 @@ export class WsProvider extends BaseProvider {
     ): RpcReturnType<Promise<GetRaydiumQuotesResponse>, []> {
         return await this.wsConnection.call("GetRaydiumQuotes", request)
     }
-
-    // Drift V2
-    async postCloseDriftPerpPositions(
-        request: PostCloseDriftPerpPositionsRequest
-    ): RpcReturnType<Promise<PostCloseDriftPerpPositionsResponse>, []> {
-        return await this.wsConnection.call(
-            "PostCloseDriftPerpPositions",
-            request
-        )
-    }
-
-    async postCreateDriftUser(
-        request: PostCreateDriftUserRequest
-    ): RpcReturnType<Promise<PostCreateDriftUserResponse>, []> {
-        return await this.wsConnection.call("PostCreateDriftUser", request)
-    }
-
-    async postDriftManageCollateral(
-        request: PostDriftManageCollateralRequest
-    ): RpcReturnType<Promise<PostDriftManageCollateralResponse>, []> {
-        return await this.wsConnection.call(
-            "PostDriftManageCollateral",
-            request
-        )
-    }
-
-    async postDriftSettlePNL(
-        request: PostDriftSettlePNLRequest
-    ): RpcReturnType<Promise<PostDriftSettlePNLResponse>, []> {
-        return await this.wsConnection.call("PostDriftSettlePNL", request)
-    }
-
-    async postDriftSettlePNLs(
-        request: PostDriftSettlePNLsRequest
-    ): RpcReturnType<Promise<PostDriftSettlePNLsResponse>, []> {
-        return await this.wsConnection.call("PostDriftSettlePNLs", request)
-    }
-
-    async postLiquidateDriftPerp(
-        request: PostLiquidateDriftPerpRequest
-    ): RpcReturnType<Promise<PostLiquidateDriftPerpResponse>, []> {
-        return await this.wsConnection.call("PostLiquidateDriftPerp", request)
-    }
-
-    async getDriftPerpOrderbook(
-        request: GetDriftPerpOrderbookRequest
-    ): RpcReturnType<Promise<GetDriftPerpOrderbookResponse>, []> {
-        return await this.wsConnection.call("GetDriftPerpOrderbook", request)
-    }
-
-    async getDriftUser(
-        request: GetDriftUserRequest
-    ): RpcReturnType<Promise<GetDriftUserResponse>, []> {
-        return await this.wsConnection.call("GetDriftUser", request)
-    }
-
-    async getDriftAssets(
-        request: GetDriftAssetsRequest
-    ): RpcReturnType<Promise<GetDriftAssetsResponse>, []> {
-        return await this.wsConnection.call("GetDriftAssets", request)
-    }
-
-    async getDriftPerpContracts(
-        request: GetDriftPerpContractsRequest
-    ): RpcReturnType<Promise<GetDriftPerpContractsResponse>, []> {
-        return await this.wsConnection.call("GetDriftPerpContracts", request)
-    }
-
-    async getDriftOpenPerpOrder(
-        request: GetDriftOpenPerpOrderRequest
-    ): RpcReturnType<Promise<GetDriftOpenPerpOrderResponse>, []> {
-        return await this.wsConnection.call("GetDriftOpenPerpOrder", request)
-    }
-
-    async getDriftOpenMarginOrder(
-        request: GetDriftOpenMarginOrderRequest
-    ): RpcReturnType<Promise<GetDriftOpenMarginOrderResponse>, []> {
-        return await this.wsConnection.call("GetDriftOpenMarginOrder", request)
-    }
-
-    async getDriftOpenPerpOrders(
-        request: GetDriftOpenPerpOrdersRequest
-    ): RpcReturnType<Promise<GetDriftOpenPerpOrdersResponse>, []> {
-        return await this.wsConnection.call("GetDriftOpenPerpOrders", request)
-    }
-
-    async getDriftPerpPositions(
-        request: GetDriftPerpPositionsRequest
-    ): RpcReturnType<Promise<GetDriftPerpPositionsResponse>, []> {
-        return await this.wsConnection.call("GetDriftPerpPositions", request)
-    }
-
-    async postDriftCancelPerpOrder(
-        request: PostDriftCancelPerpOrderRequest
-    ): RpcReturnType<Promise<PostDriftCancelPerpOrderResponse>, []> {
-        return await this.wsConnection.call("PostDriftCancelPerpOrder", request)
-    }
-
-    async getDriftOpenMarginOrders(
-        request: GetDriftOpenMarginOrdersRequest
-    ): RpcReturnType<Promise<GetDriftOpenMarginOrdersResponse>, []> {
-        return await this.wsConnection.call("GetDriftOpenMarginOrders", request)
-    }
-
-    async postModifyDriftOrder(
-        request: PostModifyDriftOrderRequest
-    ): RpcReturnType<Promise<PostModifyDriftOrderResponse>, []> {
-        return await this.wsConnection.call("PostModifyDriftOrder", request)
-    }
-
-    async postCancelDriftMarginOrder(
-        request: PostCancelDriftMarginOrderRequest
-    ): RpcReturnType<Promise<PostCancelDriftMarginOrderResponse>, []> {
-        return await this.wsConnection.call(
-            "PostCancelDriftMarginOrder",
-            request
-        )
-    }
-
-    async getDriftMarkets(
-        request: GetDriftMarketsRequest
-    ): RpcReturnType<Promise<GetDriftMarketsResponse>, []> {
-        return await this.wsConnection.call("GetDriftMarkets", request)
-    }
-
-    async postDriftMarginOrder(
-        request: PostDriftMarginOrderRequest
-    ): RpcReturnType<Promise<PostDriftMarginOrderResponse>, []> {
-        return await this.wsConnection.call("PostDriftMarginOrder", request)
-    }
-
-    async postDriftPerpOrder(
-        request: PostDriftPerpOrderRequest
-    ): RpcReturnType<Promise<PostDriftPerpOrderResponse>, []> {
-        return await this.wsConnection.call("PostDriftPerpOrder", request)
-    }
-
-    async postDriftEnableMarginTrading(
-        request: PostDriftEnableMarginTradingRequest
-    ): RpcReturnType<Promise<PostDriftEnableMarginTradingResponse>, []> {
-        return await this.wsConnection.call(
-            "PostDriftEnableMarginTrading",
-            request
-        )
-    }
-
-    async getDriftMarginOrderbook(
-        request: GetDriftMarginOrderbookRequest
-    ): RpcReturnType<Promise<GetDriftMarginOrderbookResponse>, []> {
-        return await this.wsConnection.call("GetDriftMarginOrderbook", request)
-    }
-
-    async getDriftMarginOrderbooksStream(
-        request: GetDriftMarginOrderbooksRequest
-    ): RpcReturnType<
-        AsyncGenerator<GetDriftMarginOrderbooksStreamResponse>,
-        []
-    > {
-        const subscriptionId = await this.wsConnection.subscribe(
-            "GetDriftMarginOrderbooksStream",
-            request
-        )
-
-        this.manageGetStreamMaps(
-            "GetDriftMarginOrderbooksStream",
-            subscriptionId
-        )
-        return this.wsConnection.subscribeToNotifications(subscriptionId)
-    }
-    // End of Drift V2
 
     // Oenbook V2
     async getOrderbookV2(
@@ -564,12 +308,6 @@ export class WsProvider extends BaseProvider {
         return await this.wsConnection.call("GetAccountBalance", request)
     }
 
-    async getPerpOrderbook(
-        request: GetPerpOrderbookRequest
-    ): Promise<GetPerpOrderbookResponse> {
-        return await this.wsConnection.call("GetPerpOrderbook", request)
-    }
-
     //stream requests
     getOrderbooksStream = async (
         request: GetOrderbooksRequest
@@ -580,32 +318,6 @@ export class WsProvider extends BaseProvider {
         )
 
         this.manageGetStreamMaps("GetOrderbooksStream", subscriptionId)
-
-        return this.wsConnection.subscribeToNotifications(subscriptionId)
-    }
-
-    getPerpOrderbooksStream = async (
-        request: GetPerpOrderbooksRequest
-    ): Promise<AsyncGenerator<GetPerpOrderbooksStreamResponse>> => {
-        const subscriptionId = await this.wsConnection.subscribe(
-            "GetPerpOrderbooksStream",
-            request
-        )
-
-        this.manageGetStreamMaps("GetPerpOrderbooksStream", subscriptionId)
-
-        return this.wsConnection.subscribeToNotifications(subscriptionId)
-    }
-
-    getPerpTradesStream = async (
-        request: GetPerpTradesStreamRequest
-    ): Promise<AsyncGenerator<GetPerpTradesStreamResponse>> => {
-        const subscriptionId = await this.wsConnection.subscribe(
-            "GetPerpTradesStream",
-            request
-        )
-
-        this.manageGetStreamMaps("GetPerpTradesStream", subscriptionId)
 
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
@@ -832,94 +544,6 @@ export class WsProvider extends BaseProvider {
         return this.wsConnection.call("GetPrice", request)
     }
 
-    async postPerpOrder(
-        request: PostPerpOrderRequest
-    ): Promise<PostPerpOrderResponse> {
-        return this.wsConnection.call("PostPerpOrder", request)
-    }
-
-    async getAssets(
-        request: GetAssetsRequest
-    ): RpcReturnType<Promise<GetAssetsResponse>, []> {
-        return this.wsConnection.call("GetAssets", request)
-    }
-
-    async getPerpContracts(
-        request: GetPerpContractsRequest
-    ): RpcReturnType<Promise<GetPerpContractsResponse>, []> {
-        return this.wsConnection.call("GetPerpContracts", request)
-    }
-
-    async postSettlePNL(
-        request: PostSettlePNLRequest
-    ): RpcReturnType<Promise<PostSettlePNLResponse>, []> {
-        return this.wsConnection.call("PostSettlePNL", request)
-    }
-
-    async postSettlePNLs(
-        request: PostSettlePNLsRequest
-    ): RpcReturnType<Promise<PostSettlePNLsResponse>, []> {
-        return this.wsConnection.call("PostSettlePNLs", request)
-    }
-
-    async postLiquidatePerp(
-        request: PostLiquidatePerpRequest
-    ): RpcReturnType<Promise<PostLiquidatePerpResponse>, []> {
-        return this.wsConnection.call("PostLiquidatePerp", request)
-    }
-
-    async getPerpPositions(
-        request: GetPerpPositionsRequest
-    ): Promise<GetPerpPositionsResponse> {
-        return this.wsConnection.call("GetPerpPositions", request)
-    }
-
-    async getOpenPerpOrders(
-        request: GetOpenPerpOrdersRequest
-    ): Promise<GetOpenPerpOrdersResponse> {
-        return await this.wsConnection.call("GetOpenPerpOrders", request)
-    }
-
-    async getOpenPerpOrder(
-        request: GetOpenPerpOrderRequest
-    ): Promise<GetOpenPerpOrderResponse> {
-        return await this.wsConnection.call("GetOpenPerpOrder", request)
-    }
-
-    async postCancelPerpOrder(
-        request: PostCancelPerpOrderRequest
-    ): Promise<PostCancelPerpOrderResponse> {
-        return await this.wsConnection.call("PostCancelPerpOrder", request)
-    }
-
-    async postCancelPerpOrders(
-        request: PostCancelPerpOrdersRequest
-    ): Promise<PostCancelPerpOrdersResponse> {
-        return await this.wsConnection.call("PostCancelPerpOrders", request)
-    }
-
-    async postClosePerpPositions(
-        request: PostClosePerpPositionsRequest
-    ): Promise<PostClosePerpPositionsResponse> {
-        return await this.wsConnection.call("PostClosePerpPositions", request)
-    }
-
-    async postCreateUser(
-        request: PostCreateUserRequest
-    ): Promise<PostCreateUserResponse> {
-        return await this.wsConnection.call("PostCreateUser", request)
-    }
-
-    async getUser(request: GetUserRequest): Promise<GetUserResponse> {
-        return await this.wsConnection.call("GetUser", request)
-    }
-
-    async postManageCollateral(
-        request: PostManageCollateralRequest
-    ): Promise<PostManageCollateralResponse> {
-        return await this.wsConnection.call("PostManageCollateral", request)
-    }
-
     cancelGetOrderbooksStreamByCount = async (
         streamNumber: number
     ): Promise<boolean> => {
@@ -1021,24 +645,6 @@ export class WsProvider extends BaseProvider {
 
     cancelAllGetPoolReservesStream = async (): Promise<Awaited<boolean>[]> => {
         return this.cancelAllStreams("GetPoolReservesStream")
-    }
-
-    getDriftMarketDepth = async (
-        request: GetDriftMarketDepthRequest
-    ): Promise<GetDriftMarketDepthResponse> => {
-        return await this.wsConnection.call("GetDriftMarketDepth", request)
-    }
-
-    getDriftMarketDepthsStream = async (
-        request: GetDriftMarketDepthsStreamRequest
-    ): Promise<AsyncGenerator<GetDriftMarketDepthStreamResponse>> => {
-        const subscriptionId = await this.wsConnection.subscribe(
-            "GetDriftMarketDepthsStream",
-            request
-        )
-
-        this.manageGetStreamMaps("GetDriftMarketDepthsStream", subscriptionId)
-        return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
     private manageGetStreamMaps = (
