@@ -1203,13 +1203,10 @@ async function callPostRouteTradeSwap(provider: BaseProvider) {
         steps: [
             {
                 project: {
-                    // pool ID can be empty if outToken is specified
-                    id: "",
+                    id: "61acRgpURKTU8LKPJKs6WQa18KzD9ogavXzjxfD84KLu",
                     label: "Raydium",
                 },
                 inToken: "SOL",
-                // RAY token address
-                // can be omitted if project.id is specified
                 outToken: tokenAddress,
                 inAmount: 0.01,
                 outAmount: 0.007505,
@@ -1217,7 +1214,7 @@ async function callPostRouteTradeSwap(provider: BaseProvider) {
             },
             {
                 project: {
-                    id: "",
+                    id: "61acRgpURKTU8LKPJKs6WQa18KzD9ogavXzjxfD84KLu",
                     label: "Raydium",
                 },
                 inToken: tokenAddress,
@@ -1270,24 +1267,28 @@ async function callSubmitRouteTradeSwap(provider: BaseProvider) {
     const responses = await provider.submitRouteTradeSwap(
         {
             ownerAddress: ownerAddress,
-            slippage: 10,
+            slippage: 0.25,
             steps: [
                 {
-                    inToken: "SOL",
-                    outToken: tokenAddress,
-                    inAmount: 0.01,
-                    outAmount: 0.007505,
-                    outAmountMin: 0.074,
-                },
-                {
+                    project: {
+                        label: "Raydium",
+                        id: "61acRgpURKTU8LKPJKs6WQa18KzD9ogavXzjxfD84KLu",
+                    },
                     inToken: tokenAddress,
                     outToken: "SOL",
-                    inAmount: 0.007505,
-                    outAmount: 0.004043,
-                    outAmountMin: 0.004,
+                    inAmount: 0.01,
+                    outAmount: 0.000123425,
+                    outAmountMin: 0.000123117,
+
+                    // fee must be specified for each step if project is Jupiter
+                    fee: {
+                        amount: 0.000025,
+                        mint: tokenAddress,
+                        percent: 0.0025062656,
+                    }
                 },
             ],
-            project: "P_RAYDIUM",
+            project: "P_JUPITER",
             computeLimit: testOrder.computeLimit,
             computePrice: testOrder.computePrice,
         },
