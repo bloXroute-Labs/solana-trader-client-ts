@@ -5,26 +5,14 @@ import {
     GetAccountBalanceResponse,
     GetBlockStreamRequest,
     GetBlockStreamResponse,
-    GetMarketsRequest,
-    GetMarketsResponse,
-    GetOpenOrdersRequest,
-    GetOpenOrdersResponse,
-    GetOrderbookRequest,
-    GetOrderbookResponse,
     GetOrderbooksRequest,
     GetOrderbooksStreamResponse,
     GetOrderStatusStreamRequest,
     GetOrderStatusStreamResponse,
     GetPoolReservesStreamRequest,
     GetPoolReservesStreamResponse,
-    GetPoolsRequest,
-    GetPoolsResponse,
-    GetPriceRequest,
-    GetPriceResponse,
     GetPricesStreamRequest,
     GetPricesStreamResponse,
-    GetQuotesRequest,
-    GetQuotesResponse,
     GetQuotesStreamRequest,
     GetQuotesStreamResponse,
     GetRecentBlockHashRequest,
@@ -39,27 +27,13 @@ import {
     GetTradesRequest,
     GetTradesResponse,
     GetTradesStreamResponse,
-    GetUnsettledRequest,
     GetUnsettledResponse,
-    PostCancelAllRequest,
-    PostCancelAllResponse,
-    PostCancelByClientOrderIDRequest,
-    PostCancelOrderRequest,
-    PostCancelOrderResponse,
-    PostOrderRequest,
     PostOrderResponse,
-    PostReplaceOrderRequest,
-    PostSettleRequest,
     PostSettleResponse,
     PostSubmitBatchRequest,
     PostSubmitBatchResponse,
     PostSubmitRequest,
     PostSubmitResponse,
-    RouteTradeSwapRequest,
-    TradeSwapRequest,
-    TradeSwapResponse,
-    GetMarketDepthRequest,
-    GetMarketDepthResponse,
     GetMarketDepthsRequest,
     GetMarketDepthsStreamResponse,
     GetMarketDepthRequestV2,
@@ -260,22 +234,6 @@ export class WsProvider extends BaseProvider {
 
     //End  of Openbook V2
 
-    async getOrderbook(
-        request: GetOrderbookRequest
-    ): Promise<GetOrderbookResponse> {
-        return await this.wsConnection.call("GetOrderbook", request)
-    }
-
-    async getMarketDepth(
-        request: GetMarketDepthRequest
-    ): Promise<GetMarketDepthResponse> {
-        return await this.wsConnection.call("GetMarketDepth", request)
-    }
-
-    async getMarkets(request: GetMarketsRequest): Promise<GetMarketsResponse> {
-        return await this.wsConnection.call("GetMarkets", request)
-    }
-
     async getTickers(request: GetTickersRequest): Promise<GetTickersResponse> {
         return await this.wsConnection.call("GetTickers", request)
     }
@@ -288,18 +246,6 @@ export class WsProvider extends BaseProvider {
         request: GetServerTimeRequest
     ): Promise<GetServerTimeResponse> {
         return await this.wsConnection.call("GetServerTime", request)
-    }
-
-    async getOpenOrders(
-        request: GetOpenOrdersRequest
-    ): Promise<GetOpenOrdersResponse> {
-        return await this.wsConnection.call("GetOpenOrders", request)
-    }
-
-    async getUnsettled(
-        request: GetUnsettledRequest
-    ): Promise<GetUnsettledResponse> {
-        return await this.wsConnection.call("GetUnsettled", request)
     }
 
     async getAccountBalance(
@@ -462,10 +408,6 @@ export class WsProvider extends BaseProvider {
     }
 
     //POST requests
-    async postOrder(request: PostOrderRequest): Promise<PostOrderResponse> {
-        return this.wsConnection.call("PostOrder", request)
-    }
-
     async postSubmit(request: PostSubmitRequest): Promise<PostSubmitResponse> {
         return this.wsConnection.call("PostSubmit", request)
     }
@@ -486,62 +428,6 @@ export class WsProvider extends BaseProvider {
         request: PostSubmitBatchRequest
     ): Promise<PostSubmitBatchResponse> {
         return this.wsConnection.call("PostSubmitBatchV2", request)
-    }
-
-    async postCancelOrder(
-        request: PostCancelOrderRequest
-    ): Promise<PostCancelOrderResponse> {
-        return this.wsConnection.call("PostCancelOrder", request)
-    }
-
-    async postCancelByClientOrderID(
-        request: PostCancelByClientOrderIDRequest
-    ): Promise<PostCancelOrderResponse> {
-        return this.wsConnection.call("PostCancelByClientOrderID", request)
-    }
-
-    async postCancelAll(
-        request: PostCancelAllRequest
-    ): Promise<PostCancelAllResponse> {
-        return this.wsConnection.call("PostCancelAll", request)
-    }
-
-    async postSettle(request: PostSettleRequest): Promise<PostSettleResponse> {
-        return this.wsConnection.call("PostSettle", request)
-    }
-
-    async postReplaceByClientOrderID(
-        request: PostOrderRequest
-    ): Promise<PostOrderResponse> {
-        return this.wsConnection.call("postReplaceByClientOrderID", request)
-    }
-
-    async postReplaceOrder(
-        request: PostReplaceOrderRequest
-    ): Promise<PostOrderResponse> {
-        return this.wsConnection.call("postReplaceOrder", request)
-    }
-
-    async postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
-        return this.wsConnection.call("PostTradeSwap", request)
-    }
-
-    async getPools(request: GetPoolsRequest): Promise<GetPoolsResponse> {
-        return this.wsConnection.call("GetPools", request)
-    }
-
-    async getQuotes(request: GetQuotesRequest): Promise<GetQuotesResponse> {
-        return this.wsConnection.call("GetQuotes", request)
-    }
-
-    async postRouteTradeSwap(
-        request: RouteTradeSwapRequest
-    ): Promise<TradeSwapResponse> {
-        return this.wsConnection.call("PostRouteTradeSwap", request)
-    }
-
-    async getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
-        return this.wsConnection.call("GetPrice", request)
     }
 
     cancelGetOrderbooksStreamByCount = async (

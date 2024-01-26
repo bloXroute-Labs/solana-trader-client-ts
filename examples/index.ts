@@ -304,27 +304,11 @@ async function doAmmRequests(provider: BaseProvider) {
     console.info(" ")
     console.info(" ")
 
-    await callGetPrices(provider)
-    console.info(" ")
-    console.info(" ")
-
     await callGetPools(provider)
     console.info(" ")
     console.info(" ")
 
-    await callGetQuotes(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callPostTradeSwap(provider)
-    console.info(" ")
-    console.info(" ")
-
     await callPostTradeSwapWithPriorityFee(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callPostRouteTradeSwap(provider)
     console.info(" ")
     console.info(" ")
 
@@ -716,12 +700,6 @@ async function callGetServerTime(provider: BaseProvider) {
     console.info(req)
 }
 
-async function callGetPrices(provider: BaseProvider) {
-    console.info("Retrieving price")
-    const resp = await provider.getPrice({ tokens: ["SOL"] })
-    console.info(resp)
-}
-
 async function callGetTransaction(provider: BaseProvider) {
     console.info("Retrieving transaction")
     const resp = await provider.getTransaction({
@@ -756,19 +734,6 @@ async function callGetRaydiumPools(provider: BaseProvider) {
     console.info("Retrieving Raydium pools")
     const resp = await provider.getRaydiumPools({
         pairOrAddress: "",
-    })
-    console.info(resp)
-}
-
-async function callGetQuotes(provider: BaseProvider) {
-    console.info("Retrieving quotes")
-    const resp = await provider.getQuotes({
-        inToken: "SOL",
-        outToken: tokenAddress,
-        inAmount: 1,
-        slippage: 5,
-        limit: 5,
-        projects: ["P_RAYDIUM", "P_JUPITER"],
     })
     console.info(resp)
 }
@@ -1117,30 +1082,14 @@ async function callReplaceByClientOrderID(provider: BaseProvider) {
     console.info(req)
 }
 
-async function callPostTradeSwap(provider: BaseProvider) {
-    console.info("Generating a trade swap")
-    const response = await provider.postTradeSwap({
-        ownerAddress: ownerAddress,
-        inToken: tokenAddress,
-        outToken: "SOL",
-        inAmount: 0.01,
-        slippage: 0.1,
-        project: "P_RAYDIUM",
-        computeLimit: testOrder.computeLimit,
-        computePrice: testOrder.computePrice,
-    })
-    console.info(response)
-}
-
 async function callPostTradeSwapWithPriorityFee(provider: BaseProvider) {
     console.info("Generating a trade swap")
-    const response = await provider.postTradeSwap({
+    const response = await provider.postRaydiumSwap({
         ownerAddress: ownerAddress,
         inToken: tokenAddress,
         outToken: "SOL",
         inAmount: 0.01,
         slippage: 0.1,
-        project: "P_RAYDIUM",
         computeLimit: 10000,
         computePrice: "2000",
     })
@@ -1169,64 +1118,6 @@ async function callPostJupiterSwap(provider: BaseProvider) {
         outToken: "SOL",
         inAmount: 0.01,
         slippage: 0.1,
-        computeLimit: testOrder.computeLimit,
-        computePrice: testOrder.computePrice,
-    })
-    console.info(response)
-}
-
-async function callSubmitTradeSwap(provider: BaseProvider) {
-    console.info("Submitting a trade swap")
-    const responses = await provider.submitTradeSwap(
-        {
-            ownerAddress: ownerAddress,
-            inToken: tokenAddress,
-            outToken: "SOL",
-            inAmount: 0.01,
-            slippage: 0.1,
-            project: "P_RAYDIUM",
-            computeLimit: testOrder.computeLimit,
-            computePrice: testOrder.computePrice,
-        },
-        "P_SUBMIT_ALL",
-        true
-    )
-
-    for (const transaction of responses.transactions) {
-        console.info(transaction.signature)
-    }
-}
-
-async function callPostRouteTradeSwap(provider: BaseProvider) {
-    console.info("Generating a route trade swap")
-    const response = await provider.postRouteTradeSwap({
-        ownerAddress: ownerAddress,
-        slippage: 10,
-        steps: [
-            {
-                project: {
-                    id: "",
-                    label: "Raydium",
-                },
-                inToken: "SOL",
-                outToken: tokenAddress,
-                inAmount: 0.01,
-                outAmount: 0.007505,
-                outAmountMin: 0.074,
-            },
-            {
-                project: {
-                    id: "",
-                    label: "Raydium",
-                },
-                inToken: tokenAddress,
-                outToken: "SOL",
-                inAmount: 0.007505,
-                outAmount: 0.004043,
-                outAmountMin: 0.004,
-            },
-        ],
-        project: "P_RAYDIUM",
         computeLimit: testOrder.computeLimit,
         computePrice: testOrder.computePrice,
     })
@@ -1262,62 +1153,6 @@ async function callPostRaydiumRouteSwap(provider: BaseProvider) {
         computePrice: testOrder.computePrice,
     })
     console.info(response)
-}
-
-async function callSubmitRouteTradeSwap(provider: BaseProvider) {
-    console.info("Submitting a route trade swap")
-    const responses = await provider.submitRouteTradeSwap(
-        {
-            ownerAddress: ownerAddress,
-            slippage: 0.25,
-            steps: [
-                {
-                    project: {
-                        label: "Raydium",
-                        id: "61acRgpURKTU8LKPJKs6WQa18KzD9ogavXzjxfD84KLu",
-                    },
-                    inToken: tokenAddress,
-                    outToken: "SOL",
-                    inAmount: 0.01,
-                    outAmount: 0.000123425,
-                    outAmountMin: 0.000123117,
-
-                    // fee must be specified for each step if project is Jupiter
-                    fee: {
-                        amount: 0.000025,
-                        mint: tokenAddress,
-                        percent: 0.0025062656,
-                    },
-                },
-            ],
-            project: "P_JUPITER",
-            computeLimit: testOrder.computeLimit,
-            computePrice: testOrder.computePrice,
-        },
-        "P_SUBMIT_ALL",
-        true
-    )
-
-    for (const transaction of responses.transactions) {
-        console.info(transaction.signature)
-    }
-}
-
-async function callReplaceOrder(provider: BaseProvider) {
-    console.info(
-        "Generating and submitting a Cancel and Replace by Client Order ID transaction"
-    )
-    const clientOrderID = getRandom()
-    testOrder.clientOrderID = clientOrderID.toLocaleString("fullwide", {
-        useGrouping: false,
-    })
-    testOrder.price -= 1
-
-    const req = await provider.submitReplaceOrderV2({
-        orderID: "",
-        ...testOrder,
-    })
-    console.info(req)
 }
 
 async function callCancelAll(provider: BaseProvider) {

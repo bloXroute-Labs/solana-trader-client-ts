@@ -2,18 +2,7 @@ import { MAINNET_API_NY_HTTP } from "../utils/constants"
 import {
     GetAccountBalanceRequest,
     GetAccountBalanceResponse,
-    GetMarketsRequest,
-    GetMarketsResponse,
-    GetOpenOrdersRequest,
-    GetOpenOrdersResponse,
-    GetOrderbookRequest,
     GetOrderbookResponse,
-    GetPoolsRequest,
-    GetPoolsResponse,
-    GetPriceRequest,
-    GetPriceResponse,
-    GetQuotesRequest,
-    GetQuotesResponse,
     GetRecentBlockHashRequest,
     GetRecentBlockHashResponse,
     GetServerTimeRequest,
@@ -22,26 +11,13 @@ import {
     GetTickersResponse,
     GetTradesRequest,
     GetTradesResponse,
-    GetUnsettledRequest,
     GetUnsettledResponse,
-    PostCancelAllRequest,
-    PostCancelAllResponse,
-    PostCancelByClientOrderIDRequest,
-    PostCancelOrderRequest,
-    PostCancelOrderResponse,
-    PostOrderRequest,
     PostOrderResponse,
-    PostReplaceOrderRequest,
-    PostSettleRequest,
     PostSettleResponse,
     PostSubmitBatchRequest,
     PostSubmitBatchResponse,
     PostSubmitRequest,
     PostSubmitResponse,
-    RouteTradeSwapRequest,
-    TradeSwapRequest,
-    TradeSwapResponse,
-    GetMarketDepthRequest,
     GetMarketDepthResponse,
     GetMarketDepthRequestV2,
     GetMarketDepthResponseV2,
@@ -277,25 +253,6 @@ export class HttpProvider extends BaseProvider {
     }
     // End of Openbook V2
 
-    getOrderbook = (
-        request: GetOrderbookRequest
-    ): Promise<GetOrderbookResponse> => {
-        const path = `${this.baseUrl}/market/orderbooks/${request.market}?limit=${request.limit}&project=${request.project}`
-        return this.get<GetOrderbookResponse>(path)
-    }
-
-    getMarketDepth(
-        request: GetMarketDepthRequest
-    ): Promise<GetMarketDepthResponse> {
-        const path = `${this.baseUrl}/market/depth/${request.market}?limit=${request.limit}&project=${request.project}`
-        return this.get<GetMarketDepthResponse>(path)
-    }
-
-    getMarkets(request: GetMarketsRequest): Promise<GetMarketsResponse> {
-        const path = `${this.baseUrl}/market/markets`
-        return this.get<GetMarketsResponse>(path)
-    }
-
     getTickers(request: GetTickersRequest): Promise<GetTickersResponse> {
         const path = `${this.baseUrl}/market/tickers/${request.market}?project=${request.project}`
         return this.get<GetTickersResponse>(path)
@@ -313,18 +270,6 @@ export class HttpProvider extends BaseProvider {
         return this.get<GetServerTimeResponse>(path)
     }
 
-    getOpenOrders(
-        request: GetOpenOrdersRequest
-    ): Promise<GetOpenOrdersResponse> {
-        const path = `${this.baseUrl}/trade/openorders/${request.market}?address=${request.address}&limit=${request.limit}&openOrdersAddress=${request.openOrdersAddress}&project=${request.project}`
-        return this.get<GetOpenOrdersResponse>(path)
-    }
-
-    getUnsettled(request: GetUnsettledRequest): Promise<GetUnsettledResponse> {
-        const path = `${this.baseUrl}/trade/unsettled/${request.market}?ownerAddress=${request.ownerAddress}&project=${request.project}`
-        return this.get<GetUnsettledResponse>(path)
-    }
-
     getAccountBalance(
         request: GetAccountBalanceRequest
     ): Promise<GetAccountBalanceResponse> {
@@ -332,72 +277,11 @@ export class HttpProvider extends BaseProvider {
         return this.get<GetAccountBalanceResponse>(path)
     }
 
-    getPools(request: GetPoolsRequest): Promise<GetPoolsResponse> {
-        let path = `${this.baseUrl}/market/pools`
-        const args = request.projects.map((v) => `projects=${v}`).join("&")
-        if (args != "") {
-            path += `?${args}`
-        }
-        return this.get<GetPoolsResponse>(path)
-    }
-
-    getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
-        let path = `${this.baseUrl}/market/price`
-        const args = request.tokens.map((v) => `tokens=${v}`).join("&")
-        if (args != "") {
-            path += `?${args}`
-        }
-        return this.get<GetPriceResponse>(path)
-    }
-
     getRecentBlockHash(
         request: GetRecentBlockHashRequest
     ): Promise<GetRecentBlockHashResponse> {
         const path = `${this.baseUrl}/system/blockhash`
         return this.get<GetRecentBlockHashResponse>(path)
-    }
-
-    getQuotes(request: GetQuotesRequest): Promise<GetQuotesResponse> {
-        let path = `${this.baseUrl}/market/quote?inToken=${request.inToken}&outToken=${request.outToken}&inAmount=${request.inAmount}&slippage=${request.slippage}&limit=${request.limit}`
-        for (const project of request.projects) {
-            path += `&projects=${project}`
-        }
-        return this.get<GetQuotesResponse>(path)
-    }
-
-    postOrder(request: PostOrderRequest): Promise<PostOrderResponse> {
-        const path = `${this.baseUrl}/trade/place`
-        return this.post<PostOrderRequest, PostOrderResponse>(path, request)
-    }
-
-    postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
-        const path = `${this.baseUrl}/trade/swap`
-        return this.post<TradeSwapRequest, TradeSwapResponse>(path, request)
-    }
-
-    postRouteTradeSwap(
-        request: RouteTradeSwapRequest
-    ): Promise<TradeSwapResponse> {
-        const path = `${this.baseUrl}/trade/route-swap`
-        return this.post<RouteTradeSwapRequest, TradeSwapResponse>(
-            path,
-            request
-        )
-    }
-
-    postSubmit(request: PostSubmitRequest): Promise<PostSubmitResponse> {
-        const path = `${this.baseUrl}/trade/submit`
-        return this.post<PostSubmitRequest, PostSubmitResponse>(path, request)
-    }
-
-    postSubmitBatch(
-        request: PostSubmitBatchRequest
-    ): Promise<PostSubmitBatchResponse> {
-        const path = `${this.baseUrl}/trade/submit-batch`
-        return this.post<PostSubmitBatchRequest, PostSubmitBatchResponse>(
-            path,
-            request
-        )
     }
 
     postSubmitV2(request: PostSubmitRequest): Promise<PostSubmitResponse> {
@@ -410,58 +294,6 @@ export class HttpProvider extends BaseProvider {
     ): Promise<PostSubmitBatchResponse> {
         const path = `${this.baseUrlV2}/submit-batch`
         return this.post<PostSubmitBatchRequest, PostSubmitBatchResponse>(
-            path,
-            request
-        )
-    }
-
-    postCancelOrder(
-        request: PostCancelOrderRequest
-    ): Promise<PostCancelOrderResponse> {
-        const path = `${this.baseUrl}/trade/cancel`
-        return this.post<PostCancelOrderRequest, PostCancelOrderResponse>(
-            path,
-            request
-        )
-    }
-
-    postCancelByClientOrderID(
-        request: PostCancelByClientOrderIDRequest
-    ): Promise<PostCancelOrderResponse> {
-        const path = `${this.baseUrl}/trade/cancelbyid`
-        return this.post<
-            PostCancelByClientOrderIDRequest,
-            PostCancelOrderResponse
-        >(path, request)
-    }
-
-    postCancelAll(
-        request: PostCancelAllRequest
-    ): Promise<PostCancelAllResponse> {
-        const path = `${this.baseUrl}/trade/cancelall`
-        return this.post<PostCancelAllRequest, PostCancelAllResponse>(
-            path,
-            request
-        )
-    }
-
-    postSettle(request: PostSettleRequest): Promise<PostSettleResponse> {
-        const path = `${this.baseUrl}/trade/settle`
-        return this.post<PostSettleRequest, PostSettleResponse>(path, request)
-    }
-
-    postReplaceByClientOrderID(
-        request: PostOrderRequest
-    ): Promise<PostOrderResponse> {
-        const path = `${this.baseUrl}/trade/replacebyclientid`
-        return this.post<PostOrderRequest, PostOrderResponse>(path, request)
-    }
-
-    postReplaceOrder(
-        request: PostReplaceOrderRequest
-    ): Promise<PostOrderResponse> {
-        const path = `${this.baseUrl}/trade/replace`
-        return this.post<PostReplaceOrderRequest, PostOrderResponse>(
             path,
             request
         )

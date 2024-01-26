@@ -10,16 +10,8 @@ import {
     GetAccountBalanceResponse,
     GetBlockStreamRequest,
     GetBlockStreamResponse,
-    GetMarketDepthRequest,
-    GetMarketDepthResponse,
     GetMarketDepthsRequest,
     GetMarketDepthsStreamResponse,
-    GetMarketsRequest,
-    GetMarketsResponse,
-    GetOpenOrdersRequest,
-    GetOpenOrdersResponse,
-    GetOrderbookRequest,
-    GetOrderbookResponse,
     GetOrderbooksRequest,
     GetOrderbooksStreamResponse,
     GetOrdersRequest,
@@ -28,14 +20,8 @@ import {
     GetOrderStatusStreamResponse,
     GetPoolReservesStreamRequest,
     GetPoolReservesStreamResponse,
-    GetPoolsRequest,
-    GetPoolsResponse,
-    GetPriceRequest,
-    GetPriceResponse,
     GetPricesStreamRequest,
     GetPricesStreamResponse,
-    GetQuotesRequest,
-    GetQuotesResponse,
     GetQuotesStreamRequest,
     GetQuotesStreamResponse,
     GetRecentBlockHashRequest,
@@ -45,30 +31,16 @@ import {
     GetSwapsStreamRequest,
     GetSwapsStreamResponse,
     GetTickersRequest,
-    GetTickersResponse,
     GetTickersStreamResponse,
     GetTradesRequest,
-    GetTradesResponse,
     GetTradesStreamResponse,
-    GetUnsettledRequest,
     GetUnsettledResponse,
-    PostCancelAllRequest,
-    PostCancelAllResponse,
-    PostCancelByClientOrderIDRequest,
-    PostCancelOrderRequest,
-    PostCancelOrderResponse,
-    PostOrderRequest,
     PostOrderResponse,
-    PostReplaceOrderRequest,
-    PostSettleRequest,
     PostSettleResponse,
     PostSubmitBatchRequest,
     PostSubmitBatchResponse,
     PostSubmitRequest,
     PostSubmitResponse,
-    RouteTradeSwapRequest,
-    TradeSwapRequest,
-    TradeSwapResponse,
     GetOrderbookRequestV2,
     GetOrderbookResponseV2,
     GetMarketDepthRequestV2,
@@ -312,64 +284,16 @@ export class GrpcProvider extends BaseProvider {
     }
     // End of Openbook V2
 
-    getOrderbook = (
-        request: GetOrderbookRequest
-    ): Promise<GetOrderbookResponse> => {
-        return this.client.getOrderbook(request)
-    }
-
-    getMarketDepth(
-        request: GetMarketDepthRequest
-    ): Promise<GetMarketDepthResponse> {
-        return this.client.getMarketDepth(request)
-    }
-
-    getMarkets = (request: GetMarketsRequest): Promise<GetMarketsResponse> => {
-        return this.client.getMarkets(request)
-    }
-
-    getTickers(request: GetTickersRequest): Promise<GetTickersResponse> {
-        return this.client.getTickers(request)
-    }
-
-    getTrades(request: GetTradesRequest): Promise<GetTradesResponse> {
-        return this.client.getTrades(request)
-    }
-
     getServerTime(
         request: GetServerTimeRequest
     ): Promise<GetServerTimeResponse> {
         return this.client.getServerTime(request)
     }
 
-    getOpenOrders(
-        request: GetOpenOrdersRequest
-    ): Promise<GetOpenOrdersResponse> {
-        return this.client.getOpenOrders(request)
-    }
-
-    getUnsettled(request: GetUnsettledRequest): Promise<GetUnsettledResponse> {
-        return this.client.getUnsettled(request)
-    }
-
     getAccountBalance(
         request: GetAccountBalanceRequest
     ): Promise<GetAccountBalanceResponse> {
         return this.client.getAccountBalance(request)
-    }
-
-    postOrder(request: PostOrderRequest): Promise<PostOrderResponse> {
-        return this.client.postOrder(request)
-    }
-
-    postSubmit(request: PostSubmitRequest): Promise<PostSubmitResponse> {
-        return this.client.postSubmit(request)
-    }
-
-    postSubmitBatch(
-        request: PostSubmitBatchRequest
-    ): Promise<PostSubmitBatchResponse> {
-        return this.client.postSubmitBatch(request)
     }
 
     postSubmitV2(request: PostSubmitRequest): Promise<PostSubmitResponse> {
@@ -382,66 +306,10 @@ export class GrpcProvider extends BaseProvider {
         return this.client.postSubmitBatchV2(request)
     }
 
-    postCancelOrder(
-        request: PostCancelOrderRequest
-    ): Promise<PostCancelOrderResponse> {
-        return this.client.postCancelOrder(request)
-    }
-
-    postCancelByClientOrderID(
-        request: PostCancelByClientOrderIDRequest
-    ): Promise<PostCancelOrderResponse> {
-        return this.client.postCancelByClientOrderID(request)
-    }
-
-    postCancelAll(
-        request: PostCancelAllRequest
-    ): Promise<PostCancelAllResponse> {
-        return this.client.postCancelAll(request)
-    }
-
-    postSettle(request: PostSettleRequest): Promise<PostSettleResponse> {
-        return this.client.postSettle(request)
-    }
-
-    postReplaceByClientOrderID(
-        request: PostOrderRequest
-    ): Promise<PostOrderResponse> {
-        return this.client.postReplaceByClientOrderID(request)
-    }
-
-    postReplaceOrder(
-        request: PostReplaceOrderRequest
-    ): Promise<PostOrderResponse> {
-        return this.client.postReplaceOrder(request)
-    }
-
-    getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
-        return this.client.getPrice(request)
-    }
-
     getPricesStream(
         request: GetPricesStreamRequest
     ): Promise<AsyncGenerator<GetPricesStreamResponse>> {
         return this.client.getPricesStream(request)
-    }
-
-    getPools(request: GetPoolsRequest): Promise<GetPoolsResponse> {
-        return this.client.getPools(request)
-    }
-
-    getQuotes(request: GetQuotesRequest): Promise<GetQuotesResponse> {
-        return this.client.getQuotes(request)
-    }
-
-    postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
-        return this.client.postTradeSwap(request)
-    }
-
-    postRouteTradeSwap(
-        request: RouteTradeSwapRequest
-    ): Promise<TradeSwapResponse> {
-        return this.client.postRouteTradeSwap(request)
     }
 
     getOrders(request: GetOrdersRequest): Promise<GetOrdersResponse> {
