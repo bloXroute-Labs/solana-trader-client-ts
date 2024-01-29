@@ -25,6 +25,10 @@ import {
   default as Long,
 } from "../../runtime/Long";
 import {
+  tsValueToWireValueFns,
+  wireValueToTsValueFns,
+} from "../../runtime/wire/scalar";
+import {
   default as deserialize,
 } from "../../runtime/wire/deserialize";
 
@@ -32,6 +36,7 @@ export declare namespace $.api {
   export interface PostSubmitBatchRequest {
     entries: PostSubmitRequestEntry[];
     submitStrategy: SubmitStrategy;
+    useBundle?: boolean;
   }
 }
 export type Type = $.api.PostSubmitBatchRequest;
@@ -40,6 +45,7 @@ export function getDefaultValue(): $.api.PostSubmitBatchRequest {
   return {
     entries: [],
     submitStrategy: "P_UKNOWN",
+    useBundle: false,
   };
 }
 
@@ -54,6 +60,7 @@ export function encodeJson(value: $.api.PostSubmitBatchRequest): unknown {
   const result: any = {};
   result.entries = value.entries.map(value => encodeJson_1(value));
   if (value.submitStrategy !== undefined) result.submitStrategy = tsValueToJsonValueFns.enum(value.submitStrategy);
+  if (value.useBundle !== undefined) result.useBundle = tsValueToJsonValueFns.bool(value.useBundle);
   return result;
 }
 
@@ -61,6 +68,7 @@ export function decodeJson(value: any): $.api.PostSubmitBatchRequest {
   const result = getDefaultValue();
   result.entries = value.entries?.map((value: any) => decodeJson_1(value)) ?? [];
   if (value.submitStrategy !== undefined) result.submitStrategy = jsonValueToTsValueFns.enum(value.submitStrategy) as SubmitStrategy;
+  if (value.useBundle !== undefined) result.useBundle = jsonValueToTsValueFns.bool(value.useBundle);
   return result;
 }
 
@@ -75,6 +83,12 @@ export function encodeBinary(value: $.api.PostSubmitBatchRequest): Uint8Array {
     const tsValue = value.submitStrategy;
     result.push(
       [2, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
+    );
+  }
+  if (value.useBundle !== undefined) {
+    const tsValue = value.useBundle;
+    result.push(
+      [3, tsValueToWireValueFns.bool(tsValue)],
     );
   }
   return serialize(result);
@@ -96,6 +110,13 @@ export function decodeBinary(binary: Uint8Array): $.api.PostSubmitBatchRequest {
     const value = wireValue.type === WireType.Varint ? num2name[wireValue.value[0] as keyof typeof num2name] : undefined;
     if (value === undefined) break field;
     result.submitStrategy = value;
+  }
+  field: {
+    const wireValue = wireFields.get(3);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.bool(wireValue);
+    if (value === undefined) break field;
+    result.useBundle = value;
   }
   return result;
 }

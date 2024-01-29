@@ -29,6 +29,7 @@ export declare namespace $.api {
     clientOrderID: string;
     computeLimit: number;
     computePrice: string;
+    tip?: string;
   }
 }
 export type Type = $.api.PostOrderRequestV2;
@@ -46,6 +47,7 @@ export function getDefaultValue(): $.api.PostOrderRequestV2 {
     clientOrderID: "0",
     computeLimit: 0,
     computePrice: "0",
+    tip: "0",
   };
 }
 
@@ -69,6 +71,7 @@ export function encodeJson(value: $.api.PostOrderRequestV2): unknown {
   if (value.clientOrderID !== undefined) result.clientOrderID = tsValueToJsonValueFns.uint64(value.clientOrderID);
   if (value.computeLimit !== undefined) result.computeLimit = tsValueToJsonValueFns.uint32(value.computeLimit);
   if (value.computePrice !== undefined) result.computePrice = tsValueToJsonValueFns.uint64(value.computePrice);
+  if (value.tip !== undefined) result.tip = tsValueToJsonValueFns.uint64(value.tip);
   return result;
 }
 
@@ -85,6 +88,7 @@ export function decodeJson(value: any): $.api.PostOrderRequestV2 {
   if (value.clientOrderID !== undefined) result.clientOrderID = jsonValueToTsValueFns.uint64(value.clientOrderID);
   if (value.computeLimit !== undefined) result.computeLimit = jsonValueToTsValueFns.uint32(value.computeLimit);
   if (value.computePrice !== undefined) result.computePrice = jsonValueToTsValueFns.uint64(value.computePrice);
+  if (value.tip !== undefined) result.tip = jsonValueToTsValueFns.uint64(value.tip);
   return result;
 }
 
@@ -154,6 +158,12 @@ export function encodeBinary(value: $.api.PostOrderRequestV2): Uint8Array {
     const tsValue = value.computePrice;
     result.push(
       [11, tsValueToWireValueFns.uint64(tsValue)],
+    );
+  }
+  if (value.tip !== undefined) {
+    const tsValue = value.tip;
+    result.push(
+      [12, tsValueToWireValueFns.uint64(tsValue)],
     );
   }
   return serialize(result);
@@ -239,6 +249,13 @@ export function decodeBinary(binary: Uint8Array): $.api.PostOrderRequestV2 {
     const value = wireValueToTsValueFns.uint64(wireValue);
     if (value === undefined) break field;
     result.computePrice = value;
+  }
+  field: {
+    const wireValue = wireFields.get(12);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.uint64(wireValue);
+    if (value === undefined) break field;
+    result.tip = value;
   }
   return result;
 }
