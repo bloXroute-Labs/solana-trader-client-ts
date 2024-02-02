@@ -39,6 +39,7 @@ export declare namespace $.api {
     openOrdersAddress: string;
     computeLimit: number;
     computePrice: string;
+    tip?: string;
     project: Project;
   }
 }
@@ -53,6 +54,7 @@ export function getDefaultValue(): $.api.PostCancelOrderRequest {
     openOrdersAddress: "",
     computeLimit: 0,
     computePrice: "0",
+    tip: "0",
     project: "P_UNKNOWN",
   };
 }
@@ -73,6 +75,7 @@ export function encodeJson(value: $.api.PostCancelOrderRequest): unknown {
   if (value.openOrdersAddress !== undefined) result.openOrdersAddress = tsValueToJsonValueFns.string(value.openOrdersAddress);
   if (value.computeLimit !== undefined) result.computeLimit = tsValueToJsonValueFns.uint32(value.computeLimit);
   if (value.computePrice !== undefined) result.computePrice = tsValueToJsonValueFns.uint64(value.computePrice);
+  if (value.tip !== undefined) result.tip = tsValueToJsonValueFns.uint64(value.tip);
   if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
   return result;
 }
@@ -86,6 +89,7 @@ export function decodeJson(value: any): $.api.PostCancelOrderRequest {
   if (value.openOrdersAddress !== undefined) result.openOrdersAddress = jsonValueToTsValueFns.string(value.openOrdersAddress);
   if (value.computeLimit !== undefined) result.computeLimit = jsonValueToTsValueFns.uint32(value.computeLimit);
   if (value.computePrice !== undefined) result.computePrice = jsonValueToTsValueFns.uint64(value.computePrice);
+  if (value.tip !== undefined) result.tip = jsonValueToTsValueFns.uint64(value.tip);
   if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
   return result;
 }
@@ -134,10 +138,16 @@ export function encodeBinary(value: $.api.PostCancelOrderRequest): Uint8Array {
       [7, tsValueToWireValueFns.uint64(tsValue)],
     );
   }
+  if (value.tip !== undefined) {
+    const tsValue = value.tip;
+    result.push(
+      [8, tsValueToWireValueFns.uint64(tsValue)],
+    );
+  }
   if (value.project !== undefined) {
     const tsValue = value.project;
     result.push(
-      [8, { type: WireType.Varint as const, value: new Long(name2num_1[tsValue as keyof typeof name2num_1]) }],
+      [9, { type: WireType.Varint as const, value: new Long(name2num_1[tsValue as keyof typeof name2num_1]) }],
     );
   }
   return serialize(result);
@@ -198,6 +208,13 @@ export function decodeBinary(binary: Uint8Array): $.api.PostCancelOrderRequest {
   }
   field: {
     const wireValue = wireFields.get(8);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.uint64(wireValue);
+    if (value === undefined) break field;
+    result.tip = value;
+  }
+  field: {
+    const wireValue = wireFields.get(9);
     if (wireValue === undefined) break field;
     const value = wireValue.type === WireType.Varint ? num2name_1[wireValue.value[0] as keyof typeof num2name_1] : undefined;
     if (value === undefined) break field;

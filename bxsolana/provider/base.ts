@@ -406,7 +406,7 @@ export abstract class BaseProvider implements Api {
     // Openbook V2 util functions
     async submitOrderV2(
         request: PostOrderRequestV2,
-        skipPreFlight = false
+        skipPreFlight = true
     ): Promise<SubmitTransactionResponse> {
         const res = await this.postOrderV2(request)
 
@@ -423,7 +423,7 @@ export abstract class BaseProvider implements Api {
 
     async submitCancelOrderV2(
         request: PostCancelOrderRequestV2,
-        skipPreFlight = false
+        skipPreFlight = true
     ): Promise<PostSubmitBatchResponse> {
         const res = await this.postCancelOrderV2(request)
 
@@ -455,7 +455,7 @@ export abstract class BaseProvider implements Api {
 
     async submitOrder(
         request: PostOrderRequest,
-        skipPreFlight = false
+        skipPreFlight = true
     ): Promise<SubmitTransactionResponse> {
         const res = await this.postOrder(request)
 
@@ -472,7 +472,7 @@ export abstract class BaseProvider implements Api {
 
     async submitCancelOrder(
         request: PostCancelOrderRequest,
-        skipPreFlight = false
+        skipPreFlight = true
     ): Promise<PostSubmitResponse> {
         const res = await this.postCancelOrder(request)
 
@@ -564,7 +564,7 @@ export abstract class BaseProvider implements Api {
 
     public signAndSubmitTx(
         transactionMessage: TransactionMessage | undefined,
-        skipPreFlight: boolean,
+        skipPreFlight= true,
         isCleanup = false
     ): Promise<PostSubmitResponse> {
         this.requirePrivateKey()
@@ -587,7 +587,7 @@ export abstract class BaseProvider implements Api {
     private signAndSubmitTxs(
         transactionMessages: TransactionMessage[],
         submitStrategy: SubmitStrategy,
-        skipPreFlight: boolean
+        skipPreFlight = true
     ): Promise<PostSubmitBatchResponse> {
         this.requirePrivateKey()
 
