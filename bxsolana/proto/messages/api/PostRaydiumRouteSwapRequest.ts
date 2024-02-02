@@ -31,6 +31,7 @@ export declare namespace $.api {
     slippage: number;
     computeLimit: number;
     computePrice: string;
+    tip?: string;
   }
 }
 export type Type = $.api.PostRaydiumRouteSwapRequest;
@@ -42,6 +43,7 @@ export function getDefaultValue(): $.api.PostRaydiumRouteSwapRequest {
     slippage: 0,
     computeLimit: 0,
     computePrice: "0",
+    tip: "0",
   };
 }
 
@@ -59,6 +61,7 @@ export function encodeJson(value: $.api.PostRaydiumRouteSwapRequest): unknown {
   if (value.slippage !== undefined) result.slippage = tsValueToJsonValueFns.double(value.slippage);
   if (value.computeLimit !== undefined) result.computeLimit = tsValueToJsonValueFns.uint32(value.computeLimit);
   if (value.computePrice !== undefined) result.computePrice = tsValueToJsonValueFns.uint64(value.computePrice);
+  if (value.tip !== undefined) result.tip = tsValueToJsonValueFns.uint64(value.tip);
   return result;
 }
 
@@ -69,6 +72,7 @@ export function decodeJson(value: any): $.api.PostRaydiumRouteSwapRequest {
   if (value.slippage !== undefined) result.slippage = jsonValueToTsValueFns.double(value.slippage);
   if (value.computeLimit !== undefined) result.computeLimit = jsonValueToTsValueFns.uint32(value.computeLimit);
   if (value.computePrice !== undefined) result.computePrice = jsonValueToTsValueFns.uint64(value.computePrice);
+  if (value.tip !== undefined) result.tip = jsonValueToTsValueFns.uint64(value.tip);
   return result;
 }
 
@@ -101,6 +105,12 @@ export function encodeBinary(value: $.api.PostRaydiumRouteSwapRequest): Uint8Arr
     const tsValue = value.computePrice;
     result.push(
       [5, tsValueToWireValueFns.uint64(tsValue)],
+    );
+  }
+  if (value.tip !== undefined) {
+    const tsValue = value.tip;
+    result.push(
+      [6, tsValueToWireValueFns.uint64(tsValue)],
     );
   }
   return serialize(result);
@@ -143,6 +153,13 @@ export function decodeBinary(binary: Uint8Array): $.api.PostRaydiumRouteSwapRequ
     const value = wireValueToTsValueFns.uint64(wireValue);
     if (value === undefined) break field;
     result.computePrice = value;
+  }
+  field: {
+    const wireValue = wireFields.get(6);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.uint64(wireValue);
+    if (value === undefined) break field;
+    result.tip = value;
   }
   return result;
 }

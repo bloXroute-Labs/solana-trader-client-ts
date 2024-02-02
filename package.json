@@ -29,6 +29,7 @@
         "./examples/"
     ],
     "scripts": {
+        "start_swap_bot": "node --experimental-specifier-resolution=node --loader ts-node/esm ./examples/index_jupiter_swap_bot.ts",
         "start": "node --experimental-specifier-resolution=node --loader ts-node/esm ./examples/index.ts",
         "test": "echo \"No test specified\"",
         "build": "npm run esbuild && npm run types",
@@ -55,6 +56,7 @@
     "dependencies": {
         "@grpc/grpc-js": "^1.6.7",
         "@pbkit/grpc-client": "^0.0.1",
+        "@project-serum/anchor": "^0.26.0",
         "@solana/web3.js": "1.73.2",
         "axios": "1.1.2",
         "bs58": "^5.0.0",
