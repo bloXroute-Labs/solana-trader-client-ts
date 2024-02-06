@@ -634,16 +634,28 @@ import {
   encodeJson as encodeJson_104,
 } from "../../messages/api/GetNewRaydiumPoolsResponse";
 import {
-  Type as GetSwapsStreamRequest,
+  Type as GetBundleResultsStreamRequest,
   encodeBinary as encodeBinary_105,
   decodeBinary as decodeBinary_105,
   encodeJson as encodeJson_105,
-} from "../../messages/api/GetSwapsStreamRequest";
+} from "../../messages/api/GetBundleResultsStreamRequest";
 import {
-  Type as GetSwapsStreamResponse,
+  Type as GetBundleResultsStreamResponse,
   encodeBinary as encodeBinary_106,
   decodeBinary as decodeBinary_106,
   encodeJson as encodeJson_106,
+} from "../../messages/api/GetBundleResultsStreamResponse";
+import {
+  Type as GetSwapsStreamRequest,
+  encodeBinary as encodeBinary_107,
+  decodeBinary as decodeBinary_107,
+  encodeJson as encodeJson_107,
+} from "../../messages/api/GetSwapsStreamRequest";
+import {
+  Type as GetSwapsStreamResponse,
+  encodeBinary as encodeBinary_108,
+  decodeBinary as decodeBinary_108,
+  encodeJson as encodeJson_108,
 } from "../../messages/api/GetSwapsStreamResponse";
 import {
   fromSingle,
@@ -716,6 +728,7 @@ export interface Service<TReqArgs extends any[] = [], TResArgs extends any[] = [
   getPoolReservesStream(request: GetPoolReservesStreamRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetPoolReservesStreamResponse>, TResArgs>;
   getPricesStream(request: GetPricesStreamRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetPricesStreamResponse>, TResArgs>;
   getNewRaydiumPoolsStream(request: GetNewRaydiumPoolsRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetNewRaydiumPoolsResponse>, TResArgs>;
+  getBundleResultsStream(request: GetBundleResultsStreamRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetBundleResultsStreamResponse>, TResArgs>;
   getSwapsStream(request: GetSwapsStreamRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetSwapsStreamResponse>, TResArgs>;
 }
 
@@ -1697,20 +1710,36 @@ export const methodDescriptors = {
       serializeJson: (value: GetNewRaydiumPoolsResponse) => JSON.stringify(encodeJson_104(value)),
     },
   },
-  getSwapsStream: {
-    methodName: "GetSwapsStream",
+  getBundleResultsStream: {
+    methodName: "GetBundleResultsStream",
     service: { serviceName: "api.Api" },
     requestStream: false,
     responseStream: true,
     requestType: {
       serializeBinary: encodeBinary_105,
       deserializeBinary: decodeBinary_105,
-      serializeJson: (value: GetSwapsStreamRequest) => JSON.stringify(encodeJson_105(value)),
+      serializeJson: (value: GetBundleResultsStreamRequest) => JSON.stringify(encodeJson_105(value)),
     },
     responseType: {
       serializeBinary: encodeBinary_106,
       deserializeBinary: decodeBinary_106,
-      serializeJson: (value: GetSwapsStreamResponse) => JSON.stringify(encodeJson_106(value)),
+      serializeJson: (value: GetBundleResultsStreamResponse) => JSON.stringify(encodeJson_106(value)),
+    },
+  },
+  getSwapsStream: {
+    methodName: "GetSwapsStream",
+    service: { serviceName: "api.Api" },
+    requestStream: false,
+    responseStream: true,
+    requestType: {
+      serializeBinary: encodeBinary_107,
+      deserializeBinary: decodeBinary_107,
+      serializeJson: (value: GetSwapsStreamRequest) => JSON.stringify(encodeJson_107(value)),
+    },
+    responseType: {
+      serializeBinary: encodeBinary_108,
+      deserializeBinary: decodeBinary_108,
+      serializeJson: (value: GetSwapsStreamResponse) => JSON.stringify(encodeJson_108(value)),
     },
   },
 } as const;

@@ -108,6 +108,8 @@ import {
     GetNewRaydiumPoolsResponse,
     GetTransactionRequest,
     GetTransactionResponse,
+    GetBundleResultsStreamRequest,
+    GetBundleResultsStreamResponse,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -119,6 +121,7 @@ import {
 import { Keypair } from "@solana/web3.js"
 import base58 from "bs58"
 import { RpcReturnType } from "../proto/runtime/rpc"
+import {$} from "../proto/messages/api/GetBundleResultsStreamRequest";
 
 /* eslint-disable */
 
@@ -686,6 +689,12 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
+    getBundleResultsStream(
+        request: GetBundleResultsStreamRequest
+    ): Promise<AsyncGenerator<GetBundleResultsStreamResponse>> {
+        throw new Error("Not implemented")
+    }
+
     getPoolReservesStream(
         request: GetPoolReservesStreamRequest
     ): Promise<AsyncGenerator<GetPoolReservesStreamResponse>> {
@@ -784,6 +793,18 @@ export abstract class BaseProvider implements Api {
     }
 
     cancelGetNewRaydiumPoolsStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetBundleRequestStream = async (): Promise<
+        Awaited<boolean>[]
+        > => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetBundleRequestStreamByCount = async (
         streamNumber: number
     ): Promise<boolean> => {
         throw new Error("Not implemented")
