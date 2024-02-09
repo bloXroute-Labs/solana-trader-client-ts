@@ -78,7 +78,7 @@ import {
     GetRaydiumQuotesResponse,
     GetOpenOrdersResponseV2,
     GetTransactionRequest,
-    GetTransactionResponse,
+    GetTransactionResponse, GetRateLimitRequest, GetRateLimitResponse
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -115,6 +115,13 @@ export class HttpProvider extends BaseProvider {
 
     close = () => {
         // no need
+    }
+
+    getRateLimit(
+        request: GetRateLimitRequest
+    ): RpcReturnType<Promise<GetRateLimitResponse>, []> {
+        const path = `${this.baseUrlV2}/account/rate-limit`
+        return this.get<GetRateLimitResponse>(path)
     }
 
     getTransaction(

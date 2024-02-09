@@ -98,7 +98,7 @@ import {
     GetOpenOrdersResponseV2,
     GetNewRaydiumPoolsResponse,
     GetTransactionResponse,
-    GetTransactionRequest,
+    GetTransactionRequest, GetRateLimitRequest, GetRateLimitResponse
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -137,6 +137,12 @@ export class WsProvider extends BaseProvider {
     close = () => {
         this.isClosed = true
         this.wsConnection.close()
+    }
+
+    async getRateLimit(
+        request: GetRateLimitRequest
+    ): RpcReturnType<Promise<GetRateLimitResponse>, []> {
+        return await this.wsConnection.call("GetRateLimit", request)
     }
 
     async getTransaction(

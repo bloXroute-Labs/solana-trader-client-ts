@@ -121,11 +121,12 @@ async function http() {
         )
     }
 
-    console.info(" ----  HTTP Requests  ----")
-    await doOrderbookRequests(provider)
 
     console.info(" ----  HTTP Amm Requests  ----")
     await doAmmRequests(provider)
+
+    console.info(" ----  HTTP Requests  ----")
+    await doOrderbookRequests(provider)
 
     if (runLongExamples) {
         console.info(" ----  HTTP Lifecycle  ----")
@@ -172,11 +173,11 @@ async function grpc() {
         )
     }
 
-    console.info(" ----  GRPC Requests  ----")
-    await doOrderbookRequests(provider)
-
     console.info(" ----  GRPC Amm Requests  ----")
     await doAmmRequests(provider)
+
+    console.info(" ----  GRPC Requests  ----")
+    await doOrderbookRequests(provider)
 
     if (runStreams) {
         console.info(" ----  GRPC Streams  ----")
@@ -221,11 +222,11 @@ async function ws() {
 
     await provider.connect()
 
-    console.info(" ----  WS Requests  ----")
-    await doOrderbookRequests(provider)
-
     console.info(" ----  WS Amm Requests  ----")
     await doAmmRequests(provider)
+
+    console.info(" ----  WS Requests  ----")
+    await doOrderbookRequests(provider)
 
     if (runStreams) {
         console.info(" ----  WS Streams  ----")
@@ -300,7 +301,12 @@ async function doOrderbookRequests(provider: BaseProvider) {
 }
 
 async function doAmmRequests(provider: BaseProvider) {
+
     await callGetTransaction(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetRateLimit(provider)
     console.info(" ")
     console.info(" ")
 
@@ -728,6 +734,12 @@ async function callGetTransaction(provider: BaseProvider) {
         signature:
             "2s48MnhH54GfJbRwwiEK7iWKoEh3uNbS2zDEVBPNu7DaCjPXe3bfqo6RuCg9NgHRFDn3L28sMVfEh65xevf4o5W3",
     })
+    console.info(resp)
+}
+
+async function callGetRateLimit(provider: BaseProvider) {
+    console.info("Retrieving RateLimit")
+    const resp = await provider.getRateLimit({})
     console.info(resp)
 }
 
