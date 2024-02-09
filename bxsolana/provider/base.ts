@@ -108,6 +108,10 @@ import {
     GetNewRaydiumPoolsResponse,
     GetTransactionRequest,
     GetTransactionResponse,
+    GetRateLimitRequest,
+    GetRateLimitResponse,
+    GetBundleResultsStreamRequest,
+    GetBundleResultsStreamResponse,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -136,6 +140,12 @@ export abstract class BaseProvider implements Api {
     getMarketsV2(
         request: GetMarketsRequestV2
     ): RpcReturnType<Promise<GetMarketsResponseV2>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    getRateLimit(
+        request: GetRateLimitRequest
+    ): RpcReturnType<Promise<GetRateLimitResponse>, []> {
         throw new Error("Method not implemented.")
     }
 
@@ -564,7 +574,7 @@ export abstract class BaseProvider implements Api {
 
     public signAndSubmitTx(
         transactionMessage: TransactionMessage | undefined,
-        skipPreFlight= true,
+        skipPreFlight = true,
         isCleanup = false
     ): Promise<PostSubmitResponse> {
         this.requirePrivateKey()
@@ -613,7 +623,11 @@ export abstract class BaseProvider implements Api {
     }
 
     // streams
-
+    getBundleResultsStream(
+        request: GetBundleResultsStreamRequest
+    ): Promise<AsyncGenerator<GetBundleResultsStreamResponse>> {
+        throw new Error("Not implemented")
+    }
     getOrderbooksStream(
         request: GetOrderbooksRequest
     ): Promise<AsyncGenerator<GetOrderbooksStreamResponse>> {

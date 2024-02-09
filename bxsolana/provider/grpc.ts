@@ -106,6 +106,8 @@ import {
     GetNewRaydiumPoolsRequest,
     GetTransactionRequest,
     GetTransactionResponse,
+    GetRateLimitResponse,
+    GetRateLimitRequest,
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
@@ -194,6 +196,12 @@ export class GrpcProvider extends BaseProvider {
 
     close = () => {
         this.grpcClient.close()
+    }
+
+    getRateLimit(
+        request: GetRateLimitRequest
+    ): RpcReturnType<Promise<GetRateLimitResponse>, []> {
+        return this.client.getRateLimit(request)
     }
 
     getTransaction(

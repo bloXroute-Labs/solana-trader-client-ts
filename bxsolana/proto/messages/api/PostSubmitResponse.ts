@@ -19,6 +19,7 @@ import {
 export declare namespace $.api {
   export interface PostSubmitResponse {
     signature: string;
+    uuid?: string;
   }
 }
 export type Type = $.api.PostSubmitResponse;
@@ -26,6 +27,7 @@ export type Type = $.api.PostSubmitResponse;
 export function getDefaultValue(): $.api.PostSubmitResponse {
   return {
     signature: "",
+    uuid: "",
   };
 }
 
@@ -39,12 +41,14 @@ export function createValue(partialValue: Partial<$.api.PostSubmitResponse>): $.
 export function encodeJson(value: $.api.PostSubmitResponse): unknown {
   const result: any = {};
   if (value.signature !== undefined) result.signature = tsValueToJsonValueFns.string(value.signature);
+  if (value.uuid !== undefined) result.uuid = tsValueToJsonValueFns.string(value.uuid);
   return result;
 }
 
 export function decodeJson(value: any): $.api.PostSubmitResponse {
   const result = getDefaultValue();
   if (value.signature !== undefined) result.signature = jsonValueToTsValueFns.string(value.signature);
+  if (value.uuid !== undefined) result.uuid = jsonValueToTsValueFns.string(value.uuid);
   return result;
 }
 
@@ -54,6 +58,12 @@ export function encodeBinary(value: $.api.PostSubmitResponse): Uint8Array {
     const tsValue = value.signature;
     result.push(
       [1, tsValueToWireValueFns.string(tsValue)],
+    );
+  }
+  if (value.uuid !== undefined) {
+    const tsValue = value.uuid;
+    result.push(
+      [2, tsValueToWireValueFns.string(tsValue)],
     );
   }
   return serialize(result);
@@ -69,6 +79,13 @@ export function decodeBinary(binary: Uint8Array): $.api.PostSubmitResponse {
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
     result.signature = value;
+  }
+  field: {
+    const wireValue = wireFields.get(2);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.uuid = value;
   }
   return result;
 }
