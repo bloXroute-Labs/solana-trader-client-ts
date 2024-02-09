@@ -121,7 +121,6 @@ async function http() {
         )
     }
 
-
     console.info(" ----  HTTP Amm Requests  ----")
     await doAmmRequests(provider)
 
@@ -301,7 +300,6 @@ async function doOrderbookRequests(provider: BaseProvider) {
 }
 
 async function doAmmRequests(provider: BaseProvider) {
-
     await callGetTransaction(provider)
     console.info(" ")
     console.info(" ")

@@ -78,7 +78,9 @@ import {
     GetRaydiumQuotesResponse,
     GetOpenOrdersResponseV2,
     GetTransactionRequest,
-    GetTransactionResponse, GetRateLimitRequest, GetRateLimitResponse
+    GetTransactionResponse,
+    GetRateLimitRequest,
+    GetRateLimitResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"

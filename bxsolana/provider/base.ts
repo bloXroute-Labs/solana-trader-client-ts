@@ -111,7 +111,7 @@ import {
     GetRateLimitRequest,
     GetRateLimitResponse,
     GetBundleResultsStreamRequest,
-    GetBundleResultsStreamResponse
+    GetBundleResultsStreamResponse,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -574,7 +574,7 @@ export abstract class BaseProvider implements Api {
 
     public signAndSubmitTx(
         transactionMessage: TransactionMessage | undefined,
-        skipPreFlight= true,
+        skipPreFlight = true,
         isCleanup = false
     ): Promise<PostSubmitResponse> {
         this.requirePrivateKey()
@@ -623,7 +623,8 @@ export abstract class BaseProvider implements Api {
     }
 
     // streams
-    getBundleResultsStream(request: GetBundleResultsStreamRequest
+    getBundleResultsStream(
+        request: GetBundleResultsStreamRequest
     ): Promise<AsyncGenerator<GetBundleResultsStreamResponse>> {
         throw new Error("Not implemented")
     }
