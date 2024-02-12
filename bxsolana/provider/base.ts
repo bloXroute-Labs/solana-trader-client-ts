@@ -112,6 +112,8 @@ import {
     GetRateLimitResponse,
     GetBundleResultsStreamRequest,
     GetBundleResultsStreamResponse,
+    GetPriorityFeeRequest,
+    GetPriorityFeeResponse,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -384,6 +386,10 @@ export abstract class BaseProvider implements Api {
     }
 
     getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
+        throw new Error("Not implemented")
+    }
+
+    getPriorityFee(request: GetPriorityFeeRequest): Promise<GetPriorityFeeResponse> {
         throw new Error("Not implemented")
     }
 
@@ -670,6 +676,12 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
+    getPriorityFeeStream(
+        request: GetPriorityFeeRequest
+    ): Promise<AsyncGenerator<GetPriorityFeeResponse>> {
+        throw new Error("Not implemented")
+    }
+
     getQuotesStream(
         request: GetQuotesStreamRequest
     ): Promise<AsyncGenerator<GetQuotesStreamResponse>> {
@@ -760,6 +772,16 @@ export abstract class BaseProvider implements Api {
     }
 
     cancelGetRecentBlockhashStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelAllGetPriorityFeeStream = async (): Promise<Awaited<boolean>[]> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetPriorityFeeStreamByCount = async (
         streamNumber: number
     ): Promise<boolean> => {
         throw new Error("Not implemented")

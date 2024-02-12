@@ -108,6 +108,9 @@ import {
     GetTransactionResponse,
     GetRateLimitResponse,
     GetRateLimitRequest,
+    GetNewRaydiumPoolsResponse,
+    GetPriorityFeeRequest,
+    GetPriorityFeeResponse,
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
@@ -115,8 +118,6 @@ import { BaseProvider } from "./base"
 import { CallMetadataOptions } from "@grpc/grpc-js/build/src/call-credentials"
 import { ConnectionOptions } from "tls"
 import { RpcReturnType } from "../proto/runtime/rpc"
-import * as rpr from "../proto/messages/api/GetNewRaydiumPoolsResponse"
-import GetNewRaydiumPoolsResponse = rpr.$.api.GetNewRaydiumPoolsResponse
 
 // built-in grpc.credentials.createInsecure() doesn't allow composition
 class insecureChannel extends grpc.ChannelCredentials {
@@ -456,6 +457,12 @@ export class GrpcProvider extends BaseProvider {
         return this.client.getOrders(request)
     }
 
+    getPriorityFee(
+        request: GetPriorityFeeRequest
+    ): Promise<GetPriorityFeeResponse> {
+        return this.client.getPriorityFee(request)
+    }
+
     // streams
     getOrderbooksStream = (
         request: GetOrderbooksRequest
@@ -520,5 +527,11 @@ export class GrpcProvider extends BaseProvider {
         request: GetNewRaydiumPoolsRequest
     ): Promise<AsyncGenerator<GetNewRaydiumPoolsResponse>> {
         return this.client.getNewRaydiumPoolsStream(request)
+    }
+
+    getPriorityFeeStream(
+        request: GetPriorityFeeRequest
+        ): Promise<AsyncGenerator<GetPriorityFeeResponse>> {
+        return this.client.getPriorityFeeStream(request)
     }
 }
