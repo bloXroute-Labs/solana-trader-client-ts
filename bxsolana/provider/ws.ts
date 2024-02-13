@@ -99,6 +99,8 @@ import {
     GetNewRaydiumPoolsResponse,
     GetTransactionResponse,
     GetTransactionRequest,
+    GetBundleResultsStreamRequest,
+    GetBundleResultsStreamResponse,
     GetRateLimitRequest,
     GetRateLimitResponse,
 } from "../proto/messages/api"
@@ -462,6 +464,18 @@ export class WsProvider extends BaseProvider {
     ): Promise<AsyncGenerator<GetNewRaydiumPoolsResponse>> => {
         const subscriptionId = await this.wsConnection.subscribe(
             "GetNewRaydiumPoolsStream",
+            request
+        )
+
+        this.manageGetStreamMaps("GetNewRaydiumPoolsStream", subscriptionId)
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
+    }
+
+    getBundleResultsStream = async (
+        request: GetBundleResultsStreamRequest
+    ): Promise<AsyncGenerator<GetBundleResultsStreamResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetBundleResultsStream",
             request
         )
 
