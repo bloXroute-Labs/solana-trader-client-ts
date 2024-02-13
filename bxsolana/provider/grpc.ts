@@ -106,6 +106,8 @@ import {
     GetNewRaydiumPoolsRequest,
     GetTransactionRequest,
     GetTransactionResponse,
+    GetBundleResultsStreamRequest,
+    GetBundleResultsStreamResponse,
     GetRateLimitResponse,
     GetRateLimitRequest,
     GetNewRaydiumPoolsResponse,
@@ -165,8 +167,8 @@ export class GrpcProvider extends BaseProvider {
         ) => {
             const meta = new grpc.Metadata()
             meta.add("Authorization", authHeader)
-            meta.add("X-SDK", process.env.PACKAGE_NAME ?? "")
-            meta.add("X-SDK-VERSION", process.env.PACKAGE_VERSION ?? "")
+            meta.add("x-sdk", process.env.PACKAGE_NAME ?? "")
+            meta.add("x-sdk-version", process.env.PACKAGE_VERSION ?? "")
             cb(null, meta)
         }
 
@@ -531,7 +533,13 @@ export class GrpcProvider extends BaseProvider {
 
     getPriorityFeeStream(
         request: GetPriorityFeeRequest
-        ): Promise<AsyncGenerator<GetPriorityFeeResponse>> {
+    ): Promise<AsyncGenerator<GetPriorityFeeResponse>> {
         return this.client.getPriorityFeeStream(request)
+    }
+
+    getBundleRequestStream(
+        request: GetBundleResultsStreamRequest
+    ): Promise<AsyncGenerator<GetBundleResultsStreamResponse>> {
+        return this.client.getBundleResultsStream(request)
     }
 }
