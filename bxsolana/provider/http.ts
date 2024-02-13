@@ -377,7 +377,11 @@ export class HttpProvider extends BaseProvider {
     }
 
     getPriorityFee(request: GetPriorityFeeRequest): Promise<GetPriorityFeeResponse> {
-        const path = `${this.baseUrl}/system/priority-fee?percentile=${request.percentile}`
+        let path = `${this.baseUrlV2}/system/priority-fee`
+        console.log("PATH", path)
+        if (request.percentile !== undefined) {
+            path += `?percentile=${request.percentile}`
+        }
         return this.get<GetPriorityFeeResponse>(path)
     }
 
