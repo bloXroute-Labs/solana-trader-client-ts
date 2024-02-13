@@ -123,7 +123,6 @@ import {
 import { Keypair } from "@solana/web3.js"
 import base58 from "bs58"
 import { RpcReturnType } from "../proto/runtime/rpc"
-import {$} from "../proto/messages/api/GetBundleResultsStreamRequest";
 
 /* eslint-disable */
 
@@ -425,7 +424,7 @@ export abstract class BaseProvider implements Api {
             res.transaction,
             skipPreFlight,
             false,
-            false,
+            false
         )
 
         return {
@@ -453,7 +452,12 @@ export abstract class BaseProvider implements Api {
     ): Promise<PostSubmitResponse> {
         const res = await this.postSettleV2(request)
 
-        return this.signAndSubmitTx(res.transaction, skipPreFlight, false, false)
+        return this.signAndSubmitTx(
+            res.transaction,
+            skipPreFlight,
+            false,
+            false
+        )
     }
 
     async submitReplaceOrderV2(
@@ -462,7 +466,12 @@ export abstract class BaseProvider implements Api {
     ): Promise<PostSubmitResponse> {
         const res = await this.postReplaceOrderV2(request)
 
-        return this.signAndSubmitTx(res.transaction, skipPreFlight, false, false)
+        return this.signAndSubmitTx(
+            res.transaction,
+            skipPreFlight,
+            false,
+            false
+        )
     }
     // End of Openbook V2 util functions
 
@@ -476,7 +485,7 @@ export abstract class BaseProvider implements Api {
             res.transaction,
             skipPreFlight,
             false,
-                false
+            false
         )
 
         return {
@@ -491,7 +500,12 @@ export abstract class BaseProvider implements Api {
     ): Promise<PostSubmitResponse> {
         const res = await this.postCancelOrder(request)
 
-        return this.signAndSubmitTx(res.transaction, skipPreFlight, false, false)
+        return this.signAndSubmitTx(
+            res.transaction,
+            skipPreFlight,
+            false,
+            false
+        )
     }
 
     async submitCancelOrderByClientOrderID(
@@ -500,7 +514,12 @@ export abstract class BaseProvider implements Api {
     ): Promise<PostSubmitResponse> {
         const res = await this.postCancelByClientOrderID(request)
 
-        return this.signAndSubmitTx(res.transaction, skipPreFlight, false, false)
+        return this.signAndSubmitTx(
+            res.transaction,
+            skipPreFlight,
+            false,
+            false
+        )
     }
 
     async submitCancelAll(
@@ -522,7 +541,12 @@ export abstract class BaseProvider implements Api {
     ): Promise<PostSubmitResponse> {
         const res = await this.postSettle(request)
 
-        return this.signAndSubmitTx(res.transaction, skipPreFlight, false, false)
+        return this.signAndSubmitTx(
+            res.transaction,
+            skipPreFlight,
+            false,
+            false
+        )
     }
 
     async submitReplaceByClientOrderID(
@@ -531,7 +555,12 @@ export abstract class BaseProvider implements Api {
     ): Promise<PostSubmitResponse> {
         const res = await this.postReplaceByClientOrderID(request)
 
-        return this.signAndSubmitTx(res.transaction, skipPreFlight, false, false)
+        return this.signAndSubmitTx(
+            res.transaction,
+            skipPreFlight,
+            false,
+            false
+        )
     }
 
     async submitReplaceOrder(
@@ -540,7 +569,12 @@ export abstract class BaseProvider implements Api {
     ): Promise<PostSubmitResponse> {
         const res = await this.postReplaceOrder(request)
 
-        return this.signAndSubmitTx(res.transaction, skipPreFlight, false, false)
+        return this.signAndSubmitTx(
+            res.transaction,
+            skipPreFlight,
+            false,
+            false
+        )
     }
 
     async submitTradeSwap(
@@ -810,9 +844,7 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    cancelGetBundleRequestStream = async (): Promise<
-        Awaited<boolean>[]
-        > => {
+    cancelGetBundleRequestStream = async (): Promise<Awaited<boolean>[]> => {
         throw new Error("Not implemented")
     }
 

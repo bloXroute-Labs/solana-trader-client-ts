@@ -19,7 +19,7 @@ you will also need your Solana `PRIVATE_KEY` available.
 
 In `node.js` environments, you can specify both of these values in a `.env` file, or export them manually yourself. In
 the browser, you'll want to define them during run-time from user input, and probably use some wallet provider to handle
-the transaction signing. 
+the transaction signing.
 
 A simple example:
 
@@ -40,9 +40,9 @@ AUTH_HEADER="ZDIxYzE0NmItZWYxNi00ZmFmLTg5YWUtMzYwMTk4YzUyZmM4OjEwOWE5MzEzZDc2Yjg
 PRIVATE_KEY="3EhZ4Epe6QrcDKQRucdftv6vWXMnpTKDV4mekSPWZEcZnJV4huzesLHwASdVUzo......................"
 ```
 
-A general note on transaction submission: methods named `post*` (e.g. `postOrder`) typically do not sign/submit the 
+A general note on transaction submission: methods named `post*` (e.g. `postOrder`) typically do not sign/submit the
 transaction, only return the raw unsigned transaction. This is mainly useful for generating transaction in browsers
-or if you want to handle your signing manually. You may also want to use the similarly named `submit*` methods 
+or if you want to handle your signing manually. You may also want to use the similarly named `submit*` methods
 (e.g. `submitOrder`), which generate, sign, and submit the transaction all at once.
 
 ## Development

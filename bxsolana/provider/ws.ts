@@ -471,7 +471,6 @@ export class WsProvider extends BaseProvider {
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
-
     getBundleResultsStream = async (
         request: GetBundleResultsStreamRequest
     ): Promise<AsyncGenerator<GetBundleResultsStreamResponse>> => {

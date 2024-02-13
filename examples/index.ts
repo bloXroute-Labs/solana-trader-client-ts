@@ -934,7 +934,6 @@ async function callGetNewRaydiumPoolsStream(provider: BaseProvider) {
     }
 }
 
-
 async function callGetBundleRequestsStream(provider: BaseProvider) {
     console.info("Subscribing for new bundle requests updates")
     const req = await provider.getBundleResultsStream({})
@@ -948,12 +947,6 @@ async function callGetBundleRequestsStream(provider: BaseProvider) {
         }
     }
 }
-
-
-
-
-
-
 
 async function callGetSwapsStream(provider: BaseProvider) {
     console.info("Subscribing for swap updates of RAY/SOL market")
