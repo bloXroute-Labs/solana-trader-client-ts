@@ -81,6 +81,8 @@ import {
     GetTransactionResponse,
     GetRateLimitRequest,
     GetRateLimitResponse,
+    GetPriorityFeeRequest,
+    GetPriorityFeeResponse
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -372,6 +374,15 @@ export class HttpProvider extends BaseProvider {
             path += `&projects=${project}`
         }
         return this.get<GetQuotesResponse>(path)
+    }
+
+    getPriorityFee(request: GetPriorityFeeRequest): Promise<GetPriorityFeeResponse> {
+        let path = `${this.baseUrlV2}/system/priority-fee`
+        console.log("PATH", path)
+        if (request.percentile !== undefined) {
+            path += `?percentile=${request.percentile}`
+        }
+        return this.get<GetPriorityFeeResponse>(path)
     }
 
     postOrder(request: PostOrderRequest): Promise<PostOrderResponse> {

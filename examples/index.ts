@@ -363,6 +363,10 @@ async function doAmmRequests(provider: BaseProvider) {
     await callPostRaydiumRouteSwap(provider)
     console.info(" ")
     console.info(" ")
+
+    await callGetPriorityFee(provider)
+    console.info(" ")
+    console.info(" ")
 }
 
 async function doStreams(provider: BaseProvider) {
@@ -397,6 +401,10 @@ async function doStreams(provider: BaseProvider) {
     console.info(" ")
 
     await callGetBlockStream(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetPriorityFeeStream(provider)
     console.info(" ")
     console.info(" ")
 }
@@ -813,6 +821,12 @@ async function callGetRaydiumQuotes(provider: BaseProvider) {
     console.info(resp)
 }
 
+async function callGetPriorityFee(provider: BaseProvider) {
+    console.info("Retrieving priority fee")
+    const resp = await provider.getPriorityFee({})
+    console.info(resp)
+}
+
 async function callGetOrderbookStream(provider: BaseProvider) {
     console.info("Subscribing for orderbook updates of SOLUSDC market")
     let req = await provider.getOrderbooksStream({
@@ -1023,6 +1037,20 @@ async function callGetBlockStream(provider: BaseProvider) {
 async function callGetRecentBlockHashStream(provider: BaseProvider) {
     console.info("Subscribing for block hash updates")
     const resp = await provider.getRecentBlockHashStream({})
+
+    let count = 0
+    for await (const update of resp) {
+        console.info(update)
+        count++
+        if (count == 5) {
+            break
+        }
+    }
+}
+
+async function callGetPriorityFeeStream(provider: BaseProvider) {
+    console.info("Subscribing for priority fee updates")
+    const resp = await provider.getPriorityFeeStream({})
 
     let count = 0
     for await (const update of resp) {
