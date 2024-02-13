@@ -141,6 +141,8 @@ export type { Type as PoolReserves } from "./PoolReserves";
 export type { Type as GetPoolReservesStreamRequest } from "./GetPoolReservesStreamRequest";
 export type { Type as GetPricesStreamRequest } from "./GetPricesStreamRequest";
 export type { Type as GetPricesStreamResponse } from "./GetPricesStreamResponse";
+export type { Type as GetPriorityFeeRequest } from "./GetPriorityFeeRequest";
+export type { Type as GetPriorityFeeResponse } from "./GetPriorityFeeResponse";
 export type { Type as GetMarketsRequestV2 } from "./GetMarketsRequestV2";
 export type { Type as GetMarketsResponseV2 } from "./GetMarketsResponseV2";
 export type { Type as MarketV2 } from "./MarketV2";

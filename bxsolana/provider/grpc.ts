@@ -106,6 +106,8 @@ import {
     GetNewRaydiumPoolsRequest,
     GetTransactionRequest,
     GetTransactionResponse,
+    GetBundleResultsStreamRequest,
+    GetBundleResultsStreamResponse
     GetRateLimitResponse,
     GetRateLimitRequest,
 } from "../proto/messages/api"
@@ -520,5 +522,11 @@ export class GrpcProvider extends BaseProvider {
         request: GetNewRaydiumPoolsRequest
     ): Promise<AsyncGenerator<GetNewRaydiumPoolsResponse>> {
         return this.client.getNewRaydiumPoolsStream(request)
+    }
+
+    getBundleRequestStream(
+        request: GetBundleResultsStreamRequest
+    ): Promise<AsyncGenerator<GetBundleResultsStreamResponse>> {
+        return this.client.getBundleResultsStream(request)
     }
 }
