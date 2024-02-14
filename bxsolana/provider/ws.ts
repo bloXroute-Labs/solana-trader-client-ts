@@ -96,17 +96,20 @@ import {
     GetRaydiumQuotesRequest,
     GetRaydiumQuotesResponse,
     GetOpenOrdersResponseV2,
+    GetNewRaydiumPoolsRequest,
     GetNewRaydiumPoolsResponse,
     GetTransactionResponse,
     GetTransactionRequest,
+    GetBundleResultsStreamRequest,
+    GetBundleResultsStreamResponse,
     GetRateLimitRequest,
     GetRateLimitResponse,
+    GetPriorityFeeRequest,
+    GetPriorityFeeResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
 import { RpcReturnType } from "../proto/runtime/rpc"
-import * as rpr from "../proto/messages/api/GetNewRaydiumPoolsRequest"
-import GetNewRaydiumPoolsRequest = rpr.$.api.GetNewRaydiumPoolsRequest
 
 export class WsProvider extends BaseProvider {
     private wsConnection: RpcWsConnection
@@ -469,6 +472,30 @@ export class WsProvider extends BaseProvider {
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
+    getPriorityFeeStream = async (
+        request: GetPriorityFeeRequest
+    ): Promise<AsyncGenerator<GetPriorityFeeResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetPriorityFeeStream",
+            request
+        )
+
+        this.manageGetStreamMaps("GetPriorityFeeStream", subscriptionId)
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
+    }
+
+    getBundleResultsStream = async (
+        request: GetBundleResultsStreamRequest
+    ): Promise<AsyncGenerator<GetBundleResultsStreamResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetBundleResultsStream",
+            request
+        )
+
+        this.manageGetStreamMaps("GetNewRaydiumPoolsStream", subscriptionId)
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
+    }
+
     //POST requests
     async postOrder(request: PostOrderRequest): Promise<PostOrderResponse> {
         return this.wsConnection.call("PostOrder", request)
@@ -552,6 +579,12 @@ export class WsProvider extends BaseProvider {
         return this.wsConnection.call("GetPrice", request)
     }
 
+    async getPriorityFee(
+        request: GetPriorityFeeRequest
+    ): Promise<GetPriorityFeeResponse> {
+        return this.wsConnection.call("GetPriorityFee", request)
+    }
+
     cancelGetOrderbooksStreamByCount = async (
         streamNumber: number
     ): Promise<boolean> => {
@@ -615,6 +648,12 @@ export class WsProvider extends BaseProvider {
         return this.cancelStreamByCount("GetPoolReservesStream", streamNumber)
     }
 
+    cancelGetPriorityFeeStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
+        return this.cancelStreamByCount("GetPriorityFeeStream", streamNumber)
+    }
+
     cancelAllGetOrderbooksStream = async (): Promise<Awaited<boolean>[]> => {
         return this.cancelAllStreams("GetOrderbooksStream")
     }
@@ -653,6 +692,10 @@ export class WsProvider extends BaseProvider {
 
     cancelAllGetPoolReservesStream = async (): Promise<Awaited<boolean>[]> => {
         return this.cancelAllStreams("GetPoolReservesStream")
+    }
+
+    cancelAllGetPriorityFeeStream = async (): Promise<Awaited<boolean>[]> => {
+        return this.cancelAllStreams("GetPriorityFeeStream")
     }
 
     private manageGetStreamMaps = (

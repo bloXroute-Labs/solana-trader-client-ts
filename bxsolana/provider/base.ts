@@ -110,6 +110,8 @@ import {
     GetTransactionResponse,
     GetRateLimitRequest,
     GetRateLimitResponse,
+    GetPriorityFeeRequest,
+    GetPriorityFeeResponse,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -385,6 +387,10 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
+    getPriorityFee(request: GetPriorityFeeRequest): Promise<GetPriorityFeeResponse> {
+        throw new Error("Not implemented")
+    }
+
     getQuotes(request: GetQuotesRequest): Promise<GetQuotesResponse> {
         throw new Error("Not implemented")
     }
@@ -420,7 +426,9 @@ export abstract class BaseProvider implements Api {
 
         const submitResponse = await this.signAndSubmitTx(
             res.transaction,
-            skipPreFlight
+            skipPreFlight,
+            false,
+            false
         )
 
         return {
@@ -448,7 +456,12 @@ export abstract class BaseProvider implements Api {
     ): Promise<PostSubmitResponse> {
         const res = await this.postSettleV2(request)
 
-        return this.signAndSubmitTx(res.transaction, skipPreFlight)
+        return this.signAndSubmitTx(
+            res.transaction,
+            skipPreFlight,
+            false,
+            false
+        )
     }
 
     async submitReplaceOrderV2(
@@ -457,7 +470,12 @@ export abstract class BaseProvider implements Api {
     ): Promise<PostSubmitResponse> {
         const res = await this.postReplaceOrderV2(request)
 
-        return this.signAndSubmitTx(res.transaction, skipPreFlight)
+        return this.signAndSubmitTx(
+            res.transaction,
+            skipPreFlight,
+            false,
+            false
+        )
     }
     // End of Openbook V2 util functions
 
@@ -469,7 +487,9 @@ export abstract class BaseProvider implements Api {
 
         const submitResponse = await this.signAndSubmitTx(
             res.transaction,
-            skipPreFlight
+            skipPreFlight,
+            false,
+            false
         )
 
         return {
@@ -484,7 +504,12 @@ export abstract class BaseProvider implements Api {
     ): Promise<PostSubmitResponse> {
         const res = await this.postCancelOrder(request)
 
-        return this.signAndSubmitTx(res.transaction, skipPreFlight)
+        return this.signAndSubmitTx(
+            res.transaction,
+            skipPreFlight,
+            false,
+            false
+        )
     }
 
     async submitCancelOrderByClientOrderID(
@@ -493,7 +518,12 @@ export abstract class BaseProvider implements Api {
     ): Promise<PostSubmitResponse> {
         const res = await this.postCancelByClientOrderID(request)
 
-        return this.signAndSubmitTx(res.transaction, skipPreFlight)
+        return this.signAndSubmitTx(
+            res.transaction,
+            skipPreFlight,
+            false,
+            false
+        )
     }
 
     async submitCancelAll(
@@ -515,7 +545,12 @@ export abstract class BaseProvider implements Api {
     ): Promise<PostSubmitResponse> {
         const res = await this.postSettle(request)
 
-        return this.signAndSubmitTx(res.transaction, skipPreFlight)
+        return this.signAndSubmitTx(
+            res.transaction,
+            skipPreFlight,
+            false,
+            false
+        )
     }
 
     async submitReplaceByClientOrderID(
@@ -524,7 +559,12 @@ export abstract class BaseProvider implements Api {
     ): Promise<PostSubmitResponse> {
         const res = await this.postReplaceByClientOrderID(request)
 
-        return this.signAndSubmitTx(res.transaction, skipPreFlight)
+        return this.signAndSubmitTx(
+            res.transaction,
+            skipPreFlight,
+            false,
+            false
+        )
     }
 
     async submitReplaceOrder(
@@ -533,7 +573,12 @@ export abstract class BaseProvider implements Api {
     ): Promise<PostSubmitResponse> {
         const res = await this.postReplaceOrder(request)
 
-        return this.signAndSubmitTx(res.transaction, skipPreFlight)
+        return this.signAndSubmitTx(
+            res.transaction,
+            skipPreFlight,
+            false,
+            false
+        )
     }
 
     async submitTradeSwap(
@@ -572,8 +617,9 @@ export abstract class BaseProvider implements Api {
 
     public signAndSubmitTx(
         transactionMessage: TransactionMessage | undefined,
-        skipPreFlight = true,
-        isCleanup = false
+        skipPreFlight: boolean,
+        isCleanup = false,
+        frontRunningProtection: boolean
     ): Promise<PostSubmitResponse> {
         this.requirePrivateKey()
 
@@ -589,6 +635,7 @@ export abstract class BaseProvider implements Api {
                 isCleanup: isCleanup,
             },
             skipPreFlight,
+            frontRunningProtection: frontRunningProtection,
         })
     }
 
@@ -662,6 +709,12 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
+    getPriorityFeeStream(
+        request: GetPriorityFeeRequest
+    ): Promise<AsyncGenerator<GetPriorityFeeResponse>> {
+        throw new Error("Not implemented")
+    }
+
     getQuotesStream(
         request: GetQuotesStreamRequest
     ): Promise<AsyncGenerator<GetQuotesStreamResponse>> {
@@ -683,6 +736,12 @@ export abstract class BaseProvider implements Api {
     getNewRaydiumPoolsStream(
         request: GetNewRaydiumPoolsRequest
     ): Promise<AsyncGenerator<GetNewRaydiumPoolsResponse>> {
+        throw new Error("Not implemented")
+    }
+
+    getBundleResultsStream(
+        request: GetBundleResultsStreamRequest
+    ): Promise<AsyncGenerator<GetBundleResultsStreamResponse>> {
         throw new Error("Not implemented")
     }
 
@@ -757,6 +816,16 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
+    cancelAllGetPriorityFeeStream = async (): Promise<Awaited<boolean>[]> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetPriorityFeeStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
     cancelAllGetQuotesStream = async (): Promise<Awaited<boolean>[]> => {
         throw new Error("Not implemented")
     }
@@ -784,6 +853,16 @@ export abstract class BaseProvider implements Api {
     }
 
     cancelGetNewRaydiumPoolsStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetBundleRequestStream = async (): Promise<Awaited<boolean>[]> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetBundleRequestStreamByCount = async (
         streamNumber: number
     ): Promise<boolean> => {
         throw new Error("Not implemented")
