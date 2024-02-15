@@ -112,6 +112,8 @@ import {
     GetRateLimitResponse,
     GetPriorityFeeRequest,
     GetPriorityFeeResponse,
+    GetBundleResultRequest,
+    GetBundleResultResponse
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -136,6 +138,7 @@ export abstract class BaseProvider implements Api {
             this.privateKey = Keypair.fromSecretKey(base58.decode(privateKey))
         }
     }
+
     // Openbook V2
     getMarketsV2(
         request: GetMarketsRequestV2
@@ -182,6 +185,12 @@ export abstract class BaseProvider implements Api {
     getOrderbookV2(
         request: GetOrderbookRequestV2
     ): RpcReturnType<Promise<GetOrderbookResponseV2>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    getBundleResultV2(
+        request: GetBundleResultRequest
+    ): RpcReturnType<Promise<GetBundleResultResponse>, []> {
         throw new Error("Method not implemented.")
     }
 
@@ -477,6 +486,7 @@ export abstract class BaseProvider implements Api {
             false
         )
     }
+
     // End of Openbook V2 util functions
 
     async submitOrder(
@@ -739,11 +749,6 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    getBundleResultsStream(
-        request: GetBundleResultsStreamRequest
-    ): Promise<AsyncGenerator<GetBundleResultsStreamResponse>> {
-        throw new Error("Not implemented")
-    }
 
     getPoolReservesStream(
         request: GetPoolReservesStreamRequest
@@ -804,9 +809,7 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    cancelAllGetRecentBlockhashStream = async (): Promise<
-        Awaited<boolean>[]
-    > => {
+    cancelAllGetRecentBlockhashStream = async (): Promise<Awaited<boolean>[]> => {
         throw new Error("Not implemented")
     }
 
@@ -846,23 +849,11 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    cancelAllGetNewRaydiumPoolsStream = async (): Promise<
-        Awaited<boolean>[]
-    > => {
+    cancelAllGetNewRaydiumPoolsStream = async (): Promise<Awaited<boolean>[]> => {
         throw new Error("Not implemented")
     }
 
     cancelGetNewRaydiumPoolsStreamByCount = async (
-        streamNumber: number
-    ): Promise<boolean> => {
-        throw new Error("Not implemented")
-    }
-
-    cancelGetBundleRequestStream = async (): Promise<Awaited<boolean>[]> => {
-        throw new Error("Not implemented")
-    }
-
-    cancelGetBundleRequestStreamByCount = async (
         streamNumber: number
     ): Promise<boolean> => {
         throw new Error("Not implemented")

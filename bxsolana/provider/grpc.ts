@@ -106,13 +106,13 @@ import {
     GetNewRaydiumPoolsRequest,
     GetTransactionRequest,
     GetTransactionResponse,
-    GetBundleResultsStreamRequest,
-    GetBundleResultsStreamResponse,
     GetRateLimitResponse,
     GetRateLimitRequest,
     GetNewRaydiumPoolsResponse,
     GetPriorityFeeRequest,
     GetPriorityFeeResponse,
+    GetBundleResultRequest,
+    GetBundleResultResponse
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
@@ -459,6 +459,13 @@ export class GrpcProvider extends BaseProvider {
         return this.client.getOrders(request)
     }
 
+    getBundleRequestV2(
+        request: GetBundleResultRequest,
+    ): RpcReturnType<Promise<GetBundleResultResponse>, []> {
+        return this.client.getBundleResultV2(request)
+    }
+
+
     getPriorityFee(
         request: GetPriorityFeeRequest
     ): Promise<GetPriorityFeeResponse> {
@@ -537,9 +544,4 @@ export class GrpcProvider extends BaseProvider {
         return this.client.getPriorityFeeStream(request)
     }
 
-    getBundleRequestStream(
-        request: GetBundleResultsStreamRequest
-    ): Promise<AsyncGenerator<GetBundleResultsStreamResponse>> {
-        return this.client.getBundleResultsStream(request)
-    }
 }

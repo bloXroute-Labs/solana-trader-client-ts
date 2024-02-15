@@ -538,17 +538,17 @@ import {
   encodeJson as encodeJson_88,
 } from "../../messages/api/GetOrderByIDResponse";
 import {
-  Type as GetBundleResultsRequest,
+  Type as GetBundleResultRequest,
   encodeBinary as encodeBinary_89,
   decodeBinary as decodeBinary_89,
   encodeJson as encodeJson_89,
-} from "../../messages/api/GetBundleResultsRequest";
+} from "../../messages/api/GetBundleResultRequest";
 import {
-  Type as GetBundleResultsResponse,
+  Type as GetBundleResultResponse,
   encodeBinary as encodeBinary_90,
   decodeBinary as decodeBinary_90,
   encodeJson as encodeJson_90,
-} from "../../messages/api/GetBundleResultsResponse";
+} from "../../messages/api/GetBundleResultResponse";
 import {
   Type as GetUnsettledRequest,
   encodeBinary as encodeBinary_91,
@@ -741,7 +741,7 @@ export interface Service<TReqArgs extends any[] = [], TResArgs extends any[] = [
   getOrders(request: GetOrdersRequest, ...args: TReqArgs): RpcReturnType<Promise<GetOrdersResponse>, TResArgs>;
   getOpenOrders(request: GetOpenOrdersRequest, ...args: TReqArgs): RpcReturnType<Promise<GetOpenOrdersResponse>, TResArgs>;
   getOrderByID(request: GetOrderByIDRequest, ...args: TReqArgs): RpcReturnType<Promise<GetOrderByIDResponse>, TResArgs>;
-  getBundleResultV2(request: GetBundleResultsRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetBundleResultsResponse>, TResArgs>;
+  getBundleResultV2(request: GetBundleResultRequest, ...args: TReqArgs): RpcReturnType<Promise<GetBundleResultResponse>, TResArgs>;
   getUnsettled(request: GetUnsettledRequest, ...args: TReqArgs): RpcReturnType<Promise<GetUnsettledResponse>, TResArgs>;
   postRouteTradeSwap(request: RouteTradeSwapRequest, ...args: TReqArgs): RpcReturnType<Promise<TradeSwapResponse>, TResArgs>;
   getOrderbooksStream(request: GetOrderbooksRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetOrderbooksStreamResponse>, TResArgs>;
@@ -1565,16 +1565,16 @@ export const methodDescriptors = {
     methodName: "GetBundleResultV2",
     service: { serviceName: "api.Api" },
     requestStream: false,
-    responseStream: true,
+    responseStream: false,
     requestType: {
       serializeBinary: encodeBinary_89,
       deserializeBinary: decodeBinary_89,
-      serializeJson: (value: GetBundleResultsRequest) => JSON.stringify(encodeJson_89(value)),
+      serializeJson: (value: GetBundleResultRequest) => JSON.stringify(encodeJson_89(value)),
     },
     responseType: {
       serializeBinary: encodeBinary_90,
       deserializeBinary: decodeBinary_90,
-      serializeJson: (value: GetBundleResultsResponse) => JSON.stringify(encodeJson_90(value)),
+      serializeJson: (value: GetBundleResultResponse) => JSON.stringify(encodeJson_90(value)),
     },
   },
   getUnsettled: {
