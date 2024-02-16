@@ -83,6 +83,8 @@ import {
     GetRateLimitResponse,
     GetPriorityFeeRequest,
     GetPriorityFeeResponse,
+    GetBundleResultRequest,
+    GetBundleResultResponse
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -126,6 +128,13 @@ export class HttpProvider extends BaseProvider {
     ): RpcReturnType<Promise<GetRateLimitResponse>, []> {
         const path = `${this.baseUrlV2}/account/rate-limit`
         return this.get<GetRateLimitResponse>(path)
+    }
+
+    getBundleRequestV2(
+        request: GetBundleResultRequest
+    ): RpcReturnType<Promise<GetBundleResultResponse>, []> {
+        const path = `${this.baseUrlV2}/api/v2/trade/bundle-result/${request.uuid}"`
+        return this.get<GetBundleResultResponse>(path)
     }
 
     getTransaction(

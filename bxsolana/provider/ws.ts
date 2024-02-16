@@ -100,12 +100,12 @@ import {
     GetNewRaydiumPoolsResponse,
     GetTransactionResponse,
     GetTransactionRequest,
-    GetBundleResultsStreamRequest,
-    GetBundleResultsStreamResponse,
     GetRateLimitRequest,
     GetRateLimitResponse,
     GetPriorityFeeRequest,
     GetPriorityFeeResponse,
+    GetBundleResultRequest,
+    GetBundleResultResponse
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -238,6 +238,13 @@ export class WsProvider extends BaseProvider {
     async getOpenOrdersV2(
         request: GetOpenOrdersRequestV2
     ): Promise<GetOpenOrdersResponseV2> {
+        return await this.wsConnection.call("GetOpenOrdersV2", request)
+    }
+
+
+    async getBundleResultV2(
+        request: GetBundleResultRequest
+    ): Promise<GetBundleResultResponse> {
         return await this.wsConnection.call("GetOpenOrdersV2", request)
     }
 
@@ -481,18 +488,6 @@ export class WsProvider extends BaseProvider {
         )
 
         this.manageGetStreamMaps("GetPriorityFeeStream", subscriptionId)
-        return this.wsConnection.subscribeToNotifications(subscriptionId)
-    }
-
-    getBundleResultsStream = async (
-        request: GetBundleResultsStreamRequest
-    ): Promise<AsyncGenerator<GetBundleResultsStreamResponse>> => {
-        const subscriptionId = await this.wsConnection.subscribe(
-            "GetBundleResultsStream",
-            request
-        )
-
-        this.manageGetStreamMaps("GetNewRaydiumPoolsStream", subscriptionId)
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
