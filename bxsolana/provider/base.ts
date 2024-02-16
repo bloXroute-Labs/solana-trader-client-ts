@@ -396,7 +396,9 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    getPriorityFee(request: GetPriorityFeeRequest): Promise<GetPriorityFeeResponse> {
+    getPriorityFee(
+        request: GetPriorityFeeRequest
+    ): Promise<GetPriorityFeeResponse> {
         throw new Error("Not implemented")
     }
 
@@ -677,6 +679,7 @@ export abstract class BaseProvider implements Api {
         })
     }
 
+    // streams
     getOrderbooksStream(
         request: GetOrderbooksRequest
     ): Promise<AsyncGenerator<GetOrderbooksStreamResponse>> {
