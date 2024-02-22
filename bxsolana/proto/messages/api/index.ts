@@ -77,6 +77,9 @@ export type { Type as GetJupiterQuotesResponse } from "./GetJupiterQuotesRespons
 export type { Type as ProjectQuote } from "./ProjectQuote";
 export type { Type as TradeSwapRequest } from "./TradeSwapRequest";
 export type { Type as PostJupiterSwapRequest } from "./PostJupiterSwapRequest";
+export type { Type as PostJupiterSwapInstructionsRequest } from "./PostJupiterSwapInstructionsRequest";
+export type { Type as PublicKeys } from "./PublicKeys";
+export type { Type as PostJupiterSwapInstructionsResponse } from "./PostJupiterSwapInstructionsResponse";
 export type { Type as PostRaydiumSwapRequest } from "./PostRaydiumSwapRequest";
 export type { Type as PostRaydiumSwapResponse } from "./PostRaydiumSwapResponse";
 export type { Type as PostJupiterSwapResponse } from "./PostJupiterSwapResponse";
@@ -111,6 +114,8 @@ export type { Type as GetRateLimitResponse } from "./GetRateLimitResponse";
 export type { Type as GetTransactionRequest } from "./GetTransactionRequest";
 export type { Type as GetTransactionResponse } from "./GetTransactionResponse";
 export type { Type as Instruction } from "./Instruction";
+export type { Type as AccountMeta } from "./AccountMeta";
+export type { Type as InstructionJupiter } from "./InstructionJupiter";
 export type { Type as TransactionMeta } from "./TransactionMeta";
 export type { Type as TransactionMetaInnerInstruction } from "./TransactionMetaInnerInstruction";
 export type { Type as TransactionMetaTokenBalance } from "./TransactionMetaTokenBalance";
