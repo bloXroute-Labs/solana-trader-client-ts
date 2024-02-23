@@ -20,7 +20,7 @@ import {
 } from "../../../runtime/wire/deserialize";
 
 export declare namespace $.google.protobuf {
-  export type GeneratedCodeInfo = {
+  export interface GeneratedCodeInfo {
     annotation: Annotation[];
   }
 }

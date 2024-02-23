@@ -18,7 +18,7 @@ import {
 } from "../../../../../runtime/wire/deserialize";
 
 export declare namespace $.grpc.gateway.protoc_gen_openapiv2.options {
-  export type Scopes = {
+  export interface Scopes {
     scope: Map<string, string>;
   }
 }

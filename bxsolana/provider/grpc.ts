@@ -1,7 +1,4 @@
-import {
-    MAINNET_API_GRPC_HOST,
-    MAINNET_API_GRPC_PORT,
-} from "../utils/constants"
+import { MAINNET_API_GRPC_PORT, MAINNET_API_NY_GRPC } from "../utils/constants"
 import * as grpc from "@grpc/grpc-js"
 import { Client } from "@grpc/grpc-js"
 import {
@@ -21,8 +18,6 @@ import {
     GetMarketsResponse,
     GetOpenOrdersRequest,
     GetOpenOrdersResponse,
-    GetOpenPerpOrdersRequest,
-    GetOpenPerpOrdersResponse,
     GetOrderbookRequest,
     GetOrderbookResponse,
     GetOrderbooksRequest,
@@ -31,10 +26,6 @@ import {
     GetOrdersResponse,
     GetOrderStatusStreamRequest,
     GetOrderStatusStreamResponse,
-    GetPerpOrderbookRequest,
-    GetPerpOrderbookResponse,
-    GetPerpOrderbooksRequest,
-    GetPerpOrderbooksStreamResponse,
     GetPoolReservesStreamRequest,
     GetPoolReservesStreamResponse,
     GetPoolsRequest,
@@ -61,17 +52,11 @@ import {
     GetTradesStreamResponse,
     GetUnsettledRequest,
     GetUnsettledResponse,
-    GetUserRequest,
-    GetUserResponse,
     PostCancelAllRequest,
     PostCancelAllResponse,
     PostCancelByClientOrderIDRequest,
     PostCancelOrderRequest,
     PostCancelOrderResponse,
-    PostClosePerpPositionsRequest,
-    PostClosePerpPositionsResponse,
-    PostManageCollateralRequest,
-    PostManageCollateralResponse,
     PostOrderRequest,
     PostOrderResponse,
     PostReplaceOrderRequest,
@@ -84,29 +69,54 @@ import {
     RouteTradeSwapRequest,
     TradeSwapRequest,
     TradeSwapResponse,
-    PostCancelPerpOrderRequest,
-    PostCancelPerpOrderResponse,
-    PostCreateUserRequest,
-    PostCreateUserResponse,
-    PostCancelPerpOrdersRequest,
-    PostCancelPerpOrdersResponse,
-    PostPerpOrderRequest,
-    PostPerpOrderResponse,
-    GetOpenPerpOrderRequest,
-    GetOpenPerpOrderResponse,
-    GetAssetsRequest,
-    GetAssetsResponse,
-    GetPerpContractsRequest,
-    GetPerpContractsResponse,
-    PostSettlePNLRequest,
-    PostSettlePNLResponse,
-    PostSettlePNLsRequest,
-    PostSettlePNLsResponse,
-    PostLiquidatePerpRequest,
-    PostLiquidatePerpResponse,
-    GetPerpPositionsRequest,
-    GetPerpPositionsResponse,
+    GetOrderbookRequestV2,
+    GetOrderbookResponseV2,
+    GetMarketDepthRequestV2,
+    GetMarketDepthResponseV2,
+    GetMarketsRequestV2,
+    GetMarketsResponseV2,
+    GetTickersRequestV2,
+    GetTickersResponseV2,
+    GetOpenOrdersRequestV2,
+    GetUnsettledRequestV2,
+    PostCancelOrderRequestV2,
+    PostCancelOrderResponseV2,
+    PostSettleRequestV2,
+    PostReplaceOrderRequestV2,
+    GetJupiterPricesRequest,
+    GetJupiterPricesResponse,
+    GetJupiterQuotesRequest,
+    GetJupiterQuotesResponse,
+    GetRaydiumPoolsRequest,
+    GetRaydiumPoolsResponse,
+    GetRaydiumPricesRequest,
+    GetRaydiumPricesResponse,
+    GetRaydiumQuotesRequest,
+    GetRaydiumQuotesResponse,
+    PostJupiterRouteSwapRequest,
+    PostJupiterRouteSwapResponse,
+    PostJupiterSwapRequest,
+    PostJupiterSwapResponse,
+    PostOrderRequestV2,
+    PostRaydiumRouteSwapRequest,
+    PostRaydiumRouteSwapResponse,
+    PostRaydiumSwapRequest,
+    PostRaydiumSwapResponse,
+    GetOpenOrdersResponseV2,
+    GetNewRaydiumPoolsRequest,
+    GetTransactionRequest,
+    GetTransactionResponse,
+    GetRateLimitResponse,
+    GetRateLimitRequest,
+    GetNewRaydiumPoolsResponse,
+    GetPriorityFeeRequest,
+    GetPriorityFeeResponse,
+    GetBundleResultRequest,
+    GetBundleResultResponse,
+    PostJupiterSwapInstructionsRequest,
+    PostJupiterSwapInstructionsResponse,
 } from "../proto/messages/api"
+
 import { createServiceClient, Service } from "../proto/services/api/Api"
 import { BaseProvider } from "./base"
 import { CallMetadataOptions } from "@grpc/grpc-js/build/src/call-credentials"
@@ -143,20 +153,24 @@ export class GrpcProvider extends BaseProvider {
     constructor(
         authHeader: string,
         privateKey = "",
-        address = `${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`,
+        address = `${MAINNET_API_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
         useTls: boolean,
         options: grpc.ClientOptions = {
-            "grpc.keepalive_time_ms": 10000, // 10s keep alive so connection isn't closed from lack of activity
+            "grpc.keepalive_time_ms": 10000,
+            // 10s keep alive so connection isn't closed from lack of activity
             "grpc.keepalive_timeout_ms": 5000, // 5s allowance for keepalive to respond
         }
     ) {
         super(authHeader, privateKey)
+
         const metaCallback = (
             options: CallMetadataOptions,
             cb: (err: Error | null, metadata?: grpc.Metadata) => void
         ) => {
             const meta = new grpc.Metadata()
             meta.add("Authorization", authHeader)
+            meta.add("x-sdk", process.env.PACKAGE_NAME ?? "")
+            meta.add("x-sdk-version", process.env.PACKAGE_VERSION ?? "")
             cb(null, meta)
         }
 
@@ -188,6 +202,134 @@ export class GrpcProvider extends BaseProvider {
     close = () => {
         this.grpcClient.close()
     }
+
+    getRateLimit(
+        request: GetRateLimitRequest
+    ): RpcReturnType<Promise<GetRateLimitResponse>, []> {
+        return this.client.getRateLimit(request)
+    }
+
+    getTransaction(
+        request: GetTransactionRequest
+    ): RpcReturnType<Promise<GetTransactionResponse>, []> {
+        return this.client.getTransaction(request)
+    }
+
+    getJupiterPrices(
+        request: GetJupiterPricesRequest
+    ): RpcReturnType<Promise<GetJupiterPricesResponse>, []> {
+        return this.client.getJupiterPrices(request)
+    }
+
+    getJupiterQuotes(
+        request: GetJupiterQuotesRequest
+    ): RpcReturnType<Promise<GetJupiterQuotesResponse>, []> {
+        return this.client.getJupiterQuotes(request)
+    }
+
+    postJupiterRouteSwap(
+        request: PostJupiterRouteSwapRequest
+    ): RpcReturnType<Promise<PostJupiterRouteSwapResponse>, []> {
+        return this.client.postJupiterRouteSwap(request)
+    }
+
+    postJupiterSwap(
+        request: PostJupiterSwapRequest
+    ): RpcReturnType<Promise<PostJupiterSwapResponse>, []> {
+        return this.client.postJupiterSwap(request)
+    }
+
+    postJupiterSwapInstructions(
+        request: PostJupiterSwapInstructionsRequest
+    ): RpcReturnType<Promise<PostJupiterSwapInstructionsResponse>, []> {
+        return this.client.postJupiterSwapInstructions(request)
+    }
+
+    postRaydiumRouteSwap(
+        request: PostRaydiumRouteSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumRouteSwapResponse>, []> {
+        return this.client.postRaydiumRouteSwap(request)
+    }
+
+    postRaydiumSwap(
+        request: PostRaydiumSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumSwapResponse>, []> {
+        return this.client.postRaydiumSwap(request)
+    }
+
+    getRaydiumPools(
+        request: GetRaydiumPoolsRequest
+    ): RpcReturnType<Promise<GetRaydiumPoolsResponse>, []> {
+        return this.client.getRaydiumPools(request)
+    }
+
+    getRaydiumPrices(
+        request: GetRaydiumPricesRequest
+    ): RpcReturnType<Promise<GetRaydiumPricesResponse>, []> {
+        return this.client.getRaydiumPrices(request)
+    }
+
+    getRaydiumQuotes(
+        request: GetRaydiumQuotesRequest
+    ): RpcReturnType<Promise<GetRaydiumQuotesResponse>, []> {
+        return this.client.getRaydiumQuotes(request)
+    }
+
+    // Openbook V2
+    getOrderbookV2 = (
+        request: GetOrderbookRequestV2
+    ): Promise<GetOrderbookResponseV2> => {
+        return this.client.getOrderbookV2(request)
+    }
+
+    getMarketDepthV2(
+        request: GetMarketDepthRequestV2
+    ): Promise<GetMarketDepthResponseV2> {
+        return this.client.getMarketDepthV2(request)
+    }
+
+    getMarketsV2 = (
+        request: GetMarketsRequestV2
+    ): Promise<GetMarketsResponseV2> => {
+        return this.client.getMarketsV2(request)
+    }
+
+    getTickersV2(request: GetTickersRequestV2): Promise<GetTickersResponseV2> {
+        return this.client.getTickersV2(request)
+    }
+
+    getOpenOrdersV2(
+        request: GetOpenOrdersRequestV2
+    ): Promise<GetOpenOrdersResponseV2> {
+        return this.client.getOpenOrdersV2(request)
+    }
+
+    getUnsettledV2(
+        request: GetUnsettledRequestV2
+    ): Promise<GetUnsettledResponse> {
+        return this.client.getUnsettledV2(request)
+    }
+
+    postOrderV2(request: PostOrderRequestV2): Promise<PostOrderResponse> {
+        return this.client.postOrderV2(request)
+    }
+
+    postCancelOrderV2(
+        request: PostCancelOrderRequestV2
+    ): Promise<PostCancelOrderResponseV2> {
+        return this.client.postCancelOrderV2(request)
+    }
+
+    postSettleV2(request: PostSettleRequestV2): Promise<PostSettleResponse> {
+        return this.client.postSettleV2(request)
+    }
+
+    postReplaceOrderV2(
+        request: PostReplaceOrderRequestV2
+    ): Promise<PostOrderResponse> {
+        return this.client.postReplaceOrderV2(request)
+    }
+    // End of Openbook V2
 
     getOrderbook = (
         request: GetOrderbookRequest
@@ -247,6 +389,16 @@ export class GrpcProvider extends BaseProvider {
         request: PostSubmitBatchRequest
     ): Promise<PostSubmitBatchResponse> {
         return this.client.postSubmitBatch(request)
+    }
+
+    postSubmitV2(request: PostSubmitRequest): Promise<PostSubmitResponse> {
+        return this.client.postSubmitV2(request)
+    }
+
+    postSubmitBatchV2(
+        request: PostSubmitBatchRequest
+    ): Promise<PostSubmitBatchResponse> {
+        return this.client.postSubmitBatchV2(request)
     }
 
     postCancelOrder(
@@ -310,94 +462,21 @@ export class GrpcProvider extends BaseProvider {
     ): Promise<TradeSwapResponse> {
         return this.client.postRouteTradeSwap(request)
     }
-    getOpenPerpOrder(
-        request: GetOpenPerpOrderRequest
-    ): RpcReturnType<Promise<GetOpenPerpOrderResponse>, []> {
-        throw new Error("Method not implemented.")
-    }
-    getAssets(
-        request: GetAssetsRequest
-    ): RpcReturnType<Promise<GetAssetsResponse>, []> {
-        return this.client.getAssets(request)
-    }
-    getPerpContracts(
-        request: GetPerpContractsRequest
-    ): RpcReturnType<Promise<GetPerpContractsResponse>, []> {
-        return this.client.getPerpContracts(request)
-    }
-    postSettlePNL(
-        request: PostSettlePNLRequest
-    ): RpcReturnType<Promise<PostSettlePNLResponse>, []> {
-        return this.client.postSettlePNL(request)
-    }
-    postSettlePNLs(
-        request: PostSettlePNLsRequest
-    ): RpcReturnType<Promise<PostSettlePNLsResponse>, []> {
-        return this.client.postSettlePNLs(request)
-    }
-    postLiquidatePerp(
-        request: PostLiquidatePerpRequest
-    ): RpcReturnType<Promise<PostLiquidatePerpResponse>, []> {
-        return this.client.postLiquidatePerp(request)
-    }
-    postPerpOrder(
-        request: PostPerpOrderRequest
-    ): Promise<PostPerpOrderResponse> {
-        return this.client.postPerpOrder(request)
-    }
-    getPerpPositions(
-        request: GetPerpPositionsRequest
-    ): Promise<GetPerpPositionsResponse> {
-        return this.client.getPerpPositions(request)
-    }
-    getOpenPerpOrders(
-        request: GetOpenPerpOrdersRequest
-    ): Promise<GetOpenPerpOrdersResponse> {
-        return this.client.getOpenPerpOrders(request)
-    }
-
-    postCancelPerpOrder(
-        request: PostCancelPerpOrderRequest
-    ): Promise<PostCancelPerpOrderResponse> {
-        return this.client.postCancelPerpOrder(request)
-    }
-
-    postCancelPerpOrders(
-        request: PostCancelPerpOrdersRequest
-    ): Promise<PostCancelPerpOrdersResponse> {
-        return this.client.postCancelPerpOrders(request)
-    }
-
-    postClosePerpPositions(
-        request: PostClosePerpPositionsRequest
-    ): Promise<PostClosePerpPositionsResponse> {
-        return this.client.postClosePerpPositions(request)
-    }
-
-    postCreateUser(
-        request: PostCreateUserRequest
-    ): Promise<PostCreateUserResponse> {
-        return this.client.postCreateUser(request)
-    }
-
-    getUser(request: GetUserRequest): Promise<GetUserResponse> {
-        return this.client.getUser(request)
-    }
-
-    postManageCollateral(
-        request: PostManageCollateralRequest
-    ): Promise<PostManageCollateralResponse> {
-        return this.client.postManageCollateral(request)
-    }
 
     getOrders(request: GetOrdersRequest): Promise<GetOrdersResponse> {
         return this.client.getOrders(request)
     }
 
-    getPerpOrderbook(
-        request: GetPerpOrderbookRequest
-    ): RpcReturnType<Promise<GetPerpOrderbookResponse>, []> {
-        return this.client.getPerpOrderbook(request)
+    getBundleRequestV2(
+        request: GetBundleResultRequest
+    ): RpcReturnType<Promise<GetBundleResultResponse>, []> {
+        return this.client.getBundleResultV2(request)
+    }
+
+    getPriorityFee(
+        request: GetPriorityFeeRequest
+    ): Promise<GetPriorityFeeResponse> {
+        return this.client.getPriorityFee(request)
     }
 
     // streams
@@ -460,9 +539,15 @@ export class GrpcProvider extends BaseProvider {
         return this.client.getBlockStream(request)
     }
 
-    getPerpOrderbooksStream = (
-        request: GetPerpOrderbooksRequest
-    ): Promise<AsyncGenerator<GetPerpOrderbooksStreamResponse>> => {
-        return this.client.getPerpOrderbooksStream(request)
+    getNewRaydiumPoolsStream(
+        request: GetNewRaydiumPoolsRequest
+    ): Promise<AsyncGenerator<GetNewRaydiumPoolsResponse>> {
+        return this.client.getNewRaydiumPoolsStream(request)
+    }
+
+    getPriorityFeeStream(
+        request: GetPriorityFeeRequest
+    ): Promise<AsyncGenerator<GetPriorityFeeResponse>> {
+        return this.client.getPriorityFeeStream(request)
     }
 }

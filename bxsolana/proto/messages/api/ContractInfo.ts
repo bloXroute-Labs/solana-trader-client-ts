@@ -26,15 +26,14 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type ContractInfo = {
+  export interface ContractInfo {
     contract: PerpContract;
     contractAddress: string;
-    openLongInterest: number;
-    openShortInterest: number;
     fundingRate: number;
     minSize: number;
     perpPrice: number;
     indexPrice: number;
+    openInterest: number;
   }
 }
 export type Type = $.api.ContractInfo;
@@ -43,12 +42,11 @@ export function getDefaultValue(): $.api.ContractInfo {
   return {
     contract: "ALL",
     contractAddress: "",
-    openLongInterest: 0,
-    openShortInterest: 0,
     fundingRate: 0,
     minSize: 0,
     perpPrice: 0,
     indexPrice: 0,
+    openInterest: 0,
   };
 }
 
@@ -63,12 +61,11 @@ export function encodeJson(value: $.api.ContractInfo): unknown {
   const result: any = {};
   if (value.contract !== undefined) result.contract = tsValueToJsonValueFns.enum(value.contract);
   if (value.contractAddress !== undefined) result.contractAddress = tsValueToJsonValueFns.string(value.contractAddress);
-  if (value.openLongInterest !== undefined) result.openLongInterest = tsValueToJsonValueFns.double(value.openLongInterest);
-  if (value.openShortInterest !== undefined) result.openShortInterest = tsValueToJsonValueFns.double(value.openShortInterest);
   if (value.fundingRate !== undefined) result.fundingRate = tsValueToJsonValueFns.double(value.fundingRate);
   if (value.minSize !== undefined) result.minSize = tsValueToJsonValueFns.double(value.minSize);
   if (value.perpPrice !== undefined) result.perpPrice = tsValueToJsonValueFns.double(value.perpPrice);
   if (value.indexPrice !== undefined) result.indexPrice = tsValueToJsonValueFns.double(value.indexPrice);
+  if (value.openInterest !== undefined) result.openInterest = tsValueToJsonValueFns.double(value.openInterest);
   return result;
 }
 
@@ -76,12 +73,11 @@ export function decodeJson(value: any): $.api.ContractInfo {
   const result = getDefaultValue();
   if (value.contract !== undefined) result.contract = jsonValueToTsValueFns.enum(value.contract) as PerpContract;
   if (value.contractAddress !== undefined) result.contractAddress = jsonValueToTsValueFns.string(value.contractAddress);
-  if (value.openLongInterest !== undefined) result.openLongInterest = jsonValueToTsValueFns.double(value.openLongInterest);
-  if (value.openShortInterest !== undefined) result.openShortInterest = jsonValueToTsValueFns.double(value.openShortInterest);
   if (value.fundingRate !== undefined) result.fundingRate = jsonValueToTsValueFns.double(value.fundingRate);
   if (value.minSize !== undefined) result.minSize = jsonValueToTsValueFns.double(value.minSize);
   if (value.perpPrice !== undefined) result.perpPrice = jsonValueToTsValueFns.double(value.perpPrice);
   if (value.indexPrice !== undefined) result.indexPrice = jsonValueToTsValueFns.double(value.indexPrice);
+  if (value.openInterest !== undefined) result.openInterest = jsonValueToTsValueFns.double(value.openInterest);
   return result;
 }
 
@@ -99,40 +95,34 @@ export function encodeBinary(value: $.api.ContractInfo): Uint8Array {
       [2, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.openLongInterest !== undefined) {
-    const tsValue = value.openLongInterest;
-    result.push(
-      [3, tsValueToWireValueFns.double(tsValue)],
-    );
-  }
-  if (value.openShortInterest !== undefined) {
-    const tsValue = value.openShortInterest;
-    result.push(
-      [4, tsValueToWireValueFns.double(tsValue)],
-    );
-  }
   if (value.fundingRate !== undefined) {
     const tsValue = value.fundingRate;
     result.push(
-      [5, tsValueToWireValueFns.double(tsValue)],
+      [3, tsValueToWireValueFns.double(tsValue)],
     );
   }
   if (value.minSize !== undefined) {
     const tsValue = value.minSize;
     result.push(
-      [6, tsValueToWireValueFns.double(tsValue)],
+      [4, tsValueToWireValueFns.double(tsValue)],
     );
   }
   if (value.perpPrice !== undefined) {
     const tsValue = value.perpPrice;
     result.push(
-      [7, tsValueToWireValueFns.double(tsValue)],
+      [5, tsValueToWireValueFns.double(tsValue)],
     );
   }
   if (value.indexPrice !== undefined) {
     const tsValue = value.indexPrice;
     result.push(
-      [8, tsValueToWireValueFns.double(tsValue)],
+      [6, tsValueToWireValueFns.double(tsValue)],
+    );
+  }
+  if (value.openInterest !== undefined) {
+    const tsValue = value.openInterest;
+    result.push(
+      [7, tsValueToWireValueFns.double(tsValue)],
     );
   }
   return serialize(result);
@@ -161,42 +151,35 @@ export function decodeBinary(binary: Uint8Array): $.api.ContractInfo {
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
-    result.openLongInterest = value;
+    result.fundingRate = value;
   }
   field: {
     const wireValue = wireFields.get(4);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
-    result.openShortInterest = value;
+    result.minSize = value;
   }
   field: {
     const wireValue = wireFields.get(5);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
-    result.fundingRate = value;
+    result.perpPrice = value;
   }
   field: {
     const wireValue = wireFields.get(6);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
-    result.minSize = value;
+    result.indexPrice = value;
   }
   field: {
     const wireValue = wireFields.get(7);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
-    result.perpPrice = value;
-  }
-  field: {
-    const wireValue = wireFields.get(8);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.double(wireValue);
-    if (value === undefined) break field;
-    result.indexPrice = value;
+    result.openInterest = value;
   }
   return result;
 }

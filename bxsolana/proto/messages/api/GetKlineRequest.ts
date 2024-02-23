@@ -25,7 +25,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type GetKlineRequest = {
+  export interface GetKlineRequest {
     market: string;
     from?: Timestamp;
     to?: Timestamp;

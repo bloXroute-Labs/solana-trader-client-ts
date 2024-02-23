@@ -1,4 +1,4 @@
-import { MAINNET_API_WS } from "../utils/constants"
+import { MAINNET_API_NY_WS } from "../utils/constants"
 
 import {
     GetAccountBalanceRequest,
@@ -15,10 +15,6 @@ import {
     GetOrderbooksStreamResponse,
     GetOrderStatusStreamRequest,
     GetOrderStatusStreamResponse,
-    GetPerpOrderbookRequest,
-    GetPerpOrderbookResponse,
-    GetPerpOrderbooksRequest,
-    GetPerpOrderbooksStreamResponse,
     GetPoolReservesStreamRequest,
     GetPoolReservesStreamResponse,
     GetPoolsRequest,
@@ -66,34 +62,52 @@ import {
     GetMarketDepthResponse,
     GetMarketDepthsRequest,
     GetMarketDepthsStreamResponse,
-    GetOpenPerpOrdersRequest,
-    GetOpenPerpOrdersResponse,
-    PostClosePerpPositionsResponse,
-    PostClosePerpPositionsRequest,
-    GetUserResponse,
-    GetUserRequest,
-    PostManageCollateralRequest,
-    PostManageCollateralResponse,
-    PostCancelPerpOrderRequest,
-    PostCancelPerpOrderResponse,
-    PostCreateUserRequest,
-    PostCreateUserResponse,
-    PostCancelPerpOrdersRequest,
-    PostCancelPerpOrdersResponse,
-    PostPerpOrderRequest,
-    PostPerpOrderResponse,
-    GetAssetsRequest,
-    GetAssetsResponse,
-    GetPerpContractsRequest,
-    GetPerpContractsResponse,
-    PostSettlePNLRequest,
-    PostSettlePNLResponse,
-    PostSettlePNLsRequest,
-    PostSettlePNLsResponse,
-    PostLiquidatePerpRequest,
-    PostLiquidatePerpResponse,
-    GetPerpPositionsRequest,
-    GetPerpPositionsResponse,
+    GetMarketDepthRequestV2,
+    GetMarketDepthResponseV2,
+    GetMarketsRequestV2,
+    GetMarketsResponseV2,
+    GetOpenOrdersRequestV2,
+    GetOrderbookRequestV2,
+    GetOrderbookResponseV2,
+    GetTickersRequestV2,
+    GetTickersResponseV2,
+    GetUnsettledRequestV2,
+    PostCancelOrderRequestV2,
+    PostCancelOrderResponseV2,
+    PostOrderRequestV2,
+    PostReplaceOrderRequestV2,
+    PostSettleRequestV2,
+    GetJupiterPricesRequest,
+    GetJupiterPricesResponse,
+    GetJupiterQuotesRequest,
+    GetJupiterQuotesResponse,
+    PostJupiterRouteSwapRequest,
+    PostJupiterRouteSwapResponse,
+    PostJupiterSwapRequest,
+    PostJupiterSwapResponse,
+    PostRaydiumRouteSwapRequest,
+    PostRaydiumRouteSwapResponse,
+    PostRaydiumSwapRequest,
+    PostRaydiumSwapResponse,
+    GetRaydiumPoolsRequest,
+    GetRaydiumPoolsResponse,
+    GetRaydiumPricesRequest,
+    GetRaydiumPricesResponse,
+    GetRaydiumQuotesRequest,
+    GetRaydiumQuotesResponse,
+    GetOpenOrdersResponseV2,
+    GetNewRaydiumPoolsRequest,
+    GetNewRaydiumPoolsResponse,
+    GetTransactionResponse,
+    GetTransactionRequest,
+    GetRateLimitRequest,
+    GetRateLimitResponse,
+    GetPriorityFeeRequest,
+    GetPriorityFeeResponse,
+    GetBundleResultRequest,
+    GetBundleResultResponse,
+    PostJupiterSwapInstructionsRequest,
+    PostJupiterSwapInstructionsResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -115,10 +129,11 @@ export class WsProvider extends BaseProvider {
     constructor(
         authHeader: string,
         privateKey = "",
-        address: string = MAINNET_API_WS
+        address: string = MAINNET_API_NY_WS
     ) {
         super(authHeader, privateKey)
         this.wsConnection = new RpcWsConnection(address, authHeader)
+
         this.address = address
     }
 
@@ -130,6 +145,148 @@ export class WsProvider extends BaseProvider {
         this.isClosed = true
         this.wsConnection.close()
     }
+
+    async getRateLimit(
+        request: GetRateLimitRequest
+    ): RpcReturnType<Promise<GetRateLimitResponse>, []> {
+        return await this.wsConnection.call("GetRateLimit", request)
+    }
+
+    async getTransaction(
+        request: GetTransactionRequest
+    ): RpcReturnType<Promise<GetTransactionResponse>, []> {
+        return await this.wsConnection.call("GetTransaction", request)
+    }
+
+    async getJupiterPrices(
+        request: GetJupiterPricesRequest
+    ): RpcReturnType<Promise<GetJupiterPricesResponse>, []> {
+        return await this.wsConnection.call("GetJupiterPrices", request)
+    }
+
+    async getJupiterQuotes(
+        request: GetJupiterQuotesRequest
+    ): RpcReturnType<Promise<GetJupiterQuotesResponse>, []> {
+        return await this.wsConnection.call("GetJupiterQuotes", request)
+    }
+
+    async postJupiterRouteSwap(
+        request: PostJupiterRouteSwapRequest
+    ): RpcReturnType<Promise<PostJupiterRouteSwapResponse>, []> {
+        return await this.wsConnection.call("PostJupiterRouteSwap", request)
+    }
+
+    async postJupiterSwap(
+        request: PostJupiterSwapRequest
+    ): RpcReturnType<Promise<PostJupiterSwapResponse>, []> {
+        return await this.wsConnection.call("PostJupiterSwap", request)
+    }
+
+    async postJupiterSwapInstructions(
+        request: PostJupiterSwapInstructionsRequest
+    ): RpcReturnType<Promise<PostJupiterSwapInstructionsResponse>, []> {
+        return await this.wsConnection.call(
+            "PostJupiterSwapInstructions",
+            request
+        )
+    }
+
+    async postRaydiumRouteSwap(
+        request: PostRaydiumRouteSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumRouteSwapResponse>, []> {
+        return await this.wsConnection.call("PostRaydiumRouteSwap", request)
+    }
+
+    async postRaydiumSwap(
+        request: PostRaydiumSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumSwapResponse>, []> {
+        return await this.wsConnection.call("PostRaydiumSwap", request)
+    }
+
+    async getRaydiumPools(
+        request: GetRaydiumPoolsRequest
+    ): RpcReturnType<Promise<GetRaydiumPoolsResponse>, []> {
+        return await this.wsConnection.call("GetRaydiumPools", request)
+    }
+
+    async getRaydiumPrices(
+        request: GetRaydiumPricesRequest
+    ): RpcReturnType<Promise<GetRaydiumPricesResponse>, []> {
+        return await this.wsConnection.call("GetRaydiumPrices", request)
+    }
+
+    async getRaydiumQuotes(
+        request: GetRaydiumQuotesRequest
+    ): RpcReturnType<Promise<GetRaydiumQuotesResponse>, []> {
+        return await this.wsConnection.call("GetRaydiumQuotes", request)
+    }
+
+    // Oenbook V2
+    async getOrderbookV2(
+        request: GetOrderbookRequestV2
+    ): Promise<GetOrderbookResponseV2> {
+        return await this.wsConnection.call("GetOrderbookV2", request)
+    }
+
+    async getMarketDepthV2(
+        request: GetMarketDepthRequestV2
+    ): Promise<GetMarketDepthResponseV2> {
+        return await this.wsConnection.call("GetMarketDepthV2", request)
+    }
+
+    async getMarketsV2(
+        request: GetMarketsRequestV2
+    ): Promise<GetMarketsResponseV2> {
+        return await this.wsConnection.call("GetMarketsV2", request)
+    }
+
+    async getTickersV2(
+        request: GetTickersRequestV2
+    ): Promise<GetTickersResponseV2> {
+        return await this.wsConnection.call("GetTickersV2", request)
+    }
+
+    async getOpenOrdersV2(
+        request: GetOpenOrdersRequestV2
+    ): Promise<GetOpenOrdersResponseV2> {
+        return await this.wsConnection.call("GetOpenOrdersV2", request)
+    }
+
+    async getBundleResultV2(
+        request: GetBundleResultRequest
+    ): Promise<GetBundleResultResponse> {
+        return await this.wsConnection.call("GetOpenOrdersV2", request)
+    }
+
+    async getUnsettledV2(
+        request: GetUnsettledRequestV2
+    ): Promise<GetUnsettledResponse> {
+        return await this.wsConnection.call("GetUnsettledV2", request)
+    }
+
+    async postOrderV2(request: PostOrderRequestV2): Promise<PostOrderResponse> {
+        return this.wsConnection.call("PostOrderV2", request)
+    }
+
+    async postCancelOrderV2(
+        request: PostCancelOrderRequestV2
+    ): Promise<PostCancelOrderResponseV2> {
+        return this.wsConnection.call("PostCancelOrderV2", request)
+    }
+
+    async postSettleV2(
+        request: PostSettleRequestV2
+    ): Promise<PostSettleResponse> {
+        return this.wsConnection.call("PostSettleV2", request)
+    }
+
+    async postReplaceOrderV2(
+        request: PostReplaceOrderRequestV2
+    ): Promise<PostOrderResponse> {
+        return this.wsConnection.call("PostReplaceOrderV2", request)
+    }
+
+    //End  of Openbook V2
 
     async getOrderbook(
         request: GetOrderbookRequest
@@ -179,12 +336,6 @@ export class WsProvider extends BaseProvider {
         return await this.wsConnection.call("GetAccountBalance", request)
     }
 
-    async getPerpOrderbook(
-        request: GetPerpOrderbookRequest
-    ): Promise<GetPerpOrderbookResponse> {
-        return await this.wsConnection.call("GetPerpOrderbook", request)
-    }
-
     //stream requests
     getOrderbooksStream = async (
         request: GetOrderbooksRequest
@@ -195,19 +346,6 @@ export class WsProvider extends BaseProvider {
         )
 
         this.manageGetStreamMaps("GetOrderbooksStream", subscriptionId)
-
-        return this.wsConnection.subscribeToNotifications(subscriptionId)
-    }
-
-    getPerpOrderbooksStream = async (
-        request: GetPerpOrderbooksRequest
-    ): Promise<AsyncGenerator<GetPerpOrderbooksStreamResponse>> => {
-        const subscriptionId = await this.wsConnection.subscribe(
-            "GetPerpOrderbooksStream",
-            request
-        )
-
-        this.manageGetStreamMaps("GetPerpOrderbooksStream", subscriptionId)
 
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
@@ -339,6 +477,30 @@ export class WsProvider extends BaseProvider {
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
+    getNewRaydiumPoolsStream = async (
+        request: GetNewRaydiumPoolsRequest
+    ): Promise<AsyncGenerator<GetNewRaydiumPoolsResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetNewRaydiumPoolsStream",
+            request
+        )
+
+        this.manageGetStreamMaps("GetNewRaydiumPoolsStream", subscriptionId)
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
+    }
+
+    getPriorityFeeStream = async (
+        request: GetPriorityFeeRequest
+    ): Promise<AsyncGenerator<GetPriorityFeeResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetPriorityFeeStream",
+            request
+        )
+
+        this.manageGetStreamMaps("GetPriorityFeeStream", subscriptionId)
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
+    }
+
     //POST requests
     async postOrder(request: PostOrderRequest): Promise<PostOrderResponse> {
         return this.wsConnection.call("PostOrder", request)
@@ -352,6 +514,18 @@ export class WsProvider extends BaseProvider {
         request: PostSubmitBatchRequest
     ): Promise<PostSubmitBatchResponse> {
         return this.wsConnection.call("PostSubmitBatch", request)
+    }
+
+    async postSubmitV2(
+        request: PostSubmitRequest
+    ): Promise<PostSubmitResponse> {
+        return this.wsConnection.call("PostSubmitV2", request)
+    }
+
+    async postSubmitBatchV2(
+        request: PostSubmitBatchRequest
+    ): Promise<PostSubmitBatchResponse> {
+        return this.wsConnection.call("PostSubmitBatchV2", request)
     }
 
     async postCancelOrder(
@@ -410,86 +584,10 @@ export class WsProvider extends BaseProvider {
         return this.wsConnection.call("GetPrice", request)
     }
 
-    async postPerpOrder(
-        request: PostPerpOrderRequest
-    ): Promise<PostPerpOrderResponse> {
-        return this.wsConnection.call("PostPerpOrder", request)
-    }
-
-    async getAssets(
-        request: GetAssetsRequest
-    ): RpcReturnType<Promise<GetAssetsResponse>, []> {
-        return this.wsConnection.call("GetAssets", request)
-    }
-
-    async getPerpContracts(
-        request: GetPerpContractsRequest
-    ): RpcReturnType<Promise<GetPerpContractsResponse>, []> {
-        return this.wsConnection.call("GetPerpContracts", request)
-    }
-
-    async postSettlePNL(
-        request: PostSettlePNLRequest
-    ): RpcReturnType<Promise<PostSettlePNLResponse>, []> {
-        return this.wsConnection.call("PostSettlePNL", request)
-    }
-
-    async postSettlePNLs(
-        request: PostSettlePNLsRequest
-    ): RpcReturnType<Promise<PostSettlePNLsResponse>, []> {
-        return this.wsConnection.call("PostSettlePNLs", request)
-    }
-
-    async postLiquidatePerp(
-        request: PostLiquidatePerpRequest
-    ): RpcReturnType<Promise<PostLiquidatePerpResponse>, []> {
-        return this.wsConnection.call("PostLiquidatePerp", request)
-    }
-
-    async getPerpPositions(
-        request: GetPerpPositionsRequest
-    ): Promise<GetPerpPositionsResponse> {
-        return this.wsConnection.call("GetPerpPositions", request)
-    }
-
-    async getOpenPerpOrders(
-        request: GetOpenPerpOrdersRequest
-    ): Promise<GetOpenPerpOrdersResponse> {
-        return await this.wsConnection.call("GetOpenPerpOrders", request)
-    }
-
-    async postCancelPerpOrder(
-        request: PostCancelPerpOrderRequest
-    ): Promise<PostCancelPerpOrderResponse> {
-        return await this.wsConnection.call("PostCancelPerpOrder", request)
-    }
-
-    async postCancelPerpOrders(
-        request: PostCancelPerpOrdersRequest
-    ): Promise<PostCancelPerpOrdersResponse> {
-        return await this.wsConnection.call("PostCancelPerpOrders", request)
-    }
-
-    async postClosePerpPositions(
-        request: PostClosePerpPositionsRequest
-    ): Promise<PostClosePerpPositionsResponse> {
-        return await this.wsConnection.call("PostClosePerpPositions", request)
-    }
-
-    async postCreateUser(
-        request: PostCreateUserRequest
-    ): Promise<PostCreateUserResponse> {
-        return await this.wsConnection.call("PostCreateUser", request)
-    }
-
-    async getUser(request: GetUserRequest): Promise<GetUserResponse> {
-        return await this.wsConnection.call("GetUser", request)
-    }
-
-    async postManageCollateral(
-        request: PostManageCollateralRequest
-    ): Promise<PostManageCollateralResponse> {
-        return await this.wsConnection.call("PostManageCollateral", request)
+    async getPriorityFee(
+        request: GetPriorityFeeRequest
+    ): Promise<GetPriorityFeeResponse> {
+        return this.wsConnection.call("GetPriorityFee", request)
     }
 
     cancelGetOrderbooksStreamByCount = async (
@@ -531,6 +629,15 @@ export class WsProvider extends BaseProvider {
         )
     }
 
+    cancelGetNewRaydiumPoolsStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
+        return this.cancelStreamByCount(
+            "GetNewRaydiumPoolsStream",
+            streamNumber
+        )
+    }
+
     cancelGetQuotesStreamByCount = async (
         streamNumber: number
     ): Promise<boolean> => {
@@ -544,6 +651,12 @@ export class WsProvider extends BaseProvider {
         streamNumber: number
     ): Promise<boolean> => {
         return this.cancelStreamByCount("GetPoolReservesStream", streamNumber)
+    }
+
+    cancelGetPriorityFeeStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
+        return this.cancelStreamByCount("GetPriorityFeeStream", streamNumber)
     }
 
     cancelAllGetOrderbooksStream = async (): Promise<Awaited<boolean>[]> => {
@@ -566,6 +679,12 @@ export class WsProvider extends BaseProvider {
         return this.cancelAllStreams("GetOrderStatusStream")
     }
 
+    cancelAllGetNewRaydiumPoolsStream = async (): Promise<
+        Awaited<boolean>[]
+    > => {
+        return this.cancelAllStreams("GetNewRaydiumPoolsStream")
+    }
+
     cancelAllGetRecentBlockhashStream = async (): Promise<
         Awaited<boolean>[]
     > => {
@@ -578,6 +697,10 @@ export class WsProvider extends BaseProvider {
 
     cancelAllGetPoolReservesStream = async (): Promise<Awaited<boolean>[]> => {
         return this.cancelAllStreams("GetPoolReservesStream")
+    }
+
+    cancelAllGetPriorityFeeStream = async (): Promise<Awaited<boolean>[]> => {
+        return this.cancelAllStreams("GetPriorityFeeStream")
     }
 
     private manageGetStreamMaps = (

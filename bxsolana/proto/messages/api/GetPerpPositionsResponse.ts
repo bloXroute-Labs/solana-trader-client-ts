@@ -25,9 +25,8 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type GetPerpPositionsResponse = {
+  export interface GetPerpPositionsResponse {
     ownerAddress: string;
-    accountAddress: string;
     perpPositions: PerpPosition[];
   }
 }
@@ -36,7 +35,6 @@ export type Type = $.api.GetPerpPositionsResponse;
 export function getDefaultValue(): $.api.GetPerpPositionsResponse {
   return {
     ownerAddress: "",
-    accountAddress: "",
     perpPositions: [],
   };
 }
@@ -51,7 +49,6 @@ export function createValue(partialValue: Partial<$.api.GetPerpPositionsResponse
 export function encodeJson(value: $.api.GetPerpPositionsResponse): unknown {
   const result: any = {};
   if (value.ownerAddress !== undefined) result.ownerAddress = tsValueToJsonValueFns.string(value.ownerAddress);
-  if (value.accountAddress !== undefined) result.accountAddress = tsValueToJsonValueFns.string(value.accountAddress);
   result.perpPositions = value.perpPositions.map(value => encodeJson_1(value));
   return result;
 }
@@ -59,7 +56,6 @@ export function encodeJson(value: $.api.GetPerpPositionsResponse): unknown {
 export function decodeJson(value: any): $.api.GetPerpPositionsResponse {
   const result = getDefaultValue();
   if (value.ownerAddress !== undefined) result.ownerAddress = jsonValueToTsValueFns.string(value.ownerAddress);
-  if (value.accountAddress !== undefined) result.accountAddress = jsonValueToTsValueFns.string(value.accountAddress);
   result.perpPositions = value.perpPositions?.map((value: any) => decodeJson_1(value)) ?? [];
   return result;
 }
@@ -72,15 +68,9 @@ export function encodeBinary(value: $.api.GetPerpPositionsResponse): Uint8Array 
       [1, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.accountAddress !== undefined) {
-    const tsValue = value.accountAddress;
-    result.push(
-      [2, tsValueToWireValueFns.string(tsValue)],
-    );
-  }
   for (const tsValue of value.perpPositions) {
     result.push(
-      [3, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
+      [2, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
     );
   }
   return serialize(result);
@@ -97,15 +87,8 @@ export function decodeBinary(binary: Uint8Array): $.api.GetPerpPositionsResponse
     if (value === undefined) break field;
     result.ownerAddress = value;
   }
-  field: {
-    const wireValue = wireFields.get(2);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.string(wireValue);
-    if (value === undefined) break field;
-    result.accountAddress = value;
-  }
   collection: {
-    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 3).map(([, wireValue]) => wireValue);
+    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 2).map(([, wireValue]) => wireValue);
     const value = wireValues.map((wireValue) => wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined).filter(x => x !== undefined);
     if (!value.length) break collection;
     result.perpPositions = value as any;

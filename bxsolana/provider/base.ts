@@ -68,46 +68,54 @@ import {
     TradeSwapRequest,
     TradeSwapResponse,
     TransactionMessage,
-    GetNewPerpOrdersStreamRequest,
-    GetNewPerpOrdersStreamResponse,
-    GetOpenPerpOrdersRequest,
-    GetOpenPerpOrdersResponse,
-    GetPerpOrderbookRequest,
-    GetPerpOrderbookResponse,
-    GetPerpOrderbooksRequest,
-    GetPerpOrderbooksStreamResponse,
-    GetPerpPositionsRequest,
-    GetPerpPositionsResponse,
-    GetPerpTradesStreamRequest,
-    GetPerpTradesStreamResponse,
-    GetUserRequest,
-    GetUserResponse,
-    PostClosePerpPositionsRequest,
-    PostClosePerpPositionsResponse,
-    PostManageCollateralRequest,
-    PostManageCollateralResponse,
-    PostPerpOrderRequest,
-    PostPerpOrderResponse,
-    PostCancelPerpOrderRequest,
-    PostCancelPerpOrderResponse,
-    PostCancelPerpOrdersRequest,
-    PostCancelPerpOrdersResponse,
-    PostCreateUserRequest,
-    PostCreateUserResponse,
     GetTokenAccountsResponse,
     GetTokenAccountsRequest,
-    GetOpenPerpOrderResponse,
-    GetOpenPerpOrderRequest,
-    GetAssetsRequest,
-    GetAssetsResponse,
-    GetPerpContractsResponse,
-    GetPerpContractsRequest,
-    PostSettlePNLRequest,
-    PostSettlePNLResponse,
-    PostSettlePNLsRequest,
-    PostSettlePNLsResponse,
-    PostLiquidatePerpRequest,
-    PostLiquidatePerpResponse,
+    PostRaydiumSwapRequest,
+    PostRaydiumSwapResponse,
+    PostRaydiumRouteSwapRequest,
+    PostRaydiumRouteSwapResponse,
+    PostJupiterSwapRequest,
+    PostJupiterSwapResponse,
+    PostJupiterRouteSwapRequest,
+    PostJupiterRouteSwapResponse,
+    GetRaydiumQuotesRequest,
+    GetRaydiumQuotesResponse,
+    GetRaydiumPricesRequest,
+    GetRaydiumPricesResponse,
+    GetMarketDepthRequestV2,
+    GetMarketDepthResponseV2,
+    GetMarketsRequestV2,
+    GetMarketsResponseV2,
+    GetOpenOrdersRequestV2,
+    GetOrderbookRequestV2,
+    GetOrderbookResponseV2,
+    PostReplaceOrderRequestV2,
+    PostSettleRequestV2,
+    GetRaydiumPoolsRequest,
+    GetRaydiumPoolsResponse,
+    GetJupiterQuotesRequest,
+    GetJupiterQuotesResponse,
+    GetJupiterPricesRequest,
+    GetJupiterPricesResponse,
+    GetTickersRequestV2,
+    GetTickersResponseV2,
+    GetUnsettledRequestV2,
+    PostCancelOrderRequestV2,
+    PostCancelOrderResponseV2,
+    PostOrderRequestV2,
+    GetOpenOrdersResponseV2,
+    GetNewRaydiumPoolsRequest,
+    GetNewRaydiumPoolsResponse,
+    GetTransactionRequest,
+    GetTransactionResponse,
+    GetRateLimitRequest,
+    GetRateLimitResponse,
+    GetPriorityFeeRequest,
+    GetPriorityFeeResponse,
+    GetBundleResultRequest,
+    GetBundleResultResponse,
+    PostJupiterSwapInstructionsRequest,
+    PostJupiterSwapInstructionsResponse,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -132,130 +140,149 @@ export abstract class BaseProvider implements Api {
             this.privateKey = Keypair.fromSecretKey(base58.decode(privateKey))
         }
     }
-    getOpenPerpOrder(
-        request: GetOpenPerpOrderRequest
-    ): RpcReturnType<Promise<GetOpenPerpOrderResponse>, []> {
+
+    // Openbook V2
+    getMarketsV2(
+        request: GetMarketsRequestV2
+    ): RpcReturnType<Promise<GetMarketsResponseV2>, []> {
         throw new Error("Method not implemented.")
     }
 
-    getAssets(
-        request: GetAssetsRequest
-    ): RpcReturnType<Promise<GetAssetsResponse>, []> {
+    getRateLimit(
+        request: GetRateLimitRequest
+    ): RpcReturnType<Promise<GetRateLimitResponse>, []> {
         throw new Error("Method not implemented.")
     }
 
-    getPerpContracts(
-        request: GetPerpContractsRequest
-    ): RpcReturnType<Promise<GetPerpContractsResponse>, []> {
+    getTransaction(
+        request: GetTransactionRequest
+    ): RpcReturnType<Promise<GetTransactionResponse>, []> {
         throw new Error("Method not implemented.")
     }
 
-    postSettlePNL(
-        request: PostSettlePNLRequest
-    ): RpcReturnType<Promise<PostSettlePNLResponse>, []> {
+    getJupiterPrices(
+        request: GetJupiterPricesRequest
+    ): RpcReturnType<Promise<GetJupiterPricesResponse>, []> {
         throw new Error("Method not implemented.")
     }
 
-    postSettlePNLs(
-        request: PostSettlePNLsRequest
-    ): RpcReturnType<Promise<PostSettlePNLsResponse>, []> {
+    getJupiterQuotes(
+        request: GetJupiterQuotesRequest
+    ): RpcReturnType<Promise<GetJupiterQuotesResponse>, []> {
         throw new Error("Method not implemented.")
     }
 
-    postLiquidatePerp(
-        request: PostLiquidatePerpRequest
-    ): RpcReturnType<Promise<PostLiquidatePerpResponse>, []> {
+    getMarketDepthV2(
+        request: GetMarketDepthRequestV2
+    ): RpcReturnType<Promise<GetMarketDepthResponseV2>, []> {
         throw new Error("Method not implemented.")
     }
 
-    postPerpOrder(
-        request: PostPerpOrderRequest
-    ): RpcReturnType<Promise<PostPerpOrderResponse>, []> {
+    getOpenOrdersV2(
+        request: GetOpenOrdersRequestV2
+    ): RpcReturnType<Promise<GetOpenOrdersResponseV2>, []> {
         throw new Error("Method not implemented.")
     }
 
-    getPerpPositions(
-        request: GetPerpPositionsRequest
-    ): RpcReturnType<Promise<GetPerpPositionsResponse>, []> {
+    getOrderbookV2(
+        request: GetOrderbookRequestV2
+    ): RpcReturnType<Promise<GetOrderbookResponseV2>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    getBundleResultV2(
+        request: GetBundleResultRequest
+    ): RpcReturnType<Promise<GetBundleResultResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    getRaydiumPools(
+        request: GetRaydiumPoolsRequest
+    ): RpcReturnType<Promise<GetRaydiumPoolsResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    getRaydiumPrices(
+        request: GetRaydiumPricesRequest
+    ): RpcReturnType<Promise<GetRaydiumPricesResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    getRaydiumQuotes(
+        request: GetRaydiumQuotesRequest
+    ): RpcReturnType<Promise<GetRaydiumQuotesResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    getTickersV2(
+        request: GetTickersRequestV2
+    ): RpcReturnType<Promise<GetTickersResponseV2>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    getUnsettledV2(
+        request: GetUnsettledRequestV2
+    ): RpcReturnType<Promise<GetUnsettledResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postCancelOrderV2(
+        request: PostCancelOrderRequestV2
+    ): RpcReturnType<Promise<PostCancelOrderResponseV2>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postJupiterRouteSwap(
+        request: PostJupiterRouteSwapRequest
+    ): RpcReturnType<Promise<PostJupiterRouteSwapResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postJupiterSwap(
+        request: PostJupiterSwapRequest
+    ): RpcReturnType<Promise<PostJupiterSwapResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postJupiterSwapInstructions(
+        request: PostJupiterSwapInstructionsRequest
+    ): RpcReturnType<Promise<PostJupiterSwapInstructionsResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postOrderV2(
+        request: PostOrderRequestV2
+    ): RpcReturnType<Promise<PostOrderResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postRaydiumRouteSwap(
+        request: PostRaydiumRouteSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumRouteSwapResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postRaydiumSwap(
+        request: PostRaydiumSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumSwapResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postReplaceOrderV2(
+        request: PostReplaceOrderRequestV2
+    ): RpcReturnType<Promise<PostOrderResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postSettleV2(
+        request: PostSettleRequestV2
+    ): RpcReturnType<Promise<PostSettleResponse>, []> {
         throw new Error("Method not implemented.")
     }
 
     getTokenAccounts(
         request: GetTokenAccountsRequest
     ): RpcReturnType<Promise<GetTokenAccountsResponse>, []> {
-        throw new Error("Method not implemented.")
-    }
-
-    getOpenPerpOrders(
-        request: GetOpenPerpOrdersRequest
-    ): RpcReturnType<Promise<GetOpenPerpOrdersResponse>, []> {
-        throw new Error("Method not implemented.")
-    }
-
-    postCancelPerpOrder(
-        request: PostCancelPerpOrderRequest
-    ): RpcReturnType<Promise<PostCancelPerpOrderResponse>, []> {
-        throw new Error("Method not implemented.")
-    }
-
-    postCancelPerpOrders(
-        request: PostCancelPerpOrdersRequest
-    ): RpcReturnType<Promise<PostCancelPerpOrdersResponse>, []> {
-        throw new Error("Method not implemented.")
-    }
-
-    postClosePerpPositions(
-        request: PostClosePerpPositionsRequest
-    ): RpcReturnType<Promise<PostClosePerpPositionsResponse>, []> {
-        throw new Error("Method not implemented.")
-    }
-
-    getPerpOrderbook(
-        request: GetPerpOrderbookRequest
-    ): RpcReturnType<Promise<GetPerpOrderbookResponse>, []> {
-        throw new Error("Method not implemented.")
-    }
-
-    postCreateUser(
-        request: PostCreateUserRequest
-    ): RpcReturnType<Promise<PostCreateUserResponse>, []> {
-        throw new Error("Method not implemented.")
-    }
-
-    getUser(
-        request: GetUserRequest
-    ): RpcReturnType<Promise<GetUserResponse>, []> {
-        throw new Error("Method not implemented.")
-    }
-
-    postManageCollateral(
-        request: PostManageCollateralRequest
-    ): RpcReturnType<Promise<PostManageCollateralResponse>, []> {
-        throw new Error("Method not implemented.")
-    }
-
-    getPerpOrderbooksStream(
-        request: GetPerpOrderbooksRequest
-    ): RpcReturnType<
-        AsyncGenerator<GetPerpOrderbooksStreamResponse, any, unknown>,
-        []
-    > {
-        throw new Error("Method not implemented.")
-    }
-    getNewPerpOrdersStream(
-        request: GetNewPerpOrdersStreamRequest
-    ): RpcReturnType<
-        AsyncGenerator<GetNewPerpOrdersStreamResponse, any, unknown>,
-        []
-    > {
-        throw new Error("Method not implemented.")
-    }
-    getPerpTradesStream(
-        request: GetPerpTradesStreamRequest
-    ): RpcReturnType<
-        AsyncGenerator<GetPerpTradesStreamResponse, any, unknown>,
-        []
-    > {
         throw new Error("Method not implemented.")
     }
 
@@ -357,6 +384,16 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
+    postSubmitBatchV2(
+        request: PostSubmitBatchRequest
+    ): Promise<PostSubmitBatchResponse> {
+        throw new Error("Not implemented")
+    }
+
+    postSubmitV2(request: PostSubmitRequest): Promise<PostSubmitResponse> {
+        throw new Error("Not implemented")
+    }
+
     getAccountBalance(
         request: GetAccountBalanceRequest
     ): Promise<GetAccountBalanceResponse> {
@@ -364,6 +401,12 @@ export abstract class BaseProvider implements Api {
     }
 
     getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
+        throw new Error("Not implemented")
+    }
+
+    getPriorityFee(
+        request: GetPriorityFeeRequest
+    ): Promise<GetPriorityFeeResponse> {
         throw new Error("Not implemented")
     }
 
@@ -393,15 +436,80 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
+    // Openbook V2 util functions
+    async submitOrderV2(
+        request: PostOrderRequestV2,
+        skipPreFlight = true
+    ): Promise<SubmitTransactionResponse> {
+        const res = await this.postOrderV2(request)
+
+        const submitResponse = await this.signAndSubmitTx(
+            res.transaction,
+            skipPreFlight,
+            false,
+            false
+        )
+
+        return {
+            signature: submitResponse.signature,
+            openOrdersAccount: res.openOrdersAddress,
+        }
+    }
+
+    async submitCancelOrderV2(
+        request: PostCancelOrderRequestV2,
+        skipPreFlight = true
+    ): Promise<PostSubmitBatchResponse> {
+        const res = await this.postCancelOrderV2(request)
+
+        return this.signAndSubmitTxs(
+            res.transactions,
+            "P_SUBMIT_ALL",
+            skipPreFlight
+        )
+    }
+
+    async submitSettleV2(
+        request: PostSettleRequestV2,
+        skipPreFlight = true
+    ): Promise<PostSubmitResponse> {
+        const res = await this.postSettleV2(request)
+
+        return this.signAndSubmitTx(
+            res.transaction,
+            skipPreFlight,
+            false,
+            false
+        )
+    }
+
+    async submitReplaceOrderV2(
+        request: PostReplaceOrderRequestV2,
+        skipPreFlight = true
+    ): Promise<PostSubmitResponse> {
+        const res = await this.postReplaceOrderV2(request)
+
+        return this.signAndSubmitTx(
+            res.transaction,
+            skipPreFlight,
+            false,
+            false
+        )
+    }
+
+    // End of Openbook V2 util functions
+
     async submitOrder(
         request: PostOrderRequest,
-        skipPreFlight = false
+        skipPreFlight = true
     ): Promise<SubmitTransactionResponse> {
         const res = await this.postOrder(request)
 
         const submitResponse = await this.signAndSubmitTx(
             res.transaction,
-            skipPreFlight
+            skipPreFlight,
+            false,
+            false
         )
 
         return {
@@ -412,11 +520,16 @@ export abstract class BaseProvider implements Api {
 
     async submitCancelOrder(
         request: PostCancelOrderRequest,
-        skipPreFlight = false
+        skipPreFlight = true
     ): Promise<PostSubmitResponse> {
         const res = await this.postCancelOrder(request)
 
-        return this.signAndSubmitTx(res.transaction, skipPreFlight)
+        return this.signAndSubmitTx(
+            res.transaction,
+            skipPreFlight,
+            false,
+            false
+        )
     }
 
     async submitCancelOrderByClientOrderID(
@@ -425,7 +538,12 @@ export abstract class BaseProvider implements Api {
     ): Promise<PostSubmitResponse> {
         const res = await this.postCancelByClientOrderID(request)
 
-        return this.signAndSubmitTx(res.transaction, skipPreFlight)
+        return this.signAndSubmitTx(
+            res.transaction,
+            skipPreFlight,
+            false,
+            false
+        )
     }
 
     async submitCancelAll(
@@ -447,7 +565,12 @@ export abstract class BaseProvider implements Api {
     ): Promise<PostSubmitResponse> {
         const res = await this.postSettle(request)
 
-        return this.signAndSubmitTx(res.transaction, skipPreFlight)
+        return this.signAndSubmitTx(
+            res.transaction,
+            skipPreFlight,
+            false,
+            false
+        )
     }
 
     async submitReplaceByClientOrderID(
@@ -456,7 +579,12 @@ export abstract class BaseProvider implements Api {
     ): Promise<PostSubmitResponse> {
         const res = await this.postReplaceByClientOrderID(request)
 
-        return this.signAndSubmitTx(res.transaction, skipPreFlight)
+        return this.signAndSubmitTx(
+            res.transaction,
+            skipPreFlight,
+            false,
+            false
+        )
     }
 
     async submitReplaceOrder(
@@ -465,7 +593,12 @@ export abstract class BaseProvider implements Api {
     ): Promise<PostSubmitResponse> {
         const res = await this.postReplaceOrder(request)
 
-        return this.signAndSubmitTx(res.transaction, skipPreFlight)
+        return this.signAndSubmitTx(
+            res.transaction,
+            skipPreFlight,
+            false,
+            false
+        )
     }
 
     async submitTradeSwap(
@@ -502,10 +635,11 @@ export abstract class BaseProvider implements Api {
         }
     }
 
-    private signAndSubmitTx(
+    public signAndSubmitTx(
         transactionMessage: TransactionMessage | undefined,
         skipPreFlight: boolean,
-        isCleanup = false
+        isCleanup = false,
+        frontRunningProtection: boolean
     ): Promise<PostSubmitResponse> {
         this.requirePrivateKey()
 
@@ -521,13 +655,14 @@ export abstract class BaseProvider implements Api {
                 isCleanup: isCleanup,
             },
             skipPreFlight,
+            frontRunningProtection: frontRunningProtection,
         })
     }
 
     private signAndSubmitTxs(
         transactionMessages: TransactionMessage[],
         submitStrategy: SubmitStrategy,
-        skipPreFlight: boolean
+        skipPreFlight = true
     ): Promise<PostSubmitBatchResponse> {
         this.requirePrivateKey()
 
@@ -553,7 +688,6 @@ export abstract class BaseProvider implements Api {
     }
 
     // streams
-
     getOrderbooksStream(
         request: GetOrderbooksRequest
     ): Promise<AsyncGenerator<GetOrderbooksStreamResponse>> {
@@ -596,6 +730,12 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
+    getPriorityFeeStream(
+        request: GetPriorityFeeRequest
+    ): Promise<AsyncGenerator<GetPriorityFeeResponse>> {
+        throw new Error("Not implemented")
+    }
+
     getQuotesStream(
         request: GetQuotesStreamRequest
     ): Promise<AsyncGenerator<GetQuotesStreamResponse>> {
@@ -612,6 +752,12 @@ export abstract class BaseProvider implements Api {
         request: GetBlockStreamRequest
     ): Promise<AsyncGenerator<GetBlockStreamResponse>> {
         throw new Error("Method not implemented.")
+    }
+
+    getNewRaydiumPoolsStream(
+        request: GetNewRaydiumPoolsRequest
+    ): Promise<AsyncGenerator<GetNewRaydiumPoolsResponse>> {
+        throw new Error("Not implemented")
     }
 
     getPoolReservesStream(
@@ -685,6 +831,16 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
+    cancelAllGetPriorityFeeStream = async (): Promise<Awaited<boolean>[]> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetPriorityFeeStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
     cancelAllGetQuotesStream = async (): Promise<Awaited<boolean>[]> => {
         throw new Error("Not implemented")
     }
@@ -700,6 +856,18 @@ export abstract class BaseProvider implements Api {
     }
 
     cancelGetPoolReservesStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelAllGetNewRaydiumPoolsStream = async (): Promise<
+        Awaited<boolean>[]
+    > => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetNewRaydiumPoolsStreamByCount = async (
         streamNumber: number
     ): Promise<boolean> => {
         throw new Error("Not implemented")

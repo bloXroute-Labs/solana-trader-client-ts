@@ -1,73 +1,69 @@
 #!/usr/bin/env node
 
 import {
-    addMemo,
     addMemoToSerializedTxn,
     BaseProvider,
     loadFromEnv,
-    GetOpenOrdersRequest,
-    GetOpenOrdersResponse,
     GrpcProvider,
     HttpProvider,
     LOCAL_API_GRPC_HOST,
     LOCAL_API_GRPC_PORT,
     LOCAL_API_HTTP,
     LOCAL_API_WS,
-    MAINNET_API_GRPC_HOST,
     MAINNET_API_GRPC_PORT,
-    MAINNET_API_HTTP,
-    MAINNET_API_WS,
-    PostCancelAllRequest,
-    PostOrderRequest,
     Project,
     TESTNET_API_GRPC_HOST,
     TESTNET_API_GRPC_PORT,
     TESTNET_API_HTTP,
     TESTNET_API_WS,
     WsProvider,
-    GetAssetsRequest,
-    GetAssetsResponse,
-    PostSettlePNLRequest,
-    PostSettlePNLResponse,
-    PostSettlePNLsRequest,
-    PostSettlePNLsResponse,
-    PostLiquidatePerpRequest,
-    PostLiquidatePerpResponse,
+    signTx,
+    GetOpenOrdersRequestV2,
+    PostCancelOrderRequestV2,
+    PostOrderRequestV2,
+    MAINNET_API_NY_HTTP,
+    MAINNET_API_NY_GRPC,
+    MAINNET_API_NY_WS,
 } from "../bxsolana"
-import { Keypair } from "@solana/web3.js"
+import { Keypair, PublicKey, Transaction } from "@solana/web3.js"
 import base58 from "bs58"
 import {
     DEVNET_API_GRPC_HOST,
     DEVNET_API_GRPC_PORT,
 } from "../bxsolana/utils/constants"
 import { AxiosRequestConfig } from "axios"
-import { RpcReturnType } from "../bxsolana/proto/runtime/rpc"
-import { Type as PerpContract } from "../bxsolana/proto/messages/common/PerpContract"
+import { txToBase64 } from "../bxsolana/utils/transaction"
+import { $ } from "../bxsolana/proto/messages/api/GetOpenOrdersResponseV2"
+import GetOpenOrdersResponseV2 = $.api.GetOpenOrdersResponseV2
+
+const config = loadFromEnv()
 
 // if longer examples (placing and canceling transactions, etc. should be run)
 const runLongExamples = process.env.RUN_LIFECYCLE === "true"
 const runStreams = process.env.RUN_STREAMS === "true"
 
-const config = loadFromEnv()
-
-const marketAddress = "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"
+const marketAddress = "8BnEgHoWFysVcuFFX7QztDmzuH8r5ZFvyP3sYwn1XTh6"
 const ownerAddress = config.publicKey
 const payerAddress = config.publicKey
-const openOrdersAddress = "4zeos6Mg48sXGVE3XhdSeff72aLrSXayyzAM81QRegGz"
+const openOrdersAddress = "DwoXdF8kjt9RS6yPfpzp1yHBKtFMDpHQPCRgy1JhKgFt"
 const baseTokenWallet = config.publicKey
 const quoteTokenWallet = "4raJjCwLLqw8TciQXYruDEF4YhDkGwoEnwnAdwJSjcgv"
+const tokenAddress = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" // USDC
+const side = "ask"
+const typeLimit = "limit"
 
-const testOrder: PostOrderRequest = {
+const testOrder: PostOrderRequestV2 = {
     ownerAddress: ownerAddress,
     payerAddress: payerAddress,
     market: "SOLUSDC",
-    side: "S_ASK",
-    type: ["OT_LIMIT"],
+    side: side,
+    type: typeLimit,
     amount: 0.1,
     price: 200,
-    openOrdersAddress: "",
-    project: "P_UNKNOWN",
-    clientOrderID: "",
+    openOrdersAddress: openOrdersAddress,
+    clientOrderID: "0",
+    computeLimit: 0,
+    computePrice: "0",
 }
 
 const transactionWaitTimeS = 60
@@ -113,7 +109,7 @@ async function http() {
         provider = new HttpProvider(
             config.authHeader,
             config.privateKey,
-            MAINNET_API_HTTP,
+            MAINNET_API_NY_HTTP,
             requestConfig
         )
     } else {
@@ -125,16 +121,16 @@ async function http() {
         )
     }
 
-    console.info(" ----  HTTP Requests  ----")
-    await runPerpRequests(provider)
-
-    await doOrderbookRequests(provider)
     console.info(" ----  HTTP Amm Requests  ----")
     await doAmmRequests(provider)
+
+    console.info(" ----  HTTP Requests  ----")
+    await doOrderbookRequests(provider)
 
     if (runLongExamples) {
         console.info(" ----  HTTP Lifecycle  ----")
         await doHttpLifecycle(provider)
+
         console.info(" ----  HTTP Cancel All  ----")
         await callCancelAll(provider)
         console.info(" ")
@@ -164,7 +160,7 @@ async function grpc() {
         provider = new GrpcProvider(
             config.authHeader,
             config.privateKey,
-            `${MAINNET_API_GRPC_HOST}:${MAINNET_API_GRPC_PORT}`,
+            `${MAINNET_API_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
             true
         )
     } else {
@@ -176,11 +172,11 @@ async function grpc() {
         )
     }
 
-    console.info(" ----  GRPC Requests  ----")
-    await doOrderbookRequests(provider)
-
     console.info(" ----  GRPC Amm Requests  ----")
     await doAmmRequests(provider)
+
+    console.info(" ----  GRPC Requests  ----")
+    await doOrderbookRequests(provider)
 
     if (runStreams) {
         console.info(" ----  GRPC Streams  ----")
@@ -213,7 +209,7 @@ async function ws() {
         provider = new WsProvider(
             config.authHeader,
             config.privateKey,
-            MAINNET_API_WS
+            MAINNET_API_NY_WS
         )
     } else {
         provider = new WsProvider(
@@ -224,10 +220,12 @@ async function ws() {
     }
 
     await provider.connect()
-    console.info(" ----  WS Requests  ----")
-    await doOrderbookRequests(provider)
+
     console.info(" ----  WS Amm Requests  ----")
     await doAmmRequests(provider)
+
+    console.info(" ----  WS Requests  ----")
+    await doOrderbookRequests(provider)
 
     if (runStreams) {
         console.info(" ----  WS Streams  ----")
@@ -245,68 +243,6 @@ async function ws() {
     }
 
     return
-}
-
-async function runPerpRequests(provider: BaseProvider) {
-    await callGetAssets(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callGetPerpContracts(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callPostSettlePNL(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callPostSettlePNLs(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callPostLiquidatePerp(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callPostPerpOrder(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callGetPerpPositions(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callGetOpenPerpOrders(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callPostCancelPerpOrder(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callPostCancelPerpOrders(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callPostClosePerpPositions(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callPostCreateUser(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callGetUser(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callPostManageCollateral(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callPostWithdrawCollateral(provider)
-    console.info(" ")
-    console.info(" ")
 }
 
 async function doOrderbookRequests(provider: BaseProvider) {
@@ -350,6 +286,10 @@ async function doOrderbookRequests(provider: BaseProvider) {
     console.info(" ")
     console.info(" ")
 
+    await callPostOrderWithPriorityFee(provider)
+    console.info(" ")
+    console.info(" ")
+
     await callPostCancelByClientOrderID(provider)
     console.info(" ")
     console.info(" ")
@@ -357,14 +297,17 @@ async function doOrderbookRequests(provider: BaseProvider) {
     await callPostSettleFunds(provider)
     console.info(" ")
     console.info(" ")
-
-    // Drift
-    await callGetPerpOrderbook(provider)
-    console.info(" ")
-    console.info(" ")
 }
 
 async function doAmmRequests(provider: BaseProvider) {
+    await callGetTransaction(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetRateLimit(provider)
+    console.info(" ")
+    console.info(" ")
+
     await callGetPrices(provider)
     console.info(" ")
     console.info(" ")
@@ -381,7 +324,51 @@ async function doAmmRequests(provider: BaseProvider) {
     console.info(" ")
     console.info(" ")
 
+    await callPostTradeSwapWithPriorityFee(provider)
+    console.info(" ")
+    console.info(" ")
+
     await callPostRouteTradeSwap(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetRaydiumPrices(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetJupiterPrices(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetRaydiumPools(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetRaydiumQuotes(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetJupiterQuotes(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostRaydiumSwap(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostJupiterSwap(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostJupiterSwapInstructions(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostRaydiumRouteSwap(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetPriorityFee(provider)
     console.info(" ")
     console.info(" ")
 }
@@ -403,6 +390,10 @@ async function doStreams(provider: BaseProvider) {
         await callGetTradesStream(provider)
         console.info(" ")
         console.info(" ")
+
+        await callGetNewRaydiumPoolsStream(provider)
+        console.info(" ")
+        console.info(" ")
     }
 
     await callGetRecentBlockHashStream(provider)
@@ -413,7 +404,7 @@ async function doStreams(provider: BaseProvider) {
     console.info(" ")
     console.info(" ")
 
-    // await callGetPerpOrderbookStream(provider)
+    await callGetPriorityFeeStream(provider)
     console.info(" ")
     console.info(" ")
 }
@@ -430,7 +421,7 @@ async function cancelWsStreams(provider: BaseProvider) {
     console.info(" ")
 
     console.info("Cancelling get tickers stream")
-    await provider.cancelAllGetOrderbooksStream()
+    await provider.cancelAllGetTickersStream()
     console.info(" ")
     console.info(" ")
 
@@ -438,14 +429,17 @@ async function cancelWsStreams(provider: BaseProvider) {
     await provider.cancelAllGetTradesStream()
     console.info(" ")
     console.info(" ")
+
+    console.info("Cancelling raydium new pools stream")
+    await provider.cancelAllGetNewRaydiumPoolsStream()
 }
 
 async function doAmmStreams(provider: BaseProvider) {
-    await callGetPricesStream(provider)
-    console.info(" ")
-    console.info(" ")
-
     if (runLongExamples) {
+        await callGetPricesStream(provider)
+        console.info(" ")
+        console.info(" ")
+
         await callGetPoolsStream(provider)
         console.info(" ")
         console.info(" ")
@@ -636,17 +630,15 @@ async function doHttpLifecycle(provider: BaseProvider) {
 
 async function callGetOrderbook(provider: BaseProvider) {
     console.info("Retrieving orderbook for SOLUSDC market")
-    let req = await provider.getOrderbook({
+    let req = await provider.getOrderbookV2({
         market: "SOLUSDC",
-        project: "P_OPENBOOK",
         limit: 5,
     })
     console.info(req)
 
     console.info("Retrieving orderbook for SOL-USDC market")
-    req = await provider.getOrderbook({
+    req = await provider.getOrderbookV2({
         market: "SOL-USDC",
-        project: "P_OPENBOOK",
         limit: 5,
     })
     console.info(req)
@@ -654,17 +646,15 @@ async function callGetOrderbook(provider: BaseProvider) {
 
 async function callGetMarketDepth(provider: BaseProvider) {
     console.info("Retrieving market depth data for SOLUSDC market")
-    let req = await provider.getMarketDepth({
+    let req = await provider.getMarketDepthV2({
         market: "SOLUSDC",
-        project: "P_OPENBOOK",
         limit: 5,
     })
     console.info(req)
 
     console.info("Retrieving market depth data for SOL-USDC market")
-    req = await provider.getMarketDepth({
+    req = await provider.getMarketDepthV2({
         market: "SOL-USDC",
-        project: "P_OPENBOOK",
         limit: 5,
     })
     console.info(req)
@@ -672,18 +662,19 @@ async function callGetMarketDepth(provider: BaseProvider) {
 
 async function callGetMarkets(provider: BaseProvider) {
     console.info("Retrieving all supported markets")
-    const req = await provider.getMarkets({})
+    const req = await provider.getMarketsV2({})
     console.info(req)
 }
 
 async function callGetOpenOrders(provider: BaseProvider) {
     console.info("Retrieving all open orders in SOLUSDC market")
-    const req = await provider.getOpenOrders({
+    const req = await provider.getOpenOrdersV2({
         market: "SOLUSDC",
-        project: "P_OPENBOOK",
-        address: ownerAddress,
         limit: 0,
+        address: ownerAddress,
         openOrdersAddress: "",
+        orderID: "",
+        clientOrderID: "0",
     })
     console.info(req)
     return req.orders
@@ -691,9 +682,8 @@ async function callGetOpenOrders(provider: BaseProvider) {
 
 async function callGetUnsettled(provider: BaseProvider) {
     console.info("Retrieving unsettled funds in SOLUSDC market")
-    const req = await provider.getUnsettled({
+    const req = await provider.getUnsettledV2({
         market: "SOLUSDC",
-        project: "P_OPENBOOK",
         ownerAddress: ownerAddress,
     })
     console.info(req)
@@ -730,9 +720,8 @@ async function callGetTrades(provider: BaseProvider) {
 
 async function callGetTickers(provider: BaseProvider) {
     console.info("Retrieving tickers for SOL/USDC market ")
-    const req = await provider.getTickers({
+    const req = await provider.getTickersV2({
         market: "SOLUSDC",
-        project: "P_OPENBOOK",
     })
     console.info(req)
 }
@@ -745,13 +734,51 @@ async function callGetServerTime(provider: BaseProvider) {
 
 async function callGetPrices(provider: BaseProvider) {
     console.info("Retrieving price")
-    const resp = await provider.getPrice({ tokens: ["SOL", "USDC"] })
+    const resp = await provider.getPrice({ tokens: ["SOL"] })
+    console.info(resp)
+}
+
+async function callGetTransaction(provider: BaseProvider) {
+    console.info("Retrieving transaction")
+    const resp = await provider.getTransaction({
+        signature:
+            "2s48MnhH54GfJbRwwiEK7iWKoEh3uNbS2zDEVBPNu7DaCjPXe3bfqo6RuCg9NgHRFDn3L28sMVfEh65xevf4o5W3",
+    })
+    console.info(resp)
+}
+
+async function callGetRateLimit(provider: BaseProvider) {
+    console.info("Retrieving RateLimit")
+    const resp = await provider.getRateLimit({})
+    console.info(resp)
+}
+
+async function callGetRaydiumPrices(provider: BaseProvider) {
+    console.info("Retrieving Raydium price")
+    const resp = await provider.getRaydiumPrices({ tokens: ["SOL"] })
+    console.info(resp)
+}
+
+async function callGetJupiterPrices(provider: BaseProvider) {
+    console.info("Retrieving Jupiter price")
+    const resp = await provider.getJupiterPrices({ tokens: ["SOL"] })
     console.info(resp)
 }
 
 async function callGetPools(provider: BaseProvider) {
     console.info("Retrieving pools")
-    const resp = await provider.getPools({ projects: ["P_RAYDIUM"] })
+    const resp = await provider.getPools({
+        projects: ["P_RAYDIUM"],
+        pairOrAddress: "",
+    })
+    console.info(resp)
+}
+
+async function callGetRaydiumPools(provider: BaseProvider) {
+    console.info("Retrieving Raydium pools")
+    const resp = await provider.getRaydiumPools({
+        pairOrAddress: "",
+    })
     console.info(resp)
 }
 
@@ -759,7 +786,7 @@ async function callGetQuotes(provider: BaseProvider) {
     console.info("Retrieving quotes")
     const resp = await provider.getQuotes({
         inToken: "SOL",
-        outToken: "USDC",
+        outToken: tokenAddress,
         inAmount: 1,
         slippage: 5,
         limit: 5,
@@ -768,201 +795,36 @@ async function callGetQuotes(provider: BaseProvider) {
     console.info(resp)
 }
 
-async function callGetPerpOrderbook(provider: BaseProvider) {
-    try {
-        console.info("Retrieving orderbook for SOL-PERP market")
-        const req = await provider.getPerpOrderbook({
-            market: "SOL-PERP",
-            project: "P_DRIFT",
-            limit: 5,
-        })
-        console.info(req)
-    } catch (e) {
-        console.info(e)
-    }
-}
-
-async function callGetAssets(provider: BaseProvider) {
-    console.info("get assets")
-    const req = await provider.getAssets({
-        ownerAddress: ownerAddress,
-        accountAddress: ownerAddress,
-        contract: "SOL_PERP",
-        project: "P_DRIFT",
-    })
-    console.info(req)
-}
-
-async function callGetPerpContracts(provider: BaseProvider) {
-    console.info("get perp contracts")
-    const req = await provider.getPerpContracts({
-        contracts: ["SOL_PERP"],
-        project: "P_DRIFT",
-    })
-    console.info(req)
-}
-
-async function callPostSettlePNL(provider: BaseProvider) {
-    console.info("post settle pnl")
-    const req = await provider.postSettlePNL({
-        ownerAddress: ownerAddress,
-        settleeAccountAddress: ownerAddress,
-        contract: "SOL_PERP",
-        project: "P_DRIFT",
-    })
-    console.info(req)
-}
-
-async function callPostSettlePNLs(provider: BaseProvider) {
-    console.info("post settle pnls")
-    const req = await provider.postSettlePNLs({
-        ownerAddress: ownerAddress,
-        settleeAccountAddresses: [ownerAddress],
-        contract: "SOL_PERP",
-        project: "P_DRIFT",
-    })
-    console.info(req)
-}
-
-async function callPostLiquidatePerp(provider: BaseProvider) {
-    console.info("post liquidate perp")
-    const req = await provider.postLiquidatePerp({
-        ownerAddress: ownerAddress,
-        settleeAccountAddress: ownerAddress,
-        contract: "SOL_PERP",
-        project: "P_DRIFT",
-        amount: 1,
-    })
-    console.info(req)
-}
-
-async function callPostPerpOrder(provider: BaseProvider) {
-    console.info("post perp order")
-    const req = await provider.postPerpOrder({
-        ownerAddress: ownerAddress,
-        payerAddress: ownerAddress,
-        accountAddress: "",
-        positionSide: "PS_LONG",
+async function callGetJupiterQuotes(provider: BaseProvider) {
+    console.info("Retrieving Jupiter quotes")
+    const resp = await provider.getJupiterQuotes({
+        inToken: "SOL",
+        outToken: tokenAddress,
+        inAmount: 1,
         slippage: 5,
-        type: "POT_LIMIT",
-        contract: "SOL_PERP",
-        project: "P_DRIFT",
-        amount: 1,
-        price: 232,
-        clientOrderID: "1",
     })
-    console.info(req)
+    console.info(resp)
 }
 
-async function callGetPerpPositions(provider: BaseProvider) {
-    console.info("get perp positions for SOL_PERP market")
-    const req = await provider.getPerpPositions({
-        ownerAddress: ownerAddress,
-        accountAddress: "",
-        contracts: ["SOL_PERP"],
-        project: "P_DRIFT",
+async function callGetRaydiumQuotes(provider: BaseProvider) {
+    console.info("Retrieving Raydium quotes")
+    const resp = await provider.getRaydiumQuotes({
+        inToken: "SOL",
+        outToken: tokenAddress,
+        inAmount: 1,
+        slippage: 5,
     })
-
-    console.info(req)
+    console.info(resp)
 }
 
-async function callGetOpenPerpOrders(provider: BaseProvider) {
-    console.info("get open perp orders for SOL_PERP market")
-    const req = await provider.getOpenPerpOrders({
-        ownerAddress: ownerAddress,
-        accountAddress: "",
-        contracts: ["SOL_PERP"],
-        project: "P_DRIFT",
+async function callGetPriorityFee(provider: BaseProvider) {
+    console.info("Retrieving priority fee")
+    const resp = await provider.getPriorityFee({
+        project: "P_RAYDIUM",
     })
-
-    console.info(req)
+    console.info(resp)
 }
 
-async function callPostCancelPerpOrder(provider: BaseProvider) {
-    console.info("canceling perp order")
-    const req = await provider.postCancelPerpOrder({
-        orderID: "0",
-        clientOrderID: "12",
-        accountAddress: "",
-        ownerAddress: ownerAddress,
-        project: "P_DRIFT",
-        contract: "SOL_PERP",
-    })
-
-    console.info(req)
-}
-
-async function callPostCancelPerpOrders(provider: BaseProvider) {
-    console.info("canceling perp orders")
-    const req = await provider.postCancelPerpOrders({
-        ownerAddress: ownerAddress,
-        accountAddress: "",
-        project: "P_DRIFT",
-        contract: "SOL_PERP",
-    })
-
-    console.info(req)
-}
-
-async function callPostClosePerpPositions(provider: BaseProvider) {
-    console.info("closing perp positions")
-    const req = await provider.postClosePerpPositions({
-        ownerAddress: ownerAddress,
-        project: "P_DRIFT",
-        contracts: ["SOL_PERP"],
-    })
-    console.info(req)
-}
-
-async function callPostCreateUser(provider: BaseProvider) {
-    console.info("creating user")
-    try {
-        const req = await provider.postCreateUser({
-            ownerAddress: ownerAddress,
-            project: "P_DRIFT",
-        })
-        console.info(req)
-    } catch (err) {
-        console.info(err)
-    }
-}
-
-async function callGetUser(provider: BaseProvider) {
-    console.info("getting user")
-    const req = await provider.getUser({
-        ownerAddress: ownerAddress,
-        project: "P_DRIFT",
-    })
-    console.info(req)
-}
-
-async function callPostManageCollateral(provider: BaseProvider) {
-    console.info("depositing perp collateral")
-    const res = await provider.postManageCollateral({
-        ownerAddress: ownerAddress,
-        accountAddress: "",
-        project: "P_DRIFT",
-        amount: 1,
-        type: "PCT_DEPOSIT",
-        token: "PCTK_USDC",
-    })
-    console.info(res)
-}
-
-async function callPostWithdrawCollateral(provider: BaseProvider) {
-    console.info("withdrawing collateral")
-    const req = await provider.postManageCollateral({
-        ownerAddress: ownerAddress,
-        accountAddress: "",
-        project: "P_DRIFT",
-        amount: 1,
-        type: "PCT_WITHDRAWAL",
-        token: "PCTK_USDC",
-    })
-    console.info(req)
-}
-
-// streaming requests
 async function callGetOrderbookStream(provider: BaseProvider) {
     console.info("Subscribing for orderbook updates of SOLUSDC market")
     let req = await provider.getOrderbooksStream({
@@ -1070,6 +932,20 @@ async function callGetTradesStream(provider: BaseProvider) {
     }
 }
 
+async function callGetNewRaydiumPoolsStream(provider: BaseProvider) {
+    console.info("Subscribing for new raydium pool updates")
+    const req = await provider.getNewRaydiumPoolsStream({})
+
+    let count = 0
+    for await (const tr of req) {
+        console.info(tr)
+        count++
+        if (count == 1) {
+            break
+        }
+    }
+}
+
 async function callGetSwapsStream(provider: BaseProvider) {
     console.info("Subscribing for swap updates of RAY/SOL market")
     const req = await provider.getSwapsStream({
@@ -1089,10 +965,10 @@ async function callGetSwapsStream(provider: BaseProvider) {
 }
 
 async function callGetPricesStream(provider: BaseProvider) {
-    console.info("Subscribing for prices updates of SOL and USDC on Raydium")
+    console.info("Subscribing for prices updates of SOL and USDT on Raydium")
 
     const projects: Project[] = ["P_RAYDIUM", "P_JUPITER"]
-    const tokens: string[] = ["SOL", "USDC"]
+    const tokens: string[] = ["SOL", tokenAddress]
     const stream = await provider.getPricesStream({
         projects: projects,
         tokens,
@@ -1102,7 +978,7 @@ async function callGetPricesStream(provider: BaseProvider) {
     for await (const update of stream) {
         console.info(update)
         count++
-        if (count == 3) {
+        if (count == 1) {
             break
         }
     }
@@ -1114,6 +990,8 @@ async function callGetPoolsStream(provider: BaseProvider) {
     const projects: Project[] = ["P_RAYDIUM"]
     const stream = await provider.getPoolReservesStream({
         projects: projects,
+        // RAY token address
+        pairOrAddress: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
     })
 
     let count = 0
@@ -1154,25 +1032,20 @@ async function callGetRecentBlockHashStream(provider: BaseProvider) {
     }
 }
 
-// Drift
-async function callGetPerpOrderbookStream(provider: BaseProvider) {
-    console.info("Subscribing for orderbook updates of SOL-PERP market")
-    const req = await provider.getPerpOrderbooksStream({
-        markets: ["SOL-PERP"],
-        project: "P_DRIFT",
-        limit: 0,
+async function callGetPriorityFeeStream(provider: BaseProvider) {
+    console.info("Subscribing for priority fee updates")
+    const resp = await provider.getPriorityFeeStream({
+        project: "P_RAYDIUM",
     })
 
     let count = 0
-    for await (const ob of req) {
-        console.info(ob)
+    for await (const update of resp) {
+        console.info(update)
         count++
         if (count == 5) {
             break
         }
     }
-    console.info(" ")
-    console.info(" ")
 }
 
 // POST requests
@@ -1183,7 +1056,22 @@ async function callPostOrder(provider: BaseProvider) {
         useGrouping: false,
     })
     testOrder.openOrdersAddress = openOrdersAddress
-    const req = await provider.postOrder(testOrder)
+    const req = await provider.postOrderV2(testOrder)
+    console.info(req)
+}
+
+async function callPostOrderWithPriorityFee(provider: BaseProvider) {
+    console.info("generating New Order transaction with priority fee")
+    const clientOrderID = getRandom()
+    testOrder.clientOrderID = clientOrderID.toLocaleString("fullwide", {
+        useGrouping: false,
+    })
+    testOrder.openOrdersAddress = openOrdersAddress
+    const req = await provider.postOrderV2({
+        ...testOrder,
+        computeLimit: 10000,
+        computePrice: "2000",
+    })
     console.info(req)
 }
 
@@ -1193,18 +1081,21 @@ async function callSubmitOrder(provider: BaseProvider) {
     testOrder.clientOrderID = clientOrderID.toLocaleString("fullwide", {
         useGrouping: false,
     })
-    const req = await provider.submitOrder(testOrder)
+    const req = await provider.submitOrderV2(testOrder)
     console.info(req)
 }
 
 async function callPostCancelByClientOrderID(provider: BaseProvider) {
     console.info("Generating and Cancel by Client Order ID transaction")
-    const req = await provider.postCancelByClientOrderID({
+    const req = await provider.postCancelOrderV2({
         marketAddress: marketAddress,
         ownerAddress: ownerAddress,
         openOrdersAddress: openOrdersAddress,
         clientOrderID: testOrder.clientOrderID,
-        project: "P_OPENBOOK",
+        orderID: "",
+        side: "S_ASK",
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
     })
     console.info(req)
 }
@@ -1213,38 +1104,46 @@ async function callSubmitCancelByClientOrderID(provider: BaseProvider) {
     console.info(
         "Generating and submitting a Cancel by Client Order ID transaction"
     )
-    const req = await provider.submitCancelOrderByClientOrderID({
-        marketAddress: marketAddress,
-        ownerAddress: ownerAddress,
-        openOrdersAddress: openOrdersAddress,
-        clientOrderID: testOrder.clientOrderID,
-        project: "P_OPENBOOK",
-    })
+    const req = await provider.submitCancelOrderV2(
+        {
+            marketAddress: marketAddress,
+            ownerAddress: ownerAddress,
+            openOrdersAddress: openOrdersAddress,
+            clientOrderID: testOrder.clientOrderID,
+            orderID: "",
+            side: "S_ASK",
+            computeLimit: testOrder.computeLimit,
+            computePrice: testOrder.computePrice,
+        },
+        true
+    )
     console.info(req)
 }
 
 async function callPostSettleFunds(provider: BaseProvider) {
     console.info("Generating a Settle transaction")
-    const req = await provider.postSettle({
+    const req = await provider.postSettleV2({
         market: marketAddress,
         openOrdersAddress: openOrdersAddress,
         baseTokenWallet: baseTokenWallet,
         quoteTokenWallet: quoteTokenWallet,
         ownerAddress: ownerAddress,
-        project: "P_OPENBOOK",
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
     })
     console.info(req)
 }
 
 async function callSubmitSettleFunds(provider: BaseProvider) {
     console.info("Generating and submitting a Settle transaction")
-    const req = await provider.submitSettle({
+    const req = await provider.submitSettleV2({
         market: marketAddress,
         openOrdersAddress: openOrdersAddress,
         baseTokenWallet: baseTokenWallet,
         quoteTokenWallet: quoteTokenWallet,
         ownerAddress: ownerAddress,
-        project: "P_OPENBOOK",
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
     })
     console.info(req)
 }
@@ -1253,13 +1152,13 @@ async function callReplaceByClientOrderID(provider: BaseProvider) {
     console.info(
         "Generating and submitting a Cancel and Replace by Client Order ID transaction"
     )
-    const clientOrderID = getRandom()
-    testOrder.clientOrderID = clientOrderID.toLocaleString("fullwide", {
-        useGrouping: false,
-    })
+
     testOrder.price -= 1
 
-    const req = await provider.submitReplaceByClientOrderID(testOrder)
+    const req = await provider.submitReplaceOrderV2({
+        ...testOrder,
+        orderID: "",
+    })
     console.info(req)
 }
 
@@ -1267,11 +1166,69 @@ async function callPostTradeSwap(provider: BaseProvider) {
     console.info("Generating a trade swap")
     const response = await provider.postTradeSwap({
         ownerAddress: ownerAddress,
-        inToken: "USDC",
+        inToken: tokenAddress,
         outToken: "SOL",
         inAmount: 0.01,
         slippage: 0.1,
         project: "P_RAYDIUM",
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
+    })
+    console.info(response)
+}
+
+async function callPostTradeSwapWithPriorityFee(provider: BaseProvider) {
+    console.info("Generating a trade swap")
+    const response = await provider.postTradeSwap({
+        ownerAddress: ownerAddress,
+        inToken: tokenAddress,
+        outToken: "SOL",
+        inAmount: 0.01,
+        slippage: 0.1,
+        project: "P_RAYDIUM",
+        computeLimit: 10000,
+        computePrice: "2000",
+    })
+    console.info(response)
+}
+
+async function callPostRaydiumSwap(provider: BaseProvider) {
+    console.info("Generating a Raydium swap")
+    const response = await provider.postRaydiumSwap({
+        ownerAddress: ownerAddress,
+        inToken: tokenAddress,
+        outToken: "SOL",
+        inAmount: 0.01,
+        slippage: 0.1,
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
+    })
+    console.info(response)
+}
+
+async function callPostJupiterSwap(provider: BaseProvider) {
+    console.info("Generating a Jupiter swap")
+    const response = await provider.postJupiterSwap({
+        ownerAddress: ownerAddress,
+        inToken: tokenAddress,
+        outToken: "SOL",
+        inAmount: 0.01,
+        slippage: 0.1,
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
+    })
+    console.info(response)
+}
+
+async function callPostJupiterSwapInstructions(provider: BaseProvider) {
+    console.info("Generating a Jupiter swap instructions")
+    const response = await provider.postJupiterSwapInstructions({
+        ownerAddress: ownerAddress,
+        inToken: tokenAddress,
+        outToken: "SOL",
+        inAmount: 0.01,
+        slippage: 0.1,
+        computePrice: testOrder.computePrice,
     })
     console.info(response)
 }
@@ -1281,11 +1238,13 @@ async function callSubmitTradeSwap(provider: BaseProvider) {
     const responses = await provider.submitTradeSwap(
         {
             ownerAddress: ownerAddress,
-            inToken: "USDC",
+            inToken: tokenAddress,
             outToken: "SOL",
             inAmount: 0.01,
             slippage: 0.1,
             project: "P_RAYDIUM",
+            computeLimit: testOrder.computeLimit,
+            computePrice: testOrder.computePrice,
         },
         "P_SUBMIT_ALL",
         true
@@ -1300,6 +1259,7 @@ async function callPostRouteTradeSwap(provider: BaseProvider) {
     console.info("Generating a route trade swap")
     const response = await provider.postRouteTradeSwap({
         ownerAddress: ownerAddress,
+        slippage: 10,
         steps: [
             {
                 project: {
@@ -1317,31 +1277,72 @@ async function callPostRouteTradeSwap(provider: BaseProvider) {
             },
         ],
         project: "P_RAYDIUM",
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
     })
     console.info(response)
 }
+
+async function callPostRaydiumRouteSwap(provider: BaseProvider) {
+    console.info("Generating a Raydium route swap")
+    const response = await provider.postRaydiumRouteSwap({
+        ownerAddress: ownerAddress,
+        slippage: 10,
+        steps: [
+            {
+                poolAddress: "",
+                inToken: "SOL",
+                // RAY token address
+                // can be omitted if project.id is specified
+                outToken: tokenAddress,
+                inAmount: 0.01,
+                outAmount: 0.007505,
+                outAmountMin: 0.074,
+            },
+            {
+                poolAddress: "",
+                inToken: "SOL",
+                outToken: tokenAddress,
+                inAmount: 0.007505,
+                outAmount: 0.004043,
+                outAmountMin: 0.004,
+            },
+        ],
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
+    })
+    console.info(response)
+}
+
 async function callSubmitRouteTradeSwap(provider: BaseProvider) {
     console.info("Submitting a route trade swap")
     const responses = await provider.submitRouteTradeSwap(
         {
             ownerAddress: ownerAddress,
+            slippage: 0.25,
             steps: [
                 {
                     project: {
-                        // pool ID can be empty if outToken is specified
-                        id: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
                         label: "Raydium",
+                        id: "61acRgpURKTU8LKPJKs6WQa18KzD9ogavXzjxfD84KLu",
                     },
-                    inToken: "So11111111111111111111111111111111111111112",
-                    // RAY token address
-                    // can be omitted if project.id is specified
-                    outToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+                    inToken: tokenAddress,
+                    outToken: "SOL",
                     inAmount: 0.01,
-                    outAmount: 0.007505,
-                    outAmountMin: 0.074,
+                    outAmount: 0.000123425,
+                    outAmountMin: 0.000123117,
+
+                    // fee must be specified for each step if project is Jupiter
+                    fee: {
+                        amount: 0.000025,
+                        mint: tokenAddress,
+                        percent: 0.0025062656,
+                    },
                 },
             ],
-            project: "P_RAYDIUM",
+            project: "P_JUPITER",
+            computeLimit: testOrder.computeLimit,
+            computePrice: testOrder.computePrice,
         },
         "P_SUBMIT_ALL",
         true
@@ -1362,7 +1363,7 @@ async function callReplaceOrder(provider: BaseProvider) {
     })
     testOrder.price -= 1
 
-    const req = await provider.submitReplaceOrder({
+    const req = await provider.submitReplaceOrderV2({
         orderID: "",
         ...testOrder,
     })
@@ -1380,11 +1381,11 @@ async function callCancelAll(provider: BaseProvider) {
 
     // placing orders
     testOrder.clientOrderID = clientOrderID1
-    const resp1 = await provider.submitOrder(testOrder)
+    const resp1 = await provider.submitOrderV2(testOrder)
     console.info(`Order 1 placed ${resp1.signature}`)
 
     testOrder.clientOrderID = clientOrderID2
-    const resp2 = await provider.submitOrder(testOrder)
+    const resp2 = await provider.submitOrderV2(testOrder)
     console.info(`Order 2 placed ${resp2.signature}`)
 
     console.info(
@@ -1392,17 +1393,18 @@ async function callCancelAll(provider: BaseProvider) {
     )
 
     // checking orders placed
-    const openOrdersRequest: GetOpenOrdersRequest = {
+    const openOrdersRequest: GetOpenOrdersRequestV2 = {
         market: marketAddress,
         limit: 0,
         address: ownerAddress,
         openOrdersAddress: "",
-        project: "P_OPENBOOK",
+        orderID: "",
+        clientOrderID: "0",
     }
 
     await delay(transactionWaitTimeS * 1000)
-    const openOrdersResponse1: GetOpenOrdersResponse =
-        await provider.getOpenOrders(openOrdersRequest)
+    const openOrdersResponse1: GetOpenOrdersResponseV2 =
+        await provider.getOpenOrdersV2(openOrdersRequest)
 
     let found1 = false
     let found2 = false
@@ -1421,13 +1423,17 @@ async function callCancelAll(provider: BaseProvider) {
     console.info("Both orders placed successfully\n")
 
     // cancelling orders
-    const cancelAllRequest: PostCancelAllRequest = {
-        market: marketAddress,
+    const cancelAllRequest: PostCancelOrderRequestV2 = {
         ownerAddress: ownerAddress,
-        openOrdersAddresses: [openOrdersAddress],
-        project: "P_OPENBOOK",
+        openOrdersAddress: openOrdersAddress,
+        orderID: "",
+        side: "S_UNKNOWN",
+        marketAddress: marketAddress,
+        clientOrderID: "0",
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
     }
-    const response = await provider.submitCancelAll(cancelAllRequest)
+    const response = await provider.submitCancelOrderV2(cancelAllRequest)
 
     const signatures: string[] = []
     for (const transaction of response.transactions) {
@@ -1445,7 +1451,9 @@ async function callCancelAll(provider: BaseProvider) {
 
     // checking all orders cancelled
     await delay(transactionWaitTimeS * 1000)
-    const openOrdersResponse2 = await provider.getOpenOrders(openOrdersRequest)
+    const openOrdersResponse2 = await provider.getOpenOrdersV2(
+        openOrdersRequest
+    )
 
     if (openOrdersResponse2.orders.length !== 0) {
         console.error(
@@ -1466,28 +1474,17 @@ async function submitTxWithMemo(provider: BaseProvider) {
     const recentBlockhash = await provider.getRecentBlockHash({})
     console.info(recentBlockhash.blockHash)
     const keypair = Keypair.fromSecretKey(base58.decode(config.privateKey))
-    const encodedTxn = addMemo(
-        [],
-        "new memo by dev",
+    const encodedTxn = buildUnsignedTxn(
         recentBlockhash.blockHash,
-        keypair.publicKey,
-        keypair
+        keypair.publicKey
     )
-    console.info("Submitting tx with one memo")
-    let response = await provider.postSubmit({
-        transaction: { content: encodedTxn, isCleanup: false },
-        skipPreFlight: true,
-    })
-    console.info(response.signature)
 
-    const encodedTxn2 = addMemoToSerializedTxn(
-        encodedTxn,
-        "new memo by dev2",
-        keypair.publicKey,
-        keypair
-    )
-    console.info("Submitting tx with two memos")
-    response = await provider.postSubmit({
+    let encodedTxn2 = addMemoToSerializedTxn(encodedTxn)
+    console.info("Submitting tx with memo")
+
+    const tx = signTx(encodedTxn2, keypair)
+    encodedTxn2 = txToBase64(tx)
+    const response = await provider.postSubmit({
         transaction: { content: encodedTxn2, isCleanup: false },
         skipPreFlight: true,
     })
@@ -1498,3 +1495,17 @@ run().then(() => {
     console.log("done!")
     process.exit(0)
 })
+
+function buildUnsignedTxn(
+    recentBlockHash: string | undefined,
+    owner: PublicKey
+): string {
+    const tx = new Transaction({
+        recentBlockhash: recentBlockHash,
+        feePayer: owner,
+    })
+
+    return Buffer.from(tx.serialize({ verifySignatures: false })).toString(
+        "base64"
+    )
+}

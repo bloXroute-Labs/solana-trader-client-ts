@@ -1,12 +1,7 @@
 import {
-  Type as PerpContract,
+  Type as Project,
   name2num,
   num2name,
-} from "../common/PerpContract";
-import {
-  Type as Project,
-  name2num as name2num_1,
-  num2name as num2name_1,
 } from "./Project";
 import {
   tsValueToJsonValueFns,
@@ -31,10 +26,9 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type GetAssetsRequest = {
+  export interface GetAssetsRequest {
     ownerAddress: string;
     accountAddress: string;
-    contract: PerpContract;
     project: Project;
   }
 }
@@ -44,7 +38,6 @@ export function getDefaultValue(): $.api.GetAssetsRequest {
   return {
     ownerAddress: "",
     accountAddress: "",
-    contract: "ALL",
     project: "P_UNKNOWN",
   };
 }
@@ -60,7 +53,6 @@ export function encodeJson(value: $.api.GetAssetsRequest): unknown {
   const result: any = {};
   if (value.ownerAddress !== undefined) result.ownerAddress = tsValueToJsonValueFns.string(value.ownerAddress);
   if (value.accountAddress !== undefined) result.accountAddress = tsValueToJsonValueFns.string(value.accountAddress);
-  if (value.contract !== undefined) result.contract = tsValueToJsonValueFns.enum(value.contract);
   if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
   return result;
 }
@@ -69,7 +61,6 @@ export function decodeJson(value: any): $.api.GetAssetsRequest {
   const result = getDefaultValue();
   if (value.ownerAddress !== undefined) result.ownerAddress = jsonValueToTsValueFns.string(value.ownerAddress);
   if (value.accountAddress !== undefined) result.accountAddress = jsonValueToTsValueFns.string(value.accountAddress);
-  if (value.contract !== undefined) result.contract = jsonValueToTsValueFns.enum(value.contract) as PerpContract;
   if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
   return result;
 }
@@ -88,16 +79,10 @@ export function encodeBinary(value: $.api.GetAssetsRequest): Uint8Array {
       [2, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.contract !== undefined) {
-    const tsValue = value.contract;
-    result.push(
-      [3, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
-    );
-  }
   if (value.project !== undefined) {
     const tsValue = value.project;
     result.push(
-      [4, { type: WireType.Varint as const, value: new Long(name2num_1[tsValue as keyof typeof name2num_1]) }],
+      [3, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
     );
   }
   return serialize(result);
@@ -125,13 +110,6 @@ export function decodeBinary(binary: Uint8Array): $.api.GetAssetsRequest {
     const wireValue = wireFields.get(3);
     if (wireValue === undefined) break field;
     const value = wireValue.type === WireType.Varint ? num2name[wireValue.value[0] as keyof typeof num2name] : undefined;
-    if (value === undefined) break field;
-    result.contract = value;
-  }
-  field: {
-    const wireValue = wireFields.get(4);
-    if (wireValue === undefined) break field;
-    const value = wireValue.type === WireType.Varint ? num2name_1[wireValue.value[0] as keyof typeof num2name_1] : undefined;
     if (value === undefined) break field;
     result.project = value;
   }

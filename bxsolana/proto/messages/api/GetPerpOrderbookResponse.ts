@@ -1,4 +1,9 @@
 import {
+  Type as PerpContract,
+  name2num,
+  num2name,
+} from "../common/PerpContract";
+import {
   Type as PerpOrderbookItem,
   encodeJson as encodeJson_1,
   decodeJson as decodeJson_1,
@@ -17,17 +22,15 @@ import {
   default as serialize,
 } from "../../runtime/wire/serialize";
 import {
-  tsValueToWireValueFns,
-  wireValueToTsValueFns,
-} from "../../runtime/wire/scalar";
+  default as Long,
+} from "../../runtime/Long";
 import {
   default as deserialize,
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type GetPerpOrderbookResponse = {
-    market: string;
-    marketIndex: number;
+  export interface GetPerpOrderbookResponse {
+    contract: PerpContract;
     bids: PerpOrderbookItem[];
     asks: PerpOrderbookItem[];
   }
@@ -36,8 +39,7 @@ export type Type = $.api.GetPerpOrderbookResponse;
 
 export function getDefaultValue(): $.api.GetPerpOrderbookResponse {
   return {
-    market: "",
-    marketIndex: 0,
+    contract: "ALL",
     bids: [],
     asks: [],
   };
@@ -52,8 +54,7 @@ export function createValue(partialValue: Partial<$.api.GetPerpOrderbookResponse
 
 export function encodeJson(value: $.api.GetPerpOrderbookResponse): unknown {
   const result: any = {};
-  if (value.market !== undefined) result.market = tsValueToJsonValueFns.string(value.market);
-  if (value.marketIndex !== undefined) result.marketIndex = tsValueToJsonValueFns.int32(value.marketIndex);
+  if (value.contract !== undefined) result.contract = tsValueToJsonValueFns.enum(value.contract);
   result.bids = value.bids.map(value => encodeJson_1(value));
   result.asks = value.asks.map(value => encodeJson_1(value));
   return result;
@@ -61,8 +62,7 @@ export function encodeJson(value: $.api.GetPerpOrderbookResponse): unknown {
 
 export function decodeJson(value: any): $.api.GetPerpOrderbookResponse {
   const result = getDefaultValue();
-  if (value.market !== undefined) result.market = jsonValueToTsValueFns.string(value.market);
-  if (value.marketIndex !== undefined) result.marketIndex = jsonValueToTsValueFns.int32(value.marketIndex);
+  if (value.contract !== undefined) result.contract = jsonValueToTsValueFns.enum(value.contract) as PerpContract;
   result.bids = value.bids?.map((value: any) => decodeJson_1(value)) ?? [];
   result.asks = value.asks?.map((value: any) => decodeJson_1(value)) ?? [];
   return result;
@@ -70,26 +70,20 @@ export function decodeJson(value: any): $.api.GetPerpOrderbookResponse {
 
 export function encodeBinary(value: $.api.GetPerpOrderbookResponse): Uint8Array {
   const result: WireMessage = [];
-  if (value.market !== undefined) {
-    const tsValue = value.market;
+  if (value.contract !== undefined) {
+    const tsValue = value.contract;
     result.push(
-      [1, tsValueToWireValueFns.string(tsValue)],
-    );
-  }
-  if (value.marketIndex !== undefined) {
-    const tsValue = value.marketIndex;
-    result.push(
-      [2, tsValueToWireValueFns.int32(tsValue)],
+      [1, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
     );
   }
   for (const tsValue of value.bids) {
     result.push(
-      [3, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
+      [2, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
     );
   }
   for (const tsValue of value.asks) {
     result.push(
-      [4, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
+      [3, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
     );
   }
   return serialize(result);
@@ -102,25 +96,18 @@ export function decodeBinary(binary: Uint8Array): $.api.GetPerpOrderbookResponse
   field: {
     const wireValue = wireFields.get(1);
     if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.string(wireValue);
+    const value = wireValue.type === WireType.Varint ? num2name[wireValue.value[0] as keyof typeof num2name] : undefined;
     if (value === undefined) break field;
-    result.market = value;
-  }
-  field: {
-    const wireValue = wireFields.get(2);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.int32(wireValue);
-    if (value === undefined) break field;
-    result.marketIndex = value;
+    result.contract = value;
   }
   collection: {
-    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 3).map(([, wireValue]) => wireValue);
+    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 2).map(([, wireValue]) => wireValue);
     const value = wireValues.map((wireValue) => wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined).filter(x => x !== undefined);
     if (!value.length) break collection;
     result.bids = value as any;
   }
   collection: {
-    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 4).map(([, wireValue]) => wireValue);
+    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 3).map(([, wireValue]) => wireValue);
     const value = wireValues.map((wireValue) => wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined).filter(x => x !== undefined);
     if (!value.length) break collection;
     result.asks = value as any;

@@ -19,6 +19,11 @@ import {
   num2name as num2name_3,
 } from "../common/PerpOrderType";
 import {
+  Type as PostOnlyParams,
+  name2num as name2num_4,
+  num2name as num2name_4,
+} from "../common/PostOnlyParams";
+import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar";
@@ -41,10 +46,9 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type PostPerpOrderRequest = {
+  export interface PostPerpOrderRequest {
     project: Project;
     ownerAddress: string;
-    payerAddress: string;
     contract: PerpContract;
     accountAddress: string;
     positionSide: PerpPositionSide;
@@ -53,6 +57,7 @@ export declare namespace $.api {
     amount: number;
     price: number;
     clientOrderID: string;
+    postOnly: PostOnlyParams;
   }
 }
 export type Type = $.api.PostPerpOrderRequest;
@@ -61,7 +66,6 @@ export function getDefaultValue(): $.api.PostPerpOrderRequest {
   return {
     project: "P_UNKNOWN",
     ownerAddress: "",
-    payerAddress: "",
     contract: "ALL",
     accountAddress: "",
     positionSide: "PS_UNKNOWN",
@@ -70,6 +74,7 @@ export function getDefaultValue(): $.api.PostPerpOrderRequest {
     amount: 0,
     price: 0,
     clientOrderID: "0",
+    postOnly: "PO_NONE",
   };
 }
 
@@ -84,7 +89,6 @@ export function encodeJson(value: $.api.PostPerpOrderRequest): unknown {
   const result: any = {};
   if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
   if (value.ownerAddress !== undefined) result.ownerAddress = tsValueToJsonValueFns.string(value.ownerAddress);
-  if (value.payerAddress !== undefined) result.payerAddress = tsValueToJsonValueFns.string(value.payerAddress);
   if (value.contract !== undefined) result.contract = tsValueToJsonValueFns.enum(value.contract);
   if (value.accountAddress !== undefined) result.accountAddress = tsValueToJsonValueFns.string(value.accountAddress);
   if (value.positionSide !== undefined) result.positionSide = tsValueToJsonValueFns.enum(value.positionSide);
@@ -93,6 +97,7 @@ export function encodeJson(value: $.api.PostPerpOrderRequest): unknown {
   if (value.amount !== undefined) result.amount = tsValueToJsonValueFns.double(value.amount);
   if (value.price !== undefined) result.price = tsValueToJsonValueFns.double(value.price);
   if (value.clientOrderID !== undefined) result.clientOrderID = tsValueToJsonValueFns.uint64(value.clientOrderID);
+  if (value.postOnly !== undefined) result.postOnly = tsValueToJsonValueFns.enum(value.postOnly);
   return result;
 }
 
@@ -100,7 +105,6 @@ export function decodeJson(value: any): $.api.PostPerpOrderRequest {
   const result = getDefaultValue();
   if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
   if (value.ownerAddress !== undefined) result.ownerAddress = jsonValueToTsValueFns.string(value.ownerAddress);
-  if (value.payerAddress !== undefined) result.payerAddress = jsonValueToTsValueFns.string(value.payerAddress);
   if (value.contract !== undefined) result.contract = jsonValueToTsValueFns.enum(value.contract) as PerpContract;
   if (value.accountAddress !== undefined) result.accountAddress = jsonValueToTsValueFns.string(value.accountAddress);
   if (value.positionSide !== undefined) result.positionSide = jsonValueToTsValueFns.enum(value.positionSide) as PerpPositionSide;
@@ -109,6 +113,7 @@ export function decodeJson(value: any): $.api.PostPerpOrderRequest {
   if (value.amount !== undefined) result.amount = jsonValueToTsValueFns.double(value.amount);
   if (value.price !== undefined) result.price = jsonValueToTsValueFns.double(value.price);
   if (value.clientOrderID !== undefined) result.clientOrderID = jsonValueToTsValueFns.uint64(value.clientOrderID);
+  if (value.postOnly !== undefined) result.postOnly = jsonValueToTsValueFns.enum(value.postOnly) as PostOnlyParams;
   return result;
 }
 
@@ -126,58 +131,58 @@ export function encodeBinary(value: $.api.PostPerpOrderRequest): Uint8Array {
       [2, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.payerAddress !== undefined) {
-    const tsValue = value.payerAddress;
-    result.push(
-      [3, tsValueToWireValueFns.string(tsValue)],
-    );
-  }
   if (value.contract !== undefined) {
     const tsValue = value.contract;
     result.push(
-      [4, { type: WireType.Varint as const, value: new Long(name2num_1[tsValue as keyof typeof name2num_1]) }],
+      [3, { type: WireType.Varint as const, value: new Long(name2num_1[tsValue as keyof typeof name2num_1]) }],
     );
   }
   if (value.accountAddress !== undefined) {
     const tsValue = value.accountAddress;
     result.push(
-      [5, tsValueToWireValueFns.string(tsValue)],
+      [4, tsValueToWireValueFns.string(tsValue)],
     );
   }
   if (value.positionSide !== undefined) {
     const tsValue = value.positionSide;
     result.push(
-      [6, { type: WireType.Varint as const, value: new Long(name2num_2[tsValue as keyof typeof name2num_2]) }],
+      [5, { type: WireType.Varint as const, value: new Long(name2num_2[tsValue as keyof typeof name2num_2]) }],
     );
   }
   if (value.slippage !== undefined) {
     const tsValue = value.slippage;
     result.push(
-      [7, tsValueToWireValueFns.double(tsValue)],
+      [6, tsValueToWireValueFns.double(tsValue)],
     );
   }
   if (value.type !== undefined) {
     const tsValue = value.type;
     result.push(
-      [8, { type: WireType.Varint as const, value: new Long(name2num_3[tsValue as keyof typeof name2num_3]) }],
+      [7, { type: WireType.Varint as const, value: new Long(name2num_3[tsValue as keyof typeof name2num_3]) }],
     );
   }
   if (value.amount !== undefined) {
     const tsValue = value.amount;
     result.push(
-      [9, tsValueToWireValueFns.double(tsValue)],
+      [8, tsValueToWireValueFns.double(tsValue)],
     );
   }
   if (value.price !== undefined) {
     const tsValue = value.price;
     result.push(
-      [10, tsValueToWireValueFns.double(tsValue)],
+      [9, tsValueToWireValueFns.double(tsValue)],
     );
   }
   if (value.clientOrderID !== undefined) {
     const tsValue = value.clientOrderID;
     result.push(
-      [11, tsValueToWireValueFns.uint64(tsValue)],
+      [10, tsValueToWireValueFns.uint64(tsValue)],
+    );
+  }
+  if (value.postOnly !== undefined) {
+    const tsValue = value.postOnly;
+    result.push(
+      [11, { type: WireType.Varint as const, value: new Long(name2num_4[tsValue as keyof typeof name2num_4]) }],
     );
   }
   return serialize(result);
@@ -204,65 +209,65 @@ export function decodeBinary(binary: Uint8Array): $.api.PostPerpOrderRequest {
   field: {
     const wireValue = wireFields.get(3);
     if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.string(wireValue);
-    if (value === undefined) break field;
-    result.payerAddress = value;
-  }
-  field: {
-    const wireValue = wireFields.get(4);
-    if (wireValue === undefined) break field;
     const value = wireValue.type === WireType.Varint ? num2name_1[wireValue.value[0] as keyof typeof num2name_1] : undefined;
     if (value === undefined) break field;
     result.contract = value;
   }
   field: {
-    const wireValue = wireFields.get(5);
+    const wireValue = wireFields.get(4);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
     result.accountAddress = value;
   }
   field: {
-    const wireValue = wireFields.get(6);
+    const wireValue = wireFields.get(5);
     if (wireValue === undefined) break field;
     const value = wireValue.type === WireType.Varint ? num2name_2[wireValue.value[0] as keyof typeof num2name_2] : undefined;
     if (value === undefined) break field;
     result.positionSide = value;
   }
   field: {
-    const wireValue = wireFields.get(7);
+    const wireValue = wireFields.get(6);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
     result.slippage = value;
   }
   field: {
-    const wireValue = wireFields.get(8);
+    const wireValue = wireFields.get(7);
     if (wireValue === undefined) break field;
     const value = wireValue.type === WireType.Varint ? num2name_3[wireValue.value[0] as keyof typeof num2name_3] : undefined;
     if (value === undefined) break field;
     result.type = value;
   }
   field: {
-    const wireValue = wireFields.get(9);
+    const wireValue = wireFields.get(8);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
     result.amount = value;
   }
   field: {
-    const wireValue = wireFields.get(10);
+    const wireValue = wireFields.get(9);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
     result.price = value;
   }
   field: {
-    const wireValue = wireFields.get(11);
+    const wireValue = wireFields.get(10);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.uint64(wireValue);
     if (value === undefined) break field;
     result.clientOrderID = value;
+  }
+  field: {
+    const wireValue = wireFields.get(11);
+    if (wireValue === undefined) break field;
+    const value = wireValue.type === WireType.Varint ? num2name_4[wireValue.value[0] as keyof typeof num2name_4] : undefined;
+    if (value === undefined) break field;
+    result.postOnly = value;
   }
   return result;
 }

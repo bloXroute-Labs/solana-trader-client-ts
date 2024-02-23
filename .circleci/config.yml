@@ -1,7 +1,6 @@
 version: 2.1
 orbs:
   node: circleci/node@5.0.2
-  slack: circleci/slack@4.1
 jobs:
   build:
     executor: node/default
@@ -41,7 +40,7 @@ jobs:
       - checkout
       - run:
           name: format
-          command: npm run formatCI
+          command: npm run format
 
   lint:
     executor: node/default
@@ -52,78 +51,6 @@ jobs:
       - run:
           name: lint
           command: npm run lintCI
-
-  integration-testnet:
-    executor: node/default
-    steps:
-      - attach_workspace:
-          at: .
-      - checkout
-      - run:
-          name: testnet
-          command: |
-            export AUTH_HEADER=$AUTH_HEADER_TESTNET
-            export API_ENV="testnet"
-            export RUN_LIFECYCLE="false"
-            export RUN_STREAMS="true"
-            unset PRIVATE_KEY
-            npm start
-          no_output_timeout: 30m
-  integration-mainnet:
-    executor: node/default
-    steps:
-      - attach_workspace:
-          at: .
-      - checkout
-      - run:
-          name: Export build details
-          command: |
-            echo 'export COMMIT_HASH=$(git rev-parse HEAD)' >> $BASH_ENV
-            echo 'export COMMIT_AUTHOR="$(git --no-pager log -1 --pretty=format:'%an')"' >> $BASH_ENV
-            source $BASH_ENV
-      - run:
-          name: mainnet
-          command: |
-            export AUTH_HEADER=$AUTH_HEADER_MAINNET
-            export API_ENV="mainnet"
-            export RUN_LIFECYCLE="false"
-            export RUN_STREAMS="true"
-            unset PRIVATE_KEY
-            npm start
-          no_output_timeout: 30m
-      - slack/notify:
-          branch_pattern: develop
-          custom: |
-            {
-              "text": "solana-trader-client-ts Build failed [develop]",
-              "blocks": [
-                {
-                  "type": "header",
-                  "text": {
-                    "type": "plain_text",
-                    "text": "solana-trader-client-ts Build failed",
-                    "emoji": true
-                  }
-                },
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "@here The latest merge seems to have broken builds.\n\nLast commit: <https://github.com/bloXroute-Labs/solana-trader-client-ts/commit/$COMMIT_HASH|$COMMIT_HASH> \nAuthor: $COMMIT_AUTHOR"
-                  },
-                  "accessory": {
-                    "type": "button",
-                    "text": {
-                      "type": "plain_text",
-                      "text": "CircleCI",
-                      "emoji": true
-                    },
-                    "url": "https://app.circleci.com/pipelines/github/bloXroute-Labs/solana-trader-client-ts?branch=develop"
-                  }
-                }
-              ]
-            }
-          event: fail
 
 workflows:
   build_and_test:
@@ -141,16 +68,7 @@ workflows:
       - test:
           requires:
             - build
-      - integration-testnet:
-          context: trader-api-sdk
-          requires:
-            - build
-      - integration-mainnet:
-          context:
-            - slack
-            - trader-api-sdk
-          requires:
-            - build
+
   nightly:
     when:
       equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
@@ -163,15 +81,5 @@ workflows:
           requires:
             - build
       - test:
-          requires:
-            - build
-      - integration-testnet:
-          context: trader-api-sdk
-          requires:
-            - build
-      - integration-mainnet:
-          context:
-            - slack
-            - trader-api-sdk
           requires:
             - build

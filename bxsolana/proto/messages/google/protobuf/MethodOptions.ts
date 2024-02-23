@@ -33,7 +33,7 @@ import {
 } from "../../../runtime/wire/deserialize";
 
 export declare namespace $.google.protobuf {
-  export type MethodOptions = {
+  export interface MethodOptions {
     deprecated?: boolean;
     idempotencyLevel?: IdempotencyLevel;
     uninterpretedOption: UninterpretedOption[];

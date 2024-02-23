@@ -1,12 +1,7 @@
 import {
-  Type as PerpContract,
+  Type as Project,
   name2num,
   num2name,
-} from "../common/PerpContract";
-import {
-  Type as Project,
-  name2num as name2num_1,
-  num2name as num2name_1,
 } from "./Project";
 import {
   tsValueToJsonValueFns,
@@ -31,10 +26,9 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type GetOpenPerpOrderRequest = {
+  export interface GetOpenPerpOrderRequest {
     ownerAddress: string;
     accountAddress: string;
-    contract: PerpContract;
     orderID: string;
     clientOrderID: string;
     project: Project;
@@ -46,7 +40,6 @@ export function getDefaultValue(): $.api.GetOpenPerpOrderRequest {
   return {
     ownerAddress: "",
     accountAddress: "",
-    contract: "ALL",
     orderID: "0",
     clientOrderID: "0",
     project: "P_UNKNOWN",
@@ -64,7 +57,6 @@ export function encodeJson(value: $.api.GetOpenPerpOrderRequest): unknown {
   const result: any = {};
   if (value.ownerAddress !== undefined) result.ownerAddress = tsValueToJsonValueFns.string(value.ownerAddress);
   if (value.accountAddress !== undefined) result.accountAddress = tsValueToJsonValueFns.string(value.accountAddress);
-  if (value.contract !== undefined) result.contract = tsValueToJsonValueFns.enum(value.contract);
   if (value.orderID !== undefined) result.orderID = tsValueToJsonValueFns.uint64(value.orderID);
   if (value.clientOrderID !== undefined) result.clientOrderID = tsValueToJsonValueFns.uint64(value.clientOrderID);
   if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
@@ -75,7 +67,6 @@ export function decodeJson(value: any): $.api.GetOpenPerpOrderRequest {
   const result = getDefaultValue();
   if (value.ownerAddress !== undefined) result.ownerAddress = jsonValueToTsValueFns.string(value.ownerAddress);
   if (value.accountAddress !== undefined) result.accountAddress = jsonValueToTsValueFns.string(value.accountAddress);
-  if (value.contract !== undefined) result.contract = jsonValueToTsValueFns.enum(value.contract) as PerpContract;
   if (value.orderID !== undefined) result.orderID = jsonValueToTsValueFns.uint64(value.orderID);
   if (value.clientOrderID !== undefined) result.clientOrderID = jsonValueToTsValueFns.uint64(value.clientOrderID);
   if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
@@ -96,28 +87,22 @@ export function encodeBinary(value: $.api.GetOpenPerpOrderRequest): Uint8Array {
       [2, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.contract !== undefined) {
-    const tsValue = value.contract;
-    result.push(
-      [3, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
-    );
-  }
   if (value.orderID !== undefined) {
     const tsValue = value.orderID;
     result.push(
-      [4, tsValueToWireValueFns.uint64(tsValue)],
+      [3, tsValueToWireValueFns.uint64(tsValue)],
     );
   }
   if (value.clientOrderID !== undefined) {
     const tsValue = value.clientOrderID;
     result.push(
-      [5, tsValueToWireValueFns.uint64(tsValue)],
+      [4, tsValueToWireValueFns.uint64(tsValue)],
     );
   }
   if (value.project !== undefined) {
     const tsValue = value.project;
     result.push(
-      [6, { type: WireType.Varint as const, value: new Long(name2num_1[tsValue as keyof typeof name2num_1]) }],
+      [5, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
     );
   }
   return serialize(result);
@@ -144,28 +129,21 @@ export function decodeBinary(binary: Uint8Array): $.api.GetOpenPerpOrderRequest 
   field: {
     const wireValue = wireFields.get(3);
     if (wireValue === undefined) break field;
-    const value = wireValue.type === WireType.Varint ? num2name[wireValue.value[0] as keyof typeof num2name] : undefined;
+    const value = wireValueToTsValueFns.uint64(wireValue);
     if (value === undefined) break field;
-    result.contract = value;
+    result.orderID = value;
   }
   field: {
     const wireValue = wireFields.get(4);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.uint64(wireValue);
     if (value === undefined) break field;
-    result.orderID = value;
+    result.clientOrderID = value;
   }
   field: {
     const wireValue = wireFields.get(5);
     if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.uint64(wireValue);
-    if (value === undefined) break field;
-    result.clientOrderID = value;
-  }
-  field: {
-    const wireValue = wireFields.get(6);
-    if (wireValue === undefined) break field;
-    const value = wireValue.type === WireType.Varint ? num2name_1[wireValue.value[0] as keyof typeof num2name_1] : undefined;
+    const value = wireValue.type === WireType.Varint ? num2name[wireValue.value[0] as keyof typeof num2name] : undefined;
     if (value === undefined) break field;
     result.project = value;
   }

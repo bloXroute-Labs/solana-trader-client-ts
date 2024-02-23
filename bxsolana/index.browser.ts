@@ -6,10 +6,13 @@ export {
     LOCAL_API_GRPC_PORT,
     LOCAL_API_HTTP,
     LOCAL_API_WS,
-    MAINNET_API_GRPC_HOST,
     MAINNET_API_GRPC_PORT,
-    MAINNET_API_HTTP,
-    MAINNET_API_WS,
+    MAINNET_API_NY_GRPC,
+    MAINNET_API_NY_HTTP,
+    MAINNET_API_NY_WS,
+    MAINNET_API_UK_GRPC,
+    MAINNET_API_UK_HTTP,
+    MAINNET_API_UK_WS,
     TESTNET_API_GRPC_HOST,
     TESTNET_API_GRPC_PORT,
     TESTNET_API_HTTP,
@@ -17,9 +20,7 @@ export {
 } from "./utils/constants"
 
 export {
-    addMemo,
     addMemoToSerializedTxn,
-    buildFullySignedTxn,
     createTraderAPIMemoInstruction,
 } from "./utils/memo"
 

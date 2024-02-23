@@ -6,6 +6,13 @@ import {
   decodeBinary as decodeBinary_1,
 } from "./TokenPrice";
 import {
+  Type as Timestamp,
+  encodeJson as encodeJson_2,
+  decodeJson as decodeJson_2,
+  encodeBinary as encodeBinary_2,
+  decodeBinary as decodeBinary_2,
+} from "../google/protobuf/Timestamp";
+import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar";
@@ -25,9 +32,10 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type GetPricesStreamResponse = {
+  export interface GetPricesStreamResponse {
     slot: string;
     price?: TokenPrice;
+    timestamp?: Timestamp;
   }
 }
 export type Type = $.api.GetPricesStreamResponse;
@@ -36,6 +44,7 @@ export function getDefaultValue(): $.api.GetPricesStreamResponse {
   return {
     slot: "0",
     price: undefined,
+    timestamp: undefined,
   };
 }
 
@@ -50,6 +59,7 @@ export function encodeJson(value: $.api.GetPricesStreamResponse): unknown {
   const result: any = {};
   if (value.slot !== undefined) result.slot = tsValueToJsonValueFns.int64(value.slot);
   if (value.price !== undefined) result.price = encodeJson_1(value.price);
+  if (value.timestamp !== undefined) result.timestamp = encodeJson_2(value.timestamp);
   return result;
 }
 
@@ -57,6 +67,7 @@ export function decodeJson(value: any): $.api.GetPricesStreamResponse {
   const result = getDefaultValue();
   if (value.slot !== undefined) result.slot = jsonValueToTsValueFns.int64(value.slot);
   if (value.price !== undefined) result.price = decodeJson_1(value.price);
+  if (value.timestamp !== undefined) result.timestamp = decodeJson_2(value.timestamp);
   return result;
 }
 
@@ -72,6 +83,12 @@ export function encodeBinary(value: $.api.GetPricesStreamResponse): Uint8Array {
     const tsValue = value.price;
     result.push(
       [2, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
+    );
+  }
+  if (value.timestamp !== undefined) {
+    const tsValue = value.timestamp;
+    result.push(
+      [3, { type: WireType.LengthDelimited as const, value: encodeBinary_2(tsValue) }],
     );
   }
   return serialize(result);
@@ -94,6 +111,13 @@ export function decodeBinary(binary: Uint8Array): $.api.GetPricesStreamResponse 
     const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined;
     if (value === undefined) break field;
     result.price = value;
+  }
+  field: {
+    const wireValue = wireFields.get(3);
+    if (wireValue === undefined) break field;
+    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_2(wireValue.value) : undefined;
+    if (value === undefined) break field;
+    result.timestamp = value;
   }
   return result;
 }

@@ -39,7 +39,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type QuoteStep = {
+  export interface QuoteStep {
     project?: StepProject;
     inToken: string;
     inTokenAddress: string;

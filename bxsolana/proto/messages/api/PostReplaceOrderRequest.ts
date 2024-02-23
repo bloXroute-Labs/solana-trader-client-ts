@@ -37,7 +37,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type PostReplaceOrderRequest = {
+  export interface PostReplaceOrderRequest {
     ownerAddress: string;
     payerAddress: string;
     market: string;
@@ -48,6 +48,9 @@ export declare namespace $.api {
     openOrdersAddress: string;
     clientOrderID: string;
     orderID: string;
+    computeLimit: number;
+    computePrice: string;
+    tip?: string;
     project: Project;
   }
 }
@@ -65,6 +68,9 @@ export function getDefaultValue(): $.api.PostReplaceOrderRequest {
     openOrdersAddress: "",
     clientOrderID: "0",
     orderID: "",
+    computeLimit: 0,
+    computePrice: "0",
+    tip: "0",
     project: "P_UNKNOWN",
   };
 }
@@ -88,6 +94,9 @@ export function encodeJson(value: $.api.PostReplaceOrderRequest): unknown {
   if (value.openOrdersAddress !== undefined) result.openOrdersAddress = tsValueToJsonValueFns.string(value.openOrdersAddress);
   if (value.clientOrderID !== undefined) result.clientOrderID = tsValueToJsonValueFns.uint64(value.clientOrderID);
   if (value.orderID !== undefined) result.orderID = tsValueToJsonValueFns.string(value.orderID);
+  if (value.computeLimit !== undefined) result.computeLimit = tsValueToJsonValueFns.uint32(value.computeLimit);
+  if (value.computePrice !== undefined) result.computePrice = tsValueToJsonValueFns.uint64(value.computePrice);
+  if (value.tip !== undefined) result.tip = tsValueToJsonValueFns.uint64(value.tip);
   if (value.project !== undefined) result.project = tsValueToJsonValueFns.enum(value.project);
   return result;
 }
@@ -104,6 +113,9 @@ export function decodeJson(value: any): $.api.PostReplaceOrderRequest {
   if (value.openOrdersAddress !== undefined) result.openOrdersAddress = jsonValueToTsValueFns.string(value.openOrdersAddress);
   if (value.clientOrderID !== undefined) result.clientOrderID = jsonValueToTsValueFns.uint64(value.clientOrderID);
   if (value.orderID !== undefined) result.orderID = jsonValueToTsValueFns.string(value.orderID);
+  if (value.computeLimit !== undefined) result.computeLimit = jsonValueToTsValueFns.uint32(value.computeLimit);
+  if (value.computePrice !== undefined) result.computePrice = jsonValueToTsValueFns.uint64(value.computePrice);
+  if (value.tip !== undefined) result.tip = jsonValueToTsValueFns.uint64(value.tip);
   if (value.project !== undefined) result.project = jsonValueToTsValueFns.enum(value.project) as Project;
   return result;
 }
@@ -169,10 +181,28 @@ export function encodeBinary(value: $.api.PostReplaceOrderRequest): Uint8Array {
       [10, tsValueToWireValueFns.string(tsValue)],
     );
   }
+  if (value.computeLimit !== undefined) {
+    const tsValue = value.computeLimit;
+    result.push(
+      [11, tsValueToWireValueFns.uint32(tsValue)],
+    );
+  }
+  if (value.computePrice !== undefined) {
+    const tsValue = value.computePrice;
+    result.push(
+      [12, tsValueToWireValueFns.uint64(tsValue)],
+    );
+  }
+  if (value.tip !== undefined) {
+    const tsValue = value.tip;
+    result.push(
+      [13, tsValueToWireValueFns.uint64(tsValue)],
+    );
+  }
   if (value.project !== undefined) {
     const tsValue = value.project;
     result.push(
-      [11, { type: WireType.Varint as const, value: new Long(name2num_2[tsValue as keyof typeof name2num_2]) }],
+      [14, { type: WireType.Varint as const, value: new Long(name2num_2[tsValue as keyof typeof name2num_2]) }],
     );
   }
   return serialize(result);
@@ -253,6 +283,27 @@ export function decodeBinary(binary: Uint8Array): $.api.PostReplaceOrderRequest 
   }
   field: {
     const wireValue = wireFields.get(11);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.uint32(wireValue);
+    if (value === undefined) break field;
+    result.computeLimit = value;
+  }
+  field: {
+    const wireValue = wireFields.get(12);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.uint64(wireValue);
+    if (value === undefined) break field;
+    result.computePrice = value;
+  }
+  field: {
+    const wireValue = wireFields.get(13);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.uint64(wireValue);
+    if (value === undefined) break field;
+    result.tip = value;
+  }
+  field: {
+    const wireValue = wireFields.get(14);
     if (wireValue === undefined) break field;
     const value = wireValue.type === WireType.Varint ? num2name_2[wireValue.value[0] as keyof typeof num2name_2] : undefined;
     if (value === undefined) break field;

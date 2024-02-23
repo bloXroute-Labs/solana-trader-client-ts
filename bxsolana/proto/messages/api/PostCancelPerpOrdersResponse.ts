@@ -20,15 +20,15 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type PostCancelPerpOrdersResponse = {
-    transaction?: TransactionMessage;
+  export interface PostCancelPerpOrdersResponse {
+    transactions: TransactionMessage[];
   }
 }
 export type Type = $.api.PostCancelPerpOrdersResponse;
 
 export function getDefaultValue(): $.api.PostCancelPerpOrdersResponse {
   return {
-    transaction: undefined,
+    transactions: [],
   };
 }
 
@@ -41,20 +41,19 @@ export function createValue(partialValue: Partial<$.api.PostCancelPerpOrdersResp
 
 export function encodeJson(value: $.api.PostCancelPerpOrdersResponse): unknown {
   const result: any = {};
-  if (value.transaction !== undefined) result.transaction = encodeJson_1(value.transaction);
+  result.transactions = value.transactions.map(value => encodeJson_1(value));
   return result;
 }
 
 export function decodeJson(value: any): $.api.PostCancelPerpOrdersResponse {
   const result = getDefaultValue();
-  if (value.transaction !== undefined) result.transaction = decodeJson_1(value.transaction);
+  result.transactions = value.transactions?.map((value: any) => decodeJson_1(value)) ?? [];
   return result;
 }
 
 export function encodeBinary(value: $.api.PostCancelPerpOrdersResponse): Uint8Array {
   const result: WireMessage = [];
-  if (value.transaction !== undefined) {
-    const tsValue = value.transaction;
+  for (const tsValue of value.transactions) {
     result.push(
       [1, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
     );
@@ -66,12 +65,11 @@ export function decodeBinary(binary: Uint8Array): $.api.PostCancelPerpOrdersResp
   const result = getDefaultValue();
   const wireMessage = deserialize(binary);
   const wireFields = new Map(wireMessage);
-  field: {
-    const wireValue = wireFields.get(1);
-    if (wireValue === undefined) break field;
-    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined;
-    if (value === undefined) break field;
-    result.transaction = value;
+  collection: {
+    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 1).map(([, wireValue]) => wireValue);
+    const value = wireValues.map((wireValue) => wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined).filter(x => x !== undefined);
+    if (!value.length) break collection;
+    result.transactions = value as any;
   }
   return result;
 }

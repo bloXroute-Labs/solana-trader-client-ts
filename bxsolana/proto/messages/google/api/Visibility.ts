@@ -20,7 +20,7 @@ import {
 } from "../../../runtime/wire/deserialize";
 
 export declare namespace $.google.api {
-  export type Visibility = {
+  export interface Visibility {
     rules: VisibilityRule[];
   }
 }

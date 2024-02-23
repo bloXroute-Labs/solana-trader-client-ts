@@ -17,7 +17,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type ProjectPool = {
+  export interface ProjectPool {
     pool: string;
     poolAddress: string;
     token1Reserves: string;
@@ -26,6 +26,7 @@ export declare namespace $.api {
     token2Reserves: string;
     token2MintAddress: string;
     token2MintSymbol: string;
+    openTime: string;
   }
 }
 export type Type = $.api.ProjectPool;
@@ -40,6 +41,7 @@ export function getDefaultValue(): $.api.ProjectPool {
     token2Reserves: "0",
     token2MintAddress: "",
     token2MintSymbol: "",
+    openTime: "0",
   };
 }
 
@@ -60,6 +62,7 @@ export function encodeJson(value: $.api.ProjectPool): unknown {
   if (value.token2Reserves !== undefined) result.token2Reserves = tsValueToJsonValueFns.int64(value.token2Reserves);
   if (value.token2MintAddress !== undefined) result.token2MintAddress = tsValueToJsonValueFns.string(value.token2MintAddress);
   if (value.token2MintSymbol !== undefined) result.token2MintSymbol = tsValueToJsonValueFns.string(value.token2MintSymbol);
+  if (value.openTime !== undefined) result.openTime = tsValueToJsonValueFns.uint64(value.openTime);
   return result;
 }
 
@@ -73,6 +76,7 @@ export function decodeJson(value: any): $.api.ProjectPool {
   if (value.token2Reserves !== undefined) result.token2Reserves = jsonValueToTsValueFns.int64(value.token2Reserves);
   if (value.token2MintAddress !== undefined) result.token2MintAddress = jsonValueToTsValueFns.string(value.token2MintAddress);
   if (value.token2MintSymbol !== undefined) result.token2MintSymbol = jsonValueToTsValueFns.string(value.token2MintSymbol);
+  if (value.openTime !== undefined) result.openTime = jsonValueToTsValueFns.uint64(value.openTime);
   return result;
 }
 
@@ -124,6 +128,12 @@ export function encodeBinary(value: $.api.ProjectPool): Uint8Array {
     const tsValue = value.token2MintSymbol;
     result.push(
       [8, tsValueToWireValueFns.string(tsValue)],
+    );
+  }
+  if (value.openTime !== undefined) {
+    const tsValue = value.openTime;
+    result.push(
+      [9, tsValueToWireValueFns.uint64(tsValue)],
     );
   }
   return serialize(result);
@@ -188,6 +198,13 @@ export function decodeBinary(binary: Uint8Array): $.api.ProjectPool {
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
     result.token2MintSymbol = value;
+  }
+  field: {
+    const wireValue = wireFields.get(9);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.uint64(wireValue);
+    if (value === undefined) break field;
+    result.openTime = value;
   }
   return result;
 }

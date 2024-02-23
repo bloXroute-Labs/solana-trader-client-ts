@@ -17,7 +17,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export type UnsettledAccountToken = {
+  export interface UnsettledAccountToken {
     address: string;
     amount: number;
   }
