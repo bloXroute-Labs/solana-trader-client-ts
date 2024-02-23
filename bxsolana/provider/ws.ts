@@ -105,7 +105,9 @@ import {
     GetPriorityFeeRequest,
     GetPriorityFeeResponse,
     GetBundleResultRequest,
-    GetBundleResultResponse
+    GetBundleResultResponse,
+    PostJupiterSwapInstructionsRequest,
+    PostJupiterSwapInstructionsResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -180,6 +182,15 @@ export class WsProvider extends BaseProvider {
         return await this.wsConnection.call("PostJupiterSwap", request)
     }
 
+    async postJupiterSwapInstructions(
+        request: PostJupiterSwapInstructionsRequest
+    ): RpcReturnType<Promise<PostJupiterSwapInstructionsResponse>, []> {
+        return await this.wsConnection.call(
+            "PostJupiterSwapInstructions",
+            request
+        )
+    }
+
     async postRaydiumRouteSwap(
         request: PostRaydiumRouteSwapRequest
     ): RpcReturnType<Promise<PostRaydiumRouteSwapResponse>, []> {
@@ -240,7 +251,6 @@ export class WsProvider extends BaseProvider {
     ): Promise<GetOpenOrdersResponseV2> {
         return await this.wsConnection.call("GetOpenOrdersV2", request)
     }
-
 
     async getBundleResultV2(
         request: GetBundleResultRequest

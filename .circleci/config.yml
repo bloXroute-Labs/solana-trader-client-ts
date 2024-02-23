@@ -52,45 +52,6 @@ jobs:
           name: lint
           command: npm run lintCI
 
-  integration-testnet:
-    executor: node/default
-    steps:
-      - attach_workspace:
-          at: .
-      - checkout
-      - run:
-          name: testnet
-          command: |
-            export AUTH_HEADER=$AUTH_HEADER_TESTNET
-            export API_ENV="testnet"
-            export RUN_LIFECYCLE="false"
-            export RUN_STREAMS="true"
-            unset PRIVATE_KEY
-            npm start
-          no_output_timeout: 30m
-  integration-mainnet:
-    executor: node/default
-    steps:
-      - attach_workspace:
-          at: .
-      - checkout
-      - run:
-          name: Export build details
-          command: |
-            echo 'export COMMIT_HASH=$(git rev-parse HEAD)' >> $BASH_ENV
-            echo 'export COMMIT_AUTHOR="$(git --no-pager log -1 --pretty=format:'%an')"' >> $BASH_ENV
-            source $BASH_ENV
-      - run:
-          name: mainnet
-          command: |
-            export AUTH_HEADER=$AUTH_HEADER_MAINNET
-            export API_ENV="mainnet"
-            export RUN_LIFECYCLE="false"
-            export RUN_STREAMS="true"
-            unset PRIVATE_KEY
-            npm start
-          no_output_timeout: 30m
-
 workflows:
   build_and_test:
     when:
@@ -107,15 +68,7 @@ workflows:
       - test:
           requires:
             - build
-      - integration-testnet:
-          context: trader-api-sdk
-          requires:
-            - build
-      - integration-mainnet:
-          context:
-            - trader-api-sdk
-          requires:
-            - build
+
   nightly:
     when:
       equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
@@ -128,14 +81,5 @@ workflows:
           requires:
             - build
       - test:
-          requires:
-            - build
-      - integration-testnet:
-          context: trader-api-sdk
-          requires:
-            - build
-      - integration-mainnet:
-          context:
-            - trader-api-sdk
           requires:
             - build

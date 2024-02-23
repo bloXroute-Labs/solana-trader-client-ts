@@ -112,7 +112,9 @@ import {
     GetPriorityFeeRequest,
     GetPriorityFeeResponse,
     GetBundleResultRequest,
-    GetBundleResultResponse
+    GetBundleResultResponse,
+    PostJupiterSwapInstructionsRequest,
+    PostJupiterSwapInstructionsResponse,
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
@@ -235,6 +237,12 @@ export class GrpcProvider extends BaseProvider {
         request: PostJupiterSwapRequest
     ): RpcReturnType<Promise<PostJupiterSwapResponse>, []> {
         return this.client.postJupiterSwap(request)
+    }
+
+    postJupiterSwapInstructions(
+        request: PostJupiterSwapInstructionsRequest
+    ): RpcReturnType<Promise<PostJupiterSwapInstructionsResponse>, []> {
+        return this.client.postJupiterSwapInstructions(request)
     }
 
     postRaydiumRouteSwap(
@@ -460,11 +468,10 @@ export class GrpcProvider extends BaseProvider {
     }
 
     getBundleRequestV2(
-        request: GetBundleResultRequest,
+        request: GetBundleResultRequest
     ): RpcReturnType<Promise<GetBundleResultResponse>, []> {
         return this.client.getBundleResultV2(request)
     }
-
 
     getPriorityFee(
         request: GetPriorityFeeRequest
@@ -543,5 +550,4 @@ export class GrpcProvider extends BaseProvider {
     ): Promise<AsyncGenerator<GetPriorityFeeResponse>> {
         return this.client.getPriorityFeeStream(request)
     }
-
 }

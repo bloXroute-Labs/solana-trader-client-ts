@@ -17,79 +17,109 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface GetJupiterQuotesRequest {
+  export interface PostJupiterSwapInstructionsRequest {
+    ownerAddress: string;
     inToken: string;
     outToken: string;
     inAmount: number;
     slippage: number;
+    computePrice: string;
+    tip?: string;
   }
 }
-export type Type = $.api.GetJupiterQuotesRequest;
+export type Type = $.api.PostJupiterSwapInstructionsRequest;
 
-export function getDefaultValue(): $.api.GetJupiterQuotesRequest {
+export function getDefaultValue(): $.api.PostJupiterSwapInstructionsRequest {
   return {
+    ownerAddress: "",
     inToken: "",
     outToken: "",
     inAmount: 0,
     slippage: 0,
+    computePrice: "0",
+    tip: "0",
   };
 }
 
-export function createValue(partialValue: Partial<$.api.GetJupiterQuotesRequest>): $.api.GetJupiterQuotesRequest {
+export function createValue(partialValue: Partial<$.api.PostJupiterSwapInstructionsRequest>): $.api.PostJupiterSwapInstructionsRequest {
   return {
     ...getDefaultValue(),
     ...partialValue,
   };
 }
 
-export function encodeJson(value: $.api.GetJupiterQuotesRequest): unknown {
+export function encodeJson(value: $.api.PostJupiterSwapInstructionsRequest): unknown {
   const result: any = {};
+  if (value.ownerAddress !== undefined) result.ownerAddress = tsValueToJsonValueFns.string(value.ownerAddress);
   if (value.inToken !== undefined) result.inToken = tsValueToJsonValueFns.string(value.inToken);
   if (value.outToken !== undefined) result.outToken = tsValueToJsonValueFns.string(value.outToken);
   if (value.inAmount !== undefined) result.inAmount = tsValueToJsonValueFns.double(value.inAmount);
   if (value.slippage !== undefined) result.slippage = tsValueToJsonValueFns.double(value.slippage);
+  if (value.computePrice !== undefined) result.computePrice = tsValueToJsonValueFns.uint64(value.computePrice);
+  if (value.tip !== undefined) result.tip = tsValueToJsonValueFns.uint64(value.tip);
   return result;
 }
 
-export function decodeJson(value: any): $.api.GetJupiterQuotesRequest {
+export function decodeJson(value: any): $.api.PostJupiterSwapInstructionsRequest {
   const result = getDefaultValue();
+  if (value.ownerAddress !== undefined) result.ownerAddress = jsonValueToTsValueFns.string(value.ownerAddress);
   if (value.inToken !== undefined) result.inToken = jsonValueToTsValueFns.string(value.inToken);
   if (value.outToken !== undefined) result.outToken = jsonValueToTsValueFns.string(value.outToken);
   if (value.inAmount !== undefined) result.inAmount = jsonValueToTsValueFns.double(value.inAmount);
   if (value.slippage !== undefined) result.slippage = jsonValueToTsValueFns.double(value.slippage);
+  if (value.computePrice !== undefined) result.computePrice = jsonValueToTsValueFns.uint64(value.computePrice);
+  if (value.tip !== undefined) result.tip = jsonValueToTsValueFns.uint64(value.tip);
   return result;
 }
 
-export function encodeBinary(value: $.api.GetJupiterQuotesRequest): Uint8Array {
+export function encodeBinary(value: $.api.PostJupiterSwapInstructionsRequest): Uint8Array {
   const result: WireMessage = [];
+  if (value.ownerAddress !== undefined) {
+    const tsValue = value.ownerAddress;
+    result.push(
+      [1, tsValueToWireValueFns.string(tsValue)],
+    );
+  }
   if (value.inToken !== undefined) {
     const tsValue = value.inToken;
     result.push(
-      [1, tsValueToWireValueFns.string(tsValue)],
+      [2, tsValueToWireValueFns.string(tsValue)],
     );
   }
   if (value.outToken !== undefined) {
     const tsValue = value.outToken;
     result.push(
-      [2, tsValueToWireValueFns.string(tsValue)],
+      [3, tsValueToWireValueFns.string(tsValue)],
     );
   }
   if (value.inAmount !== undefined) {
     const tsValue = value.inAmount;
     result.push(
-      [3, tsValueToWireValueFns.double(tsValue)],
+      [4, tsValueToWireValueFns.double(tsValue)],
     );
   }
   if (value.slippage !== undefined) {
     const tsValue = value.slippage;
     result.push(
-      [4, tsValueToWireValueFns.double(tsValue)],
+      [5, tsValueToWireValueFns.double(tsValue)],
+    );
+  }
+  if (value.computePrice !== undefined) {
+    const tsValue = value.computePrice;
+    result.push(
+      [7, tsValueToWireValueFns.uint64(tsValue)],
+    );
+  }
+  if (value.tip !== undefined) {
+    const tsValue = value.tip;
+    result.push(
+      [8, tsValueToWireValueFns.uint64(tsValue)],
     );
   }
   return serialize(result);
 }
 
-export function decodeBinary(binary: Uint8Array): $.api.GetJupiterQuotesRequest {
+export function decodeBinary(binary: Uint8Array): $.api.PostJupiterSwapInstructionsRequest {
   const result = getDefaultValue();
   const wireMessage = deserialize(binary);
   const wireFields = new Map(wireMessage);
@@ -98,28 +128,49 @@ export function decodeBinary(binary: Uint8Array): $.api.GetJupiterQuotesRequest 
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
-    result.inToken = value;
+    result.ownerAddress = value;
   }
   field: {
     const wireValue = wireFields.get(2);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
-    result.outToken = value;
+    result.inToken = value;
   }
   field: {
     const wireValue = wireFields.get(3);
     if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.double(wireValue);
+    const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
-    result.inAmount = value;
+    result.outToken = value;
   }
   field: {
     const wireValue = wireFields.get(4);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
+    result.inAmount = value;
+  }
+  field: {
+    const wireValue = wireFields.get(5);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.double(wireValue);
+    if (value === undefined) break field;
     result.slippage = value;
+  }
+  field: {
+    const wireValue = wireFields.get(7);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.uint64(wireValue);
+    if (value === undefined) break field;
+    result.computePrice = value;
+  }
+  field: {
+    const wireValue = wireFields.get(8);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.uint64(wireValue);
+    if (value === undefined) break field;
+    result.tip = value;
   }
   return result;
 }

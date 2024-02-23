@@ -84,7 +84,9 @@ import {
     GetPriorityFeeRequest,
     GetPriorityFeeResponse,
     GetBundleResultRequest,
-    GetBundleResultResponse
+    GetBundleResultResponse,
+    PostJupiterSwapInstructionsRequest,
+    PostJupiterSwapInstructionsResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -158,7 +160,7 @@ export class HttpProvider extends BaseProvider {
     getJupiterQuotes(
         request: GetJupiterQuotesRequest
     ): RpcReturnType<Promise<GetJupiterQuotesResponse>, []> {
-        const path = `${this.baseUrlV2}/jupiter/quotes?inToken=${request.inToken}&outToken=${request.outToken}&inAmount=${request.inAmount}&slippage=${request.slippage}&limit=${request.limit}`
+        const path = `${this.baseUrlV2}/jupiter/quotes?inToken=${request.inToken}&outToken=${request.outToken}&inAmount=${request.inAmount}&slippage=${request.slippage}`
         return this.get<GetJupiterQuotesResponse>(path)
     }
 
@@ -180,6 +182,16 @@ export class HttpProvider extends BaseProvider {
             path,
             request
         )
+    }
+
+    postJupiterSwapInstructions(
+        request: PostJupiterSwapInstructionsRequest
+    ): RpcReturnType<Promise<PostJupiterSwapInstructionsResponse>, []> {
+        const path = `${this.baseUrlV2}/jupiter/swap-instructions`
+        return this.post<
+            PostJupiterSwapInstructionsRequest,
+            PostJupiterSwapInstructionsResponse
+        >(path, request)
     }
 
     postRaydiumRouteSwap(
