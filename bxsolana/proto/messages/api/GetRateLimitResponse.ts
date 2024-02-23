@@ -24,7 +24,7 @@ export declare namespace $.api {
     intervalNum: string;
     limit: string;
     count: string;
-    ts: string;
+    reset: string;
   }
 }
 export type Type = $.api.GetRateLimitResponse;
@@ -37,7 +37,7 @@ export function getDefaultValue(): $.api.GetRateLimitResponse {
     intervalNum: "0",
     limit: "0",
     count: "0",
-    ts: "0",
+    reset: "0",
   };
 }
 
@@ -56,7 +56,7 @@ export function encodeJson(value: $.api.GetRateLimitResponse): unknown {
   if (value.intervalNum !== undefined) result.intervalNum = tsValueToJsonValueFns.uint64(value.intervalNum);
   if (value.limit !== undefined) result.limit = tsValueToJsonValueFns.uint64(value.limit);
   if (value.count !== undefined) result.count = tsValueToJsonValueFns.uint64(value.count);
-  if (value.ts !== undefined) result.ts = tsValueToJsonValueFns.uint64(value.ts);
+  if (value.reset !== undefined) result.reset = tsValueToJsonValueFns.uint64(value.reset);
   return result;
 }
 
@@ -68,7 +68,7 @@ export function decodeJson(value: any): $.api.GetRateLimitResponse {
   if (value.intervalNum !== undefined) result.intervalNum = jsonValueToTsValueFns.uint64(value.intervalNum);
   if (value.limit !== undefined) result.limit = jsonValueToTsValueFns.uint64(value.limit);
   if (value.count !== undefined) result.count = jsonValueToTsValueFns.uint64(value.count);
-  if (value.ts !== undefined) result.ts = jsonValueToTsValueFns.uint64(value.ts);
+  if (value.reset !== undefined) result.reset = jsonValueToTsValueFns.uint64(value.reset);
   return result;
 }
 
@@ -110,8 +110,8 @@ export function encodeBinary(value: $.api.GetRateLimitResponse): Uint8Array {
       [6, tsValueToWireValueFns.uint64(tsValue)],
     );
   }
-  if (value.ts !== undefined) {
-    const tsValue = value.ts;
+  if (value.reset !== undefined) {
+    const tsValue = value.reset;
     result.push(
       [7, tsValueToWireValueFns.uint64(tsValue)],
     );
@@ -170,7 +170,7 @@ export function decodeBinary(binary: Uint8Array): $.api.GetRateLimitResponse {
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.uint64(wireValue);
     if (value === undefined) break field;
-    result.ts = value;
+    result.reset = value;
   }
   return result;
 }

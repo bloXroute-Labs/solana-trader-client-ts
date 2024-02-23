@@ -13,6 +13,13 @@ import {
   decodeBinary as decodeBinary_2,
 } from "../common/Fee";
 import {
+  Type as StepProject,
+  encodeJson as encodeJson_3,
+  decodeJson as decodeJson_3,
+  encodeBinary as encodeBinary_3,
+  decodeBinary as decodeBinary_3,
+} from "./StepProject";
+import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar";
@@ -43,6 +50,7 @@ export declare namespace $.api {
     priceImpactPercent?: PriceImpactPercentV2;
     fee?: Fee;
     outAmountMin: number;
+    project?: StepProject;
   }
 }
 export type Type = $.api.RaydiumQuoteStep;
@@ -59,6 +67,7 @@ export function getDefaultValue(): $.api.RaydiumQuoteStep {
     priceImpactPercent: undefined,
     fee: undefined,
     outAmountMin: 0,
+    project: undefined,
   };
 }
 
@@ -81,6 +90,7 @@ export function encodeJson(value: $.api.RaydiumQuoteStep): unknown {
   if (value.priceImpactPercent !== undefined) result.priceImpactPercent = encodeJson_1(value.priceImpactPercent);
   if (value.fee !== undefined) result.fee = encodeJson_2(value.fee);
   if (value.outAmountMin !== undefined) result.outAmountMin = tsValueToJsonValueFns.double(value.outAmountMin);
+  if (value.project !== undefined) result.project = encodeJson_3(value.project);
   return result;
 }
 
@@ -96,6 +106,7 @@ export function decodeJson(value: any): $.api.RaydiumQuoteStep {
   if (value.priceImpactPercent !== undefined) result.priceImpactPercent = decodeJson_1(value.priceImpactPercent);
   if (value.fee !== undefined) result.fee = decodeJson_2(value.fee);
   if (value.outAmountMin !== undefined) result.outAmountMin = jsonValueToTsValueFns.double(value.outAmountMin);
+  if (value.project !== undefined) result.project = decodeJson_3(value.project);
   return result;
 }
 
@@ -152,13 +163,19 @@ export function encodeBinary(value: $.api.RaydiumQuoteStep): Uint8Array {
   if (value.fee !== undefined) {
     const tsValue = value.fee;
     result.push(
-      [10, { type: WireType.LengthDelimited as const, value: encodeBinary_2(tsValue) }],
+      [9, { type: WireType.LengthDelimited as const, value: encodeBinary_2(tsValue) }],
     );
   }
   if (value.outAmountMin !== undefined) {
     const tsValue = value.outAmountMin;
     result.push(
-      [11, tsValueToWireValueFns.double(tsValue)],
+      [10, tsValueToWireValueFns.double(tsValue)],
+    );
+  }
+  if (value.project !== undefined) {
+    const tsValue = value.project;
+    result.push(
+      [11, { type: WireType.LengthDelimited as const, value: encodeBinary_3(tsValue) }],
     );
   }
   return serialize(result);
@@ -225,18 +242,25 @@ export function decodeBinary(binary: Uint8Array): $.api.RaydiumQuoteStep {
     result.priceImpactPercent = value;
   }
   field: {
-    const wireValue = wireFields.get(10);
+    const wireValue = wireFields.get(9);
     if (wireValue === undefined) break field;
     const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_2(wireValue.value) : undefined;
     if (value === undefined) break field;
     result.fee = value;
   }
   field: {
-    const wireValue = wireFields.get(11);
+    const wireValue = wireFields.get(10);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
     result.outAmountMin = value;
+  }
+  field: {
+    const wireValue = wireFields.get(11);
+    if (wireValue === undefined) break field;
+    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_3(wireValue.value) : undefined;
+    if (value === undefined) break field;
+    result.project = value;
   }
   return result;
 }
