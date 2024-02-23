@@ -1304,27 +1304,16 @@ async function callPostRouteTradeSwap(provider: BaseProvider) {
             {
                 project: {
                     // pool ID can be empty if outToken is specified
-                    id: "",
+                    id: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
                     label: "Raydium",
                 },
-                inToken: "FIDA",
+                inToken: "So11111111111111111111111111111111111111112",
                 // RAY token address
                 // can be omitted if project.id is specified
-                outToken: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+                outToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
                 inAmount: 0.01,
                 outAmount: 0.007505,
                 outAmountMin: 0.074,
-            },
-            {
-                project: {
-                    id: "",
-                    label: "Raydium",
-                },
-                inToken: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
-                outToken: "USDC",
-                inAmount: 0.007505,
-                outAmount: 0.004043,
-                outAmountMin: 0.004,
             },
         ],
         project: "P_RAYDIUM",
@@ -1338,18 +1327,18 @@ async function callSubmitRouteTradeSwap(provider: BaseProvider) {
             ownerAddress: ownerAddress,
             steps: [
                 {
-                    inToken: "FIDA",
-                    outToken: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+                    project: {
+                        // pool ID can be empty if outToken is specified
+                        id: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
+                        label: "Raydium",
+                    },
+                    inToken: "So11111111111111111111111111111111111111112",
+                    // RAY token address
+                    // can be omitted if project.id is specified
+                    outToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
                     inAmount: 0.01,
                     outAmount: 0.007505,
                     outAmountMin: 0.074,
-                },
-                {
-                    inToken: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
-                    outToken: "USDC",
-                    inAmount: 0.007505,
-                    outAmount: 0.004043,
-                    outAmountMin: 0.004,
                 },
             ],
             project: "P_RAYDIUM",
