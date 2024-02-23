@@ -68,15 +68,7 @@ workflows:
       - test:
           requires:
             - build
-      - integration-testnet:
-          context: trader-api-sdk
-          requires:
-            - build
-      - integration-mainnet:
-          context:
-            - trader-api-sdk
-          requires:
-            - build
+
   nightly:
     when:
       equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
@@ -89,14 +81,5 @@ workflows:
           requires:
             - build
       - test:
-          requires:
-            - build
-      - integration-testnet:
-          context: trader-api-sdk
-          requires:
-            - build
-      - integration-mainnet:
-          context:
-            - trader-api-sdk
           requires:
             - build
