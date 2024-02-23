@@ -1290,22 +1290,18 @@ async function callPostRaydiumRouteSwap(provider: BaseProvider) {
         slippage: 10,
         steps: [
             {
-                poolAddress: "",
-                inToken: "SOL",
+                project: {
+                    // pool ID can be empty if outToken is specified
+                    id: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
+                    label: "Raydium",
+                },
+                inToken: "So11111111111111111111111111111111111111112",
                 // RAY token address
                 // can be omitted if project.id is specified
-                outToken: tokenAddress,
+                outToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
                 inAmount: 0.01,
                 outAmount: 0.007505,
                 outAmountMin: 0.074,
-            },
-            {
-                poolAddress: "",
-                inToken: "SOL",
-                outToken: tokenAddress,
-                inAmount: 0.007505,
-                outAmount: 0.004043,
-                outAmountMin: 0.004,
             },
         ],
         computeLimit: testOrder.computeLimit,
