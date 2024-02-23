@@ -360,6 +360,10 @@ async function doAmmRequests(provider: BaseProvider) {
     console.info(" ")
     console.info(" ")
 
+    await callPostJupiterSwapInstructions(provider)
+    console.info(" ")
+    console.info(" ")
+
     await callPostRaydiumRouteSwap(provider)
     console.info(" ")
     console.info(" ")
@@ -798,7 +802,6 @@ async function callGetJupiterQuotes(provider: BaseProvider) {
         outToken: tokenAddress,
         inAmount: 1,
         slippage: 5,
-        limit: 5,
     })
     console.info(resp)
 }
@@ -816,7 +819,9 @@ async function callGetRaydiumQuotes(provider: BaseProvider) {
 
 async function callGetPriorityFee(provider: BaseProvider) {
     console.info("Retrieving priority fee")
-    const resp = await provider.getPriorityFee({})
+    const resp = await provider.getPriorityFee({
+        project: "P_RAYDIUM",
+    })
     console.info(resp)
 }
 
@@ -1029,7 +1034,9 @@ async function callGetRecentBlockHashStream(provider: BaseProvider) {
 
 async function callGetPriorityFeeStream(provider: BaseProvider) {
     console.info("Subscribing for priority fee updates")
-    const resp = await provider.getPriorityFeeStream({})
+    const resp = await provider.getPriorityFeeStream({
+        project: "P_RAYDIUM",
+    })
 
     let count = 0
     for await (const update of resp) {
@@ -1208,6 +1215,19 @@ async function callPostJupiterSwap(provider: BaseProvider) {
         inAmount: 0.01,
         slippage: 0.1,
         computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
+    })
+    console.info(response)
+}
+
+async function callPostJupiterSwapInstructions(provider: BaseProvider) {
+    console.info("Generating a Jupiter swap instructions")
+    const response = await provider.postJupiterSwapInstructions({
+        ownerAddress: ownerAddress,
+        inToken: tokenAddress,
+        outToken: "SOL",
+        inAmount: 0.01,
+        slippage: 0.1,
         computePrice: testOrder.computePrice,
     })
     console.info(response)

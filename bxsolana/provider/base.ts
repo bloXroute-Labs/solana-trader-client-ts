@@ -113,7 +113,9 @@ import {
     GetPriorityFeeRequest,
     GetPriorityFeeResponse,
     GetBundleResultRequest,
-    GetBundleResultResponse
+    GetBundleResultResponse,
+    PostJupiterSwapInstructionsRequest,
+    PostJupiterSwapInstructionsResponse,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -239,6 +241,12 @@ export abstract class BaseProvider implements Api {
     postJupiterSwap(
         request: PostJupiterSwapRequest
     ): RpcReturnType<Promise<PostJupiterSwapResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postJupiterSwapInstructions(
+        request: PostJupiterSwapInstructionsRequest
+    ): RpcReturnType<Promise<PostJupiterSwapInstructionsResponse>, []> {
         throw new Error("Method not implemented.")
     }
 
@@ -752,7 +760,6 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-
     getPoolReservesStream(
         request: GetPoolReservesStreamRequest
     ): Promise<AsyncGenerator<GetPoolReservesStreamResponse>> {
@@ -812,7 +819,9 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    cancelAllGetRecentBlockhashStream = async (): Promise<Awaited<boolean>[]> => {
+    cancelAllGetRecentBlockhashStream = async (): Promise<
+        Awaited<boolean>[]
+    > => {
         throw new Error("Not implemented")
     }
 
@@ -852,7 +861,9 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    cancelAllGetNewRaydiumPoolsStream = async (): Promise<Awaited<boolean>[]> => {
+    cancelAllGetNewRaydiumPoolsStream = async (): Promise<
+        Awaited<boolean>[]
+    > => {
         throw new Error("Not implemented")
     }
 
