@@ -23,7 +23,7 @@ import {
     PostOrderRequestV2,
     MAINNET_API_NY_HTTP,
     MAINNET_API_NY_GRPC,
-    MAINNET_API_NY_WS,
+    MAINNET_API_NY_WS, GetPriorityFeeRequest
 } from "../bxsolana"
 import { Keypair, PublicKey, Transaction } from "@solana/web3.js"
 import base58 from "bs58"

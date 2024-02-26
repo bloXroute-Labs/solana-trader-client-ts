@@ -420,6 +420,10 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
+    postJupiterSwapInstructions(request: PostJupiterSwapInstructionsRequest): RpcReturnType<Promise<PostJupiterSwapInstructionsResponse>, []> {
+        throw new Error("Not implemented")
+    }
+
     postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
         throw new Error("Not implemented")
     }
