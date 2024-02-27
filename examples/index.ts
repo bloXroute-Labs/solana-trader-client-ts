@@ -24,6 +24,7 @@ import {
     MAINNET_API_NY_HTTP,
     MAINNET_API_NY_GRPC,
     MAINNET_API_NY_WS,
+    GetPriorityFeeRequest,
 } from "../bxsolana"
 import { Keypair, PublicKey, Transaction } from "@solana/web3.js"
 import base58 from "bs58"
@@ -1263,25 +1264,17 @@ async function callPostRouteTradeSwap(provider: BaseProvider) {
         steps: [
             {
                 project: {
+                    // pool ID can be empty if outToken is specified
                     id: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
                     label: "Raydium",
                 },
-                inToken: "SOL",
-                outToken: tokenAddress,
+                inToken: "So11111111111111111111111111111111111111112",
+                // RAY token address
+                // can be omitted if project.id is specified
+                outToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
                 inAmount: 0.01,
                 outAmount: 0.007505,
                 outAmountMin: 0.074,
-            },
-            {
-                project: {
-                    id: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
-                    label: "Raydium",
-                },
-                inToken: tokenAddress,
-                outToken: "SOL",
-                inAmount: 0.007505,
-                outAmount: 0.004043,
-                outAmountMin: 0.004,
             },
         ],
         project: "P_RAYDIUM",
@@ -1298,28 +1291,19 @@ async function callPostRaydiumRouteSwap(provider: BaseProvider) {
         slippage: 10,
         steps: [
             {
+                poolAddress: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
                 project: {
+                    // pool ID can be empty if outToken is specified
                     id: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
                     label: "Raydium",
                 },
-                poolAddress: "",
-                inToken: "SOL",
-                outToken: tokenAddress,
+                inToken: "So11111111111111111111111111111111111111112",
+                // RAY token address
+                // can be omitted if project.id is specified
+                outToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
                 inAmount: 0.01,
                 outAmount: 0.007505,
                 outAmountMin: 0.074,
-            },
-            {
-                project: {
-                    id: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
-                    label: "Raydium",
-                },
-                poolAddress: "",
-                inToken: "SOL",
-                outToken: tokenAddress,
-                inAmount: 0.007505,
-                outAmount: 0.004043,
-                outAmountMin: 0.004,
             },
         ],
         computeLimit: testOrder.computeLimit,
