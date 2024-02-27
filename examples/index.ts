@@ -770,7 +770,7 @@ async function callGetPools(provider: BaseProvider) {
     console.info("Retrieving pools")
     const resp = await provider.getPools({
         projects: ["P_RAYDIUM"],
-        pairOrAddress: "",
+        pairOrAddress: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2", // sol/usdc
     })
     console.info(resp)
 }
