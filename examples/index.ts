@@ -769,7 +769,7 @@ async function callGetPools(provider: BaseProvider) {
     console.info("Retrieving pools")
     const resp = await provider.getPools({
         projects: ["P_RAYDIUM"],
-        pairOrAddress: "",
+        pairOrAddress: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2", // sol/usdc
     })
     console.info(resp)
 }
@@ -1263,7 +1263,7 @@ async function callPostRouteTradeSwap(provider: BaseProvider) {
         steps: [
             {
                 project: {
-                    id: "",
+                    id: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
                     label: "Raydium",
                 },
                 inToken: "SOL",
@@ -1274,7 +1274,7 @@ async function callPostRouteTradeSwap(provider: BaseProvider) {
             },
             {
                 project: {
-                    id: "",
+                    id: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
                     label: "Raydium",
                 },
                 inToken: tokenAddress,
@@ -1298,16 +1298,22 @@ async function callPostRaydiumRouteSwap(provider: BaseProvider) {
         slippage: 10,
         steps: [
             {
+                project: {
+                    id: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
+                    label: "Raydium",
+                },
                 poolAddress: "",
                 inToken: "SOL",
-                // RAY token address
-                // can be omitted if project.id is specified
                 outToken: tokenAddress,
                 inAmount: 0.01,
                 outAmount: 0.007505,
                 outAmountMin: 0.074,
             },
             {
+                project: {
+                    id: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
+                    label: "Raydium",
+                },
                 poolAddress: "",
                 inToken: "SOL",
                 outToken: tokenAddress,
