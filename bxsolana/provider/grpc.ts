@@ -113,11 +113,8 @@ import {
     GetPriorityFeeResponse,
     GetBundleResultRequest,
     GetBundleResultResponse,
-<<<<<<< HEAD
     PostJupiterSwapInstructionsRequest,
     PostJupiterSwapInstructionsResponse,
-=======
->>>>>>> 04e9dd2 (Improving rate-limit endpoint)
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"

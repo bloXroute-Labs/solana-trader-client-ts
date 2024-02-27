@@ -106,11 +106,8 @@ import {
     GetPriorityFeeResponse,
     GetBundleResultRequest,
     GetBundleResultResponse,
-<<<<<<< HEAD
     PostJupiterSwapInstructionsRequest,
     PostJupiterSwapInstructionsResponse,
-=======
->>>>>>> 04e9dd2 (Improving rate-limit endpoint)
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
