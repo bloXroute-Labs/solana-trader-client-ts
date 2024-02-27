@@ -24,6 +24,7 @@ import {
     MAINNET_API_NY_HTTP,
     MAINNET_API_NY_GRPC,
     MAINNET_API_NY_WS,
+    GetPriorityFeeRequest,
 } from "../bxsolana"
 import { Keypair, PublicKey, Transaction } from "@solana/web3.js"
 import base58 from "bs58"
@@ -1290,7 +1291,7 @@ async function callPostRaydiumRouteSwap(provider: BaseProvider) {
         slippage: 10,
         steps: [
             {
-                poolAddress:"58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
+                poolAddress: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
                 project: {
                     // pool ID can be empty if outToken is specified
                     id: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",

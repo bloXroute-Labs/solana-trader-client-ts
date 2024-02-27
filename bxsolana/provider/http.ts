@@ -128,7 +128,7 @@ export class HttpProvider extends BaseProvider {
     getRateLimit(
         request: GetRateLimitRequest
     ): RpcReturnType<Promise<GetRateLimitResponse>, []> {
-        const path = `${this.baseUrlV2}/account/rate-limit`
+        const path = `${this.baseUrlV2}/rate-limit`
         return this.get<GetRateLimitResponse>(path)
     }
 
