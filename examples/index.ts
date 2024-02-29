@@ -989,10 +989,10 @@ async function callGetPoolsStream(provider: BaseProvider) {
     console.info("Subscribing for pool updates of Raydium")
 
     const projects: Project[] = ["P_RAYDIUM"]
-    const tokens: string[] = ["4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R"]
+    const pairOrAddress: string[] = ["4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R"]
     const stream = await provider.getPoolReservesStream({
         projects: projects,
-        tokens: tokens,
+        pairOrAddress: pairOrAddress,
     })
 
     let count = 0

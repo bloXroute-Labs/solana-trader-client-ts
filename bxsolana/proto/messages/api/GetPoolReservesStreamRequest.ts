@@ -29,7 +29,7 @@ import {
 export declare namespace $.api {
   export interface GetPoolReservesStreamRequest {
     projects: Project[];
-    tokens: string[];
+    pairOrAddress: string[];
   }
 }
 export type Type = $.api.GetPoolReservesStreamRequest;
@@ -37,7 +37,7 @@ export type Type = $.api.GetPoolReservesStreamRequest;
 export function getDefaultValue(): $.api.GetPoolReservesStreamRequest {
   return {
     projects: [],
-    tokens: [],
+    pairOrAddress: [],
   };
 }
 
@@ -51,14 +51,14 @@ export function createValue(partialValue: Partial<$.api.GetPoolReservesStreamReq
 export function encodeJson(value: $.api.GetPoolReservesStreamRequest): unknown {
   const result: any = {};
   result.projects = value.projects.map(value => tsValueToJsonValueFns.enum(value));
-  result.tokens = value.tokens.map(value => tsValueToJsonValueFns.string(value));
+  result.pairOrAddress = value.pairOrAddress.map(value => tsValueToJsonValueFns.string(value));
   return result;
 }
 
 export function decodeJson(value: any): $.api.GetPoolReservesStreamRequest {
   const result = getDefaultValue();
   result.projects = value.projects?.map((value: any) => jsonValueToTsValueFns.enum(value) as Project) ?? [];
-  result.tokens = value.tokens?.map((value: any) => jsonValueToTsValueFns.string(value)) ?? [];
+  result.pairOrAddress = value.pairOrAddress?.map((value: any) => jsonValueToTsValueFns.string(value)) ?? [];
   return result;
 }
 
@@ -69,7 +69,7 @@ export function encodeBinary(value: $.api.GetPoolReservesStreamRequest): Uint8Ar
       [1, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
     );
   }
-  for (const tsValue of value.tokens) {
+  for (const tsValue of value.pairOrAddress) {
     result.push(
       [2, tsValueToWireValueFns.string(tsValue)],
     );
@@ -91,7 +91,7 @@ export function decodeBinary(binary: Uint8Array): $.api.GetPoolReservesStreamReq
     const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 2).map(([, wireValue]) => wireValue);
     const value = wireValues.map((wireValue) => wireValueToTsValueFns.string(wireValue)).filter(x => x !== undefined);
     if (!value.length) break collection;
-    result.tokens = value as any;
+    result.pairOrAddress = value as any;
   }
   return result;
 }
