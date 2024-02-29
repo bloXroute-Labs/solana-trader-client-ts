@@ -107,7 +107,7 @@ import {
     GetBundleResultRequest,
     GetBundleResultResponse,
     PostJupiterSwapInstructionsRequest,
-    PostJupiterSwapInstructionsResponse,
+    PostJupiterSwapInstructionsResponse, GetTickersStreamRequest
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -377,7 +377,7 @@ export class WsProvider extends BaseProvider {
     }
 
     getTickersStream = async (
-        request: GetTickersRequest
+        request: GetTickersStreamRequest
     ): Promise<AsyncGenerator<GetTickersStreamResponse>> => {
         const subscriptionId = await this.wsConnection.subscribe(
             "GetTickersStream",

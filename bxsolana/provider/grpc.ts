@@ -114,7 +114,7 @@ import {
     GetBundleResultRequest,
     GetBundleResultResponse,
     PostJupiterSwapInstructionsRequest,
-    PostJupiterSwapInstructionsResponse,
+    PostJupiterSwapInstructionsResponse, GetTickersStreamRequest
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
@@ -493,7 +493,7 @@ export class GrpcProvider extends BaseProvider {
     }
 
     getTickersStream(
-        request: GetTickersRequest
+        request: GetTickersStreamRequest
     ): Promise<AsyncGenerator<GetTickersStreamResponse>> {
         return this.client.getTickersStream(request)
     }

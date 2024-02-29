@@ -901,7 +901,7 @@ async function callGetMarketDepthStream(provider: BaseProvider) {
 async function callGetTickersStream(provider: BaseProvider) {
     console.info("Subscribing for ticker updates of SOLUSDC market")
     const req = await provider.getTickersStream({
-        market: "SOLUSDC",
+        markets: ["BONK/SOL", "wSOL/RAY", "BONK/RAY", "RAY/USDC", "SOL/USDC", "SOL/USDC", "RAY/USDC", "USDT/USDC"],
         project: "P_OPENBOOK",
     })
 
@@ -989,10 +989,10 @@ async function callGetPoolsStream(provider: BaseProvider) {
     console.info("Subscribing for pool updates of Raydium")
 
     const projects: Project[] = ["P_RAYDIUM"]
+    const tokens: string[] = ["4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R"]
     const stream = await provider.getPoolReservesStream({
         projects: projects,
-        // RAY token address
-        pairOrAddress: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+        tokens: tokens,
     })
 
     let count = 0
