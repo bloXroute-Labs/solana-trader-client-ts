@@ -115,7 +115,7 @@ import {
     GetBundleResultRequest,
     GetBundleResultResponse,
     PostJupiterSwapInstructionsRequest,
-    PostJupiterSwapInstructionsResponse,
+    PostJupiterSwapInstructionsResponse, GetTickersStreamRequest
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -695,7 +695,7 @@ export abstract class BaseProvider implements Api {
     }
 
     getTickersStream(
-        request: GetTickersRequest
+        request: GetTickersStreamRequest
     ): Promise<AsyncGenerator<GetTickersStreamResponse>> {
         throw new Error("Not implemented")
     }

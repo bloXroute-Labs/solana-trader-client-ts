@@ -65,6 +65,7 @@ export type { Type as UnsettledAccount } from "./UnsettledAccount";
 export type { Type as GetUnsettledResponse } from "./GetUnsettledResponse";
 export type { Type as GetOrderbooksStreamResponse } from "./GetOrderbooksStreamResponse";
 export type { Type as GetMarketDepthsStreamResponse } from "./GetMarketDepthsStreamResponse";
+export type { Type as GetTickersStreamRequest } from "./GetTickersStreamRequest";
 export type { Type as GetTickersStreamResponse } from "./GetTickersStreamResponse";
 export type { Type as Step } from "./Step";
 export type { Type as GetTradesStreamResponse } from "./GetTradesStreamResponse";
