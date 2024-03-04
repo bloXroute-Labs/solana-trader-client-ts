@@ -777,9 +777,7 @@ async function callGetPools(provider: BaseProvider) {
 
 async function callGetRaydiumPools(provider: BaseProvider) {
     console.info("Retrieving Raydium pools")
-    const resp = await provider.getRaydiumPools({
-        pairOrAddress: "",
-    })
+    const resp = await provider.getRaydiumPools({})
     console.info(resp)
 }
 
