@@ -217,7 +217,7 @@ export class HttpProvider extends BaseProvider {
     getRaydiumPools(
         request: GetRaydiumPoolsRequest
     ): RpcReturnType<Promise<GetRaydiumPoolsResponse>, []> {
-        const path = `${this.baseUrlV2}/raydium/pools?pairOrAddress=${request.pairOrAddress}`
+        const path = `${this.baseUrlV2}/raydium/pools`
         return this.get<GetRaydiumPoolsResponse>(path)
     }
 
