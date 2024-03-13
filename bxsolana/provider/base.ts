@@ -115,7 +115,10 @@ import {
     GetBundleResultRequest,
     GetBundleResultResponse,
     PostJupiterSwapInstructionsRequest,
-    PostJupiterSwapInstructionsResponse, GetTickersStreamRequest
+    PostJupiterSwapInstructionsResponse,
+    GetTickersStreamRequest,
+    GetRaydiumPoolReserveRequest,
+    GetRaydiumPoolReserveResponse
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -193,6 +196,12 @@ export abstract class BaseProvider implements Api {
     getBundleResultV2(
         request: GetBundleResultRequest
     ): RpcReturnType<Promise<GetBundleResultResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    getRaydiumPoolReserve(
+        request: GetRaydiumPoolReserveRequest
+    ): RpcReturnType<Promise<GetRaydiumPoolReserveResponse>, []> {
         throw new Error("Method not implemented.")
     }
 
