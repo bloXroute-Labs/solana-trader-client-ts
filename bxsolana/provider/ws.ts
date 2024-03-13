@@ -107,7 +107,10 @@ import {
     GetBundleResultRequest,
     GetBundleResultResponse,
     PostJupiterSwapInstructionsRequest,
-    PostJupiterSwapInstructionsResponse, GetTickersStreamRequest
+    PostJupiterSwapInstructionsResponse,
+    GetTickersStreamRequest,
+    GetRaydiumPoolReserveRequest,
+    GetRaydiumPoolReserveResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -201,6 +204,12 @@ export class WsProvider extends BaseProvider {
         request: PostRaydiumSwapRequest
     ): RpcReturnType<Promise<PostRaydiumSwapResponse>, []> {
         return await this.wsConnection.call("PostRaydiumSwap", request)
+    }
+
+    async getRaydiumPoolReserve(
+        request: GetRaydiumPoolReserveRequest
+    ): RpcReturnType<Promise<GetRaydiumPoolReserveResponse>, []> {
+        return await this.wsConnection.call("GetRaydiumPoolReserve", request)
     }
 
     async getRaydiumPools(
