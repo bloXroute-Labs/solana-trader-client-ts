@@ -301,7 +301,6 @@ async function doOrderbookRequests(provider: BaseProvider) {
 }
 
 async function doAmmRequests(provider: BaseProvider) {
-
     await callGetRaydiumPoolReserve(provider)
     console.info(" ")
     console.info(" ")
@@ -783,8 +782,11 @@ async function callGetPools(provider: BaseProvider) {
 async function callGetRaydiumPoolReserve(provider: BaseProvider) {
     console.info("Retrieving Raydium pool reserve")
     const resp = await provider.getRaydiumPoolReserve({
-        pairsOrAddresses: ["HZ1znC9XBasm9AMDhGocd9EHSyH8Pyj1EUdiPb4WnZjo",
-            "D8wAxwpH2aKaEGBKfeGdnQbCc2s54NrRvTDXCK98VAeT", "DdpuaJgjB2RptGMnfnCZVmC4vkKsMV6ytRa2gggQtCWt"],
+        pairsOrAddresses: [
+            "HZ1znC9XBasm9AMDhGocd9EHSyH8Pyj1EUdiPb4WnZjo",
+            "D8wAxwpH2aKaEGBKfeGdnQbCc2s54NrRvTDXCK98VAeT",
+            "DdpuaJgjB2RptGMnfnCZVmC4vkKsMV6ytRa2gggQtCWt",
+        ],
     })
     console.info(resp)
 }
@@ -914,7 +916,16 @@ async function callGetMarketDepthStream(provider: BaseProvider) {
 async function callGetTickersStream(provider: BaseProvider) {
     console.info("Subscribing for ticker updates of SOLUSDC market")
     const req = await provider.getTickersStream({
-        markets: ["BONK/SOL", "wSOL/RAY", "BONK/RAY", "RAY/USDC", "SOL/USDC", "SOL/USDC", "RAY/USDC", "USDT/USDC"],
+        markets: [
+            "BONK/SOL",
+            "wSOL/RAY",
+            "BONK/RAY",
+            "RAY/USDC",
+            "SOL/USDC",
+            "SOL/USDC",
+            "RAY/USDC",
+            "USDT/USDC",
+        ],
         project: "P_OPENBOOK",
     })
 

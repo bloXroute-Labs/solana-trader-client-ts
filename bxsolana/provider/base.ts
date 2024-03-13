@@ -118,7 +118,7 @@ import {
     PostJupiterSwapInstructionsResponse,
     GetTickersStreamRequest,
     GetRaydiumPoolReserveRequest,
-    GetRaydiumPoolReserveResponse
+    GetRaydiumPoolReserveResponse,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {

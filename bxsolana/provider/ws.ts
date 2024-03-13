@@ -110,7 +110,7 @@ import {
     PostJupiterSwapInstructionsResponse,
     GetTickersStreamRequest,
     GetRaydiumPoolReserveRequest,
-    GetRaydiumPoolReserveResponse
+    GetRaydiumPoolReserveResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"

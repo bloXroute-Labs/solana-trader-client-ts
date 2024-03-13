@@ -86,7 +86,9 @@ import {
     GetBundleResultRequest,
     GetBundleResultResponse,
     PostJupiterSwapInstructionsRequest,
-    PostJupiterSwapInstructionsResponse, GetRaydiumPoolReserveRequest, GetRaydiumPoolReserveResponse
+    PostJupiterSwapInstructionsResponse,
+    GetRaydiumPoolReserveRequest,
+    GetRaydiumPoolReserveResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
