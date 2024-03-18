@@ -110,6 +110,8 @@ export type { Type as GetPoolsRequest } from "./GetPoolsRequest";
 export type { Type as GetPoolsResponse } from "./GetPoolsResponse";
 export type { Type as GetRaydiumPoolsRequest } from "./GetRaydiumPoolsRequest";
 export type { Type as GetRaydiumPoolsResponse } from "./GetRaydiumPoolsResponse";
+export type { Type as GetRaydiumPoolReserveRequest } from "./GetRaydiumPoolReserveRequest";
+export type { Type as GetRaydiumPoolReserveResponse } from "./GetRaydiumPoolReserveResponse";
 export type { Type as GetRateLimitRequest } from "./GetRateLimitRequest";
 export type { Type as GetRateLimitResponse } from "./GetRateLimitResponse";
 export type { Type as GetTransactionRequest } from "./GetTransactionRequest";

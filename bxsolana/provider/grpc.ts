@@ -114,7 +114,10 @@ import {
     GetBundleResultRequest,
     GetBundleResultResponse,
     PostJupiterSwapInstructionsRequest,
-    PostJupiterSwapInstructionsResponse, GetTickersStreamRequest
+    PostJupiterSwapInstructionsResponse,
+    GetTickersStreamRequest,
+    GetRaydiumPoolReserveRequest,
+    GetRaydiumPoolReserveResponse,
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
@@ -159,6 +162,7 @@ export class GrpcProvider extends BaseProvider {
             "grpc.keepalive_time_ms": 10000,
             // 10s keep alive so connection isn't closed from lack of activity
             "grpc.keepalive_timeout_ms": 5000, // 5s allowance for keepalive to respond
+            "grpc.max_receive_message_length": 1024 * 1024 * 16,
         }
     ) {
         super(authHeader, privateKey)
@@ -255,6 +259,12 @@ export class GrpcProvider extends BaseProvider {
         request: PostRaydiumSwapRequest
     ): RpcReturnType<Promise<PostRaydiumSwapResponse>, []> {
         return this.client.postRaydiumSwap(request)
+    }
+
+    getRaydiumPoolReserve(
+        request: GetRaydiumPoolReserveRequest
+    ): RpcReturnType<Promise<GetRaydiumPoolReserveResponse>, []> {
+        return this.client.getRaydiumPoolReserve(request)
     }
 
     getRaydiumPools(

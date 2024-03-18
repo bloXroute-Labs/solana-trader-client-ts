@@ -87,6 +87,8 @@ import {
     GetBundleResultResponse,
     PostJupiterSwapInstructionsRequest,
     PostJupiterSwapInstructionsResponse,
+    GetRaydiumPoolReserveRequest,
+    GetRaydiumPoolReserveResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -135,7 +137,7 @@ export class HttpProvider extends BaseProvider {
     getBundleRequestV2(
         request: GetBundleResultRequest
     ): RpcReturnType<Promise<GetBundleResultResponse>, []> {
-        const path = `${this.baseUrlV2}/api/v2/bundle-result/${request.uuid}"`
+        const path = `${this.baseUrlV2}/bundle-result/${request.uuid}"`
         return this.get<GetBundleResultResponse>(path)
     }
 
@@ -212,6 +214,16 @@ export class HttpProvider extends BaseProvider {
             path,
             request
         )
+    }
+
+    getRaydiumPoolReserve(
+        request: GetRaydiumPoolReserveRequest
+    ): RpcReturnType<Promise<GetRaydiumPoolReserveResponse>, []> {
+        let path = `${this.baseUrlV2}/raydium/pool-reserves?`
+        for (const pair of request.pairsOrAddresses) {
+            path += `&pairsOrAddresses=${pair}`
+        }
+        return this.get<GetRaydiumPoolReserveResponse>(path)
     }
 
     getRaydiumPools(
