@@ -44,7 +44,7 @@ export function createValue(partialValue: Partial<$.api.UITokenAmount>): $.api.U
 
 export function encodeJson(value: $.api.UITokenAmount): unknown {
   const result: any = {};
-  if (value.uiAmount !== undefined) result.uiAmount = tsValueToJsonValueFns.float(value.uiAmount);
+  if (value.uiAmount !== undefined) result.uiAmount = tsValueToJsonValueFns.double(value.uiAmount);
   if (value.decimals !== undefined) result.decimals = tsValueToJsonValueFns.uint32(value.decimals);
   if (value.amount !== undefined) result.amount = tsValueToJsonValueFns.string(value.amount);
   if (value.uiAmountString !== undefined) result.uiAmountString = tsValueToJsonValueFns.string(value.uiAmountString);
@@ -53,7 +53,7 @@ export function encodeJson(value: $.api.UITokenAmount): unknown {
 
 export function decodeJson(value: any): $.api.UITokenAmount {
   const result = getDefaultValue();
-  if (value.uiAmount !== undefined) result.uiAmount = jsonValueToTsValueFns.float(value.uiAmount);
+  if (value.uiAmount !== undefined) result.uiAmount = jsonValueToTsValueFns.double(value.uiAmount);
   if (value.decimals !== undefined) result.decimals = jsonValueToTsValueFns.uint32(value.decimals);
   if (value.amount !== undefined) result.amount = jsonValueToTsValueFns.string(value.amount);
   if (value.uiAmountString !== undefined) result.uiAmountString = jsonValueToTsValueFns.string(value.uiAmountString);
@@ -65,7 +65,7 @@ export function encodeBinary(value: $.api.UITokenAmount): Uint8Array {
   if (value.uiAmount !== undefined) {
     const tsValue = value.uiAmount;
     result.push(
-      [1, tsValueToWireValueFns.float(tsValue)],
+      [1, tsValueToWireValueFns.double(tsValue)],
     );
   }
   if (value.decimals !== undefined) {
@@ -96,7 +96,7 @@ export function decodeBinary(binary: Uint8Array): $.api.UITokenAmount {
   field: {
     const wireValue = wireFields.get(1);
     if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.float(wireValue);
+    const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
     result.uiAmount = value;
   }
