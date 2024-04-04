@@ -409,6 +409,12 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
+    getAccountBalanceV2(
+        request: GetAccountBalanceRequest
+    ): Promise<GetAccountBalanceResponse> {
+        throw new Error("Not implemented")
+    }
+
     getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
         throw new Error("Not implemented")
     }

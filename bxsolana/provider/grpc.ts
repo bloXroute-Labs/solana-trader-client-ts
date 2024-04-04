@@ -387,6 +387,12 @@ export class GrpcProvider extends BaseProvider {
         return this.client.getAccountBalance(request)
     }
 
+    getAccountBalanceV2(
+        request: GetAccountBalanceRequest
+    ): Promise<GetAccountBalanceResponse> {
+        return this.client.getAccountBalanceV2(request)
+    }
+
     postOrder(request: PostOrderRequest): Promise<PostOrderResponse> {
         return this.client.postOrder(request)
     }

@@ -760,6 +760,7 @@ export interface Service<TReqArgs extends any[] = [], TResArgs extends any[] = [
   getPriorityFee(request: GetPriorityFeeRequest, ...args: TReqArgs): RpcReturnType<Promise<GetPriorityFeeResponse>, TResArgs>;
   getAccountBalance(request: GetAccountBalanceRequest, ...args: TReqArgs): RpcReturnType<Promise<GetAccountBalanceResponse>, TResArgs>;
   getTokenAccounts(request: GetTokenAccountsRequest, ...args: TReqArgs): RpcReturnType<Promise<GetTokenAccountsResponse>, TResArgs>;
+  getAccountBalanceV2(request: GetAccountBalanceRequest, ...args: TReqArgs): RpcReturnType<Promise<GetAccountBalanceResponse>, TResArgs>;
   postOrder(request: PostOrderRequest, ...args: TReqArgs): RpcReturnType<Promise<PostOrderResponse>, TResArgs>;
   postSubmit(request: PostSubmitRequest, ...args: TReqArgs): RpcReturnType<Promise<PostSubmitResponse>, TResArgs>;
   postSubmitBatch(request: PostSubmitBatchRequest, ...args: TReqArgs): RpcReturnType<Promise<PostSubmitBatchResponse>, TResArgs>;
@@ -1415,6 +1416,22 @@ export const methodDescriptors = {
       serializeBinary: encodeBinary_76,
       deserializeBinary: decodeBinary_76,
       serializeJson: (value: GetTokenAccountsResponse) => JSON.stringify(encodeJson_76(value)),
+    },
+  },
+  getAccountBalanceV2: {
+    methodName: "GetAccountBalanceV2",
+    service: { serviceName: "api.Api" },
+    requestStream: false,
+    responseStream: false,
+    requestType: {
+      serializeBinary: encodeBinary_73,
+      deserializeBinary: decodeBinary_73,
+      serializeJson: (value: GetAccountBalanceRequest) => JSON.stringify(encodeJson_73(value)),
+    },
+    responseType: {
+      serializeBinary: encodeBinary_74,
+      deserializeBinary: decodeBinary_74,
+      serializeJson: (value: GetAccountBalanceResponse) => JSON.stringify(encodeJson_74(value)),
     },
   },
   postOrder: {
