@@ -345,6 +345,12 @@ export class WsProvider extends BaseProvider {
         return await this.wsConnection.call("GetAccountBalance", request)
     }
 
+    async getAccountBalanceV2(
+        request: GetAccountBalanceRequest
+    ): Promise<GetAccountBalanceResponse> {
+        return await this.wsConnection.call("GetAccountBalanceV2", request)
+    }
+
     //stream requests
     getOrderbooksStream = async (
         request: GetOrderbooksRequest

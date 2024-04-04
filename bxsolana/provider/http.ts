@@ -376,6 +376,13 @@ export class HttpProvider extends BaseProvider {
         return this.get<GetAccountBalanceResponse>(path)
     }
 
+    getAccountBalanceV2(
+        request: GetAccountBalanceRequest
+    ): Promise<GetAccountBalanceResponse> {
+        const path = `${this.baseUrlV2}/balance?ownerAddress=${request.ownerAddress}`
+        return this.get<GetAccountBalanceResponse>(path)
+    }
+
     getPools(request: GetPoolsRequest): Promise<GetPoolsResponse> {
         let path = `${this.baseUrl}/market/pools`
         const args = request.projects.map((v) => `projects=${v}`).join("&")
