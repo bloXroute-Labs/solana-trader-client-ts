@@ -702,7 +702,7 @@ async function callGetAccountBalance(provider: BaseProvider) {
         provider.requestConfig.timeout = httpLongTimeout
     }
 
-    const req = await provider.getAccountBalance({
+    const req = await provider.getAccountBalanceV2({
         ownerAddress: ownerAddress,
     })
     console.info(req)
