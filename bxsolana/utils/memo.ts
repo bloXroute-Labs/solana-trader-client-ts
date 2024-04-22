@@ -38,19 +38,17 @@ export function createCompiledMemoInstruction(
 }
 
 function addMemo(tx: VersionedTransaction) {
-    const programIdIndex = tx.message.staticAccountKeys.length
-    console.log("cutoff", programIdIndex)
-    console.log("tx.message.compiledInstructions.length", tx.message.compiledInstructions.length)
+    const cutoff = tx.message.staticAccountKeys.length
     for (let i = 0; i < tx.message.compiledInstructions.length; i++) {
         const instr = tx.message.compiledInstructions[i]
         for (let j = 0; j < instr.accountKeyIndexes.length; j++) {
-            if (instr.accountKeyIndexes[j] >= programIdIndex) {
+            if (instr.accountKeyIndexes[j] >= cutoff) {
                 instr.accountKeyIndexes[j] = instr.accountKeyIndexes[j] + 1
             }
         }
     }
 
-    const memo = createCompiledMemoInstruction(programIdIndex)
+    const memo = createCompiledMemoInstruction(cutoff)
     tx.message.staticAccountKeys.push(new PublicKey(TRADER_API_MEMO_PROGRAM))
     tx.message.compiledInstructions.push(memo)
 }
