@@ -86,9 +86,9 @@ async function run() {
     console.info("---- STARTING HTTP TESTS ----")
     await http()
     console.info("---- STARTING GRPC TESTS ----")
-    // await grpc()
+    await grpc()
     console.info("---- STARTING WS TESTS ----")
-    // await ws()
+    await ws()
 }
 
 async function http() {
@@ -124,7 +124,7 @@ async function http() {
 
     console.info(" ----  HTTP Amm Requests  ----")
     await doAmmRequests(provider)
-    return
+
     console.info(" ----  HTTP Requests  ----")
     await doOrderbookRequests(provider)
 
@@ -302,7 +302,8 @@ async function doOrderbookRequests(provider: BaseProvider) {
 
 async function doAmmRequests(provider: BaseProvider) {
     await submitTransferWithMemoAndTip(provider);
-    return
+    console.info(" ")
+    console.info(" ")
 
     await submitTxWithMemo(provider)
     console.info(" ")
