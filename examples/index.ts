@@ -1505,35 +1505,6 @@ async function callCancelAll(provider: BaseProvider) {
     console.info(" ")
 }
 
-async function submitTxWithMemo(provider: BaseProvider) {
-    console.info("Retrieving recent blockHash")
-    const keypair = Keypair.fromSecretKey(base58.decode(config.privateKey))
-    console.info("Generating a trade swap")
-    const swapResponse = await provider.postTradeSwap({
-        ownerAddress: ownerAddress,
-        inToken: tokenAddress,
-        outToken: "So11111111111111111111111111111111111111112",
-        inAmount: 0.1,
-        slippage: 10,
-        project: "P_RAYDIUM",
-        computeLimit: testOrder.computeLimit,
-        computePrice: testOrder.computePrice,
-    })
-
-    let encodedTxn2 = addMemoToSerializedTxn(
-        swapResponse.transactions[0].content
-    )
-    console.info("Submitting tx with memo")
-
-    const tx = signTx(encodedTxn2, keypair)
-    encodedTxn2 = txToBase64(tx)
-    const response = await provider.postSubmit({
-        transaction: { content: encodedTxn2, isCleanup: false },
-        skipPreFlight: false,
-    })
-    console.info(response.signature)
-}
-
 async function submitTransferWithMemoAndTip(provider: BaseProvider) {
     const keypair = Keypair.fromSecretKey(base58.decode(config.privateKey))
     const memo = createTraderAPIMemoInstruction("")
