@@ -307,13 +307,6 @@ async function doOrderbookRequests(provider: BaseProvider) {
 }
 
 async function doAmmRequests(provider: BaseProvider) {
-    await submitTransferWithMemoAndTip(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await submitTxWithMemo(provider)
-    console.info(" ")
-    console.info(" ")
 
     await callGetRaydiumPoolReserve(provider)
     console.info(" ")
@@ -636,6 +629,10 @@ async function doHttpLifecycle(provider: BaseProvider) {
         }
 
         await callSubmitSettleFunds(provider)
+        console.info(" ")
+        console.info(" ")
+
+        await submitTransferWithMemoAndTip(provider)
         console.info(" ")
         console.info(" ")
 
