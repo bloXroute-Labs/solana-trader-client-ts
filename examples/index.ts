@@ -23,9 +23,16 @@ import {
     PostOrderRequestV2,
     MAINNET_API_NY_HTTP,
     MAINNET_API_NY_GRPC,
-    MAINNET_API_NY_WS, createTraderAPIMemoInstruction
+    MAINNET_API_NY_WS,
+    createTraderAPIMemoInstruction,
 } from "../bxsolana"
-import { Keypair, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js"
+import {
+    Keypair,
+    LAMPORTS_PER_SOL,
+    PublicKey,
+    SystemProgram,
+    Transaction,
+} from "@solana/web3.js"
 import base58 from "bs58"
 import {
     DEVNET_API_GRPC_HOST,
@@ -35,7 +42,6 @@ import { AxiosRequestConfig } from "axios"
 import { txToBase64 } from "../bxsolana/utils/transaction"
 import { $ } from "../bxsolana/proto/messages/api/GetOpenOrdersResponseV2"
 import GetOpenOrdersResponseV2 = $.api.GetOpenOrdersResponseV2
-
 
 const config = loadFromEnv()
 
@@ -301,7 +307,7 @@ async function doOrderbookRequests(provider: BaseProvider) {
 }
 
 async function doAmmRequests(provider: BaseProvider) {
-    await submitTransferWithMemoAndTip(provider);
+    await submitTransferWithMemoAndTip(provider)
     console.info(" ")
     console.info(" ")
 
@@ -1514,7 +1520,9 @@ async function submitTxWithMemo(provider: BaseProvider) {
         computePrice: testOrder.computePrice,
     })
 
-    let encodedTxn2 = addMemoToSerializedTxn(swapResponse.transactions[0].content)
+    let encodedTxn2 = addMemoToSerializedTxn(
+        swapResponse.transactions[0].content
+    )
     console.info("Submitting tx with memo")
 
     const tx = signTx(encodedTxn2, keypair)
@@ -1530,25 +1538,31 @@ async function submitTransferWithMemoAndTip(provider: BaseProvider) {
     const keypair = Keypair.fromSecretKey(base58.decode(config.privateKey))
     const memo = createTraderAPIMemoInstruction("")
 
-    const receiverPublicKey = new PublicKey('7PMvo9sfhbwHpo2P4Y4XGySpzkodsMr2oa3v6UY1kag1');
-    const latestBlockhash = await provider.getRecentBlockHash({});
+    const receiverPublicKey = new PublicKey(
+        "7PMvo9sfhbwHpo2P4Y4XGySpzkodsMr2oa3v6UY1kag1"
+    )
+    const latestBlockhash = await provider.getRecentBlockHash({})
 
     let transaction = new Transaction({
         recentBlockhash: latestBlockhash.blockHash,
         feePayer: keypair.publicKey,
-    }).add(
-        SystemProgram.transfer({
-            fromPubkey: keypair.publicKey,
-            toPubkey: receiverPublicKey,
-            lamports: 0.000001 * LAMPORTS_PER_SOL // transferring 1 SOL
-        })
-    ).add(
-        SystemProgram.transfer({
-            fromPubkey: keypair.publicKey,
-            toPubkey: new PublicKey("HWEoBxYs7ssKuudEjzjmpfJVX7Dvi7wescFsVx2L5yoY"),
-            lamports: 0.0001 * LAMPORTS_PER_SOL // transferring 1 SOL
-        })
-    );
+    })
+        .add(
+            SystemProgram.transfer({
+                fromPubkey: keypair.publicKey,
+                toPubkey: receiverPublicKey,
+                lamports: 0.000001 * LAMPORTS_PER_SOL, // transferring 1 SOL
+            })
+        )
+        .add(
+            SystemProgram.transfer({
+                fromPubkey: keypair.publicKey,
+                toPubkey: new PublicKey(
+                    "HWEoBxYs7ssKuudEjzjmpfJVX7Dvi7wescFsVx2L5yoY"
+                ),
+                lamports: 0.0001 * LAMPORTS_PER_SOL, // transferring 1 SOL
+            })
+        )
     transaction = transaction.add(memo)
 
     transaction.sign(keypair)
