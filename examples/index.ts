@@ -1547,6 +1547,28 @@ async function submitTransferWithMemoAndTip(provider: BaseProvider) {
     console.info(response.signature)
 }
 
+async function submitTxWithMemo(provider: BaseProvider) {
+    console.info("Retrieving recent blockHash")
+    const recentBlockhash = await provider.getRecentBlockHash({})
+    console.info(recentBlockhash.blockHash)
+    const keypair = Keypair.fromSecretKey(base58.decode(config.privateKey))
+    const encodedTxn = buildUnsignedTxn(
+        recentBlockhash.blockHash,
+        keypair.publicKey
+    )
+
+    let encodedTxn2 = addMemoToSerializedTxn(encodedTxn)
+    console.info("Submitting tx with memo")
+
+    const tx = signTx(encodedTxn2, keypair)
+    encodedTxn2 = txToBase64(tx)
+    const response = await provider.postSubmit({
+        transaction: { content: encodedTxn2, isCleanup: false },
+        skipPreFlight: true,
+    })
+    console.info(response.signature)
+}
+
 run().then(() => {
     console.log("done!")
     process.exit(0)
