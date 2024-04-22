@@ -1522,7 +1522,7 @@ async function submitTransferWithMemoAndTip(provider: BaseProvider) {
             SystemProgram.transfer({
                 fromPubkey: keypair.publicKey,
                 toPubkey: receiverPublicKey,
-                lamports: 0.000001 * LAMPORTS_PER_SOL, // transferring 1 SOL
+                lamports: 0.000001 * LAMPORTS_PER_SOL,
             })
         )
         .add(
@@ -1531,7 +1531,7 @@ async function submitTransferWithMemoAndTip(provider: BaseProvider) {
                 toPubkey: new PublicKey(
                     "HWEoBxYs7ssKuudEjzjmpfJVX7Dvi7wescFsVx2L5yoY"
                 ),
-                lamports: 0.0001 * LAMPORTS_PER_SOL, // transferring 1 SOL
+                lamports: 0.0001 * LAMPORTS_PER_SOL,
             })
         )
     transaction = transaction.add(memo)
