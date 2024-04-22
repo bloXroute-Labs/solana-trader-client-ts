@@ -23,10 +23,9 @@ import {
     PostOrderRequestV2,
     MAINNET_API_NY_HTTP,
     MAINNET_API_NY_GRPC,
-    MAINNET_API_NY_WS,
-    GetPriorityFeeRequest,
+    MAINNET_API_NY_WS, createTraderAPIMemoInstruction
 } from "../bxsolana"
-import { Keypair, PublicKey, Transaction } from "@solana/web3.js"
+import { Keypair, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js"
 import base58 from "bs58"
 import {
     DEVNET_API_GRPC_HOST,
@@ -36,6 +35,7 @@ import { AxiosRequestConfig } from "axios"
 import { txToBase64 } from "../bxsolana/utils/transaction"
 import { $ } from "../bxsolana/proto/messages/api/GetOpenOrdersResponseV2"
 import GetOpenOrdersResponseV2 = $.api.GetOpenOrdersResponseV2
+
 
 const config = loadFromEnv()
 
@@ -86,9 +86,9 @@ async function run() {
     console.info("---- STARTING HTTP TESTS ----")
     await http()
     console.info("---- STARTING GRPC TESTS ----")
-    await grpc()
+    // await grpc()
     console.info("---- STARTING WS TESTS ----")
-    await ws()
+    // await ws()
 }
 
 async function http() {
@@ -124,7 +124,7 @@ async function http() {
 
     console.info(" ----  HTTP Amm Requests  ----")
     await doAmmRequests(provider)
-
+    return
     console.info(" ----  HTTP Requests  ----")
     await doOrderbookRequests(provider)
 
@@ -301,6 +301,13 @@ async function doOrderbookRequests(provider: BaseProvider) {
 }
 
 async function doAmmRequests(provider: BaseProvider) {
+    await submitTransferWithMemoAndTip(provider);
+    return
+
+    await submitTxWithMemo(provider)
+    console.info(" ")
+    console.info(" ")
+
     await callGetRaydiumPoolReserve(provider)
     console.info(" ")
     console.info(" ")
@@ -1493,22 +1500,63 @@ async function callCancelAll(provider: BaseProvider) {
 
 async function submitTxWithMemo(provider: BaseProvider) {
     console.info("Retrieving recent blockHash")
-    const recentBlockhash = await provider.getRecentBlockHash({})
-    console.info(recentBlockhash.blockHash)
     const keypair = Keypair.fromSecretKey(base58.decode(config.privateKey))
-    const encodedTxn = buildUnsignedTxn(
-        recentBlockhash.blockHash,
-        keypair.publicKey
-    )
+    console.info("Generating a trade swap")
+    const swapResponse = await provider.postTradeSwap({
+        ownerAddress: ownerAddress,
+        inToken: tokenAddress,
+        outToken: "So11111111111111111111111111111111111111112",
+        inAmount: 0.1,
+        slippage: 10,
+        project: "P_RAYDIUM",
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
+    })
 
-    let encodedTxn2 = addMemoToSerializedTxn(encodedTxn)
+    let encodedTxn2 = addMemoToSerializedTxn(swapResponse.transactions[0].content)
     console.info("Submitting tx with memo")
 
     const tx = signTx(encodedTxn2, keypair)
     encodedTxn2 = txToBase64(tx)
     const response = await provider.postSubmit({
         transaction: { content: encodedTxn2, isCleanup: false },
-        skipPreFlight: true,
+        skipPreFlight: false,
+    })
+    console.info(response.signature)
+}
+
+async function submitTransferWithMemoAndTip(provider: BaseProvider) {
+    const keypair = Keypair.fromSecretKey(base58.decode(config.privateKey))
+    const memo = createTraderAPIMemoInstruction("")
+
+    const receiverPublicKey = new PublicKey('7PMvo9sfhbwHpo2P4Y4XGySpzkodsMr2oa3v6UY1kag1');
+    const latestBlockhash = await provider.getRecentBlockHash({});
+
+    let transaction = new Transaction({
+        recentBlockhash: latestBlockhash.blockHash,
+        feePayer: keypair.publicKey,
+    }).add(
+        SystemProgram.transfer({
+            fromPubkey: keypair.publicKey,
+            toPubkey: receiverPublicKey,
+            lamports: 0.000001 * LAMPORTS_PER_SOL // transferring 1 SOL
+        })
+    ).add(
+        SystemProgram.transfer({
+            fromPubkey: keypair.publicKey,
+            toPubkey: new PublicKey("HWEoBxYs7ssKuudEjzjmpfJVX7Dvi7wescFsVx2L5yoY"),
+            lamports: 0.0001 * LAMPORTS_PER_SOL // transferring 1 SOL
+        })
+    );
+    transaction = transaction.add(memo)
+
+    transaction.sign(keypair)
+    const serializedTransaztionBytes = transaction.serialize()
+    const buff = Buffer.from(serializedTransaztionBytes)
+    const encodedTxn = buff.toString("base64")
+    const response = await provider.postSubmit({
+        transaction: { content: encodedTxn, isCleanup: false },
+        skipPreFlight: false,
     })
     console.info(response.signature)
 }
