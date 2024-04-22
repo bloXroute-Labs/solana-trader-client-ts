@@ -24,9 +24,15 @@ import {
     MAINNET_API_NY_HTTP,
     MAINNET_API_NY_GRPC,
     MAINNET_API_NY_WS,
-    GetPriorityFeeRequest,
+    createTraderAPIMemoInstruction,
 } from "../bxsolana"
-import { Keypair, PublicKey, Transaction } from "@solana/web3.js"
+import {
+    Keypair,
+    LAMPORTS_PER_SOL,
+    PublicKey,
+    SystemProgram,
+    Transaction,
+} from "@solana/web3.js"
 import base58 from "bs58"
 import {
     DEVNET_API_GRPC_HOST,
@@ -301,6 +307,7 @@ async function doOrderbookRequests(provider: BaseProvider) {
 }
 
 async function doAmmRequests(provider: BaseProvider) {
+
     await callGetRaydiumPoolReserve(provider)
     console.info(" ")
     console.info(" ")
@@ -622,6 +629,10 @@ async function doHttpLifecycle(provider: BaseProvider) {
         }
 
         await callSubmitSettleFunds(provider)
+        console.info(" ")
+        console.info(" ")
+
+        await submitTransferWithMemoAndTip(provider)
         console.info(" ")
         console.info(" ")
 
@@ -1489,6 +1500,48 @@ async function callCancelAll(provider: BaseProvider) {
     await callSubmitSettleFunds(provider)
     console.info(" ")
     console.info(" ")
+}
+
+async function submitTransferWithMemoAndTip(provider: BaseProvider) {
+    const keypair = Keypair.fromSecretKey(base58.decode(config.privateKey))
+    const memo = createTraderAPIMemoInstruction("")
+
+    const receiverPublicKey = new PublicKey(
+        "7PMvo9sfhbwHpo2P4Y4XGySpzkodsMr2oa3v6UY1kag1"
+    )
+    const latestBlockhash = await provider.getRecentBlockHash({})
+
+    let transaction = new Transaction({
+        recentBlockhash: latestBlockhash.blockHash,
+        feePayer: keypair.publicKey,
+    })
+        .add(
+            SystemProgram.transfer({
+                fromPubkey: keypair.publicKey,
+                toPubkey: receiverPublicKey,
+                lamports: 0.000001 * LAMPORTS_PER_SOL,
+            })
+        )
+        .add(
+            SystemProgram.transfer({
+                fromPubkey: keypair.publicKey,
+                toPubkey: new PublicKey(
+                    "HWEoBxYs7ssKuudEjzjmpfJVX7Dvi7wescFsVx2L5yoY"
+                ),
+                lamports: 0.0001 * LAMPORTS_PER_SOL,
+            })
+        )
+    transaction = transaction.add(memo)
+
+    transaction.sign(keypair)
+    const serializedTransaztionBytes = transaction.serialize()
+    const buff = Buffer.from(serializedTransaztionBytes)
+    const encodedTxn = buff.toString("base64")
+    const response = await provider.postSubmit({
+        transaction: { content: encodedTxn, isCleanup: false },
+        skipPreFlight: false,
+    })
+    console.info(response.signature)
 }
 
 async function submitTxWithMemo(provider: BaseProvider) {
