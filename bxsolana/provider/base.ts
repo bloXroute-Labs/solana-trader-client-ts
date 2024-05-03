@@ -122,7 +122,7 @@ import {
     GetBundleTipRequest,
     GetBundleTipResponse,
     PostRaydiumSwapInstructionsRequest,
-    PostRaydiumSwapInstructionsResponse
+    PostRaydiumSwapInstructionsResponse,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
