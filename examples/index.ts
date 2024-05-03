@@ -371,6 +371,10 @@ async function doAmmRequests(provider: BaseProvider) {
     console.info(" ")
     console.info(" ")
 
+    await callPostRaydiumSwapInstructions(provider)
+    console.info(" ")
+    console.info(" ")
+
     await callPostJupiterSwapInstructions(provider)
     console.info(" ")
     console.info(" ")
@@ -1285,6 +1289,20 @@ async function callPostJupiterSwapInstructions(provider: BaseProvider) {
         slippage: 0.1,
         computePrice: testOrder.computePrice,
         fastMode: true,
+    })
+    console.info(response)
+}
+
+async function callPostRaydiumSwapInstructions(provider: BaseProvider) {
+    console.info("Generating a Raydium swap instructions")
+    const response = await provider.postRaydiumSwapInstructions({
+        ownerAddress: ownerAddress,
+        inToken: tokenAddress,
+        outToken: "SOL",
+        inAmount: 0.01,
+        slippage: 0.1,
+        computePrice: testOrder.computePrice,
+        computeLimit: testOrder.computeLimit,
     })
     console.info(response)
 }

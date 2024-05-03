@@ -431,7 +431,7 @@ export class HttpProvider extends BaseProvider {
         return this.get<GetPriorityFeeResponse>(path)
     }
 
-    postRaydiumSwapInstructionsRequest(
+    postRaydiumSwapInstructions(
         request: PostRaydiumSwapInstructionsRequest
     ): Promise<PostRaydiumSwapInstructionsResponse> {
         const path = `${this.baseUrlV2}/raydium/swap-instructions`
