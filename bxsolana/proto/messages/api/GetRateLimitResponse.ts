@@ -1,9 +1,17 @@
 import {
+  Type as StreamInfo,
+  encodeJson as encodeJson_1,
+  decodeJson as decodeJson_1,
+  encodeBinary as encodeBinary_1,
+  decodeBinary as decodeBinary_1,
+} from "./StreamInfo";
+import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar";
 import {
   WireMessage,
+  WireType,
 } from "../../runtime/wire/index";
 import {
   default as serialize,
@@ -25,6 +33,7 @@ export declare namespace $.api {
     limit: string;
     count: string;
     reset: string;
+    streamInfos: StreamInfo[];
   }
 }
 export type Type = $.api.GetRateLimitResponse;
@@ -38,6 +47,7 @@ export function getDefaultValue(): $.api.GetRateLimitResponse {
     limit: "0",
     count: "0",
     reset: "0",
+    streamInfos: [],
   };
 }
 
@@ -57,6 +67,7 @@ export function encodeJson(value: $.api.GetRateLimitResponse): unknown {
   if (value.limit !== undefined) result.limit = tsValueToJsonValueFns.uint64(value.limit);
   if (value.count !== undefined) result.count = tsValueToJsonValueFns.uint64(value.count);
   if (value.reset !== undefined) result.reset = tsValueToJsonValueFns.uint64(value.reset);
+  result.streamInfos = value.streamInfos.map(value => encodeJson_1(value));
   return result;
 }
 
@@ -69,6 +80,7 @@ export function decodeJson(value: any): $.api.GetRateLimitResponse {
   if (value.limit !== undefined) result.limit = jsonValueToTsValueFns.uint64(value.limit);
   if (value.count !== undefined) result.count = jsonValueToTsValueFns.uint64(value.count);
   if (value.reset !== undefined) result.reset = jsonValueToTsValueFns.uint64(value.reset);
+  result.streamInfos = value.streamInfos?.map((value: any) => decodeJson_1(value)) ?? [];
   return result;
 }
 
@@ -114,6 +126,11 @@ export function encodeBinary(value: $.api.GetRateLimitResponse): Uint8Array {
     const tsValue = value.reset;
     result.push(
       [7, tsValueToWireValueFns.uint64(tsValue)],
+    );
+  }
+  for (const tsValue of value.streamInfos) {
+    result.push(
+      [8, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
     );
   }
   return serialize(result);
@@ -171,6 +188,12 @@ export function decodeBinary(binary: Uint8Array): $.api.GetRateLimitResponse {
     const value = wireValueToTsValueFns.uint64(wireValue);
     if (value === undefined) break field;
     result.reset = value;
+  }
+  collection: {
+    const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 8).map(([, wireValue]) => wireValue);
+    const value = wireValues.map((wireValue) => wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined).filter(x => x !== undefined);
+    if (!value.length) break collection;
+    result.streamInfos = value as any;
   }
   return result;
 }

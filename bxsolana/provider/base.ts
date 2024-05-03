@@ -119,6 +119,10 @@ import {
     GetTickersStreamRequest,
     GetRaydiumPoolReserveRequest,
     GetRaydiumPoolReserveResponse,
+    GetBundleTipRequest,
+    GetBundleTipResponse,
+    PostRaydiumSwapInstructionsRequest,
+    PostRaydiumSwapInstructionsResponse,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -274,6 +278,12 @@ export abstract class BaseProvider implements Api {
     postRaydiumSwap(
         request: PostRaydiumSwapRequest
     ): RpcReturnType<Promise<PostRaydiumSwapResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postRaydiumSwapInstructions(
+        request: PostRaydiumSwapInstructionsRequest
+    ): RpcReturnType<Promise<PostRaydiumSwapInstructionsResponse>, []> {
         throw new Error("Method not implemented.")
     }
 
@@ -778,6 +788,12 @@ export abstract class BaseProvider implements Api {
     getPoolReservesStream(
         request: GetPoolReservesStreamRequest
     ): Promise<AsyncGenerator<GetPoolReservesStreamResponse>> {
+        throw new Error("Not implemented")
+    }
+
+    getBundleTipStream(
+        request: GetBundleTipRequest
+    ): Promise<AsyncGenerator<GetBundleTipResponse>> {
         throw new Error("Not implemented")
     }
 

@@ -111,6 +111,8 @@ import {
     GetTickersStreamRequest,
     GetRaydiumPoolReserveRequest,
     GetRaydiumPoolReserveResponse,
+    GetBundleTipResponse,
+    GetBundleTipRequest
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -513,6 +515,18 @@ export class WsProvider extends BaseProvider {
         )
 
         this.manageGetStreamMaps("GetPriorityFeeStream", subscriptionId)
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
+    }
+
+    getBundleTipStream = async (
+        request: GetBundleTipRequest
+    ): Promise<AsyncGenerator<GetBundleTipResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetBundleTipStream",
+            request
+        )
+
+        this.manageGetStreamMaps("GetBundleTipStream", subscriptionId)
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
