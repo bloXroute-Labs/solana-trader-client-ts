@@ -88,7 +88,9 @@ import {
     PostJupiterSwapInstructionsRequest,
     PostJupiterSwapInstructionsResponse,
     GetRaydiumPoolReserveRequest,
-    GetRaydiumPoolReserveResponse, PostRaydiumSwapInstructionsRequest, PostRaydiumSwapInstructionsResponse
+    GetRaydiumPoolReserveResponse,
+    PostRaydiumSwapInstructionsRequest,
+    PostRaydiumSwapInstructionsResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -436,7 +438,7 @@ export class HttpProvider extends BaseProvider {
         return this.post<
             PostRaydiumSwapInstructionsRequest,
             PostRaydiumSwapInstructionsResponse
-            >(path, request)
+        >(path, request)
     }
 
     postOrder(request: PostOrderRequest): Promise<PostOrderResponse> {

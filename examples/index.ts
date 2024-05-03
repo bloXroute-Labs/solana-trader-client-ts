@@ -307,7 +307,6 @@ async function doOrderbookRequests(provider: BaseProvider) {
 }
 
 async function doAmmRequests(provider: BaseProvider) {
-
     await callGetRaydiumPoolReserve(provider)
     console.info(" ")
     console.info(" ")
