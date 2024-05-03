@@ -88,7 +88,7 @@ import {
     PostJupiterSwapInstructionsRequest,
     PostJupiterSwapInstructionsResponse,
     GetRaydiumPoolReserveRequest,
-    GetRaydiumPoolReserveResponse,
+    GetRaydiumPoolReserveResponse, PostRaydiumSwapInstructionsRequest, PostRaydiumSwapInstructionsResponse
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -427,6 +427,16 @@ export class HttpProvider extends BaseProvider {
             path += `&percentile=${request.percentile}`
         }
         return this.get<GetPriorityFeeResponse>(path)
+    }
+
+    postRaydiumSwapInstructionsRequest(
+        request: PostRaydiumSwapInstructionsRequest
+    ): Promise<PostRaydiumSwapInstructionsResponse> {
+        const path = `${this.baseUrlV2}/raydium/swap-instructions`
+        return this.post<
+            PostRaydiumSwapInstructionsRequest,
+            PostRaydiumSwapInstructionsResponse
+            >(path, request)
     }
 
     postOrder(request: PostOrderRequest): Promise<PostOrderResponse> {
