@@ -17,7 +17,7 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface PostJupiterSwapRequest {
+  export interface PostRaydiumSwapInstructionsRequest {
     ownerAddress: string;
     inToken: string;
     outToken: string;
@@ -26,12 +26,11 @@ export declare namespace $.api {
     computeLimit: number;
     computePrice: string;
     tip?: string;
-    fastMode?: boolean;
   }
 }
-export type Type = $.api.PostJupiterSwapRequest;
+export type Type = $.api.PostRaydiumSwapInstructionsRequest;
 
-export function getDefaultValue(): $.api.PostJupiterSwapRequest {
+export function getDefaultValue(): $.api.PostRaydiumSwapInstructionsRequest {
   return {
     ownerAddress: "",
     inToken: "",
@@ -41,18 +40,17 @@ export function getDefaultValue(): $.api.PostJupiterSwapRequest {
     computeLimit: 0,
     computePrice: "0",
     tip: "0",
-    fastMode: false,
   };
 }
 
-export function createValue(partialValue: Partial<$.api.PostJupiterSwapRequest>): $.api.PostJupiterSwapRequest {
+export function createValue(partialValue: Partial<$.api.PostRaydiumSwapInstructionsRequest>): $.api.PostRaydiumSwapInstructionsRequest {
   return {
     ...getDefaultValue(),
     ...partialValue,
   };
 }
 
-export function encodeJson(value: $.api.PostJupiterSwapRequest): unknown {
+export function encodeJson(value: $.api.PostRaydiumSwapInstructionsRequest): unknown {
   const result: any = {};
   if (value.ownerAddress !== undefined) result.ownerAddress = tsValueToJsonValueFns.string(value.ownerAddress);
   if (value.inToken !== undefined) result.inToken = tsValueToJsonValueFns.string(value.inToken);
@@ -62,11 +60,10 @@ export function encodeJson(value: $.api.PostJupiterSwapRequest): unknown {
   if (value.computeLimit !== undefined) result.computeLimit = tsValueToJsonValueFns.uint32(value.computeLimit);
   if (value.computePrice !== undefined) result.computePrice = tsValueToJsonValueFns.uint64(value.computePrice);
   if (value.tip !== undefined) result.tip = tsValueToJsonValueFns.uint64(value.tip);
-  if (value.fastMode !== undefined) result.fastMode = tsValueToJsonValueFns.bool(value.fastMode);
   return result;
 }
 
-export function decodeJson(value: any): $.api.PostJupiterSwapRequest {
+export function decodeJson(value: any): $.api.PostRaydiumSwapInstructionsRequest {
   const result = getDefaultValue();
   if (value.ownerAddress !== undefined) result.ownerAddress = jsonValueToTsValueFns.string(value.ownerAddress);
   if (value.inToken !== undefined) result.inToken = jsonValueToTsValueFns.string(value.inToken);
@@ -76,11 +73,10 @@ export function decodeJson(value: any): $.api.PostJupiterSwapRequest {
   if (value.computeLimit !== undefined) result.computeLimit = jsonValueToTsValueFns.uint32(value.computeLimit);
   if (value.computePrice !== undefined) result.computePrice = jsonValueToTsValueFns.uint64(value.computePrice);
   if (value.tip !== undefined) result.tip = jsonValueToTsValueFns.uint64(value.tip);
-  if (value.fastMode !== undefined) result.fastMode = jsonValueToTsValueFns.bool(value.fastMode);
   return result;
 }
 
-export function encodeBinary(value: $.api.PostJupiterSwapRequest): Uint8Array {
+export function encodeBinary(value: $.api.PostRaydiumSwapInstructionsRequest): Uint8Array {
   const result: WireMessage = [];
   if (value.ownerAddress !== undefined) {
     const tsValue = value.ownerAddress;
@@ -130,16 +126,10 @@ export function encodeBinary(value: $.api.PostJupiterSwapRequest): Uint8Array {
       [8, tsValueToWireValueFns.uint64(tsValue)],
     );
   }
-  if (value.fastMode !== undefined) {
-    const tsValue = value.fastMode;
-    result.push(
-      [9, tsValueToWireValueFns.bool(tsValue)],
-    );
-  }
   return serialize(result);
 }
 
-export function decodeBinary(binary: Uint8Array): $.api.PostJupiterSwapRequest {
+export function decodeBinary(binary: Uint8Array): $.api.PostRaydiumSwapInstructionsRequest {
   const result = getDefaultValue();
   const wireMessage = deserialize(binary);
   const wireFields = new Map(wireMessage);
@@ -198,13 +188,6 @@ export function decodeBinary(binary: Uint8Array): $.api.PostJupiterSwapRequest {
     const value = wireValueToTsValueFns.uint64(wireValue);
     if (value === undefined) break field;
     result.tip = value;
-  }
-  field: {
-    const wireValue = wireFields.get(9);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.bool(wireValue);
-    if (value === undefined) break field;
-    result.fastMode = value;
   }
   return result;
 }

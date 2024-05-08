@@ -22,6 +22,7 @@ export declare namespace $.api {
     outToken: string;
     inAmount: number;
     slippage: number;
+    fastMode?: boolean;
   }
 }
 export type Type = $.api.GetJupiterQuotesRequest;
@@ -32,6 +33,7 @@ export function getDefaultValue(): $.api.GetJupiterQuotesRequest {
     outToken: "",
     inAmount: 0,
     slippage: 0,
+    fastMode: false,
   };
 }
 
@@ -48,6 +50,7 @@ export function encodeJson(value: $.api.GetJupiterQuotesRequest): unknown {
   if (value.outToken !== undefined) result.outToken = tsValueToJsonValueFns.string(value.outToken);
   if (value.inAmount !== undefined) result.inAmount = tsValueToJsonValueFns.double(value.inAmount);
   if (value.slippage !== undefined) result.slippage = tsValueToJsonValueFns.double(value.slippage);
+  if (value.fastMode !== undefined) result.fastMode = tsValueToJsonValueFns.bool(value.fastMode);
   return result;
 }
 
@@ -57,6 +60,7 @@ export function decodeJson(value: any): $.api.GetJupiterQuotesRequest {
   if (value.outToken !== undefined) result.outToken = jsonValueToTsValueFns.string(value.outToken);
   if (value.inAmount !== undefined) result.inAmount = jsonValueToTsValueFns.double(value.inAmount);
   if (value.slippage !== undefined) result.slippage = jsonValueToTsValueFns.double(value.slippage);
+  if (value.fastMode !== undefined) result.fastMode = jsonValueToTsValueFns.bool(value.fastMode);
   return result;
 }
 
@@ -84,6 +88,12 @@ export function encodeBinary(value: $.api.GetJupiterQuotesRequest): Uint8Array {
     const tsValue = value.slippage;
     result.push(
       [4, tsValueToWireValueFns.double(tsValue)],
+    );
+  }
+  if (value.fastMode !== undefined) {
+    const tsValue = value.fastMode;
+    result.push(
+      [5, tsValueToWireValueFns.bool(tsValue)],
     );
   }
   return serialize(result);
@@ -120,6 +130,13 @@ export function decodeBinary(binary: Uint8Array): $.api.GetJupiterQuotesRequest 
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
     result.slippage = value;
+  }
+  field: {
+    const wireValue = wireFields.get(5);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.bool(wireValue);
+    if (value === undefined) break field;
+    result.fastMode = value;
   }
   return result;
 }

@@ -118,6 +118,8 @@ import {
     GetTickersStreamRequest,
     GetRaydiumPoolReserveRequest,
     GetRaydiumPoolReserveResponse,
+    GetBundleTipResponse,
+    GetBundleTipRequest
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
@@ -565,5 +567,11 @@ export class GrpcProvider extends BaseProvider {
         request: GetPriorityFeeRequest
     ): Promise<AsyncGenerator<GetPriorityFeeResponse>> {
         return this.client.getPriorityFeeStream(request)
+    }
+
+    getBundleTipStream(
+        request: GetBundleTipRequest
+    ): Promise<AsyncGenerator<GetBundleTipResponse>> {
+        return this.client.getBundleTipStream(request)
     }
 }

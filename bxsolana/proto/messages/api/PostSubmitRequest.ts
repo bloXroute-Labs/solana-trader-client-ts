@@ -29,6 +29,8 @@ export declare namespace $.api {
     transaction?: TransactionMessage;
     skipPreFlight: boolean;
     frontRunningProtection?: boolean;
+    tip?: string;
+    tpu?: number;
   }
 }
 export type Type = $.api.PostSubmitRequest;
@@ -38,6 +40,8 @@ export function getDefaultValue(): $.api.PostSubmitRequest {
     transaction: undefined,
     skipPreFlight: false,
     frontRunningProtection: false,
+    tip: "0",
+    tpu: 0,
   };
 }
 
@@ -53,6 +57,8 @@ export function encodeJson(value: $.api.PostSubmitRequest): unknown {
   if (value.transaction !== undefined) result.transaction = encodeJson_1(value.transaction);
   if (value.skipPreFlight !== undefined) result.skipPreFlight = tsValueToJsonValueFns.bool(value.skipPreFlight);
   if (value.frontRunningProtection !== undefined) result.frontRunningProtection = tsValueToJsonValueFns.bool(value.frontRunningProtection);
+  if (value.tip !== undefined) result.tip = tsValueToJsonValueFns.uint64(value.tip);
+  if (value.tpu !== undefined) result.tpu = tsValueToJsonValueFns.uint32(value.tpu);
   return result;
 }
 
@@ -61,6 +67,8 @@ export function decodeJson(value: any): $.api.PostSubmitRequest {
   if (value.transaction !== undefined) result.transaction = decodeJson_1(value.transaction);
   if (value.skipPreFlight !== undefined) result.skipPreFlight = jsonValueToTsValueFns.bool(value.skipPreFlight);
   if (value.frontRunningProtection !== undefined) result.frontRunningProtection = jsonValueToTsValueFns.bool(value.frontRunningProtection);
+  if (value.tip !== undefined) result.tip = jsonValueToTsValueFns.uint64(value.tip);
+  if (value.tpu !== undefined) result.tpu = jsonValueToTsValueFns.uint32(value.tpu);
   return result;
 }
 
@@ -82,6 +90,18 @@ export function encodeBinary(value: $.api.PostSubmitRequest): Uint8Array {
     const tsValue = value.frontRunningProtection;
     result.push(
       [3, tsValueToWireValueFns.bool(tsValue)],
+    );
+  }
+  if (value.tip !== undefined) {
+    const tsValue = value.tip;
+    result.push(
+      [4, tsValueToWireValueFns.uint64(tsValue)],
+    );
+  }
+  if (value.tpu !== undefined) {
+    const tsValue = value.tpu;
+    result.push(
+      [5, tsValueToWireValueFns.uint32(tsValue)],
     );
   }
   return serialize(result);
@@ -111,6 +131,20 @@ export function decodeBinary(binary: Uint8Array): $.api.PostSubmitRequest {
     const value = wireValueToTsValueFns.bool(wireValue);
     if (value === undefined) break field;
     result.frontRunningProtection = value;
+  }
+  field: {
+    const wireValue = wireFields.get(4);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.uint64(wireValue);
+    if (value === undefined) break field;
+    result.tip = value;
+  }
+  field: {
+    const wireValue = wireFields.get(5);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.uint32(wireValue);
+    if (value === undefined) break field;
+    result.tpu = value;
   }
   return result;
 }

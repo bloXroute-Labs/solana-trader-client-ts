@@ -162,7 +162,10 @@ export class HttpProvider extends BaseProvider {
     getJupiterQuotes(
         request: GetJupiterQuotesRequest
     ): RpcReturnType<Promise<GetJupiterQuotesResponse>, []> {
-        const path = `${this.baseUrlV2}/jupiter/quotes?inToken=${request.inToken}&outToken=${request.outToken}&inAmount=${request.inAmount}&slippage=${request.slippage}`
+        let path = `${this.baseUrlV2}/jupiter/quotes?inToken=${request.inToken}&outToken=${request.outToken}&inAmount=${request.inAmount}&slippage=${request.slippage}`
+        if (request.fastMode) {
+            path += `&fastMode=${request.fastMode}`
+        }
         return this.get<GetJupiterQuotesResponse>(path)
     }
 

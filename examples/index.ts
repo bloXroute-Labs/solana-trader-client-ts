@@ -419,6 +419,10 @@ async function doStreams(provider: BaseProvider) {
     await callGetPriorityFeeStream(provider)
     console.info(" ")
     console.info(" ")
+
+    await callGetBundleTipStream(provider)
+    console.info(" ")
+    console.info(" ")
 }
 
 async function cancelWsStreams(provider: BaseProvider) {
@@ -829,6 +833,7 @@ async function callGetJupiterQuotes(provider: BaseProvider) {
         outToken: tokenAddress,
         inAmount: 1,
         slippage: 5,
+        fastMode: true,
     })
     console.info(resp)
 }
@@ -1084,6 +1089,20 @@ async function callGetPriorityFeeStream(provider: BaseProvider) {
     }
 }
 
+async function callGetBundleTipStream(provider: BaseProvider) {
+    console.info("Subscribing for bundle tip updates")
+    const resp = await provider.getBundleTipStream({})
+    let count = 0
+
+    for await (const update of resp) {
+        console.info(update)
+        count++
+        if (count == 2) {
+            break
+        }
+    }
+}
+
 // POST requests
 async function callPostOrder(provider: BaseProvider) {
     console.info("generating New Order transaction")
@@ -1252,6 +1271,7 @@ async function callPostJupiterSwap(provider: BaseProvider) {
         slippage: 0.1,
         computeLimit: testOrder.computeLimit,
         computePrice: testOrder.computePrice,
+        fastMode: true,
     })
     console.info(response)
 }
@@ -1265,6 +1285,7 @@ async function callPostJupiterSwapInstructions(provider: BaseProvider) {
         inAmount: 0.01,
         slippage: 0.1,
         computePrice: testOrder.computePrice,
+        fastMode: true,
     })
     console.info(response)
 }
