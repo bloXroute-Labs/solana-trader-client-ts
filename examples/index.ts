@@ -307,7 +307,6 @@ async function doOrderbookRequests(provider: BaseProvider) {
 }
 
 async function doAmmRequests(provider: BaseProvider) {
-
     await callGetRaydiumPoolReserve(provider)
     console.info(" ")
     console.info(" ")
@@ -369,6 +368,10 @@ async function doAmmRequests(provider: BaseProvider) {
     console.info(" ")
 
     await callPostJupiterSwap(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostRaydiumSwapInstructions(provider)
     console.info(" ")
     console.info(" ")
 
@@ -1290,6 +1293,20 @@ async function callPostJupiterSwapInstructions(provider: BaseProvider) {
     console.info(response)
 }
 
+async function callPostRaydiumSwapInstructions(provider: BaseProvider) {
+    console.info("Generating a Raydium swap instructions")
+    const response = await provider.postRaydiumSwapInstructions({
+        ownerAddress: ownerAddress,
+        inToken: tokenAddress,
+        outToken: "SOL",
+        inAmount: 0.01,
+        slippage: 0.1,
+        computePrice: testOrder.computePrice,
+        computeLimit: testOrder.computeLimit,
+    })
+    console.info(response)
+}
+
 async function callSubmitTradeSwap(provider: BaseProvider) {
     console.info("Submitting a trade swap")
     const responses = await provider.submitTradeSwap(
@@ -1561,6 +1578,7 @@ async function submitTransferWithMemoAndTip(provider: BaseProvider) {
     const response = await provider.postSubmit({
         transaction: { content: encodedTxn, isCleanup: false },
         skipPreFlight: false,
+        tpu: 1
     })
     console.info(response.signature)
 }
@@ -1583,6 +1601,7 @@ async function submitTxWithMemo(provider: BaseProvider) {
     const response = await provider.postSubmit({
         transaction: { content: encodedTxn2, isCleanup: false },
         skipPreFlight: true,
+        tpu: 1
     })
     console.info(response.signature)
 }
