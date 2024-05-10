@@ -1578,6 +1578,7 @@ async function submitTransferWithMemoAndTip(provider: BaseProvider) {
     const response = await provider.postSubmit({
         transaction: { content: encodedTxn, isCleanup: false },
         skipPreFlight: false,
+        tpu: 1
     })
     console.info(response.signature)
 }
@@ -1600,6 +1601,7 @@ async function submitTxWithMemo(provider: BaseProvider) {
     const response = await provider.postSubmit({
         transaction: { content: encodedTxn2, isCleanup: false },
         skipPreFlight: true,
+        tpu: 1
     })
     console.info(response.signature)
 }
