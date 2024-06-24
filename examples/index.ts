@@ -997,7 +997,7 @@ async function callGetNewRaydiumPoolsStream(provider: BaseProvider) {
 async function callGetNewRaydiumPoolsStreamWithCpmm(provider: BaseProvider) {
     console.info("Subscribing for new raydium pool updates with cpmm")
     const req = await provider.getNewRaydiumPoolsStream({
-        includeCPMM: true
+        includeCPMM: true,
     })
 
     let count = 0

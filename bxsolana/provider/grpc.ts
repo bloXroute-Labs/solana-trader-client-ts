@@ -119,7 +119,7 @@ import {
     GetRaydiumPoolReserveRequest,
     GetRaydiumPoolReserveResponse,
     GetBundleTipResponse,
-    GetBundleTipRequest
+    GetBundleTipRequest,
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
