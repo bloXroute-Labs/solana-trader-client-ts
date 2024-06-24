@@ -409,6 +409,10 @@ async function doStreams(provider: BaseProvider) {
         await callGetNewRaydiumPoolsStream(provider)
         console.info(" ")
         console.info(" ")
+
+        await callGetNewRaydiumPoolsStreamWithCpmm(provider)
+        console.info(" ")
+        console.info(" ")
     }
 
     await callGetRecentBlockHashStream(provider)
@@ -979,6 +983,22 @@ async function callGetTradesStream(provider: BaseProvider) {
 async function callGetNewRaydiumPoolsStream(provider: BaseProvider) {
     console.info("Subscribing for new raydium pool updates")
     const req = await provider.getNewRaydiumPoolsStream({})
+
+    let count = 0
+    for await (const tr of req) {
+        console.info(tr)
+        count++
+        if (count == 1) {
+            break
+        }
+    }
+}
+
+async function callGetNewRaydiumPoolsStreamWithCpmm(provider: BaseProvider) {
+    console.info("Subscribing for new raydium pool updates with cpmm")
+    const req = await provider.getNewRaydiumPoolsStream({
+        includeCPMM: true
+    })
 
     let count = 0
     for await (const tr of req) {
@@ -1578,7 +1598,6 @@ async function submitTransferWithMemoAndTip(provider: BaseProvider) {
     const response = await provider.postSubmit({
         transaction: { content: encodedTxn, isCleanup: false },
         skipPreFlight: false,
-        tpu: 1
     })
     console.info(response.signature)
 }
@@ -1601,7 +1620,6 @@ async function submitTxWithMemo(provider: BaseProvider) {
     const response = await provider.postSubmit({
         transaction: { content: encodedTxn2, isCleanup: false },
         skipPreFlight: true,
-        tpu: 1
     })
     console.info(response.signature)
 }
