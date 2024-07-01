@@ -30,7 +30,6 @@ export declare namespace $.api {
     skipPreFlight: boolean;
     frontRunningProtection?: boolean;
     tip?: string;
-    tpu?: number;
     useStakedRPCs?: boolean;
     fastBestEffort?: boolean;
   }
@@ -43,7 +42,6 @@ export function getDefaultValue(): $.api.PostSubmitRequest {
     skipPreFlight: false,
     frontRunningProtection: false,
     tip: "0",
-    tpu: 0,
     useStakedRPCs: false,
     fastBestEffort: false,
   };
@@ -62,7 +60,6 @@ export function encodeJson(value: $.api.PostSubmitRequest): unknown {
   if (value.skipPreFlight !== undefined) result.skipPreFlight = tsValueToJsonValueFns.bool(value.skipPreFlight);
   if (value.frontRunningProtection !== undefined) result.frontRunningProtection = tsValueToJsonValueFns.bool(value.frontRunningProtection);
   if (value.tip !== undefined) result.tip = tsValueToJsonValueFns.uint64(value.tip);
-  if (value.tpu !== undefined) result.tpu = tsValueToJsonValueFns.uint32(value.tpu);
   if (value.useStakedRPCs !== undefined) result.useStakedRPCs = tsValueToJsonValueFns.bool(value.useStakedRPCs);
   if (value.fastBestEffort !== undefined) result.fastBestEffort = tsValueToJsonValueFns.bool(value.fastBestEffort);
   return result;
@@ -74,7 +71,6 @@ export function decodeJson(value: any): $.api.PostSubmitRequest {
   if (value.skipPreFlight !== undefined) result.skipPreFlight = jsonValueToTsValueFns.bool(value.skipPreFlight);
   if (value.frontRunningProtection !== undefined) result.frontRunningProtection = jsonValueToTsValueFns.bool(value.frontRunningProtection);
   if (value.tip !== undefined) result.tip = jsonValueToTsValueFns.uint64(value.tip);
-  if (value.tpu !== undefined) result.tpu = jsonValueToTsValueFns.uint32(value.tpu);
   if (value.useStakedRPCs !== undefined) result.useStakedRPCs = jsonValueToTsValueFns.bool(value.useStakedRPCs);
   if (value.fastBestEffort !== undefined) result.fastBestEffort = jsonValueToTsValueFns.bool(value.fastBestEffort);
   return result;
@@ -104,12 +100,6 @@ export function encodeBinary(value: $.api.PostSubmitRequest): Uint8Array {
     const tsValue = value.tip;
     result.push(
       [4, tsValueToWireValueFns.uint64(tsValue)],
-    );
-  }
-  if (value.tpu !== undefined) {
-    const tsValue = value.tpu;
-    result.push(
-      [5, tsValueToWireValueFns.uint32(tsValue)],
     );
   }
   if (value.useStakedRPCs !== undefined) {
@@ -158,13 +148,6 @@ export function decodeBinary(binary: Uint8Array): $.api.PostSubmitRequest {
     const value = wireValueToTsValueFns.uint64(wireValue);
     if (value === undefined) break field;
     result.tip = value;
-  }
-  field: {
-    const wireValue = wireFields.get(5);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.uint32(wireValue);
-    if (value === undefined) break field;
-    result.tpu = value;
   }
   field: {
     const wireValue = wireFields.get(6);

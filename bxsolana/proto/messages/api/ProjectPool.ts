@@ -27,6 +27,7 @@ export declare namespace $.api {
     token2MintAddress: string;
     token2MintSymbol: string;
     openTime: string;
+    poolType: string;
   }
 }
 export type Type = $.api.ProjectPool;
@@ -42,6 +43,7 @@ export function getDefaultValue(): $.api.ProjectPool {
     token2MintAddress: "",
     token2MintSymbol: "",
     openTime: "0",
+    poolType: "",
   };
 }
 
@@ -63,6 +65,7 @@ export function encodeJson(value: $.api.ProjectPool): unknown {
   if (value.token2MintAddress !== undefined) result.token2MintAddress = tsValueToJsonValueFns.string(value.token2MintAddress);
   if (value.token2MintSymbol !== undefined) result.token2MintSymbol = tsValueToJsonValueFns.string(value.token2MintSymbol);
   if (value.openTime !== undefined) result.openTime = tsValueToJsonValueFns.uint64(value.openTime);
+  if (value.poolType !== undefined) result.poolType = tsValueToJsonValueFns.string(value.poolType);
   return result;
 }
 
@@ -77,6 +80,7 @@ export function decodeJson(value: any): $.api.ProjectPool {
   if (value.token2MintAddress !== undefined) result.token2MintAddress = jsonValueToTsValueFns.string(value.token2MintAddress);
   if (value.token2MintSymbol !== undefined) result.token2MintSymbol = jsonValueToTsValueFns.string(value.token2MintSymbol);
   if (value.openTime !== undefined) result.openTime = jsonValueToTsValueFns.uint64(value.openTime);
+  if (value.poolType !== undefined) result.poolType = jsonValueToTsValueFns.string(value.poolType);
   return result;
 }
 
@@ -134,6 +138,12 @@ export function encodeBinary(value: $.api.ProjectPool): Uint8Array {
     const tsValue = value.openTime;
     result.push(
       [9, tsValueToWireValueFns.uint64(tsValue)],
+    );
+  }
+  if (value.poolType !== undefined) {
+    const tsValue = value.poolType;
+    result.push(
+      [10, tsValueToWireValueFns.string(tsValue)],
     );
   }
   return serialize(result);
@@ -205,6 +215,13 @@ export function decodeBinary(binary: Uint8Array): $.api.ProjectPool {
     const value = wireValueToTsValueFns.uint64(wireValue);
     if (value === undefined) break field;
     result.openTime = value;
+  }
+  field: {
+    const wireValue = wireFields.get(10);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.poolType = value;
   }
   return result;
 }
