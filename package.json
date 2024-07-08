@@ -1,6 +1,6 @@
 {
     "name": "@bloxroute/solana-trader-client-ts",
-    "version": "2.1.5",
+    "version": "2.1.6",
     "description": "Solana Trader API SDK",
     "type": "module",
     "exports": {
