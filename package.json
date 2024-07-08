@@ -1,6 +1,6 @@
 {
     "name": "@bloxroute/solana-trader-client-ts",
-    "version": "2.1.2",
+    "version": "2.1.6",
     "description": "Solana Trader API SDK",
     "type": "module",
     "exports": {
@@ -35,7 +35,7 @@
         "clean": "rm -rf dist",
         "esbuild": "node build.mjs",
         "types": "tsc --emitDeclarationOnly",
-        "release": "npm run clean && npm run build && np --no-2fa --any-branch",
+        "release": "npm run clean && npm run build && np --branch develop",
         "lintCI": "eslint --max-warnings 0 .",
         "lint": "eslint --fix .",
         "format": "prettier --config .prettierrc -l './**/*.ts' --write",
@@ -62,7 +62,7 @@
         "esbuild": "^0.16.7",
         "google-protobuf": "^3.20.1",
         "isomorphic-ws": "5.0.0",
-        "np": "^6.0.0",
+        "np": "^10.0.6",
         "pbkit": "^0.0.53",
         "ts-node": "^10.8.1",
         "typescript": "^4.7.4",
