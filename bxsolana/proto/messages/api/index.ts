@@ -137,8 +137,6 @@ export type { Type as GetSwapsStreamResponse } from "./GetSwapsStreamResponse";
 export type { Type as GetNewRaydiumPoolsRequest } from "./GetNewRaydiumPoolsRequest";
 export type { Type as GetNewRaydiumPoolsResponse } from "./GetNewRaydiumPoolsResponse";
 export type { Type as GetSwapsStreamUpdate } from "./GetSwapsStreamUpdate";
-export type { Type as GetBundleResultRequest } from "./GetBundleResultRequest";
-export type { Type as GetBundleResultResponse } from "./GetBundleResultResponse";
 export type { Type as TokenPair } from "./TokenPair";
 export type { Type as GetPriceRequest } from "./GetPriceRequest";
 export type { Type as GetPriceResponse } from "./GetPriceResponse";
