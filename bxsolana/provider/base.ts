@@ -903,4 +903,16 @@ export abstract class BaseProvider implements Api {
     ): Promise<boolean> => {
         throw new Error("Not implemented")
     }
+
+    cancelAllGetBundleTipStream = async (): Promise<
+        Awaited<boolean>[]
+    > => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetBundleTipStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
 }
