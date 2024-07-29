@@ -688,6 +688,12 @@ export class WsProvider extends BaseProvider {
         return this.cancelStreamByCount("GetPriorityFeeStream", streamNumber)
     }
 
+    cancelGetBundleTipStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
+        return this.cancelStreamByCount("GetBundleTipStream", streamNumber)
+    }
+
     cancelAllGetOrderbooksStream = async (): Promise<Awaited<boolean>[]> => {
         return this.cancelAllStreams("GetOrderbooksStream")
     }
@@ -730,6 +736,10 @@ export class WsProvider extends BaseProvider {
 
     cancelAllGetPriorityFeeStream = async (): Promise<Awaited<boolean>[]> => {
         return this.cancelAllStreams("GetPriorityFeeStream")
+    }
+
+    cancelAllGetBundleTipStream = async (): Promise<Awaited<boolean>[]> => {
+        return this.cancelAllStreams("GetBundleTipStream")
     }
 
     private manageGetStreamMaps = (
