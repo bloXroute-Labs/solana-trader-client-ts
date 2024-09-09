@@ -120,6 +120,9 @@ import {
     GetRaydiumPoolReserveResponse,
     GetBundleTipResponse,
     GetBundleTipRequest,
+    GetPumpFunNewTokensStreamResponse,
+    GetPumpFunNewTokensStreamRequest,
+    GetPumpFunSwapsStreamResponse, GetPumpFunSwapsStreamRequest
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
@@ -502,6 +505,18 @@ export class GrpcProvider extends BaseProvider {
         request: GetOrderbooksRequest
     ): Promise<AsyncGenerator<GetOrderbooksStreamResponse>> => {
         return this.client.getOrderbooksStream(request)
+    }
+
+    getPumpFunNewTokensStream = (
+        request: GetPumpFunNewTokensStreamRequest
+    ): Promise<AsyncGenerator<GetPumpFunNewTokensStreamResponse>> => {
+        return this.client.getPumpFunNewTokensStream(request)
+    }
+
+    getPumpFunSwapsStream = (
+        request: GetPumpFunSwapsStreamRequest
+    ): Promise<AsyncGenerator<GetPumpFunSwapsStreamResponse>> => {
+        return this.client.getPumpFunSwapsStream(request)
     }
 
     getMarketDepthsStream = (

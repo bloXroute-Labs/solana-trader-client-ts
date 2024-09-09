@@ -900,6 +900,42 @@ async function callGetOrderbookStream(provider: BaseProvider) {
     }
 }
 
+async function callGetOrderbookStream(provider: BaseProvider) {
+    console.info("Subscribing for orderbook updates of SOLUSDC market")
+    let req = await provider.getOrderbooksStream({
+        markets: ["SOLUSDC"],
+        project: "P_OPENBOOK",
+        limit: 5,
+    })
+
+    let count = 0
+    for await (const ob of req) {
+        console.info(ob)
+        count++
+        if (count == 5) {
+            break
+        }
+    }
+    console.info(" ")
+    console.info(" ")
+
+    console.info("Subscribing for orderbook updates of SOLUSDC market")
+    req = await provider.getOrderbooksStream({
+        markets: ["SOL-USDC"],
+        project: "P_OPENBOOK",
+        limit: 5,
+    })
+
+    count = 0
+    for await (const ob of req) {
+        console.info(ob)
+        count++
+        if (count == 5) {
+            break
+        }
+    }
+}
+
 async function callGetMarketDepthStream(provider: BaseProvider) {
     console.info("Subscribing for market depth data updates of SOLUSDC market")
     let req = await provider.getMarketDepthsStream({

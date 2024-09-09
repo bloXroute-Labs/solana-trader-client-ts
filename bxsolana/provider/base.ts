@@ -123,6 +123,12 @@ import {
     GetBundleTipResponse,
     PostRaydiumSwapInstructionsRequest,
     PostRaydiumSwapInstructionsResponse,
+    GetPumpFunNewTokensStreamRequest,
+    GetPumpFunNewTokensStreamResponse,
+    GetPumpFunSwapsStreamRequest,
+    GetPumpFunSwapsStreamResponse,
+    PostZetaCrossMarginAccountRequest,
+    PostZetaCrossMarginAccountResponse
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -134,6 +140,7 @@ import {
 import { Keypair } from "@solana/web3.js"
 import base58 from "bs58"
 import { RpcReturnType } from "../proto/runtime/rpc"
+import { Type as GetZetaTransactionStreamRequest } from "../proto/messages/api/GetZetaTransactionStreamRequest"
 
 /* eslint-disable */
 
@@ -719,6 +726,18 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
+    getPumpFunNewTokensStream = (
+        request: GetPumpFunNewTokensStreamRequest
+    ): Promise<AsyncGenerator<GetPumpFunNewTokensStreamResponse>> => {
+        throw new Error("Not implemented")
+    }
+
+    getPumpFunSwapsStream = (
+        request: GetPumpFunSwapsStreamRequest
+    ): Promise<AsyncGenerator<GetPumpFunSwapsStreamResponse>> => {
+        throw new Error("Not implemented")
+    }
+
     getTickersStream(
         request: GetTickersStreamRequest
     ): Promise<AsyncGenerator<GetTickersStreamResponse>> {
@@ -913,6 +932,20 @@ export abstract class BaseProvider implements Api {
     cancelGetBundleTipStreamByCount = async (
         streamNumber: number
     ): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    getZetaTransactionStream(
+        request: GetZetaTransactionStreamRequest
+    ): Promise<AsyncGenerator<GetZetaTransactionStreamResponse>> {
+        throw new Error("Not implemented")
+    }
+
+    postSubmitMineOre(request: PostSubmitRequest): Promise<PostSubmitResponse> {
+        throw new Error("Not implemented")
+    }
+
+    postZetaCrossMarginAccount(request: PostZetaCrossMarginAccountRequest): Promise<PostZetaCrossMarginAccountResponse> {
         throw new Error("Not implemented")
     }
 }

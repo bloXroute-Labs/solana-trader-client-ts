@@ -113,6 +113,9 @@ import {
     GetRaydiumPoolReserveResponse,
     GetBundleTipResponse,
     GetBundleTipRequest,
+    GetPumpFunNewTokensStreamResponse,
+    GetPumpFunNewTokensStreamRequest,
+    GetPumpFunSwapsStreamRequest, GetPumpFunSwapsStreamResponse
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -363,6 +366,32 @@ export class WsProvider extends BaseProvider {
         )
 
         this.manageGetStreamMaps("GetOrderbooksStream", subscriptionId)
+
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
+    }
+
+    getPumpFunNewTokensStream = async (
+        request: GetPumpFunNewTokensStreamRequest
+    ): Promise<AsyncGenerator<GetPumpFunNewTokensStreamResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetPumpFunNewTokensStream",
+            request
+        )
+
+        this.manageGetStreamMaps("GetPumpFunNewTokensStream", subscriptionId)
+
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
+    }
+
+    getPumpFunSwapsStream = async (
+        request: GetPumpFunSwapsStreamRequest
+    ): Promise<AsyncGenerator<GetPumpFunSwapsStreamResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetPumpFunSwapsStream",
+            request
+        )
+
+        this.manageGetStreamMaps("GetPumpFunSwapsStream", subscriptionId)
 
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
