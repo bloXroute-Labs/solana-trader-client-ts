@@ -31,6 +31,7 @@ export declare namespace $.api {
     frontRunningProtection?: boolean;
     tip?: string;
     useStakedRPCs?: boolean;
+    fastBestEffort?: boolean;
   }
 }
 export type Type = $.api.PostSubmitRequest;
@@ -42,6 +43,7 @@ export function getDefaultValue(): $.api.PostSubmitRequest {
     frontRunningProtection: false,
     tip: "0",
     useStakedRPCs: false,
+    fastBestEffort: false,
   };
 }
 
@@ -59,6 +61,7 @@ export function encodeJson(value: $.api.PostSubmitRequest): unknown {
   if (value.frontRunningProtection !== undefined) result.frontRunningProtection = tsValueToJsonValueFns.bool(value.frontRunningProtection);
   if (value.tip !== undefined) result.tip = tsValueToJsonValueFns.uint64(value.tip);
   if (value.useStakedRPCs !== undefined) result.useStakedRPCs = tsValueToJsonValueFns.bool(value.useStakedRPCs);
+  if (value.fastBestEffort !== undefined) result.fastBestEffort = tsValueToJsonValueFns.bool(value.fastBestEffort);
   return result;
 }
 
@@ -69,6 +72,7 @@ export function decodeJson(value: any): $.api.PostSubmitRequest {
   if (value.frontRunningProtection !== undefined) result.frontRunningProtection = jsonValueToTsValueFns.bool(value.frontRunningProtection);
   if (value.tip !== undefined) result.tip = jsonValueToTsValueFns.uint64(value.tip);
   if (value.useStakedRPCs !== undefined) result.useStakedRPCs = jsonValueToTsValueFns.bool(value.useStakedRPCs);
+  if (value.fastBestEffort !== undefined) result.fastBestEffort = jsonValueToTsValueFns.bool(value.fastBestEffort);
   return result;
 }
 
@@ -102,6 +106,12 @@ export function encodeBinary(value: $.api.PostSubmitRequest): Uint8Array {
     const tsValue = value.useStakedRPCs;
     result.push(
       [6, tsValueToWireValueFns.bool(tsValue)],
+    );
+  }
+  if (value.fastBestEffort !== undefined) {
+    const tsValue = value.fastBestEffort;
+    result.push(
+      [7, tsValueToWireValueFns.bool(tsValue)],
     );
   }
   return serialize(result);
@@ -145,6 +155,13 @@ export function decodeBinary(binary: Uint8Array): $.api.PostSubmitRequest {
     const value = wireValueToTsValueFns.bool(wireValue);
     if (value === undefined) break field;
     result.useStakedRPCs = value;
+  }
+  field: {
+    const wireValue = wireFields.get(7);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.bool(wireValue);
+    if (value === undefined) break field;
+    result.fastBestEffort = value;
   }
   return result;
 }

@@ -37,6 +37,7 @@ export declare namespace $.api {
     entries: PostSubmitRequestEntry[];
     submitStrategy: SubmitStrategy;
     useBundle?: boolean;
+    frontRunningProtection?: boolean;
   }
 }
 export type Type = $.api.PostSubmitBatchRequest;
@@ -46,6 +47,7 @@ export function getDefaultValue(): $.api.PostSubmitBatchRequest {
     entries: [],
     submitStrategy: "P_UKNOWN",
     useBundle: false,
+    frontRunningProtection: false,
   };
 }
 
@@ -61,6 +63,7 @@ export function encodeJson(value: $.api.PostSubmitBatchRequest): unknown {
   result.entries = value.entries.map(value => encodeJson_1(value));
   if (value.submitStrategy !== undefined) result.submitStrategy = tsValueToJsonValueFns.enum(value.submitStrategy);
   if (value.useBundle !== undefined) result.useBundle = tsValueToJsonValueFns.bool(value.useBundle);
+  if (value.frontRunningProtection !== undefined) result.frontRunningProtection = tsValueToJsonValueFns.bool(value.frontRunningProtection);
   return result;
 }
 
@@ -69,6 +72,7 @@ export function decodeJson(value: any): $.api.PostSubmitBatchRequest {
   result.entries = value.entries?.map((value: any) => decodeJson_1(value)) ?? [];
   if (value.submitStrategy !== undefined) result.submitStrategy = jsonValueToTsValueFns.enum(value.submitStrategy) as SubmitStrategy;
   if (value.useBundle !== undefined) result.useBundle = jsonValueToTsValueFns.bool(value.useBundle);
+  if (value.frontRunningProtection !== undefined) result.frontRunningProtection = jsonValueToTsValueFns.bool(value.frontRunningProtection);
   return result;
 }
 
@@ -89,6 +93,12 @@ export function encodeBinary(value: $.api.PostSubmitBatchRequest): Uint8Array {
     const tsValue = value.useBundle;
     result.push(
       [3, tsValueToWireValueFns.bool(tsValue)],
+    );
+  }
+  if (value.frontRunningProtection !== undefined) {
+    const tsValue = value.frontRunningProtection;
+    result.push(
+      [4, tsValueToWireValueFns.bool(tsValue)],
     );
   }
   return serialize(result);
@@ -117,6 +127,13 @@ export function decodeBinary(binary: Uint8Array): $.api.PostSubmitBatchRequest {
     const value = wireValueToTsValueFns.bool(wireValue);
     if (value === undefined) break field;
     result.useBundle = value;
+  }
+  field: {
+    const wireValue = wireFields.get(4);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.bool(wireValue);
+    if (value === undefined) break field;
+    result.frontRunningProtection = value;
   }
   return result;
 }

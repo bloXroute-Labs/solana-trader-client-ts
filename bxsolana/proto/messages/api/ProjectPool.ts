@@ -1,9 +1,17 @@
 import {
+  Type as LiquidityPoolKeys,
+  encodeJson as encodeJson_1,
+  decodeJson as decodeJson_1,
+  encodeBinary as encodeBinary_1,
+  decodeBinary as decodeBinary_1,
+} from "./LiquidityPoolKeys";
+import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar";
 import {
   WireMessage,
+  WireType,
 } from "../../runtime/wire/index";
 import {
   default as serialize,
@@ -28,6 +36,7 @@ export declare namespace $.api {
     token2MintSymbol: string;
     openTime: string;
     poolType: string;
+    liquidityPoolKeys?: LiquidityPoolKeys;
   }
 }
 export type Type = $.api.ProjectPool;
@@ -44,6 +53,7 @@ export function getDefaultValue(): $.api.ProjectPool {
     token2MintSymbol: "",
     openTime: "0",
     poolType: "",
+    liquidityPoolKeys: undefined,
   };
 }
 
@@ -66,6 +76,7 @@ export function encodeJson(value: $.api.ProjectPool): unknown {
   if (value.token2MintSymbol !== undefined) result.token2MintSymbol = tsValueToJsonValueFns.string(value.token2MintSymbol);
   if (value.openTime !== undefined) result.openTime = tsValueToJsonValueFns.uint64(value.openTime);
   if (value.poolType !== undefined) result.poolType = tsValueToJsonValueFns.string(value.poolType);
+  if (value.liquidityPoolKeys !== undefined) result.liquidityPoolKeys = encodeJson_1(value.liquidityPoolKeys);
   return result;
 }
 
@@ -81,6 +92,7 @@ export function decodeJson(value: any): $.api.ProjectPool {
   if (value.token2MintSymbol !== undefined) result.token2MintSymbol = jsonValueToTsValueFns.string(value.token2MintSymbol);
   if (value.openTime !== undefined) result.openTime = jsonValueToTsValueFns.uint64(value.openTime);
   if (value.poolType !== undefined) result.poolType = jsonValueToTsValueFns.string(value.poolType);
+  if (value.liquidityPoolKeys !== undefined) result.liquidityPoolKeys = decodeJson_1(value.liquidityPoolKeys);
   return result;
 }
 
@@ -144,6 +156,12 @@ export function encodeBinary(value: $.api.ProjectPool): Uint8Array {
     const tsValue = value.poolType;
     result.push(
       [10, tsValueToWireValueFns.string(tsValue)],
+    );
+  }
+  if (value.liquidityPoolKeys !== undefined) {
+    const tsValue = value.liquidityPoolKeys;
+    result.push(
+      [11, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
     );
   }
   return serialize(result);
@@ -222,6 +240,13 @@ export function decodeBinary(binary: Uint8Array): $.api.ProjectPool {
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
     result.poolType = value;
+  }
+  field: {
+    const wireValue = wireFields.get(11);
+    if (wireValue === undefined) break field;
+    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined;
+    if (value === undefined) break field;
+    result.liquidityPoolKeys = value;
   }
   return result;
 }
