@@ -128,7 +128,7 @@ import {
     GetPumpFunSwapsStreamRequest,
     GetPumpFunSwapsStreamResponse,
     PostZetaCrossMarginAccountRequest,
-    PostZetaCrossMarginAccountResponse
+    PostZetaCrossMarginAccountResponse, GetZetaTransactionStreamResponse
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
