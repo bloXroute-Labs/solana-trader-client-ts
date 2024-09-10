@@ -104,8 +104,6 @@ import {
     GetRateLimitResponse,
     GetPriorityFeeRequest,
     GetPriorityFeeResponse,
-    GetBundleResultRequest,
-    GetBundleResultResponse,
     PostJupiterSwapInstructionsRequest,
     PostJupiterSwapInstructionsResponse,
     GetTickersStreamRequest,
@@ -263,12 +261,6 @@ export class WsProvider extends BaseProvider {
     async getOpenOrdersV2(
         request: GetOpenOrdersRequestV2
     ): Promise<GetOpenOrdersResponseV2> {
-        return await this.wsConnection.call("GetOpenOrdersV2", request)
-    }
-
-    async getBundleResultV2(
-        request: GetBundleResultRequest
-    ): Promise<GetBundleResultResponse> {
         return await this.wsConnection.call("GetOpenOrdersV2", request)
     }
 

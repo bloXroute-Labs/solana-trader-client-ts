@@ -112,8 +112,6 @@ import {
     GetRateLimitResponse,
     GetPriorityFeeRequest,
     GetPriorityFeeResponse,
-    GetBundleResultRequest,
-    GetBundleResultResponse,
     PostJupiterSwapInstructionsRequest,
     PostJupiterSwapInstructionsResponse,
     GetTickersStreamRequest,
@@ -201,12 +199,6 @@ export abstract class BaseProvider implements Api {
     getOrderbookV2(
         request: GetOrderbookRequestV2
     ): RpcReturnType<Promise<GetOrderbookResponseV2>, []> {
-        throw new Error("Method not implemented.")
-    }
-
-    getBundleResultV2(
-        request: GetBundleResultRequest
-    ): RpcReturnType<Promise<GetBundleResultResponse>, []> {
         throw new Error("Method not implemented.")
     }
 
