@@ -389,6 +389,11 @@ async function doAmmRequests(provider: BaseProvider) {
 }
 
 async function doStreams(provider: BaseProvider) {
+
+    await callGetPumpFunNewTokensStream(provider)
+    console.info(" ")
+    console.info(" ")
+
     await callGetOrderbookStream(provider)
     console.info(" ")
     console.info(" ")
@@ -864,37 +869,32 @@ async function callGetPriorityFee(provider: BaseProvider) {
     console.info(resp)
 }
 
-async function callGetOrderbookStream(provider: BaseProvider) {
-    console.info("Subscribing for orderbook updates of SOLUSDC market")
-    let req = await provider.getOrderbooksStream({
-        markets: ["SOLUSDC"],
-        project: "P_OPENBOOK",
-        limit: 5,
-    })
+async function callGetPumpFunNewTokensStream(provider: BaseProvider) {
+    console.info("Subscribing for pump fun new tokens")
+    let req = await provider.getPumpFunNewTokensStream({})
 
     let count = 0
+    let mint = ""
     for await (const ob of req) {
         console.info(ob)
         count++
-        if (count == 5) {
+        mint = ob.mint
+        if (count == 1) {
             break
         }
     }
+
     console.info(" ")
     console.info(" ")
 
-    console.info("Subscribing for orderbook updates of SOLUSDC market")
-    req = await provider.getOrderbooksStream({
-        markets: ["SOL-USDC"],
-        project: "P_OPENBOOK",
-        limit: 5,
-    })
+    console.info("Subscribing for pump fun swap events")
+    const reqq = await provider.getPumpFunSwapsStream({tokens: [mint]})
 
     count = 0
-    for await (const ob of req) {
+    for await (const ob of reqq) {
         console.info(ob)
         count++
-        if (count == 5) {
+        if (count == 1) {
             break
         }
     }
