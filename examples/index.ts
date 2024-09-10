@@ -871,7 +871,7 @@ async function callGetPriorityFee(provider: BaseProvider) {
 
 async function callGetPumpFunNewTokensStream(provider: BaseProvider) {
     console.info("Subscribing for pump fun new tokens")
-    let req = await provider.getPumpFunNewTokensStream({})
+    const req = await provider.getPumpFunNewTokensStream({})
 
     let count = 0
     let mint = ""
