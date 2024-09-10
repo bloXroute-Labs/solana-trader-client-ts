@@ -111,8 +111,6 @@ import {
     GetNewRaydiumPoolsResponse,
     GetPriorityFeeRequest,
     GetPriorityFeeResponse,
-    GetBundleResultRequest,
-    GetBundleResultResponse,
     PostJupiterSwapInstructionsRequest,
     PostJupiterSwapInstructionsResponse,
     GetTickersStreamRequest,
@@ -486,12 +484,6 @@ export class GrpcProvider extends BaseProvider {
 
     getOrders(request: GetOrdersRequest): Promise<GetOrdersResponse> {
         return this.client.getOrders(request)
-    }
-
-    getBundleRequestV2(
-        request: GetBundleResultRequest
-    ): RpcReturnType<Promise<GetBundleResultResponse>, []> {
-        return this.client.getBundleResultV2(request)
     }
 
     getPriorityFee(
