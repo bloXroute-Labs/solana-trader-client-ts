@@ -113,7 +113,8 @@ import {
     GetBundleTipRequest,
     GetPumpFunNewTokensStreamResponse,
     GetPumpFunNewTokensStreamRequest,
-    GetPumpFunSwapsStreamRequest, GetPumpFunSwapsStreamResponse
+    GetPumpFunSwapsStreamRequest,
+    GetPumpFunSwapsStreamResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"

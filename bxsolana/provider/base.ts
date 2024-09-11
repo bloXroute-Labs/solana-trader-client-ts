@@ -126,7 +126,8 @@ import {
     GetPumpFunSwapsStreamRequest,
     GetPumpFunSwapsStreamResponse,
     PostZetaCrossMarginAccountRequest,
-    PostZetaCrossMarginAccountResponse, GetZetaTransactionStreamResponse
+    PostZetaCrossMarginAccountResponse,
+    GetZetaTransactionStreamResponse,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -915,9 +916,7 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    cancelAllGetBundleTipStream = async (): Promise<
-        Awaited<boolean>[]
-    > => {
+    cancelAllGetBundleTipStream = async (): Promise<Awaited<boolean>[]> => {
         throw new Error("Not implemented")
     }
 
@@ -937,7 +936,9 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    postZetaCrossMarginAccount(request: PostZetaCrossMarginAccountRequest): Promise<PostZetaCrossMarginAccountResponse> {
+    postZetaCrossMarginAccount(
+        request: PostZetaCrossMarginAccountRequest
+    ): Promise<PostZetaCrossMarginAccountResponse> {
         throw new Error("Not implemented")
     }
 }

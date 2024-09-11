@@ -37,6 +37,8 @@ import base58 from "bs58"
 import {
     DEVNET_API_GRPC_HOST,
     DEVNET_API_GRPC_PORT,
+    MAINNET_API_PUMP_NY_GRPC,
+    MAINNET_API_PUMP_NY_WS,
 } from "../bxsolana/utils/constants"
 import { AxiosRequestConfig } from "axios"
 import { txToBase64 } from "../bxsolana/utils/transaction"
@@ -178,7 +180,12 @@ async function grpc() {
             false
         )
     }
-
+    const pump_provider = new GrpcProvider(
+        config.authHeader,
+        config.privateKey,
+        `${MAINNET_API_PUMP_NY_GRPC}:${MAINNET_API_PUMP_NY_GRPC}`,
+        false
+    )
     console.info(" ----  GRPC Amm Requests  ----")
     await doAmmRequests(provider)
 
@@ -187,7 +194,7 @@ async function grpc() {
 
     if (runStreams) {
         console.info(" ----  GRPC Streams  ----")
-        await doStreams(provider)
+        await doStreams(provider, pump_provider)
         console.info(" ----  GRPC Amm Streams  ----")
         await doAmmStreams(provider)
     }
@@ -228,6 +235,12 @@ async function ws() {
 
     await provider.connect()
 
+    const pump_provider = new WsProvider(
+        config.authHeader,
+        config.privateKey,
+        MAINNET_API_PUMP_NY_WS
+    )
+    await pump_provider.connect()
     console.info(" ----  WS Amm Requests  ----")
     await doAmmRequests(provider)
 
@@ -236,7 +249,7 @@ async function ws() {
 
     if (runStreams) {
         console.info(" ----  WS Streams  ----")
-        await doStreams(provider)
+        await doStreams(provider, pump_provider)
         console.info(" ----  WS Amm Streams  ----")
         await doAmmStreams(provider)
     }
@@ -388,9 +401,8 @@ async function doAmmRequests(provider: BaseProvider) {
     console.info(" ")
 }
 
-async function doStreams(provider: BaseProvider) {
-
-    await callGetPumpFunNewTokensStream(provider)
+async function doStreams(provider: BaseProvider, pump_provider: BaseProvider) {
+    await callGetPumpFunNewTokensStream(pump_provider)
     console.info(" ")
     console.info(" ")
 
@@ -888,7 +900,7 @@ async function callGetPumpFunNewTokensStream(provider: BaseProvider) {
     console.info(" ")
 
     console.info("Subscribing for pump fun swap events")
-    const reqq = await provider.getPumpFunSwapsStream({tokens: [mint]})
+    const reqq = await provider.getPumpFunSwapsStream({ tokens: [mint] })
 
     count = 0
     for await (const ob of reqq) {
