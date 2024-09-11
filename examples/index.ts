@@ -183,8 +183,8 @@ async function grpc() {
     const pump_provider = new GrpcProvider(
         config.authHeader,
         config.privateKey,
-        `${MAINNET_API_PUMP_NY_GRPC}:${MAINNET_API_PUMP_NY_GRPC}`,
-        false
+        `${MAINNET_API_PUMP_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
+        true
     )
     console.info(" ----  GRPC Amm Requests  ----")
     await doAmmRequests(provider)
