@@ -112,8 +112,6 @@ import {
     GetRateLimitResponse,
     GetPriorityFeeRequest,
     GetPriorityFeeResponse,
-    GetBundleResultRequest,
-    GetBundleResultResponse,
     PostJupiterSwapInstructionsRequest,
     PostJupiterSwapInstructionsResponse,
     GetTickersStreamRequest,
@@ -123,6 +121,13 @@ import {
     GetBundleTipResponse,
     PostRaydiumSwapInstructionsRequest,
     PostRaydiumSwapInstructionsResponse,
+    GetPumpFunNewTokensStreamRequest,
+    GetPumpFunNewTokensStreamResponse,
+    GetPumpFunSwapsStreamRequest,
+    GetPumpFunSwapsStreamResponse,
+    PostZetaCrossMarginAccountRequest,
+    PostZetaCrossMarginAccountResponse,
+    GetZetaTransactionStreamResponse,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -134,6 +139,7 @@ import {
 import { Keypair } from "@solana/web3.js"
 import base58 from "bs58"
 import { RpcReturnType } from "../proto/runtime/rpc"
+import { Type as GetZetaTransactionStreamRequest } from "../proto/messages/api/GetZetaTransactionStreamRequest"
 
 /* eslint-disable */
 
@@ -194,12 +200,6 @@ export abstract class BaseProvider implements Api {
     getOrderbookV2(
         request: GetOrderbookRequestV2
     ): RpcReturnType<Promise<GetOrderbookResponseV2>, []> {
-        throw new Error("Method not implemented.")
-    }
-
-    getBundleResultV2(
-        request: GetBundleResultRequest
-    ): RpcReturnType<Promise<GetBundleResultResponse>, []> {
         throw new Error("Method not implemented.")
     }
 
@@ -719,6 +719,18 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
+    getPumpFunNewTokensStream = (
+        request: GetPumpFunNewTokensStreamRequest
+    ): Promise<AsyncGenerator<GetPumpFunNewTokensStreamResponse>> => {
+        throw new Error("Not implemented")
+    }
+
+    getPumpFunSwapsStream = (
+        request: GetPumpFunSwapsStreamRequest
+    ): Promise<AsyncGenerator<GetPumpFunSwapsStreamResponse>> => {
+        throw new Error("Not implemented")
+    }
+
     getTickersStream(
         request: GetTickersStreamRequest
     ): Promise<AsyncGenerator<GetTickersStreamResponse>> {
@@ -904,15 +916,29 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    cancelAllGetBundleTipStream = async (): Promise<
-        Awaited<boolean>[]
-    > => {
+    cancelAllGetBundleTipStream = async (): Promise<Awaited<boolean>[]> => {
         throw new Error("Not implemented")
     }
 
     cancelGetBundleTipStreamByCount = async (
         streamNumber: number
     ): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
+    getZetaTransactionStream(
+        request: GetZetaTransactionStreamRequest
+    ): Promise<AsyncGenerator<GetZetaTransactionStreamResponse>> {
+        throw new Error("Not implemented")
+    }
+
+    postSubmitMineOre(request: PostSubmitRequest): Promise<PostSubmitResponse> {
+        throw new Error("Not implemented")
+    }
+
+    postZetaCrossMarginAccount(
+        request: PostZetaCrossMarginAccountRequest
+    ): Promise<PostZetaCrossMarginAccountResponse> {
         throw new Error("Not implemented")
     }
 }

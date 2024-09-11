@@ -111,8 +111,6 @@ import {
     GetNewRaydiumPoolsResponse,
     GetPriorityFeeRequest,
     GetPriorityFeeResponse,
-    GetBundleResultRequest,
-    GetBundleResultResponse,
     PostJupiterSwapInstructionsRequest,
     PostJupiterSwapInstructionsResponse,
     GetTickersStreamRequest,
@@ -120,6 +118,10 @@ import {
     GetRaydiumPoolReserveResponse,
     GetBundleTipResponse,
     GetBundleTipRequest,
+    GetPumpFunNewTokensStreamResponse,
+    GetPumpFunNewTokensStreamRequest,
+    GetPumpFunSwapsStreamResponse,
+    GetPumpFunSwapsStreamRequest,
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
@@ -485,12 +487,6 @@ export class GrpcProvider extends BaseProvider {
         return this.client.getOrders(request)
     }
 
-    getBundleRequestV2(
-        request: GetBundleResultRequest
-    ): RpcReturnType<Promise<GetBundleResultResponse>, []> {
-        return this.client.getBundleResultV2(request)
-    }
-
     getPriorityFee(
         request: GetPriorityFeeRequest
     ): Promise<GetPriorityFeeResponse> {
@@ -502,6 +498,18 @@ export class GrpcProvider extends BaseProvider {
         request: GetOrderbooksRequest
     ): Promise<AsyncGenerator<GetOrderbooksStreamResponse>> => {
         return this.client.getOrderbooksStream(request)
+    }
+
+    getPumpFunNewTokensStream = (
+        request: GetPumpFunNewTokensStreamRequest
+    ): Promise<AsyncGenerator<GetPumpFunNewTokensStreamResponse>> => {
+        return this.client.getPumpFunNewTokensStream(request)
+    }
+
+    getPumpFunSwapsStream = (
+        request: GetPumpFunSwapsStreamRequest
+    ): Promise<AsyncGenerator<GetPumpFunSwapsStreamResponse>> => {
+        return this.client.getPumpFunSwapsStream(request)
     }
 
     getMarketDepthsStream = (

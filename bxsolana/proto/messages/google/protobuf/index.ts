@@ -1,3 +1,4 @@
+export type { Type as Empty } from "./Empty";
 export type { Type as Struct } from "./Struct";
 export type { Type as Value } from "./Value";
 export type { Type as NullValue } from "./NullValue";
@@ -24,7 +25,6 @@ export type { Type as UninterpretedOption } from "./UninterpretedOption";
 export type { Type as SourceCodeInfo } from "./SourceCodeInfo";
 export type { Type as GeneratedCodeInfo } from "./GeneratedCodeInfo";
 export type { Type as Timestamp } from "./Timestamp";
-export type { Type as Empty } from "./Empty";
 export type { Type as Type } from "./Type";
 export type { Type as Field } from "./Field";
 export type { Type as Enum } from "./Enum";

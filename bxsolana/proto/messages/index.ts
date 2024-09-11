@@ -1,7 +1,7 @@
 import * as api from "./api/index";
+import * as google from "./google/index";
 import * as common from "./common/index";
 import * as grpc from "./grpc/index";
-import * as google from "./google/index";
 import * as relayer from "./relayer/index";
 import * as shared from "./shared/index";
 import * as packet from "./packet/index";
@@ -14,9 +14,9 @@ import * as block_engine from "./block_engine/index";
 import * as searcher from "./searcher/index";
 export type {
   api,
+  google,
   common,
   grpc,
-  google,
   relayer,
   shared,
   packet,

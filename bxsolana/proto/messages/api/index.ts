@@ -108,6 +108,7 @@ export type { Type as GetRecentBlockHashResponse } from "./GetRecentBlockHashRes
 export type { Type as Block } from "./Block";
 export type { Type as GetBlockStreamRequest } from "./GetBlockStreamRequest";
 export type { Type as GetBlockStreamResponse } from "./GetBlockStreamResponse";
+export type { Type as InstructionRequest } from "./InstructionRequest";
 export type { Type as GetPoolsRequest } from "./GetPoolsRequest";
 export type { Type as GetPoolsResponse } from "./GetPoolsResponse";
 export type { Type as GetRaydiumPoolsRequest } from "./GetRaydiumPoolsRequest";
@@ -129,6 +130,7 @@ export type { Type as TransactionMetaTokenBalance } from "./TransactionMetaToken
 export type { Type as UITokenAmount } from "./UITokenAmount";
 export type { Type as ProjectPools } from "./ProjectPools";
 export type { Type as ProjectPool } from "./ProjectPool";
+export type { Type as LiquidityPoolKeys } from "./LiquidityPoolKeys";
 export type { Type as GetQuotesStreamRequest } from "./GetQuotesStreamRequest";
 export type { Type as GetQuotesStreamResponse } from "./GetQuotesStreamResponse";
 export type { Type as GetQuotesStreamUpdate } from "./GetQuotesStreamUpdate";
@@ -144,6 +146,11 @@ export type { Type as GetRaydiumPricesRequest } from "./GetRaydiumPricesRequest"
 export type { Type as GetJupiterPricesRequest } from "./GetJupiterPricesRequest";
 export type { Type as GetRaydiumPricesResponse } from "./GetRaydiumPricesResponse";
 export type { Type as GetJupiterPricesResponse } from "./GetJupiterPricesResponse";
+export type { Type as GetZetaTransactionStreamRequest } from "./GetZetaTransactionStreamRequest";
+export type { Type as TransactionZeta } from "./TransactionZeta";
+export type { Type as TransactionMessageZeta } from "./TransactionMessageZeta";
+export type { Type as TransactionMessageHeader } from "./TransactionMessageHeader";
+export type { Type as GetZetaTransactionStreamResponse } from "./GetZetaTransactionStreamResponse";
 export type { Type as TokenPrice } from "./TokenPrice";
 export type { Type as TokenPriceV2 } from "./TokenPriceV2";
 export type { Type as GetPoolReservesStreamResponse } from "./GetPoolReservesStreamResponse";
@@ -172,7 +179,13 @@ export type { Type as PostReplaceOrderRequestV2 } from "./PostReplaceOrderReques
 export type { Type as PostCancelOrderRequestV2 } from "./PostCancelOrderRequestV2";
 export type { Type as PostCancelOrderResponseV2 } from "./PostCancelOrderResponseV2";
 export type { Type as PostSettleRequestV2 } from "./PostSettleRequestV2";
+export type { Type as PostZetaCrossMarginAccountRequest } from "./PostZetaCrossMarginAccountRequest";
+export type { Type as PostZetaCrossMarginAccountResponse } from "./PostZetaCrossMarginAccountResponse";
 export type { Type as GetOpenOrdersRequestV2 } from "./GetOpenOrdersRequestV2";
 export type { Type as GetUnsettledRequestV2 } from "./GetUnsettledRequestV2";
 export type { Type as GetOpenOrdersResponseV2 } from "./GetOpenOrdersResponseV2";
 export type { Type as OrderV2 } from "./OrderV2";
+export type { Type as GetPumpFunSwapsStreamRequest } from "./GetPumpFunSwapsStreamRequest";
+export type { Type as GetPumpFunSwapsStreamResponse } from "./GetPumpFunSwapsStreamResponse";
+export type { Type as GetPumpFunNewTokensStreamRequest } from "./GetPumpFunNewTokensStreamRequest";
+export type { Type as GetPumpFunNewTokensStreamResponse } from "./GetPumpFunNewTokensStreamResponse";

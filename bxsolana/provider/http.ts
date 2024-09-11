@@ -83,8 +83,6 @@ import {
     GetRateLimitResponse,
     GetPriorityFeeRequest,
     GetPriorityFeeResponse,
-    GetBundleResultRequest,
-    GetBundleResultResponse,
     PostJupiterSwapInstructionsRequest,
     PostJupiterSwapInstructionsResponse,
     GetRaydiumPoolReserveRequest,
@@ -134,13 +132,6 @@ export class HttpProvider extends BaseProvider {
     ): RpcReturnType<Promise<GetRateLimitResponse>, []> {
         const path = `${this.baseUrlV2}/rate-limit`
         return this.get<GetRateLimitResponse>(path)
-    }
-
-    getBundleRequestV2(
-        request: GetBundleResultRequest
-    ): RpcReturnType<Promise<GetBundleResultResponse>, []> {
-        const path = `${this.baseUrlV2}/bundle-result/${request.uuid}"`
-        return this.get<GetBundleResultResponse>(path)
     }
 
     getTransaction(

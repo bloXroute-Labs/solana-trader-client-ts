@@ -1,4 +1,5 @@
 const mainnetNy = "ny.solana.dex.blxrbdn.com"
+const mainnetPumpNy = "pump-ny.solana.dex.blxrbdn.com"
 const mainnetUk = "uk.solana.dex.blxrbdn.com"
 const testnet = "solana.dex.bxrtest.com"
 const devnet =
@@ -6,7 +7,9 @@ const devnet =
 
 export const MAINNET_API_NY_HTTP = httpEndpoint(mainnetNy, true)
 export const MAINNET_API_NY_WS = wsEndpoint(mainnetNy, true)
+export const MAINNET_API_PUMP_NY_WS = wsEndpoint(mainnetPumpNy, true)
 export const MAINNET_API_NY_GRPC = mainnetNy
+export const MAINNET_API_PUMP_NY_GRPC = mainnetPumpNy
 export const MAINNET_API_UK_HTTP = httpEndpoint(mainnetUk, true)
 export const MAINNET_API_UK_WS = wsEndpoint(mainnetUk, true)
 export const MAINNET_API_UK_GRPC = mainnetUk

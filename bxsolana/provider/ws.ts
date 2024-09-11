@@ -104,8 +104,6 @@ import {
     GetRateLimitResponse,
     GetPriorityFeeRequest,
     GetPriorityFeeResponse,
-    GetBundleResultRequest,
-    GetBundleResultResponse,
     PostJupiterSwapInstructionsRequest,
     PostJupiterSwapInstructionsResponse,
     GetTickersStreamRequest,
@@ -113,6 +111,10 @@ import {
     GetRaydiumPoolReserveResponse,
     GetBundleTipResponse,
     GetBundleTipRequest,
+    GetPumpFunNewTokensStreamResponse,
+    GetPumpFunNewTokensStreamRequest,
+    GetPumpFunSwapsStreamRequest,
+    GetPumpFunSwapsStreamResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -263,12 +265,6 @@ export class WsProvider extends BaseProvider {
         return await this.wsConnection.call("GetOpenOrdersV2", request)
     }
 
-    async getBundleResultV2(
-        request: GetBundleResultRequest
-    ): Promise<GetBundleResultResponse> {
-        return await this.wsConnection.call("GetOpenOrdersV2", request)
-    }
-
     async getUnsettledV2(
         request: GetUnsettledRequestV2
     ): Promise<GetUnsettledResponse> {
@@ -363,6 +359,32 @@ export class WsProvider extends BaseProvider {
         )
 
         this.manageGetStreamMaps("GetOrderbooksStream", subscriptionId)
+
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
+    }
+
+    getPumpFunNewTokensStream = async (
+        request: GetPumpFunNewTokensStreamRequest
+    ): Promise<AsyncGenerator<GetPumpFunNewTokensStreamResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetPumpFunNewTokensStream",
+            request
+        )
+
+        this.manageGetStreamMaps("GetPumpFunNewTokensStream", subscriptionId)
+
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
+    }
+
+    getPumpFunSwapsStream = async (
+        request: GetPumpFunSwapsStreamRequest
+    ): Promise<AsyncGenerator<GetPumpFunSwapsStreamResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetPumpFunSwapsStream",
+            request
+        )
+
+        this.manageGetStreamMaps("GetPumpFunSwapsStream", subscriptionId)
 
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
