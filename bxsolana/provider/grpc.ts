@@ -124,6 +124,8 @@ import {
     GetPumpFunSwapsStreamRequest,
     PostPumpFunSwapRequest,
     PostPumpFunSwapResponse,
+    GetPumpFunQuotesRequest,
+    GetPumpFunQuotesResponse,
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
@@ -289,6 +291,12 @@ export class GrpcProvider extends BaseProvider {
         request: GetRaydiumQuotesRequest
     ): RpcReturnType<Promise<GetRaydiumQuotesResponse>, []> {
         return this.client.getRaydiumQuotes(request)
+    }
+
+    getPumpFunQuotes(
+        request: GetPumpFunQuotesRequest
+    ): RpcReturnType<Promise<GetPumpFunQuotesResponse>, []> {
+        return this.client.getPumpFunQuotes(request)
     }
 
     // Openbook V2

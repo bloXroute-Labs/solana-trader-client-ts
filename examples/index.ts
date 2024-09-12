@@ -329,6 +329,7 @@ async function doAmmRequests(
     provider: BaseProvider,
     pump_provider: BaseProvider
 ) {
+
     await callGetRaydiumPoolReserve(provider)
     console.info(" ")
     console.info(" ")
@@ -382,6 +383,10 @@ async function doAmmRequests(
     console.info(" ")
 
     await callGetRaydiumQuotes(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetPumpFunQuotes(pump_provider)
     console.info(" ")
     console.info(" ")
 
@@ -882,6 +887,18 @@ async function callGetRaydiumQuotes(provider: BaseProvider) {
         outToken: tokenAddress,
         inAmount: 1,
         slippage: 5,
+    })
+    console.info(resp)
+}
+
+async function callGetPumpFunQuotes(provider: BaseProvider) {
+    console.info("Retrieving PumpFun quotes")
+    const resp = await provider.getPumpFunQuotes({
+        bondingCurveAddress: "Dga6eouREJ4kLHMqWWtccGGPsGebexuBYrcepBVd494q",
+        mintAddress: "9QG5NHnfqQCyZ9SKhz7BzfjPseTFWaApmAtBTziXLanY",
+        amount: 0.01,
+        slippage: 1,
+        quoteType: "buy",
     })
     console.info(resp)
 }

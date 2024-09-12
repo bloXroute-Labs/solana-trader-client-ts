@@ -91,6 +91,8 @@ import {
     PostRaydiumSwapInstructionsResponse,
     PostPumpFunSwapRequest,
     PostPumpFunSwapResponse,
+    GetPumpFunQuotesRequest,
+    GetPumpFunQuotesResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -247,6 +249,13 @@ export class HttpProvider extends BaseProvider {
     ): RpcReturnType<Promise<GetRaydiumQuotesResponse>, []> {
         const path = `${this.baseUrlV2}/raydium/quotes?inToken=${request.inToken}&outToken=${request.outToken}&inAmount=${request.inAmount}&slippage=${request.slippage}`
         return this.get<GetRaydiumQuotesResponse>(path)
+    }
+
+    getPumpFunQuotes(
+        request: GetPumpFunQuotesRequest
+    ): RpcReturnType<Promise<GetPumpFunQuotesResponse>, []> {
+        const path = `${this.baseUrlV2}/pumpfun/quotes?mintAddress=${request.mintAddress}&quoteType=${request.quoteType}&amount=${request.amount}&bondingCurveAddress=${request.bondingCurveAddress}&slippage=${request.slippage}`
+        return this.get<GetPumpFunQuotesResponse>(path)
     }
 
     // Openbook V2

@@ -29,7 +29,7 @@
         "./examples/"
     ],
     "scripts": {
-        "start": "node --experimental-specifier-resolution=node --loader ts-node/esm ./examples/index.ts",
+        "start": "node --trace-warnings --experimental-specifier-resolution=node --loader ts-node/esm ./examples/index.ts",
         "test": "echo \"No test specified\"",
         "build": "npm run esbuild && npm run types",
         "clean": "rm -rf dist",
@@ -53,6 +53,7 @@
     },
     "homepage": "https://github.com/bloXroute-Labs/solana-trader-client-ts#readme",
     "dependencies": {
+        "18": "^0.0.0",
         "@grpc/grpc-js": "^1.10.2",
         "@pbkit/grpc-client": "^0.0.3",
         "@solana/web3.js": "1.73.2",
