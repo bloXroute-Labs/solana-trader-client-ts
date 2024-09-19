@@ -189,3 +189,5 @@ export type { Type as GetPumpFunSwapsStreamRequest } from "./GetPumpFunSwapsStre
 export type { Type as GetPumpFunSwapsStreamResponse } from "./GetPumpFunSwapsStreamResponse";
 export type { Type as GetPumpFunNewTokensStreamRequest } from "./GetPumpFunNewTokensStreamRequest";
 export type { Type as GetPumpFunNewTokensStreamResponse } from "./GetPumpFunNewTokensStreamResponse";
+export type { Type as PostPumpFunSwapRequest } from "./PostPumpFunSwapRequest";
+export type { Type as PostPumpFunSwapResponse } from "./PostPumpFunSwapResponse";

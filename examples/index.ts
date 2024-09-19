@@ -348,6 +348,10 @@ async function doAmmRequests(provider: BaseProvider) {
     console.info(" ")
     console.info(" ")
 
+    await callPostPumpFunSwap(provider)
+    console.info(" ")
+    console.info(" ")
+
     await callPostTradeSwap(provider)
     console.info(" ")
     console.info(" ")
@@ -1297,6 +1301,22 @@ async function callPostTradeSwap(provider: BaseProvider) {
         inAmount: 0.01,
         slippage: 0.1,
         project: "P_RAYDIUM",
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
+    })
+    console.info(response)
+}
+
+async function callPostPumpFunSwap(provider: BaseProvider) {
+    console.info("Generating a PumpFun swap")
+    const response = await provider.postPumpFunSwap({
+        userAddress:         ownerAddress,
+        bondingCurveAddress: "7BcRpqUC7AF5Xsc3QEpCb8xmoi2X1LpwjUBNThbjWvyo",
+        tokenAddress:        "BAHY8ocERNc5j6LqkYav1Prr8GBGsHvBV5X3dWPhsgXw",
+        tokenAmount:         10,
+        solThreshold:        0.0001,
+        isBuy:               false,
+        tip:                 "0",
         computeLimit: testOrder.computeLimit,
         computePrice: testOrder.computePrice,
     })

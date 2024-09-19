@@ -88,7 +88,7 @@ import {
     GetRaydiumPoolReserveRequest,
     GetRaydiumPoolReserveResponse,
     PostRaydiumSwapInstructionsRequest,
-    PostRaydiumSwapInstructionsResponse,
+    PostRaydiumSwapInstructionsResponse, PostPumpFunSwapRequest, PostPumpFunSwapResponse
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -440,6 +440,11 @@ export class HttpProvider extends BaseProvider {
     postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
         const path = `${this.baseUrl}/trade/swap`
         return this.post<TradeSwapRequest, TradeSwapResponse>(path, request)
+    }
+
+    postPumpFunSwap(request: PostPumpFunSwapRequest): Promise<PostPumpFunSwapResponse> {
+        const path = `${this.baseUrlV2}/pumpfun/swap`
+        return this.post<PostPumpFunSwapRequest, PostPumpFunSwapResponse>(path, request)
     }
 
     postRouteTradeSwap(
