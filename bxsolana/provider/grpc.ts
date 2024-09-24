@@ -121,7 +121,9 @@ import {
     GetPumpFunNewTokensStreamResponse,
     GetPumpFunNewTokensStreamRequest,
     GetPumpFunSwapsStreamResponse,
-    GetPumpFunSwapsStreamRequest, PostPumpFunSwapRequest, PostPumpFunSwapResponse
+    GetPumpFunSwapsStreamRequest,
+    PostPumpFunSwapRequest,
+    PostPumpFunSwapResponse,
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
@@ -477,7 +479,9 @@ export class GrpcProvider extends BaseProvider {
         return this.client.postTradeSwap(request)
     }
 
-    postPumpFunSwap(request: PostPumpFunSwapRequest): Promise<PostPumpFunSwapResponse> {
+    postPumpFunSwap(
+        request: PostPumpFunSwapRequest
+    ): Promise<PostPumpFunSwapResponse> {
         return this.client.postPumpFunSwap(request)
     }
 

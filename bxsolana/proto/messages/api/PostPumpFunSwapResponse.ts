@@ -1,10 +1,10 @@
 import {
-  Type as TransactionMessage,
+  Type as TransactionMessageV2,
   encodeJson as encodeJson_1,
   decodeJson as decodeJson_1,
   encodeBinary as encodeBinary_1,
   decodeBinary as decodeBinary_1,
-} from "./TransactionMessage";
+} from "./TransactionMessageV2";
 import {
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar";
@@ -21,7 +21,7 @@ import {
 
 export declare namespace $.api {
   export interface PostPumpFunSwapResponse {
-    transaction?: TransactionMessage;
+    transaction?: TransactionMessageV2;
   }
 }
 export type Type = $.api.PostPumpFunSwapResponse;

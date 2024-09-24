@@ -114,7 +114,9 @@ import {
     GetPumpFunNewTokensStreamResponse,
     GetPumpFunNewTokensStreamRequest,
     GetPumpFunSwapsStreamRequest,
-    GetPumpFunSwapsStreamResponse, PostPumpFunSwapRequest, PostPumpFunSwapResponse
+    GetPumpFunSwapsStreamResponse,
+    PostPumpFunSwapRequest,
+    PostPumpFunSwapResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -617,7 +619,9 @@ export class WsProvider extends BaseProvider {
         return this.wsConnection.call("PostTradeSwap", request)
     }
 
-    async postPumpFunSwap(request: PostPumpFunSwapRequest): Promise<PostPumpFunSwapResponse> {
+    async postPumpFunSwap(
+        request: PostPumpFunSwapRequest
+    ): Promise<PostPumpFunSwapResponse> {
         return this.wsConnection.call("PostPumpFunSwap", request)
     }
 

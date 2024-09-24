@@ -36,6 +36,7 @@ export type { Type as PostCancelByClientOrderIDRequest } from "./PostCancelByCli
 export type { Type as PostCancelOrderResponse } from "./PostCancelOrderResponse";
 export type { Type as PostCancelAllRequest } from "./PostCancelAllRequest";
 export type { Type as TransactionMessage } from "./TransactionMessage";
+export type { Type as TransactionMessageV2 } from "./TransactionMessageV2";
 export type { Type as PostCancelAllResponse } from "./PostCancelAllResponse";
 export type { Type as PostSettleRequest } from "./PostSettleRequest";
 export type { Type as PostSettleResponse } from "./PostSettleResponse";
