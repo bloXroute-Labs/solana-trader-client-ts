@@ -11,6 +11,7 @@ export const MAINNET_API_PUMP_NY_WS = wsEndpoint(mainnetPumpNy, true)
 export const MAINNET_API_NY_GRPC = mainnetNy
 export const MAINNET_API_PUMP_NY_GRPC = mainnetPumpNy
 export const MAINNET_API_UK_HTTP = httpEndpoint(mainnetUk, true)
+export const MAINNET_API_PUMP_NY_HTTP = httpEndpoint(mainnetPumpNy, true)
 export const MAINNET_API_UK_WS = wsEndpoint(mainnetUk, true)
 export const MAINNET_API_UK_GRPC = mainnetUk
 export const MAINNET_API_GRPC_PORT = 443

@@ -772,6 +772,18 @@ import {
   encodeJson as encodeJson_127,
 } from "../../messages/api/GetPumpFunNewTokensStreamResponse";
 import {
+  Type as PostPumpFunSwapRequest,
+  encodeBinary as encodeBinary_128,
+  decodeBinary as decodeBinary_128,
+  encodeJson as encodeJson_128,
+} from "../../messages/api/PostPumpFunSwapRequest";
+import {
+  Type as PostPumpFunSwapResponse,
+  encodeBinary as encodeBinary_129,
+  decodeBinary as decodeBinary_129,
+  encodeJson as encodeJson_129,
+} from "../../messages/api/PostPumpFunSwapResponse";
+import {
   fromSingle,
   first,
 } from "../../runtime/async/async-generator";
@@ -856,6 +868,7 @@ export interface Service<TReqArgs extends any[] = [], TResArgs extends any[] = [
   getSwapsStream(request: GetSwapsStreamRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetSwapsStreamResponse>, TResArgs>;
   getPumpFunSwapsStream(request: GetPumpFunSwapsStreamRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetPumpFunSwapsStreamResponse>, TResArgs>;
   getPumpFunNewTokensStream(request: GetPumpFunNewTokensStreamRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetPumpFunNewTokensStreamResponse>, TResArgs>;
+  postPumpFunSwap(request: PostPumpFunSwapRequest, ...args: TReqArgs): RpcReturnType<Promise<PostPumpFunSwapResponse>, TResArgs>;
 }
 
 export type MethodDescriptors = typeof methodDescriptors;
@@ -2058,6 +2071,22 @@ export const methodDescriptors = {
       serializeBinary: encodeBinary_127,
       deserializeBinary: decodeBinary_127,
       serializeJson: (value: GetPumpFunNewTokensStreamResponse) => JSON.stringify(encodeJson_127(value)),
+    },
+  },
+  postPumpFunSwap: {
+    methodName: "PostPumpFunSwap",
+    service: { serviceName: "api.Api" },
+    requestStream: false,
+    responseStream: false,
+    requestType: {
+      serializeBinary: encodeBinary_128,
+      deserializeBinary: decodeBinary_128,
+      serializeJson: (value: PostPumpFunSwapRequest) => JSON.stringify(encodeJson_128(value)),
+    },
+    responseType: {
+      serializeBinary: encodeBinary_129,
+      deserializeBinary: decodeBinary_129,
+      serializeJson: (value: PostPumpFunSwapResponse) => JSON.stringify(encodeJson_129(value)),
     },
   },
 } as const;

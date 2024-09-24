@@ -36,6 +36,7 @@ export type { Type as PostCancelByClientOrderIDRequest } from "./PostCancelByCli
 export type { Type as PostCancelOrderResponse } from "./PostCancelOrderResponse";
 export type { Type as PostCancelAllRequest } from "./PostCancelAllRequest";
 export type { Type as TransactionMessage } from "./TransactionMessage";
+export type { Type as TransactionMessageV2 } from "./TransactionMessageV2";
 export type { Type as PostCancelAllResponse } from "./PostCancelAllResponse";
 export type { Type as PostSettleRequest } from "./PostSettleRequest";
 export type { Type as PostSettleResponse } from "./PostSettleResponse";
@@ -189,3 +190,5 @@ export type { Type as GetPumpFunSwapsStreamRequest } from "./GetPumpFunSwapsStre
 export type { Type as GetPumpFunSwapsStreamResponse } from "./GetPumpFunSwapsStreamResponse";
 export type { Type as GetPumpFunNewTokensStreamRequest } from "./GetPumpFunNewTokensStreamRequest";
 export type { Type as GetPumpFunNewTokensStreamResponse } from "./GetPumpFunNewTokensStreamResponse";
+export type { Type as PostPumpFunSwapRequest } from "./PostPumpFunSwapRequest";
+export type { Type as PostPumpFunSwapResponse } from "./PostPumpFunSwapResponse";

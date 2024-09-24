@@ -128,6 +128,8 @@ import {
     PostZetaCrossMarginAccountRequest,
     PostZetaCrossMarginAccountResponse,
     GetZetaTransactionStreamResponse,
+    PostPumpFunSwapRequest,
+    PostPumpFunSwapResponse,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -446,6 +448,12 @@ export abstract class BaseProvider implements Api {
     }
 
     postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
+        throw new Error("Not implemented")
+    }
+
+    postPumpFunSwap(
+        request: PostPumpFunSwapRequest
+    ): Promise<PostPumpFunSwapResponse> {
         throw new Error("Not implemented")
     }
 

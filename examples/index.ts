@@ -38,6 +38,7 @@ import {
     DEVNET_API_GRPC_HOST,
     DEVNET_API_GRPC_PORT,
     MAINNET_API_PUMP_NY_GRPC,
+    MAINNET_API_PUMP_NY_HTTP,
     MAINNET_API_PUMP_NY_WS,
 } from "../bxsolana/utils/constants"
 import { AxiosRequestConfig } from "axios"
@@ -129,9 +130,14 @@ async function http() {
             requestConfig
         )
     }
-
+    const pump_provider = new HttpProvider(
+        config.authHeader,
+        config.privateKey,
+        MAINNET_API_PUMP_NY_HTTP,
+        requestConfig
+    )
     console.info(" ----  HTTP Amm Requests  ----")
-    await doAmmRequests(provider)
+    await doAmmRequests(provider, pump_provider)
 
     console.info(" ----  HTTP Requests  ----")
     await doOrderbookRequests(provider)
@@ -187,7 +193,7 @@ async function grpc() {
         true
     )
     console.info(" ----  GRPC Amm Requests  ----")
-    await doAmmRequests(provider)
+    await doAmmRequests(provider, pump_provider)
 
     console.info(" ----  GRPC Requests  ----")
     await doOrderbookRequests(provider)
@@ -242,7 +248,7 @@ async function ws() {
     )
     await pump_provider.connect()
     console.info(" ----  WS Amm Requests  ----")
-    await doAmmRequests(provider)
+    await doAmmRequests(provider, pump_provider)
 
     console.info(" ----  WS Requests  ----")
     await doOrderbookRequests(provider)
@@ -319,7 +325,10 @@ async function doOrderbookRequests(provider: BaseProvider) {
     console.info(" ")
 }
 
-async function doAmmRequests(provider: BaseProvider) {
+async function doAmmRequests(
+    provider: BaseProvider,
+    pump_provider: BaseProvider
+) {
     await callGetRaydiumPoolReserve(provider)
     console.info(" ")
     console.info(" ")
@@ -345,6 +354,10 @@ async function doAmmRequests(provider: BaseProvider) {
     console.info(" ")
 
     await callGetQuotes(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostPumpFunSwap(pump_provider)
     console.info(" ")
     console.info(" ")
 
@@ -1297,6 +1310,22 @@ async function callPostTradeSwap(provider: BaseProvider) {
         inAmount: 0.01,
         slippage: 0.1,
         project: "P_RAYDIUM",
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
+    })
+    console.info(response)
+}
+
+async function callPostPumpFunSwap(provider: BaseProvider) {
+    console.info("Generating a PumpFun swap")
+    const response = await provider.postPumpFunSwap({
+        userAddress: ownerAddress,
+        bondingCurveAddress: "7BcRpqUC7AF5Xsc3QEpCb8xmoi2X1LpwjUBNThbjWvyo",
+        tokenAddress: "BAHY8ocERNc5j6LqkYav1Prr8GBGsHvBV5X3dWPhsgXw",
+        tokenAmount: 10,
+        solThreshold: 0.0001,
+        isBuy: false,
+        tip: "0",
         computeLimit: testOrder.computeLimit,
         computePrice: testOrder.computePrice,
     })
