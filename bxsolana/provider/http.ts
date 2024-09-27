@@ -91,6 +91,10 @@ import {
     PostRaydiumSwapInstructionsResponse,
     PostPumpFunSwapRequest,
     PostPumpFunSwapResponse,
+    GetRaydiumCLMMPoolsRequest,
+    GetRaydiumCLMMPoolsResponse,
+    GetRaydiumCLMMQuotesRequest,
+    GetRaydiumCLMMQuotesResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -214,6 +218,24 @@ export class HttpProvider extends BaseProvider {
         )
     }
 
+    postRaydiumCLMMRouteSwap(request: PostRaydiumRouteSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumRouteSwapResponse>, []> {
+        const path = `${this.baseUrlV2}/raydium/clmm-route-swap`
+        return this.post<
+            PostRaydiumRouteSwapRequest,
+            PostRaydiumRouteSwapResponse
+            >(path, request)
+    }
+
+    postRaydiumCLMMSwap(request: PostRaydiumSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumSwapResponse>, []> {
+        const path = `${this.baseUrlV2}/raydium/clmm-swap`
+        return this.post<
+            PostRaydiumSwapRequest,
+            PostRaydiumSwapResponse
+            >(path, request)
+    }
+
     getRaydiumPoolReserve(
         request: GetRaydiumPoolReserveRequest
     ): RpcReturnType<Promise<GetRaydiumPoolReserveResponse>, []> {
@@ -229,6 +251,18 @@ export class HttpProvider extends BaseProvider {
     ): RpcReturnType<Promise<GetRaydiumPoolsResponse>, []> {
         const path = `${this.baseUrlV2}/raydium/pools`
         return this.get<GetRaydiumPoolsResponse>(path)
+    }
+
+    getRaydiumCLMMPools(request: GetRaydiumCLMMPoolsRequest
+    ): RpcReturnType<Promise<GetRaydiumCLMMPoolsResponse>, []> {
+        const path = `${this.baseUrlV2}/raydium/clmm-pools?pairOrAddress=${request.pairOrAddress}`
+        return this.get<GetRaydiumCLMMPoolsResponse>(path)
+    }
+
+    getRaydiumCLMMQuotes(request: GetRaydiumCLMMQuotesRequest
+    ): RpcReturnType<Promise<GetRaydiumCLMMQuotesResponse>, []> {
+        const path = `${this.baseUrlV2}/raydium/clmm-quotes?inToken=${request.inToken}&outToken=${request.outToken}&inAmount=${request.inAmount}&slippage=${request.slippage}`
+        return this.get<GetRaydiumCLMMQuotesResponse>(path)
     }
 
     getRaydiumPrices(

@@ -124,6 +124,10 @@ import {
     GetPumpFunSwapsStreamRequest,
     PostPumpFunSwapRequest,
     PostPumpFunSwapResponse,
+    GetRaydiumCLMMPoolsRequest,
+    GetRaydiumCLMMPoolsResponse,
+    GetRaydiumCLMMQuotesRequest,
+    GetRaydiumCLMMQuotesResponse,
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
@@ -267,6 +271,16 @@ export class GrpcProvider extends BaseProvider {
         return this.client.postRaydiumSwap(request)
     }
 
+    postRaydiumCLMMRouteSwap(request: PostRaydiumRouteSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumRouteSwapResponse>, []> {
+        return this.client.postRaydiumCLMMRouteSwap(request)
+    }
+
+    postRaydiumCLMMSwap(request: PostRaydiumSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumSwapResponse>, []> {
+        return this.client.postRaydiumCLMMSwap(request)
+    }
+
     getRaydiumPoolReserve(
         request: GetRaydiumPoolReserveRequest
     ): RpcReturnType<Promise<GetRaydiumPoolReserveResponse>, []> {
@@ -289,6 +303,16 @@ export class GrpcProvider extends BaseProvider {
         request: GetRaydiumQuotesRequest
     ): RpcReturnType<Promise<GetRaydiumQuotesResponse>, []> {
         return this.client.getRaydiumQuotes(request)
+    }
+
+    getRaydiumCLMMPools(request: GetRaydiumCLMMPoolsRequest
+    ): RpcReturnType<Promise<GetRaydiumCLMMPoolsResponse>, []> {
+        return this.client.getRaydiumCLMMPools(request)
+    }
+
+    getRaydiumCLMMQuotes(request: GetRaydiumCLMMQuotesRequest
+    ): RpcReturnType<Promise<GetRaydiumCLMMQuotesResponse>, []> {
+        return this.client.getRaydiumCLMMQuotes(request)
     }
 
     // Openbook V2

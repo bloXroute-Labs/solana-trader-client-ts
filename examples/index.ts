@@ -45,6 +45,7 @@ import { AxiosRequestConfig } from "axios"
 import { txToBase64 } from "../bxsolana/utils/transaction"
 import { $ } from "../bxsolana/proto/messages/api/GetOpenOrdersResponseV2"
 import GetOpenOrdersResponseV2 = $.api.GetOpenOrdersResponseV2
+import test from "node:test"
 
 const config = loadFromEnv()
 
@@ -385,11 +386,27 @@ async function doAmmRequests(
     console.info(" ")
     console.info(" ")
 
+    await callGetRaydiumCLMMPools(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetRaydiumCLMMQuotes(provider)
+    console.info(" ")
+    console.info(" ")
+
     await callGetJupiterQuotes(provider)
     console.info(" ")
     console.info(" ")
 
     await callPostRaydiumSwap(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostRaydiumCLMMSwap(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostRaydiumCLMMRouteSwap(provider)
     console.info(" ")
     console.info(" ")
 
@@ -850,6 +867,25 @@ async function callGetRaydiumPools(provider: BaseProvider) {
     console.info(resp)
 }
 
+async function callGetRaydiumCLMMPools(provider: BaseProvider) {
+    console.info("Retrieving Raydium CLMM pools")
+    const resp = await provider.getRaydiumCLMMPools({
+        pairOrAddress: "",
+    })
+    console.info(resp)
+}
+
+async function callGetRaydiumCLMMQuotes(provider: BaseProvider) {
+    console.info("Retrieving Raydium CLMM quotes")
+    const resp = await provider.getRaydiumCLMMQuotes({
+        inToken: "SOL",
+        outToken: "USDC",
+        inAmount: 1,
+        slippage: 5,
+    })
+    console.info(resp)
+}
+
 async function callGetQuotes(provider: BaseProvider) {
     console.info("Retrieving quotes")
     const resp = await provider.getQuotes({
@@ -1054,6 +1090,8 @@ async function callGetNewRaydiumPoolsStream(provider: BaseProvider) {
         }
     }
 }
+
+
 
 async function callGetNewRaydiumPoolsStreamWithCpmm(provider: BaseProvider) {
     console.info("Subscribing for new raydium pool updates with cpmm")
@@ -1361,6 +1399,20 @@ async function callPostRaydiumSwap(provider: BaseProvider) {
     console.info(response)
 }
 
+async function callPostRaydiumCLMMSwap(provider: BaseProvider) {
+    console.info("Generating a Raydium CLMM swap")
+    const response = await provider.postRaydiumCLMMSwap({
+        ownerAddress: ownerAddress,
+        inToken: "USDC",
+        outToken: "SOL",
+        inAmount: 32,
+        slippage: 10,
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice
+    })
+    console.info(response)
+}
+
 async function callPostJupiterSwap(provider: BaseProvider) {
     console.info("Generating a Jupiter swap")
     const response = await provider.postJupiterSwap({
@@ -1474,6 +1526,27 @@ async function callPostRaydiumRouteSwap(provider: BaseProvider) {
                 inAmount: 0.01,
                 outAmount: 0.007505,
                 outAmountMin: 0.074,
+            },
+        ],
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
+    })
+    console.info(response)
+}
+
+async function callPostRaydiumCLMMRouteSwap(provider: BaseProvider) {
+    console.info("Generating a Raydium CLMM route swap")
+    const response = await provider.postRaydiumCLMMRouteSwap({
+        ownerAddress: ownerAddress,
+        slippage: 10,
+        steps: [
+            {
+                poolAddress: "",
+                inToken: "SOL",
+                outToken: "USDC",
+                inAmount: 32,
+                outAmount: 0,
+                outAmountMin: 0,
             },
         ],
         computeLimit: testOrder.computeLimit,

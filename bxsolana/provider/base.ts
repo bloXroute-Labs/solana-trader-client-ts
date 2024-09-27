@@ -130,6 +130,15 @@ import {
     GetZetaTransactionStreamResponse,
     PostPumpFunSwapRequest,
     PostPumpFunSwapResponse,
+    GetRaydiumCLMMQuotesRequest,
+    GetRaydiumCLMMQuotesResponse,
+    GetRaydiumCLMMPoolsRequest,
+    GetRaydiumCLMMPoolsResponse,
+    GetRecentBlockHashResponseV2,
+    PostRaydiumCPMMSwapResponse,
+    GetRaydiumCPMMQuotesResponse,
+    GetRaydiumCPMMQuotesRequest,
+    GetRecentBlockHashRequestV2,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -142,6 +151,16 @@ import { Keypair } from "@solana/web3.js"
 import base58 from "bs58"
 import { RpcReturnType } from "../proto/runtime/rpc"
 import { Type as GetZetaTransactionStreamRequest } from "../proto/messages/api/GetZetaTransactionStreamRequest"
+import { $ } from "../proto/messages/api/GetRaydiumCLMMPoolsResponse"
+import { $ } from "../proto/messages/api/GetRaydiumCLMMQuotesResponse"
+import { Type } from "../proto/messages/api/GetRaydiumCPMMQuotesRequest"
+import { $ } from "../proto/messages/api/GetRaydiumCPMMQuotesResponse"
+import { Type } from "../proto/messages/api/GetRecentBlockHashRequestV2"
+import { $ } from "../proto/messages/api/GetRecentBlockHashResponseV2"
+import { Type } from "../proto/messages/api/PostRaydiumCPMMSwapRequest"
+import { $ } from "../proto/messages/api/PostRaydiumCPMMSwapResponse"
+import { $ } from "../proto/messages/api/PostRaydiumRouteSwapResponse"
+import { $ } from "../proto/messages/api/PostRaydiumSwapResponse"
 
 /* eslint-disable */
 
@@ -154,6 +173,27 @@ export abstract class BaseProvider implements Api {
         if (privateKey) {
             this.privateKey = Keypair.fromSecretKey(base58.decode(privateKey))
         }
+    }
+    getRaydiumCPMMQuotes(request: Type): RpcReturnType<Promise<GetRaydiumCPMMQuotesResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    getRaydiumCLMMQuotes(request: GetRaydiumCLMMQuotesRequest): RpcReturnType<Promise<GetRaydiumCLMMQuotesResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    getRaydiumCLMMPools(request: GetRaydiumCLMMPoolsRequest): RpcReturnType<Promise<$.api.GetRaydiumCLMMPoolsResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    postRaydiumCLMMSwap(request: PostRaydiumSwapRequest): RpcReturnType<Promise<PostRaydiumSwapResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    postRaydiumCLMMRouteSwap(request: PostRaydiumRouteSwapRequest): RpcReturnType<Promise<PostRaydiumRouteSwapResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    postRaydiumCPMMSwap(request: Type): RpcReturnType<Promise<PostRaydiumCPMMSwapResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+    getRecentBlockHashV2(request: Type): RpcReturnType<Promise<GetRecentBlockHashRequestV2>, []> {
+        throw new Error("Method not implemented.")
     }
 
     // Openbook V2
