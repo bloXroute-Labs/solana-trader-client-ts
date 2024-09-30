@@ -130,6 +130,10 @@ import {
     GetZetaTransactionStreamResponse,
     PostPumpFunSwapRequest,
     PostPumpFunSwapResponse,
+    GetPumpFunQuotesRequest,
+    GetPumpFunQuotesResponse,
+    GetRecentBlockHashRequestV2,
+    GetRecentBlockHashResponseV2,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -142,7 +146,6 @@ import { Keypair } from "@solana/web3.js"
 import base58 from "bs58"
 import { RpcReturnType } from "../proto/runtime/rpc"
 import { Type as GetZetaTransactionStreamRequest } from "../proto/messages/api/GetZetaTransactionStreamRequest"
-
 /* eslint-disable */
 
 export abstract class BaseProvider implements Api {
@@ -229,6 +232,12 @@ export abstract class BaseProvider implements Api {
         throw new Error("Method not implemented.")
     }
 
+    getPumpFunQuotes(
+        request: GetPumpFunQuotesRequest
+    ): RpcReturnType<Promise<GetPumpFunQuotesResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
     getTickersV2(
         request: GetTickersRequestV2
     ): RpcReturnType<Promise<GetTickersResponseV2>, []> {
@@ -280,6 +289,12 @@ export abstract class BaseProvider implements Api {
     postRaydiumSwap(
         request: PostRaydiumSwapRequest
     ): RpcReturnType<Promise<PostRaydiumSwapResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postPumpFunSwap(
+        request: PostPumpFunSwapRequest
+    ): RpcReturnType<Promise<PostPumpFunSwapResponse>, []> {
         throw new Error("Method not implemented.")
     }
 
@@ -447,13 +462,13 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
+    getRecentBlockHashV2(
+        request: GetRecentBlockHashRequestV2
+    ): Promise<GetRecentBlockHashResponseV2> {
         throw new Error("Not implemented")
     }
 
-    postPumpFunSwap(
-        request: PostPumpFunSwapRequest
-    ): Promise<PostPumpFunSwapResponse> {
+    postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
         throw new Error("Not implemented")
     }
 

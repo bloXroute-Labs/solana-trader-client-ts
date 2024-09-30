@@ -117,6 +117,8 @@ import {
     GetPumpFunSwapsStreamResponse,
     PostPumpFunSwapRequest,
     PostPumpFunSwapResponse,
+    GetPumpFunQuotesRequest,
+    GetPumpFunQuotesResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -234,6 +236,12 @@ export class WsProvider extends BaseProvider {
         request: GetRaydiumQuotesRequest
     ): RpcReturnType<Promise<GetRaydiumQuotesResponse>, []> {
         return await this.wsConnection.call("GetRaydiumQuotes", request)
+    }
+
+    async getPumpFunQuotes(
+        request: GetPumpFunQuotesRequest
+    ): RpcReturnType<Promise<GetPumpFunQuotesResponse>, []> {
+        return await this.wsConnection.call("GetPumpFunQuotes", request)
     }
 
     // Oenbook V2
