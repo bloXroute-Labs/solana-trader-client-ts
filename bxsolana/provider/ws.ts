@@ -119,6 +119,14 @@ import {
     PostPumpFunSwapResponse,
     GetPumpFunQuotesRequest,
     GetPumpFunQuotesResponse,
+    PostRaydiumCPMMSwapRequest,
+    PostRaydiumCPMMSwapResponse,
+    GetRaydiumCPMMQuotesRequest,
+    GetRaydiumCPMMQuotesResponse,
+    GetRaydiumCLMMPoolsRequest,
+    GetRaydiumCLMMPoolsResponse,
+    GetRaydiumCLMMQuotesRequest,
+    GetRaydiumCLMMQuotesResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -208,10 +216,29 @@ export class WsProvider extends BaseProvider {
         return await this.wsConnection.call("PostRaydiumRouteSwap", request)
     }
 
+    async postRaydiumCLMMRouteSwap(
+        request: PostRaydiumRouteSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumRouteSwapResponse>, []> {
+        return await this.wsConnection.call("PostRaydiumCLMMRouteSwap", request)
+    }
+
+
     async postRaydiumSwap(
         request: PostRaydiumSwapRequest
     ): RpcReturnType<Promise<PostRaydiumSwapResponse>, []> {
         return await this.wsConnection.call("PostRaydiumSwap", request)
+    }
+
+    async postRaydiumCPMMSwap(
+        request: PostRaydiumCPMMSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumCPMMSwapResponse>, []> {
+        return await this.wsConnection.call("PostRaydiumCPMMSwap", request)
+    }
+
+    async postRaydiumCLMMSwap(
+        request: PostRaydiumSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumSwapResponse>, []> {
+        return await this.wsConnection.call("PostRaydiumCLMMSwap", request)
     }
 
     async getRaydiumPoolReserve(
@@ -226,6 +253,12 @@ export class WsProvider extends BaseProvider {
         return await this.wsConnection.call("GetRaydiumPools", request)
     }
 
+    async getRaydiumCLMMPools(
+        request: GetRaydiumCLMMPoolsRequest
+    ): RpcReturnType<Promise<GetRaydiumCLMMPoolsResponse>, []> {
+        return await this.wsConnection.call("GetRaydiumCLMMPools", request)
+    }
+
     async getRaydiumPrices(
         request: GetRaydiumPricesRequest
     ): RpcReturnType<Promise<GetRaydiumPricesResponse>, []> {
@@ -236,6 +269,18 @@ export class WsProvider extends BaseProvider {
         request: GetRaydiumQuotesRequest
     ): RpcReturnType<Promise<GetRaydiumQuotesResponse>, []> {
         return await this.wsConnection.call("GetRaydiumQuotes", request)
+    }
+
+    async getRaydiumCLMMQuotes(
+        request: GetRaydiumCLMMQuotesRequest
+    ): RpcReturnType<Promise<GetRaydiumCLMMQuotesResponse>, []> {
+        return await this.wsConnection.call("GetRaydiumCLMMQuotes", request)
+    }
+
+    async getRaydiumCPMMQuotes(
+        request: GetRaydiumCPMMQuotesRequest
+    ): RpcReturnType<Promise<GetRaydiumCPMMQuotesResponse>, []> {
+        return await this.wsConnection.call("GetRaydiumQuotesCPMM", request)
     }
 
     async getPumpFunQuotes(
