@@ -872,9 +872,12 @@ async function callGetRecentBlockHash(provider: BaseProvider) {
     console.info(`response: ${resp.blockHash}`)
 }
 
-async function callGetRecentBlockHashV2(provider: BaseProvider, offset: string) {
+async function callGetRecentBlockHashV2(
+    provider: BaseProvider,
+    offset: string
+) {
     console.info("Retrieving recent block hash V2")
-    const resp = await provider.getRecentBlockHashV2({offset})
+    const resp = await provider.getRecentBlockHashV2({ offset })
     console.info(`response V2: ${resp.blockHash}`)
 }
 

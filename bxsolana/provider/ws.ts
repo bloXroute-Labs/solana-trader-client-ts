@@ -653,11 +653,15 @@ export class WsProvider extends BaseProvider {
         return this.wsConnection.call("GetPrice", request)
     }
 
-    async getRecentBlockHash(request: GetRecentBlockHashRequest): Promise<GetRecentBlockHashResponse> {
+    async getRecentBlockHash(
+        request: GetRecentBlockHashRequest
+    ): Promise<GetRecentBlockHashResponse> {
         return this.wsConnection.call("GetRecentBlockHash", request)
     }
 
-    async getRecentBlockHashV2(request: GetRecentBlockHashRequestV2): Promise<GetRecentBlockHashResponseV2> {
+    async getRecentBlockHashV2(
+        request: GetRecentBlockHashRequestV2
+    ): Promise<GetRecentBlockHashResponseV2> {
         return this.wsConnection.call("GetRecentBlockHashV2", request)
     }
 
