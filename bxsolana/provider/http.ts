@@ -93,6 +93,8 @@ import {
     PostPumpFunSwapResponse,
     GetPumpFunQuotesRequest,
     GetPumpFunQuotesResponse,
+    GetRecentBlockHashRequestV2,
+    GetRecentBlockHashResponseV2,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -413,6 +415,13 @@ export class HttpProvider extends BaseProvider {
     ): Promise<GetRecentBlockHashResponse> {
         const path = `${this.baseUrl}/system/blockhash`
         return this.get<GetRecentBlockHashResponse>(path)
+    }
+
+    getRecentBlockHashV2(
+        request: GetRecentBlockHashRequestV2
+    ): Promise<GetRecentBlockHashResponseV2> {
+        const path = `${this.baseUrlV2}/system/blockhash?offset=${request.offset}`
+        return this.get<GetRecentBlockHashResponseV2>(path)
     }
 
     getQuotes(request: GetQuotesRequest): Promise<GetQuotesResponse> {

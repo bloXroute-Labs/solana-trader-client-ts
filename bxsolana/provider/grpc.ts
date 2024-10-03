@@ -126,6 +126,8 @@ import {
     PostPumpFunSwapResponse,
     GetPumpFunQuotesRequest,
     GetPumpFunQuotesResponse,
+    GetRecentBlockHashRequestV2,
+    GetRecentBlockHashResponseV2,
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
@@ -473,6 +475,18 @@ export class GrpcProvider extends BaseProvider {
         request: GetPricesStreamRequest
     ): Promise<AsyncGenerator<GetPricesStreamResponse>> {
         return this.client.getPricesStream(request)
+    }
+
+    getRecentBlockHash(
+        request: GetRecentBlockHashRequest
+    ): Promise<GetRecentBlockHashResponse> {
+        return this.client.getRecentBlockHash(request)
+    }
+
+    getRecentBlockHashV2(
+        request: GetRecentBlockHashRequestV2
+    ): Promise<GetRecentBlockHashResponseV2> {
+        return this.client.getRecentBlockHashV2(request)
     }
 
     getPools(request: GetPoolsRequest): Promise<GetPoolsResponse> {
