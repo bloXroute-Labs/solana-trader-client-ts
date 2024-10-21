@@ -140,6 +140,10 @@ import {
     GetRaydiumCLMMQuotesRequest,
     PostRaydiumCPMMSwapResponse,
     PostRaydiumCPMMSwapRequest,
+    GetNewRaydiumPoolsByTransactionRequest,
+    GetNewRaydiumPoolsByTransactionResponse,
+    GetPriorityFeeByProgramResponse,
+    GetPriorityFeeByProgramRequest,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -270,6 +274,14 @@ export abstract class BaseProvider implements Api {
     ): RpcReturnType<Promise<GetTickersResponseV2>, []> {
         throw new Error("Method not implemented.")
     }
+
+
+    getPriorityFeeByProgram(
+        request: GetPriorityFeeByProgramRequest
+    ): RpcReturnType<Promise<GetPriorityFeeByProgramResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
 
     getUnsettledV2(
         request: GetUnsettledRequestV2
@@ -865,6 +877,13 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
+    getNewRaydiumPoolsByTransactionStream(
+        request: GetNewRaydiumPoolsByTransactionRequest
+    ): Promise<AsyncGenerator<GetNewRaydiumPoolsByTransactionResponse>> {
+        throw new Error("Not implemented")
+    }
+
+
     getPoolReservesStream(
         request: GetPoolReservesStreamRequest
     ): Promise<AsyncGenerator<GetPoolReservesStreamResponse>> {
@@ -984,6 +1003,18 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
+    cancelAllGetNewRaydiumPoolsByTransactionStream = async (): Promise<
+        Awaited<boolean>[]
+        > => {
+        throw new Error("Not implemented")
+    }
+
+    cancelGetNewRaydiumPoolsByTransactionStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
+        throw new Error("Not implemented")
+    }
+
     cancelAllGetBundleTipStream = async (): Promise<Awaited<boolean>[]> => {
         throw new Error("Not implemented")
     }
@@ -1009,4 +1040,5 @@ export abstract class BaseProvider implements Api {
     ): Promise<PostZetaCrossMarginAccountResponse> {
         throw new Error("Not implemented")
     }
+
 }

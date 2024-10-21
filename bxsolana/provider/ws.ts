@@ -128,7 +128,7 @@ import {
     GetRaydiumCLMMPoolsRequest,
     GetRaydiumCLMMPoolsResponse,
     GetRaydiumCLMMQuotesRequest,
-    GetRaydiumCLMMQuotesResponse,
+    GetRaydiumCLMMQuotesResponse, GetNewRaydiumPoolsByTransactionRequest, GetNewRaydiumPoolsByTransactionResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -582,6 +582,18 @@ export class WsProvider extends BaseProvider {
         )
 
         this.manageGetStreamMaps("GetNewRaydiumPoolsStream", subscriptionId)
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
+    }
+
+    getNewRaydiumPoolsByTransactionStream = async (
+        request: GetNewRaydiumPoolsByTransactionRequest
+    ): Promise<AsyncGenerator<GetNewRaydiumPoolsByTransactionResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetNewRaydiumPoolsByTransactionStream",
+            request
+        )
+
+        this.manageGetStreamMaps("GetNewRaydiumPoolsByTransactionStream", subscriptionId)
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
