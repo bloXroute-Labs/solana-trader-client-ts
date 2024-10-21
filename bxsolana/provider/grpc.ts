@@ -136,6 +136,9 @@ import {
     GetRaydiumCLMMPoolsResponse,
     GetRaydiumCLMMQuotesRequest,
     GetRaydiumCLMMQuotesResponse,
+    GetNewRaydiumPoolsByTransactionResponse,
+    GetNewRaydiumPoolsByTransactionRequest, GetPriorityFeeByProgramRequest, GetPriorityFeeByProgramResponse,
+
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
@@ -647,6 +650,12 @@ export class GrpcProvider extends BaseProvider {
         return this.client.getNewRaydiumPoolsStream(request)
     }
 
+    getNewRaydiumPoolsByTransactionStream(
+        request: GetNewRaydiumPoolsByTransactionRequest
+    ): Promise<AsyncGenerator<GetNewRaydiumPoolsByTransactionResponse>> {
+        return this.client.getNewRaydiumPoolsByTransactionStream(request)
+    }
+
     getPriorityFeeStream(
         request: GetPriorityFeeRequest
     ): Promise<AsyncGenerator<GetPriorityFeeResponse>> {
@@ -658,4 +667,8 @@ export class GrpcProvider extends BaseProvider {
     ): Promise<AsyncGenerator<GetBundleTipResponse>> {
         return this.client.getBundleTipStream(request)
     }
+
+
 }
+
+

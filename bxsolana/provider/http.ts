@@ -102,7 +102,7 @@ import {
     GetRaydiumCLMMPoolsRequest,
     GetRaydiumCLMMPoolsResponse,
     GetRaydiumCLMMQuotesRequest,
-    GetRaydiumCLMMQuotesResponse,
+    GetRaydiumCLMMQuotesResponse, GetPriorityFeeByProgramRequest, GetPriorityFeeByProgramResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -505,6 +505,14 @@ export class HttpProvider extends BaseProvider {
             path += `&percentile=${request.percentile}`
         }
         return this.get<GetPriorityFeeResponse>(path)
+    }
+
+    getPriorityFeeByProgram(
+        request: GetPriorityFeeByProgramRequest
+    ): Promise<GetPriorityFeeByProgramResponse> {
+        const path = `${this.baseUrlV2}/system/priority-fee?project=${request.programs}`
+
+        return this.get<GetPriorityFeeByProgramResponse>(path)
     }
 
     postRaydiumSwapInstructions(
