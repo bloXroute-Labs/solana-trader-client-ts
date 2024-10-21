@@ -128,6 +128,14 @@ import {
     GetPumpFunQuotesResponse,
     GetRecentBlockHashRequestV2,
     GetRecentBlockHashResponseV2,
+    PostRaydiumCPMMSwapRequest,
+    PostRaydiumCPMMSwapResponse,
+    GetRaydiumCPMMQuotesRequest,
+    GetRaydiumCPMMQuotesResponse,
+    GetRaydiumCLMMPoolsRequest,
+    GetRaydiumCLMMPoolsResponse,
+    GetRaydiumCLMMQuotesRequest,
+    GetRaydiumCLMMQuotesResponse,
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
@@ -135,6 +143,7 @@ import { BaseProvider } from "./base"
 import { CallMetadataOptions } from "@grpc/grpc-js/build/src/call-credentials"
 import { ConnectionOptions } from "tls"
 import { RpcReturnType } from "../proto/runtime/rpc"
+
 
 // built-in grpc.credentials.createInsecure() doesn't allow composition
 class insecureChannel extends grpc.ChannelCredentials {
@@ -265,10 +274,29 @@ export class GrpcProvider extends BaseProvider {
         return this.client.postRaydiumRouteSwap(request)
     }
 
+
+    postRaydiumCLMMRouteSwap(
+        request: PostRaydiumRouteSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumRouteSwapResponse>, []> {
+        return this.client.postRaydiumRouteSwap(request)
+    }
+
     postRaydiumSwap(
         request: PostRaydiumSwapRequest
     ): RpcReturnType<Promise<PostRaydiumSwapResponse>, []> {
         return this.client.postRaydiumSwap(request)
+    }
+
+    postRaydiumCPMMSwap(
+        request: PostRaydiumCPMMSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumCPMMSwapResponse>, []> {
+        return this.client.postRaydiumCPMMSwap(request)
+    }
+
+    postRaydiumCLMMSwap(
+        request: PostRaydiumSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumSwapResponse>, []> {
+        return this.client.postRaydiumCLMMSwap(request)
     }
 
     getRaydiumPoolReserve(
@@ -283,6 +311,12 @@ export class GrpcProvider extends BaseProvider {
         return this.client.getRaydiumPools(request)
     }
 
+    getRaydiumCLMMPools(
+        request: GetRaydiumCLMMPoolsRequest
+    ): RpcReturnType<Promise<GetRaydiumCLMMPoolsResponse>, []> {
+        return this.client.getRaydiumCLMMPools(request)
+    }
+
     getRaydiumPrices(
         request: GetRaydiumPricesRequest
     ): RpcReturnType<Promise<GetRaydiumPricesResponse>, []> {
@@ -293,6 +327,18 @@ export class GrpcProvider extends BaseProvider {
         request: GetRaydiumQuotesRequest
     ): RpcReturnType<Promise<GetRaydiumQuotesResponse>, []> {
         return this.client.getRaydiumQuotes(request)
+    }
+
+    getRaydiumCPMMQuotes(
+        request: GetRaydiumCPMMQuotesRequest
+    ): RpcReturnType<Promise<GetRaydiumCPMMQuotesResponse>, []> {
+        return this.client.getRaydiumCPMMQuotes(request)
+    }
+
+    getRaydiumCLMMQuotes(
+        request: GetRaydiumCLMMQuotesRequest
+    ): RpcReturnType<Promise<GetRaydiumCLMMQuotesResponse>, []> {
+        return this.client.getRaydiumCLMMQuotes(request)
     }
 
     getPumpFunQuotes(

@@ -76,6 +76,10 @@ export type { Type as GetRaydiumQuotesRequest } from "./GetRaydiumQuotesRequest"
 export type { Type as GetRaydiumQuotesResponse } from "./GetRaydiumQuotesResponse";
 export type { Type as GetPumpFunQuotesRequest } from "./GetPumpFunQuotesRequest";
 export type { Type as GetPumpFunQuotesResponse } from "./GetPumpFunQuotesResponse";
+export type { Type as GetRaydiumCPMMQuotesRequest } from "./GetRaydiumCPMMQuotesRequest";
+export type { Type as GetRaydiumCPMMQuotesResponse } from "./GetRaydiumCPMMQuotesResponse";
+export type { Type as PostRaydiumCPMMSwapRequest } from "./PostRaydiumCPMMSwapRequest";
+export type { Type as PostRaydiumCPMMSwapResponse } from "./PostRaydiumCPMMSwapResponse";
 export type { Type as GetJupiterQuotesRequest } from "./GetJupiterQuotesRequest";
 export type { Type as GetJupiterQuotesResponse } from "./GetJupiterQuotesResponse";
 export type { Type as ProjectQuote } from "./ProjectQuote";
@@ -88,12 +92,16 @@ export type { Type as PostJupiterSwapInstructionsResponse } from "./PostJupiterS
 export type { Type as PostRaydiumSwapInstructionsResponse } from "./PostRaydiumSwapInstructionsResponse";
 export type { Type as PostRaydiumSwapRequest } from "./PostRaydiumSwapRequest";
 export type { Type as PostRaydiumSwapResponse } from "./PostRaydiumSwapResponse";
+export type { Type as GetRaydiumCLMMPoolsRequest } from "./GetRaydiumCLMMPoolsRequest";
+export type { Type as GetRaydiumCLMMPoolsResponse } from "./GetRaydiumCLMMPoolsResponse";
 export type { Type as PostJupiterSwapResponse } from "./PostJupiterSwapResponse";
 export type { Type as PostRaydiumRouteSwapResponse } from "./PostRaydiumRouteSwapResponse";
 export type { Type as PostJupiterRouteSwapResponse } from "./PostJupiterRouteSwapResponse";
 export type { Type as RouteTradeSwapRequest } from "./RouteTradeSwapRequest";
 export type { Type as PostRaydiumRouteSwapRequest } from "./PostRaydiumRouteSwapRequest";
 export type { Type as RaydiumRouteStep } from "./RaydiumRouteStep";
+export type { Type as GetRaydiumCLMMQuotesRequest } from "./GetRaydiumCLMMQuotesRequest";
+export type { Type as GetRaydiumCLMMQuotesResponse } from "./GetRaydiumCLMMQuotesResponse";
 export type { Type as PostJupiterRouteSwapRequest } from "./PostJupiterRouteSwapRequest";
 export type { Type as JupiterRouteStep } from "./JupiterRouteStep";
 export type { Type as RouteStep } from "./RouteStep";

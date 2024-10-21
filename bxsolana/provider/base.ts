@@ -134,6 +134,12 @@ import {
     GetPumpFunQuotesResponse,
     GetRecentBlockHashRequestV2,
     GetRecentBlockHashResponseV2,
+    GetRaydiumCPMMQuotesRequest,
+    GetRaydiumCPMMQuotesResponse,
+    GetRaydiumCLMMQuotesResponse,
+    GetRaydiumCLMMQuotesRequest,
+    PostRaydiumCPMMSwapResponse,
+    PostRaydiumCPMMSwapRequest,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -146,6 +152,10 @@ import { Keypair } from "@solana/web3.js"
 import base58 from "bs58"
 import { RpcReturnType } from "../proto/runtime/rpc"
 import { Type as GetZetaTransactionStreamRequest } from "../proto/messages/api/GetZetaTransactionStreamRequest"
+import {$} from "../proto/messages/api/GetRaydiumCLMMPoolsResponse";
+import GetRaydiumCLMMPoolsResponse = $.api.GetRaydiumCLMMPoolsResponse;
+
+
 /* eslint-disable */
 
 export abstract class BaseProvider implements Api {
@@ -220,6 +230,11 @@ export abstract class BaseProvider implements Api {
         throw new Error("Method not implemented.")
     }
 
+    getRaydiumCLMMPools(request: GetRaydiumPoolsRequest
+    ): RpcReturnType<Promise<GetRaydiumCLMMPoolsResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
     getRaydiumPrices(
         request: GetRaydiumPricesRequest
     ): RpcReturnType<Promise<GetRaydiumPricesResponse>, []> {
@@ -229,6 +244,18 @@ export abstract class BaseProvider implements Api {
     getRaydiumQuotes(
         request: GetRaydiumQuotesRequest
     ): RpcReturnType<Promise<GetRaydiumQuotesResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    getRaydiumCPMMQuotes(
+        request: GetRaydiumCPMMQuotesRequest
+    ): RpcReturnType<Promise<GetRaydiumCPMMQuotesResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    getRaydiumCLMMQuotes(
+        request: GetRaydiumCLMMQuotesRequest
+    ): RpcReturnType<Promise<GetRaydiumCLMMQuotesResponse>, []> {
         throw new Error("Method not implemented.")
     }
 
@@ -286,7 +313,25 @@ export abstract class BaseProvider implements Api {
         throw new Error("Method not implemented.")
     }
 
+    postRaydiumCLMMRouteSwap(
+        request: PostRaydiumRouteSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumRouteSwapResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
     postRaydiumSwap(
+        request: PostRaydiumSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumSwapResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postRaydiumCPMMSwap(
+        request: PostRaydiumCPMMSwapRequest
+    ): RpcReturnType<Promise<PostRaydiumCPMMSwapResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postRaydiumCLMMSwap(
         request: PostRaydiumSwapRequest
     ): RpcReturnType<Promise<PostRaydiumSwapResponse>, []> {
         throw new Error("Method not implemented.")
