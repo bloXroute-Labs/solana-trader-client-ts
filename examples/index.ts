@@ -329,7 +329,6 @@ async function doAmmRequests(
     provider: BaseProvider,
     pump_provider: BaseProvider
 ) {
-
     await callGetRaydiumPoolReserve(provider)
     console.info(" ")
     console.info(" ")
@@ -339,6 +338,18 @@ async function doAmmRequests(
     console.info(" ")
 
     await callGetTransaction(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetRecentBlockHash(provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetRecentBlockHashV2(provider, "0")
+    console.info(" ")
+    console.info(" ")
+
+    await callGetRecentBlockHashV2(provider, "1")
     console.info(" ")
     console.info(" ")
 
@@ -853,6 +864,21 @@ async function callGetRaydiumPools(provider: BaseProvider) {
     const resp = await provider.getRaydiumPools({})
     // prints too much info
     console.info(resp)
+}
+
+async function callGetRecentBlockHash(provider: BaseProvider) {
+    console.info("Retrieving recent block hash")
+    const resp = await provider.getRecentBlockHash({})
+    console.info(`response: ${resp.blockHash}`)
+}
+
+async function callGetRecentBlockHashV2(
+    provider: BaseProvider,
+    offset: string
+) {
+    console.info("Retrieving recent block hash V2")
+    const resp = await provider.getRecentBlockHashV2({ offset })
+    console.info(`response V2: ${resp.blockHash}`)
 }
 
 async function callGetQuotes(provider: BaseProvider) {
