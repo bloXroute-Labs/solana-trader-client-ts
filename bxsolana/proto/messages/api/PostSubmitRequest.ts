@@ -32,6 +32,8 @@ export declare namespace $.api {
     tip?: string;
     useStakedRPCs?: boolean;
     fastBestEffort?: boolean;
+    allowBackRun?: boolean;
+    revenueAddress?: string;
   }
 }
 export type Type = $.api.PostSubmitRequest;
@@ -44,6 +46,8 @@ export function getDefaultValue(): $.api.PostSubmitRequest {
     tip: "0",
     useStakedRPCs: false,
     fastBestEffort: false,
+    allowBackRun: false,
+    revenueAddress: "",
   };
 }
 
@@ -62,6 +66,8 @@ export function encodeJson(value: $.api.PostSubmitRequest): unknown {
   if (value.tip !== undefined) result.tip = tsValueToJsonValueFns.uint64(value.tip);
   if (value.useStakedRPCs !== undefined) result.useStakedRPCs = tsValueToJsonValueFns.bool(value.useStakedRPCs);
   if (value.fastBestEffort !== undefined) result.fastBestEffort = tsValueToJsonValueFns.bool(value.fastBestEffort);
+  if (value.allowBackRun !== undefined) result.allowBackRun = tsValueToJsonValueFns.bool(value.allowBackRun);
+  if (value.revenueAddress !== undefined) result.revenueAddress = tsValueToJsonValueFns.string(value.revenueAddress);
   return result;
 }
 
@@ -73,6 +79,8 @@ export function decodeJson(value: any): $.api.PostSubmitRequest {
   if (value.tip !== undefined) result.tip = jsonValueToTsValueFns.uint64(value.tip);
   if (value.useStakedRPCs !== undefined) result.useStakedRPCs = jsonValueToTsValueFns.bool(value.useStakedRPCs);
   if (value.fastBestEffort !== undefined) result.fastBestEffort = jsonValueToTsValueFns.bool(value.fastBestEffort);
+  if (value.allowBackRun !== undefined) result.allowBackRun = jsonValueToTsValueFns.bool(value.allowBackRun);
+  if (value.revenueAddress !== undefined) result.revenueAddress = jsonValueToTsValueFns.string(value.revenueAddress);
   return result;
 }
 
@@ -112,6 +120,18 @@ export function encodeBinary(value: $.api.PostSubmitRequest): Uint8Array {
     const tsValue = value.fastBestEffort;
     result.push(
       [7, tsValueToWireValueFns.bool(tsValue)],
+    );
+  }
+  if (value.allowBackRun !== undefined) {
+    const tsValue = value.allowBackRun;
+    result.push(
+      [8, tsValueToWireValueFns.bool(tsValue)],
+    );
+  }
+  if (value.revenueAddress !== undefined) {
+    const tsValue = value.revenueAddress;
+    result.push(
+      [9, tsValueToWireValueFns.string(tsValue)],
     );
   }
   return serialize(result);
@@ -162,6 +182,20 @@ export function decodeBinary(binary: Uint8Array): $.api.PostSubmitRequest {
     const value = wireValueToTsValueFns.bool(wireValue);
     if (value === undefined) break field;
     result.fastBestEffort = value;
+  }
+  field: {
+    const wireValue = wireFields.get(8);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.bool(wireValue);
+    if (value === undefined) break field;
+    result.allowBackRun = value;
+  }
+  field: {
+    const wireValue = wireFields.get(9);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.revenueAddress = value;
   }
   return result;
 }

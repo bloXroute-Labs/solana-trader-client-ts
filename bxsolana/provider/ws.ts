@@ -129,6 +129,11 @@ import {
     GetRaydiumCLMMPoolsResponse,
     GetRaydiumCLMMQuotesRequest,
     GetRaydiumCLMMQuotesResponse,
+    GetNewRaydiumPoolsByTransactionResponse,
+    GetNewRaydiumPoolsByTransactionRequest,
+    GetPriorityFeeByProgramRequest,
+    GetPriorityFeeByProgramResponse,
+    PostPumpFunSwapRequestSol,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -223,7 +228,6 @@ export class WsProvider extends BaseProvider {
     ): RpcReturnType<Promise<PostRaydiumRouteSwapResponse>, []> {
         return await this.wsConnection.call("PostRaydiumCLMMRouteSwap", request)
     }
-
 
     async postRaydiumSwap(
         request: PostRaydiumSwapRequest
@@ -585,6 +589,21 @@ export class WsProvider extends BaseProvider {
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
+    getNewRaydiumPoolsByTransactionStream = async (
+        request: GetNewRaydiumPoolsByTransactionRequest
+    ): Promise<AsyncGenerator<GetNewRaydiumPoolsByTransactionResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetNewRaydiumPoolsByTransactionStream",
+            request
+        )
+
+        this.manageGetStreamMaps(
+            "getNewRaydiumPoolsByTransactionStream",
+            subscriptionId
+        )
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
+    }
+
     getPriorityFeeStream = async (
         request: GetPriorityFeeRequest
     ): Promise<AsyncGenerator<GetPriorityFeeResponse>> => {
@@ -680,6 +699,12 @@ export class WsProvider extends BaseProvider {
         return this.wsConnection.call("PostPumpFunSwap", request)
     }
 
+    async postPumpFunSwapSol(
+        request: PostPumpFunSwapRequestSol
+    ): Promise<PostPumpFunSwapResponse> {
+        return this.wsConnection.call("PostPumpFunSwapSol", request)
+    }
+
     async getPools(request: GetPoolsRequest): Promise<GetPoolsResponse> {
         return this.wsConnection.call("GetPools", request)
     }
@@ -714,6 +739,12 @@ export class WsProvider extends BaseProvider {
         request: GetPriorityFeeRequest
     ): Promise<GetPriorityFeeResponse> {
         return this.wsConnection.call("GetPriorityFee", request)
+    }
+
+    async getPriorityFeeByProgram(
+        request: GetPriorityFeeByProgramRequest
+    ): Promise<GetPriorityFeeByProgramResponse> {
+        return this.wsConnection.call("GetPriorityFeeByProgram", request)
     }
 
     cancelGetOrderbooksStreamByCount = async (

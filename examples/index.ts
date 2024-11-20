@@ -25,6 +25,7 @@ import {
     MAINNET_API_NY_GRPC,
     MAINNET_API_NY_WS,
     createTraderAPIMemoInstruction,
+    GetOpenOrdersResponseV2,
 } from "../bxsolana"
 import {
     Keypair,
@@ -43,8 +44,6 @@ import {
 } from "../bxsolana/utils/constants"
 import { AxiosRequestConfig } from "axios"
 import { txToBase64 } from "../bxsolana/utils/transaction"
-import { $ } from "../bxsolana/proto/messages/api/GetOpenOrdersResponseV2"
-import GetOpenOrdersResponseV2 = $.api.GetOpenOrdersResponseV2
 
 const config = loadFromEnv()
 
@@ -373,6 +372,10 @@ async function doAmmRequests(
     console.info(" ")
     console.info(" ")
 
+    await callPostPumpFunSwapSol(pump_provider)
+    console.info(" ")
+    console.info(" ")
+
     await callPostTradeSwap(provider)
     console.info(" ")
     console.info(" ")
@@ -428,6 +431,10 @@ async function doAmmRequests(
     await callGetPriorityFee(provider)
     console.info(" ")
     console.info(" ")
+
+    await callGetPriorityFeeByProgram(provider)
+    console.info(" ")
+    console.info(" ")
 }
 
 async function doStreams(provider: BaseProvider, pump_provider: BaseProvider) {
@@ -457,6 +464,10 @@ async function doStreams(provider: BaseProvider, pump_provider: BaseProvider) {
         console.info(" ")
 
         await callGetNewRaydiumPoolsStreamWithCpmm(provider)
+        console.info(" ")
+        console.info(" ")
+
+        await callGetNewRaydiumPoolsByTransactionStream(provider)
         console.info(" ")
         console.info(" ")
     }
@@ -923,7 +934,6 @@ async function callGetPumpFunQuotes(provider: BaseProvider) {
         bondingCurveAddress: "Dga6eouREJ4kLHMqWWtccGGPsGebexuBYrcepBVd494q",
         mintAddress: "9QG5NHnfqQCyZ9SKhz7BzfjPseTFWaApmAtBTziXLanY",
         amount: 0.01,
-        slippage: 1,
         quoteType: "buy",
     })
     console.info(resp)
@@ -933,6 +943,16 @@ async function callGetPriorityFee(provider: BaseProvider) {
     console.info("Retrieving priority fee")
     const resp = await provider.getPriorityFee({
         project: "P_RAYDIUM",
+    })
+    console.info(resp)
+}
+
+async function callGetPriorityFeeByProgram(provider: BaseProvider) {
+    console.info("Retrieving priority fee by programs")
+    const raydiumCLMM = "CAMMCzo5YL8w4VFF8KVHrK22GGUsp5VTaW7grrKgrWqK"
+    const raydiumCPMM = "CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C"
+    const resp = await provider.getPriorityFeeByProgram({
+        programs: [raydiumCLMM, raydiumCPMM],
     })
     console.info(resp)
 }
@@ -1103,6 +1123,24 @@ async function callGetNewRaydiumPoolsStreamWithCpmm(provider: BaseProvider) {
     const req = await provider.getNewRaydiumPoolsStream({
         includeCPMM: true,
     })
+
+    let count = 0
+    for await (const tr of req) {
+        console.info(tr)
+        count++
+        if (count == 1) {
+            break
+        }
+    }
+}
+
+async function callGetNewRaydiumPoolsByTransactionStream(
+    provider: BaseProvider
+) {
+    console.info(
+        "Subscribing for new raydium pool by transaction stream updates"
+    )
+    const req = await provider.getNewRaydiumPoolsByTransactionStream({})
 
     let count = 0
     for await (const tr of req) {
@@ -1363,14 +1401,30 @@ async function callPostPumpFunSwap(provider: BaseProvider) {
     console.info("Generating a PumpFun swap")
     const response = await provider.postPumpFunSwap({
         userAddress: ownerAddress,
-        bondingCurveAddress: "7BcRpqUC7AF5Xsc3QEpCb8xmoi2X1LpwjUBNThbjWvyo",
-        tokenAddress: "BAHY8ocERNc5j6LqkYav1Prr8GBGsHvBV5X3dWPhsgXw",
+        bondingCurveAddress: "Fh8fnZUVEpPStJ2hKFNNjMAyuyvoJLMouENawg4DYCBc",
+        tokenAddress: "2DEsbYgW94AtZxgUfYXoL8DqJAorsLrEWZdSfriipump",
         tokenAmount: 10,
         solThreshold: 0.0001,
         isBuy: false,
         tip: "0",
+        slippage: 10,
         computeLimit: testOrder.computeLimit,
         computePrice: testOrder.computePrice,
+    })
+    console.info(response)
+}
+
+async function callPostPumpFunSwapSol(provider: BaseProvider) {
+    console.info("Generating a PumpFun swap sol")
+    const response = await provider.postPumpFunSwapSol({
+        userAddress: ownerAddress,
+        bondingCurveAddress: "Fh8fnZUVEpPStJ2hKFNNjMAyuyvoJLMouENawg4DYCBc",
+        tokenAddress: "2DEsbYgW94AtZxgUfYXoL8DqJAorsLrEWZdSfriipump",
+        solAmount: 0.0001,
+        tip: "2000001",
+        slippage: 1,
+        computeLimit: 300000,
+        computePrice: "2000",
     })
     console.info(response)
 }
