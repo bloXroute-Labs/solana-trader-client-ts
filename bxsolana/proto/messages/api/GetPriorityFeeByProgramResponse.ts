@@ -21,14 +21,14 @@ import {
 
 export declare namespace $.api {
   export interface GetPriorityFeeByProgramResponse {
-    Data: ProgramPriorityFee[];
+    data: ProgramPriorityFee[];
   }
 }
 export type Type = $.api.GetPriorityFeeByProgramResponse;
 
 export function getDefaultValue(): $.api.GetPriorityFeeByProgramResponse {
   return {
-    Data: [],
+    data: [],
   };
 }
 
@@ -41,19 +41,19 @@ export function createValue(partialValue: Partial<$.api.GetPriorityFeeByProgramR
 
 export function encodeJson(value: $.api.GetPriorityFeeByProgramResponse): unknown {
   const result: any = {};
-  result.Data = value.Data.map(value => encodeJson_1(value));
+  result.data = value.data.map(value => encodeJson_1(value));
   return result;
 }
 
 export function decodeJson(value: any): $.api.GetPriorityFeeByProgramResponse {
   const result = getDefaultValue();
-  result.Data = value.Data?.map((value: any) => decodeJson_1(value)) ?? [];
+  result.data = value.data?.map((value: any) => decodeJson_1(value)) ?? [];
   return result;
 }
 
 export function encodeBinary(value: $.api.GetPriorityFeeByProgramResponse): Uint8Array {
   const result: WireMessage = [];
-  for (const tsValue of value.Data) {
+  for (const tsValue of value.data) {
     result.push(
       [1, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
     );
@@ -69,7 +69,7 @@ export function decodeBinary(binary: Uint8Array): $.api.GetPriorityFeeByProgramR
     const wireValues = wireMessage.filter(([fieldNumber]) => fieldNumber === 1).map(([, wireValue]) => wireValue);
     const value = wireValues.map((wireValue) => wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined).filter(x => x !== undefined);
     if (!value.length) break collection;
-    result.Data = value as any;
+    result.data = value as any;
   }
   return result;
 }
