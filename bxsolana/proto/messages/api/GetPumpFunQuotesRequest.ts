@@ -22,7 +22,6 @@ export declare namespace $.api {
     mintAddress: string;
     bondingCurveAddress: string;
     amount: number;
-    slippage: number;
   }
 }
 export type Type = $.api.GetPumpFunQuotesRequest;
@@ -33,7 +32,6 @@ export function getDefaultValue(): $.api.GetPumpFunQuotesRequest {
     mintAddress: "",
     bondingCurveAddress: "",
     amount: 0,
-    slippage: 0,
   };
 }
 
@@ -50,7 +48,6 @@ export function encodeJson(value: $.api.GetPumpFunQuotesRequest): unknown {
   if (value.mintAddress !== undefined) result.mintAddress = tsValueToJsonValueFns.string(value.mintAddress);
   if (value.bondingCurveAddress !== undefined) result.bondingCurveAddress = tsValueToJsonValueFns.string(value.bondingCurveAddress);
   if (value.amount !== undefined) result.amount = tsValueToJsonValueFns.double(value.amount);
-  if (value.slippage !== undefined) result.slippage = tsValueToJsonValueFns.double(value.slippage);
   return result;
 }
 
@@ -60,7 +57,6 @@ export function decodeJson(value: any): $.api.GetPumpFunQuotesRequest {
   if (value.mintAddress !== undefined) result.mintAddress = jsonValueToTsValueFns.string(value.mintAddress);
   if (value.bondingCurveAddress !== undefined) result.bondingCurveAddress = jsonValueToTsValueFns.string(value.bondingCurveAddress);
   if (value.amount !== undefined) result.amount = jsonValueToTsValueFns.double(value.amount);
-  if (value.slippage !== undefined) result.slippage = jsonValueToTsValueFns.double(value.slippage);
   return result;
 }
 
@@ -88,12 +84,6 @@ export function encodeBinary(value: $.api.GetPumpFunQuotesRequest): Uint8Array {
     const tsValue = value.amount;
     result.push(
       [4, tsValueToWireValueFns.double(tsValue)],
-    );
-  }
-  if (value.slippage !== undefined) {
-    const tsValue = value.slippage;
-    result.push(
-      [5, tsValueToWireValueFns.double(tsValue)],
     );
   }
   return serialize(result);
@@ -130,13 +120,6 @@ export function decodeBinary(binary: Uint8Array): $.api.GetPumpFunQuotesRequest 
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
     result.amount = value;
-  }
-  field: {
-    const wireValue = wireFields.get(5);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.double(wireValue);
-    if (value === undefined) break field;
-    result.slippage = value;
   }
   return result;
 }

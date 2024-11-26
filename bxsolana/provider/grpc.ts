@@ -136,6 +136,11 @@ import {
     GetRaydiumCLMMPoolsResponse,
     GetRaydiumCLMMQuotesRequest,
     GetRaydiumCLMMQuotesResponse,
+    GetNewRaydiumPoolsByTransactionResponse,
+    GetNewRaydiumPoolsByTransactionRequest,
+    GetPriorityFeeByProgramRequest,
+    GetPriorityFeeByProgramResponse,
+    PostPumpFunSwapRequestSol,
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
@@ -143,7 +148,6 @@ import { BaseProvider } from "./base"
 import { CallMetadataOptions } from "@grpc/grpc-js/build/src/call-credentials"
 import { ConnectionOptions } from "tls"
 import { RpcReturnType } from "../proto/runtime/rpc"
-
 
 // built-in grpc.credentials.createInsecure() doesn't allow composition
 class insecureChannel extends grpc.ChannelCredentials {
@@ -273,7 +277,6 @@ export class GrpcProvider extends BaseProvider {
     ): RpcReturnType<Promise<PostRaydiumRouteSwapResponse>, []> {
         return this.client.postRaydiumRouteSwap(request)
     }
-
 
     postRaydiumCLMMRouteSwap(
         request: PostRaydiumRouteSwapRequest
@@ -553,6 +556,12 @@ export class GrpcProvider extends BaseProvider {
         return this.client.postPumpFunSwap(request)
     }
 
+    postPumpFunSwapSol(
+        request: PostPumpFunSwapRequestSol
+    ): Promise<PostPumpFunSwapResponse> {
+        return this.client.postPumpFunSwapSol(request)
+    }
+
     postRouteTradeSwap(
         request: RouteTradeSwapRequest
     ): Promise<TradeSwapResponse> {
@@ -567,6 +576,12 @@ export class GrpcProvider extends BaseProvider {
         request: GetPriorityFeeRequest
     ): Promise<GetPriorityFeeResponse> {
         return this.client.getPriorityFee(request)
+    }
+
+    getPriorityFeeByProgram(
+        request: GetPriorityFeeByProgramRequest
+    ): Promise<GetPriorityFeeByProgramResponse> {
+        return this.client.getPriorityFeeByProgram(request)
     }
 
     // streams
@@ -645,6 +660,12 @@ export class GrpcProvider extends BaseProvider {
         request: GetNewRaydiumPoolsRequest
     ): Promise<AsyncGenerator<GetNewRaydiumPoolsResponse>> {
         return this.client.getNewRaydiumPoolsStream(request)
+    }
+
+    getNewRaydiumPoolsByTransactionStream(
+        request: GetNewRaydiumPoolsByTransactionRequest
+    ): Promise<AsyncGenerator<GetNewRaydiumPoolsByTransactionResponse>> {
+        return this.client.getNewRaydiumPoolsByTransactionStream(request)
     }
 
     getPriorityFeeStream(

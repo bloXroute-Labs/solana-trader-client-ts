@@ -140,6 +140,12 @@ import {
     GetRaydiumCLMMQuotesRequest,
     PostRaydiumCPMMSwapResponse,
     PostRaydiumCPMMSwapRequest,
+    PostPumpFunSwapRequestSol,
+    GetNewRaydiumPoolsByTransactionRequest,
+    GetPriorityFeeByProgramRequest,
+    GetPriorityFeeByProgramResponse,
+    GetNewRaydiumPoolsByTransactionResponse,
+    GetRaydiumCLMMPoolsResponse,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -152,9 +158,6 @@ import { Keypair } from "@solana/web3.js"
 import base58 from "bs58"
 import { RpcReturnType } from "../proto/runtime/rpc"
 import { Type as GetZetaTransactionStreamRequest } from "../proto/messages/api/GetZetaTransactionStreamRequest"
-import {$} from "../proto/messages/api/GetRaydiumCLMMPoolsResponse";
-import GetRaydiumCLMMPoolsResponse = $.api.GetRaydiumCLMMPoolsResponse;
-
 
 /* eslint-disable */
 
@@ -230,7 +233,8 @@ export abstract class BaseProvider implements Api {
         throw new Error("Method not implemented.")
     }
 
-    getRaydiumCLMMPools(request: GetRaydiumPoolsRequest
+    getRaydiumCLMMPools(
+        request: GetRaydiumPoolsRequest
     ): RpcReturnType<Promise<GetRaydiumCLMMPoolsResponse>, []> {
         throw new Error("Method not implemented.")
     }
@@ -339,6 +343,12 @@ export abstract class BaseProvider implements Api {
 
     postPumpFunSwap(
         request: PostPumpFunSwapRequest
+    ): RpcReturnType<Promise<PostPumpFunSwapResponse>, []> {
+        throw new Error("Method not implemented.")
+    }
+
+    postPumpFunSwapSol(
+        request: PostPumpFunSwapRequestSol
     ): RpcReturnType<Promise<PostPumpFunSwapResponse>, []> {
         throw new Error("Method not implemented.")
     }
@@ -495,6 +505,12 @@ export abstract class BaseProvider implements Api {
         request: GetPriorityFeeRequest
     ): Promise<GetPriorityFeeResponse> {
         throw new Error("Not implemented")
+    }
+
+    getPriorityFeeByProgram(
+        request: GetPriorityFeeByProgramRequest
+    ): RpcReturnType<Promise<GetPriorityFeeByProgramResponse>, []> {
+        throw new Error("Method not implemented.")
     }
 
     getQuotes(request: GetQuotesRequest): Promise<GetQuotesResponse> {
@@ -863,6 +879,15 @@ export abstract class BaseProvider implements Api {
         request: GetNewRaydiumPoolsRequest
     ): Promise<AsyncGenerator<GetNewRaydiumPoolsResponse>> {
         throw new Error("Not implemented")
+    }
+
+    getNewRaydiumPoolsByTransactionStream(
+        request: GetNewRaydiumPoolsByTransactionRequest
+    ): RpcReturnType<
+        AsyncGenerator<GetNewRaydiumPoolsByTransactionResponse, any, unknown>,
+        []
+    > {
+        throw new Error("Method not implemented.")
     }
 
     getPoolReservesStream(

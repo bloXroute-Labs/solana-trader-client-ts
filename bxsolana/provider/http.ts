@@ -103,6 +103,9 @@ import {
     GetRaydiumCLMMPoolsResponse,
     GetRaydiumCLMMQuotesRequest,
     GetRaydiumCLMMQuotesResponse,
+    GetPriorityFeeByProgramRequest,
+    GetPriorityFeeByProgramResponse,
+    PostPumpFunSwapRequestSol,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -112,7 +115,6 @@ import axios, {
     RawAxiosRequestHeaders,
 } from "axios"
 import { RpcReturnType } from "../proto/runtime/rpc"
-
 
 export class HttpProvider extends BaseProvider {
     private readonly baseUrl: string
@@ -224,7 +226,7 @@ export class HttpProvider extends BaseProvider {
         return this.post<
             PostRaydiumRouteSwapRequest,
             PostRaydiumRouteSwapResponse
-            >(path, request)
+        >(path, request)
     }
 
     postRaydiumSwap(
@@ -241,12 +243,11 @@ export class HttpProvider extends BaseProvider {
         request: PostRaydiumCPMMSwapRequest
     ): RpcReturnType<Promise<PostRaydiumCPMMSwapResponse>, []> {
         const path = `${this.baseUrlV2}/raydium/cpmm-swap`
-        return this.post<PostRaydiumCPMMSwapRequest, PostRaydiumCPMMSwapResponse>(
-            path,
-            request
-        )
+        return this.post<
+            PostRaydiumCPMMSwapRequest,
+            PostRaydiumCPMMSwapResponse
+        >(path, request)
     }
-
 
     postRaydiumCLMMSwap(
         request: PostRaydiumSwapRequest
@@ -257,9 +258,6 @@ export class HttpProvider extends BaseProvider {
             request
         )
     }
-
-
-
 
     getRaydiumPoolReserve(
         request: GetRaydiumPoolReserveRequest
@@ -296,14 +294,12 @@ export class HttpProvider extends BaseProvider {
         return this.get<GetRaydiumQuotesResponse>(path)
     }
 
-
     getRaydiumCPMMQuotes(
         request: GetRaydiumCPMMQuotesRequest
     ): RpcReturnType<Promise<GetRaydiumCPMMQuotesResponse>, []> {
         const path = `${this.baseUrlV2}/raydium/quotes?inToken=${request.inToken}&outToken=${request.outToken}&inAmount=${request.inAmount}&slippage=${request.slippage}`
         return this.get<GetRaydiumCPMMQuotesResponse>(path)
     }
-
 
     getRaydiumCLMMQuotes(
         request: GetRaydiumCLMMQuotesRequest
@@ -312,11 +308,10 @@ export class HttpProvider extends BaseProvider {
         return this.get<GetRaydiumCLMMQuotesResponse>(path)
     }
 
-
     getPumpFunQuotes(
         request: GetPumpFunQuotesRequest
     ): RpcReturnType<Promise<GetPumpFunQuotesResponse>, []> {
-        const path = `${this.baseUrlV2}/pumpfun/quotes?mintAddress=${request.mintAddress}&quoteType=${request.quoteType}&amount=${request.amount}&bondingCurveAddress=${request.bondingCurveAddress}&slippage=${request.slippage}`
+        const path = `${this.baseUrlV2}/pumpfun/quotes?mintAddress=${request.mintAddress}&quoteType=${request.quoteType}&amount=${request.amount}&bondingCurveAddress=${request.bondingCurveAddress}`
         return this.get<GetPumpFunQuotesResponse>(path)
     }
 
@@ -461,7 +456,9 @@ export class HttpProvider extends BaseProvider {
         return this.get<GetPoolsResponse>(path)
     }
 
-    getRaydiumCLMMPools(request: GetRaydiumCLMMPoolsRequest): Promise<GetRaydiumCLMMPoolsResponse> {
+    getRaydiumCLMMPools(
+        request: GetRaydiumCLMMPoolsRequest
+    ): Promise<GetRaydiumCLMMPoolsResponse> {
         const path = `${this.baseUrl}/market/clmm-pools/pairOrAddress=${request.pairOrAddress}`
         return this.get<GetRaydiumCLMMPoolsResponse>(path)
     }
@@ -507,6 +504,17 @@ export class HttpProvider extends BaseProvider {
         return this.get<GetPriorityFeeResponse>(path)
     }
 
+    getPriorityFeeByProgram(
+        request: GetPriorityFeeByProgramRequest
+    ): Promise<GetPriorityFeeByProgramResponse> {
+        const path = `${
+            this.baseUrlV2
+        }/system/priority-fee-by-program?programs=${request.programs.join(
+            "&programs="
+        )}`
+        return this.get<GetPriorityFeeByProgramResponse>(path)
+    }
+
     postRaydiumSwapInstructions(
         request: PostRaydiumSwapInstructionsRequest
     ): Promise<PostRaydiumSwapInstructionsResponse> {
@@ -532,6 +540,16 @@ export class HttpProvider extends BaseProvider {
     ): Promise<PostPumpFunSwapResponse> {
         const path = `${this.baseUrlV2}/pumpfun/swap`
         return this.post<PostPumpFunSwapRequest, PostPumpFunSwapResponse>(
+            path,
+            request
+        )
+    }
+
+    postPumpFunSwapSol(
+        request: PostPumpFunSwapRequestSol
+    ): Promise<PostPumpFunSwapResponse> {
+        const path = `${this.baseUrlV2}/pumpfun/swap-sol`
+        return this.post<PostPumpFunSwapRequestSol, PostPumpFunSwapResponse>(
             path,
             request
         )

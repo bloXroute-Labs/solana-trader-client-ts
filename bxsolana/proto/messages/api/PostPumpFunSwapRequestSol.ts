@@ -17,29 +17,25 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface PostPumpFunSwapRequest {
+  export interface PostPumpFunSwapRequestSol {
     userAddress: string;
     bondingCurveAddress: string;
     tokenAddress: string;
-    tokenAmount: number;
-    solThreshold: number;
-    isBuy: boolean;
+    solAmount: number;
     slippage: number;
     computeLimit: number;
     computePrice: string;
     tip?: string;
   }
 }
-export type Type = $.api.PostPumpFunSwapRequest;
+export type Type = $.api.PostPumpFunSwapRequestSol;
 
-export function getDefaultValue(): $.api.PostPumpFunSwapRequest {
+export function getDefaultValue(): $.api.PostPumpFunSwapRequestSol {
   return {
     userAddress: "",
     bondingCurveAddress: "",
     tokenAddress: "",
-    tokenAmount: 0,
-    solThreshold: 0,
-    isBuy: false,
+    solAmount: 0,
     slippage: 0,
     computeLimit: 0,
     computePrice: "0",
@@ -47,21 +43,19 @@ export function getDefaultValue(): $.api.PostPumpFunSwapRequest {
   };
 }
 
-export function createValue(partialValue: Partial<$.api.PostPumpFunSwapRequest>): $.api.PostPumpFunSwapRequest {
+export function createValue(partialValue: Partial<$.api.PostPumpFunSwapRequestSol>): $.api.PostPumpFunSwapRequestSol {
   return {
     ...getDefaultValue(),
     ...partialValue,
   };
 }
 
-export function encodeJson(value: $.api.PostPumpFunSwapRequest): unknown {
+export function encodeJson(value: $.api.PostPumpFunSwapRequestSol): unknown {
   const result: any = {};
   if (value.userAddress !== undefined) result.userAddress = tsValueToJsonValueFns.string(value.userAddress);
   if (value.bondingCurveAddress !== undefined) result.bondingCurveAddress = tsValueToJsonValueFns.string(value.bondingCurveAddress);
   if (value.tokenAddress !== undefined) result.tokenAddress = tsValueToJsonValueFns.string(value.tokenAddress);
-  if (value.tokenAmount !== undefined) result.tokenAmount = tsValueToJsonValueFns.double(value.tokenAmount);
-  if (value.solThreshold !== undefined) result.solThreshold = tsValueToJsonValueFns.double(value.solThreshold);
-  if (value.isBuy !== undefined) result.isBuy = tsValueToJsonValueFns.bool(value.isBuy);
+  if (value.solAmount !== undefined) result.solAmount = tsValueToJsonValueFns.double(value.solAmount);
   if (value.slippage !== undefined) result.slippage = tsValueToJsonValueFns.double(value.slippage);
   if (value.computeLimit !== undefined) result.computeLimit = tsValueToJsonValueFns.uint32(value.computeLimit);
   if (value.computePrice !== undefined) result.computePrice = tsValueToJsonValueFns.uint64(value.computePrice);
@@ -69,14 +63,12 @@ export function encodeJson(value: $.api.PostPumpFunSwapRequest): unknown {
   return result;
 }
 
-export function decodeJson(value: any): $.api.PostPumpFunSwapRequest {
+export function decodeJson(value: any): $.api.PostPumpFunSwapRequestSol {
   const result = getDefaultValue();
   if (value.userAddress !== undefined) result.userAddress = jsonValueToTsValueFns.string(value.userAddress);
   if (value.bondingCurveAddress !== undefined) result.bondingCurveAddress = jsonValueToTsValueFns.string(value.bondingCurveAddress);
   if (value.tokenAddress !== undefined) result.tokenAddress = jsonValueToTsValueFns.string(value.tokenAddress);
-  if (value.tokenAmount !== undefined) result.tokenAmount = jsonValueToTsValueFns.double(value.tokenAmount);
-  if (value.solThreshold !== undefined) result.solThreshold = jsonValueToTsValueFns.double(value.solThreshold);
-  if (value.isBuy !== undefined) result.isBuy = jsonValueToTsValueFns.bool(value.isBuy);
+  if (value.solAmount !== undefined) result.solAmount = jsonValueToTsValueFns.double(value.solAmount);
   if (value.slippage !== undefined) result.slippage = jsonValueToTsValueFns.double(value.slippage);
   if (value.computeLimit !== undefined) result.computeLimit = jsonValueToTsValueFns.uint32(value.computeLimit);
   if (value.computePrice !== undefined) result.computePrice = jsonValueToTsValueFns.uint64(value.computePrice);
@@ -84,7 +76,7 @@ export function decodeJson(value: any): $.api.PostPumpFunSwapRequest {
   return result;
 }
 
-export function encodeBinary(value: $.api.PostPumpFunSwapRequest): Uint8Array {
+export function encodeBinary(value: $.api.PostPumpFunSwapRequestSol): Uint8Array {
   const result: WireMessage = [];
   if (value.userAddress !== undefined) {
     const tsValue = value.userAddress;
@@ -104,52 +96,40 @@ export function encodeBinary(value: $.api.PostPumpFunSwapRequest): Uint8Array {
       [3, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.tokenAmount !== undefined) {
-    const tsValue = value.tokenAmount;
+  if (value.solAmount !== undefined) {
+    const tsValue = value.solAmount;
     result.push(
       [4, tsValueToWireValueFns.double(tsValue)],
-    );
-  }
-  if (value.solThreshold !== undefined) {
-    const tsValue = value.solThreshold;
-    result.push(
-      [5, tsValueToWireValueFns.double(tsValue)],
-    );
-  }
-  if (value.isBuy !== undefined) {
-    const tsValue = value.isBuy;
-    result.push(
-      [6, tsValueToWireValueFns.bool(tsValue)],
     );
   }
   if (value.slippage !== undefined) {
     const tsValue = value.slippage;
     result.push(
-      [7, tsValueToWireValueFns.double(tsValue)],
+      [5, tsValueToWireValueFns.double(tsValue)],
     );
   }
   if (value.computeLimit !== undefined) {
     const tsValue = value.computeLimit;
     result.push(
-      [8, tsValueToWireValueFns.uint32(tsValue)],
+      [6, tsValueToWireValueFns.uint32(tsValue)],
     );
   }
   if (value.computePrice !== undefined) {
     const tsValue = value.computePrice;
     result.push(
-      [9, tsValueToWireValueFns.uint64(tsValue)],
+      [7, tsValueToWireValueFns.uint64(tsValue)],
     );
   }
   if (value.tip !== undefined) {
     const tsValue = value.tip;
     result.push(
-      [10, tsValueToWireValueFns.uint64(tsValue)],
+      [8, tsValueToWireValueFns.uint64(tsValue)],
     );
   }
   return serialize(result);
 }
 
-export function decodeBinary(binary: Uint8Array): $.api.PostPumpFunSwapRequest {
+export function decodeBinary(binary: Uint8Array): $.api.PostPumpFunSwapRequestSol {
   const result = getDefaultValue();
   const wireMessage = deserialize(binary);
   const wireFields = new Map(wireMessage);
@@ -179,45 +159,31 @@ export function decodeBinary(binary: Uint8Array): $.api.PostPumpFunSwapRequest {
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
-    result.tokenAmount = value;
+    result.solAmount = value;
   }
   field: {
     const wireValue = wireFields.get(5);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
-    result.solThreshold = value;
-  }
-  field: {
-    const wireValue = wireFields.get(6);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.bool(wireValue);
-    if (value === undefined) break field;
-    result.isBuy = value;
-  }
-  field: {
-    const wireValue = wireFields.get(7);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.double(wireValue);
-    if (value === undefined) break field;
     result.slippage = value;
   }
   field: {
-    const wireValue = wireFields.get(8);
+    const wireValue = wireFields.get(6);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.uint32(wireValue);
     if (value === undefined) break field;
     result.computeLimit = value;
   }
   field: {
-    const wireValue = wireFields.get(9);
+    const wireValue = wireFields.get(7);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.uint64(wireValue);
     if (value === undefined) break field;
     result.computePrice = value;
   }
   field: {
-    const wireValue = wireFields.get(10);
+    const wireValue = wireFields.get(8);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.uint64(wireValue);
     if (value === undefined) break field;
