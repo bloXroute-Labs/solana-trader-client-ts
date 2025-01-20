@@ -106,6 +106,9 @@ import {
     GetPriorityFeeByProgramRequest,
     GetPriorityFeeByProgramResponse,
     PostPumpFunSwapRequestSol,
+    PostSubmitSnipeRequest,
+    PostSubmitSnipeResponse,
+    PostSubmitPaladinRequest,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -568,6 +571,16 @@ export class HttpProvider extends BaseProvider {
     postSubmit(request: PostSubmitRequest): Promise<PostSubmitResponse> {
         const path = `${this.baseUrl}/trade/submit`
         return this.post<PostSubmitRequest, PostSubmitResponse>(path, request)
+    }
+
+    postSubmitSnipeV2(request: PostSubmitSnipeRequest): Promise<PostSubmitSnipeResponse> {
+        const path = `${this.baseUrlV2}/submit-snipe`
+        return this.post<PostSubmitSnipeRequest, PostSubmitSnipeResponse>(path, request)
+    }
+
+    postSubmitPaladinV2(request: PostSubmitPaladinRequest): Promise<PostSubmitResponse> {
+        const path = `${this.baseUrlV2}/submit-paladin`
+        return this.post<PostSubmitPaladinRequest, PostSubmitResponse>(path, request)
     }
 
     postSubmitBatch(

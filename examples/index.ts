@@ -26,6 +26,7 @@ import {
     MAINNET_API_NY_WS,
     createTraderAPIMemoInstruction,
     GetOpenOrdersResponseV2,
+    TransactionMessage,
 } from "../bxsolana"
 import {
     Keypair,
@@ -141,6 +142,9 @@ async function http() {
     console.info(" ----  HTTP Requests  ----")
     await doOrderbookRequests(provider)
 
+    console.info(" ----  HTTP Snipe  ----")
+    await callSubmitSnipe(provider)
+
     if (runLongExamples) {
         console.info(" ----  HTTP Lifecycle  ----")
         await doHttpLifecycle(provider)
@@ -197,6 +201,9 @@ async function grpc() {
     console.info(" ----  GRPC Requests  ----")
     await doOrderbookRequests(provider)
 
+    console.info(" ----  GRPC Snipe  ----")
+    await callSubmitSnipe(provider)
+
     if (runStreams) {
         console.info(" ----  GRPC Streams  ----")
         await doStreams(provider, pump_provider)
@@ -251,6 +258,9 @@ async function ws() {
 
     console.info(" ----  WS Requests  ----")
     await doOrderbookRequests(provider)
+
+    console.info(" ----  WS Snipe  ----")
+    await callSubmitSnipe(provider)
 
     if (runStreams) {
         console.info(" ----  WS Streams  ----")
@@ -1815,4 +1825,74 @@ function buildUnsignedTxn(
     return Buffer.from(tx.serialize({ verifySignatures: false })).toString(
         "base64"
     )
+}
+
+async function callSubmitSnipe(provider: BaseProvider) {
+    console.info("Starting submit snipe test");
+    
+    const keypair = Keypair.fromSecretKey(base58.decode(config.privateKey));
+    
+    const response = await provider.getRecentBlockHash({});
+    const recentBlockhash = response.blockHash;
+    
+    const smallTip = 100_000;
+    const stakedTipThreshold = 1_000_000;
+    const tipWallet = new PublicKey("HWEoBxYs7ssKuudEjzjmpfJVX7Dvi7wescFsVx2L5yoY");
+    const jitoTipWallet = new PublicKey("96gYZGLnJYVFmbjzopPSU6QiEV5fGqZNyN9nmNhvrZU5");
+    
+    // Create first transaction with two transfers
+    const tx1 = new Transaction({
+        recentBlockhash: recentBlockhash,
+        feePayer: keypair.publicKey,
+    }).add(
+        SystemProgram.transfer({
+            fromPubkey: keypair.publicKey,
+            toPubkey: jitoTipWallet,
+            lamports: stakedTipThreshold,
+        })
+    ).add(
+        SystemProgram.transfer({
+            fromPubkey: keypair.publicKey,
+            toPubkey: tipWallet,
+            lamports: smallTip,
+        })
+    );
+
+    const tx2 = new Transaction({
+        recentBlockhash: recentBlockhash,
+        feePayer: keypair.publicKey,
+    }).add(
+        SystemProgram.transfer({
+            fromPubkey: keypair.publicKey,
+            toPubkey: tipWallet,
+            lamports: stakedTipThreshold,
+        })
+    );
+
+    const serializedTx1 = tx1.serialize({ verifySignatures: false });
+    const serializedTx2 = tx2.serialize({ verifySignatures: false });
+
+    const transactions: TransactionMessage[] = [
+        {
+            content: Buffer.from(serializedTx1).toString('base64'),
+            isCleanup: false,
+        },
+        {
+            content: Buffer.from(serializedTx2).toString('base64'),
+            isCleanup: false,
+        }
+    ];
+
+    try {
+        const signatures = await provider.signAndSubmitSnipeTx(
+            transactions,
+            false
+        );
+        
+        console.info("Snipe signatures:", signatures);
+        return false;
+    } catch (error) {
+        console.error("Failed to submit snipe request:", error);
+        return true;
+    }
 }

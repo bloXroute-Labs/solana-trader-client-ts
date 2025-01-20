@@ -141,6 +141,9 @@ import {
     GetPriorityFeeByProgramRequest,
     GetPriorityFeeByProgramResponse,
     PostPumpFunSwapRequestSol,
+    PostSubmitSnipeResponse,
+    PostSubmitSnipeRequest,
+    PostSubmitPaladinRequest,
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
@@ -464,6 +467,14 @@ export class GrpcProvider extends BaseProvider {
 
     postSubmit(request: PostSubmitRequest): Promise<PostSubmitResponse> {
         return this.client.postSubmit(request)
+    }
+
+    postSubmitSnipe(request: PostSubmitSnipeRequest): Promise<PostSubmitSnipeResponse> {
+        return this.client.postSubmitSnipeV2(request)
+    }
+
+    postSubmitPaladin(request: PostSubmitPaladinRequest): Promise<PostSubmitResponse> {
+        return this.client.postSubmitPaladinV2(request)
     }
 
     postSubmitBatch(
