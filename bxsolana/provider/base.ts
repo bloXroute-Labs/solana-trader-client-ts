@@ -146,6 +146,11 @@ import {
     GetPriorityFeeByProgramResponse,
     GetNewRaydiumPoolsByTransactionResponse,
     GetRaydiumCLMMPoolsResponse,
+    PostSubmitSnipeRequest,
+    PostSubmitSnipeResponse,
+    PostSubmitPaladinRequest,
+    GetLeaderScheduleResponse,
+    GetLeaderScheduleRequest,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -475,6 +480,15 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
+
+    postSubmitSnipeV2(request: PostSubmitSnipeRequest): Promise<PostSubmitSnipeResponse> {
+        throw new Error("Not implemented")
+    }
+
+    postSubmitPaladinV2(request: PostSubmitPaladinRequest): Promise<PostSubmitResponse> {
+        throw new Error("Not implemented")
+    }
+
     postSubmitBatchV2(
         request: PostSubmitBatchRequest
     ): Promise<PostSubmitBatchResponse> {
@@ -526,6 +540,10 @@ export abstract class BaseProvider implements Api {
     getRecentBlockHashV2(
         request: GetRecentBlockHashRequestV2
     ): Promise<GetRecentBlockHashResponseV2> {
+        throw new Error("Not implemented")
+    }
+
+    getLeaderSchedule(request: GetLeaderScheduleRequest): Promise<GetLeaderScheduleResponse> {
         throw new Error("Not implemented")
     }
 
@@ -768,6 +786,60 @@ export abstract class BaseProvider implements Api {
         })
     }
 
+    public async signAndSubmitSnipeTx(
+        entries: TransactionMessage[],
+        useStakedRPCs: boolean = false
+    ): Promise<PostSubmitSnipeResponse> {
+        this.requirePrivateKey()
+    
+        if (!entries || entries.length === 0) {
+            throw Error("entries array was empty or undefined")
+        }
+    
+        const signedEntries = entries.map(entry => {
+            if (!entry) {
+                throw Error("entry was undefined")
+            }
+            return {
+                transaction: {
+                    content: txToBase64(signTx(entry.content, this.privateKey!)),
+                    isCleanup: false,
+                },
+                skipPreFlight: true,
+            }
+        })
+    
+        const request: PostSubmitSnipeRequest = {
+            entries: signedEntries,
+            useStakedRPCs: useStakedRPCs
+        }
+    
+        return this.postSubmitSnipeV2(request)
+    }
+
+    public async signAndSubmitPaladinTx(
+        transactionMessage: TransactionMessage | undefined,
+        skipPreFlight: boolean = false,
+        isCleanup: boolean = false,
+        frontRunningProtection: boolean = false
+    ): Promise<PostSubmitResponse> {
+        this.requirePrivateKey()
+    
+        if (transactionMessage === undefined) {
+            throw Error("transaction message was undefined")
+        }
+    
+        const signedTx = signTx(transactionMessage.content, this.privateKey!)
+        
+        const request: PostSubmitPaladinRequest = {
+            transaction: {
+                content: txToBase64(signedTx),
+            }
+        }
+    
+        return this.postSubmitPaladinV2(request)
+    }
+
     private signAndSubmitTxs(
         transactionMessages: TransactionMessage[],
         submitStrategy: SubmitStrategy,
@@ -899,6 +971,12 @@ export abstract class BaseProvider implements Api {
     getBundleTipStream(
         request: GetBundleTipRequest
     ): Promise<AsyncGenerator<GetBundleTipResponse>> {
+        throw new Error("Not implemented")
+    }
+
+    getPriorityFeeByProgramStream(
+        request: GetPriorityFeeByProgramRequest
+    ): Promise<AsyncGenerator<GetPriorityFeeByProgramResponse>> {
         throw new Error("Not implemented")
     }
 

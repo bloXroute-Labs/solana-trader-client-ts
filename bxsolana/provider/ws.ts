@@ -134,6 +134,9 @@ import {
     GetPriorityFeeByProgramRequest,
     GetPriorityFeeByProgramResponse,
     PostPumpFunSwapRequestSol,
+    PostSubmitSnipeRequest,
+    PostSubmitSnipeResponse,
+    PostSubmitPaladinRequest,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -647,6 +650,14 @@ export class WsProvider extends BaseProvider {
         request: PostSubmitRequest
     ): Promise<PostSubmitResponse> {
         return this.wsConnection.call("PostSubmitV2", request)
+    }
+
+    async postSubmitSnipeV2(request: PostSubmitSnipeRequest): Promise<PostSubmitSnipeResponse> {
+        return this.wsConnection.call("PostSubmitSnipeV2", request)
+    }
+
+    async postSubmitPaladinV2(request: PostSubmitPaladinRequest): Promise<PostSubmitResponse> {
+        return this.wsConnection.call("PostSubmitPaladinV2", request)
     }
 
     async postSubmitBatchV2(
