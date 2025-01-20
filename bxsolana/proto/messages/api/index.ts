@@ -50,11 +50,14 @@ export type { Type as GetOrderStatusStreamRequest } from "./GetOrderStatusStream
 export type { Type as GetOrderStatusStreamResponse } from "./GetOrderStatusStreamResponse";
 export type { Type as GetOrderStatusResponse } from "./GetOrderStatusResponse";
 export type { Type as PostSubmitRequest } from "./PostSubmitRequest";
+export type { Type as PostSubmitPaladinRequest } from "./PostSubmitPaladinRequest";
 export type { Type as PostSubmitRequestEntry } from "./PostSubmitRequestEntry";
 export type { Type as SubmitStrategy } from "./SubmitStrategy";
 export type { Type as PostSubmitBatchRequest } from "./PostSubmitBatchRequest";
 export type { Type as PostSubmitBatchResponseEntry } from "./PostSubmitBatchResponseEntry";
 export type { Type as PostSubmitBatchResponse } from "./PostSubmitBatchResponse";
+export type { Type as PostSubmitSnipeRequest } from "./PostSubmitSnipeRequest";
+export type { Type as PostSubmitSnipeResponse } from "./PostSubmitSnipeResponse";
 export type { Type as PostSubmitResponse } from "./PostSubmitResponse";
 export type { Type as GetOpenOrdersRequest } from "./GetOpenOrdersRequest";
 export type { Type as GetOpenOrdersResponse } from "./GetOpenOrdersResponse";
@@ -210,3 +213,6 @@ export type { Type as GetPumpFunNewTokensStreamResponse } from "./GetPumpFunNewT
 export type { Type as PostPumpFunSwapRequest } from "./PostPumpFunSwapRequest";
 export type { Type as PostPumpFunSwapRequestSol } from "./PostPumpFunSwapRequestSol";
 export type { Type as PostPumpFunSwapResponse } from "./PostPumpFunSwapResponse";
+export type { Type as GetLeaderScheduleRequest } from "./GetLeaderScheduleRequest";
+export type { Type as GetLeaderScheduleResponse } from "./GetLeaderScheduleResponse";
+export type { Type as LeaderSchedule } from "./LeaderSchedule";
