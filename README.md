@@ -99,6 +99,7 @@ Then, bump the `package.json` version:
 
 And finally run:
 
+```
 $ npm run release
 ```
 
