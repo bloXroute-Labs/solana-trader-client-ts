@@ -87,12 +87,21 @@ $ npm run proto
 
 ## How to Publish a new NPM release
 
-We use `np` to publish new releases to npm. To make a new release, in the project directory use:
+First, you will need to create an npm.js account, and request publishing access from Dima for the Bloxroute Organization.
+
+Then, you will need to setup 2FA, it is required in order to publish.
+
+Then, bump the `package.json` version:
 
 ```
+"version": "2.2.1",
+```
+
+And finally run:
+
 $ npm run release
 ```
 
-Follow the menu items to select a version for the release (major, minor, patch).
+[more info](https://bloxroute.atlassian.net/wiki/spaces/TRAD/pages/562200577/solana-trader-client-ts)
 
 [1]: https://portal.bloxroute.com/
