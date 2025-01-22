@@ -137,6 +137,8 @@ import {
     PostSubmitSnipeRequest,
     PostSubmitSnipeResponse,
     PostSubmitPaladinRequest,
+    GetLeaderScheduleRequest,
+    GetLeaderScheduleResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -619,6 +621,18 @@ export class WsProvider extends BaseProvider {
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
 
+    getPriorityFeeByProgramStream = async (
+        request: GetPriorityFeeByProgramRequest
+    ): Promise<AsyncGenerator<GetPriorityFeeByProgramResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetPriorityFeeByProgramStream",
+            request
+        )
+
+        this.manageGetStreamMaps("GetPriorityFeeByProgramStream", subscriptionId)
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
+    }
+
     getBundleTipStream = async (
         request: GetBundleTipRequest
     ): Promise<AsyncGenerator<GetBundleTipResponse>> => {
@@ -756,6 +770,10 @@ export class WsProvider extends BaseProvider {
         request: GetPriorityFeeByProgramRequest
     ): Promise<GetPriorityFeeByProgramResponse> {
         return this.wsConnection.call("GetPriorityFeeByProgram", request)
+    }
+
+    async getLeaderSchedule(request: GetLeaderScheduleRequest): Promise<GetLeaderScheduleResponse> {
+        return this.wsConnection.call("GetLeaderSchedule", request)
     }
 
     cancelGetOrderbooksStreamByCount = async (

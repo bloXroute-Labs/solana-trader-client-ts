@@ -109,6 +109,8 @@ import {
     PostSubmitSnipeRequest,
     PostSubmitSnipeResponse,
     PostSubmitPaladinRequest,
+    GetLeaderScheduleRequest,
+    GetLeaderScheduleResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -516,6 +518,11 @@ export class HttpProvider extends BaseProvider {
             "&programs="
         )}`
         return this.get<GetPriorityFeeByProgramResponse>(path)
+    }
+
+    getLeaderSchedule(request: GetLeaderScheduleRequest): Promise<GetLeaderScheduleResponse> {
+        let path = `${this.baseUrlV2}/system/leader-schedule?maxSlots=${request.maxSlots}`
+        return this.get<GetLeaderScheduleResponse>(path)
     }
 
     postRaydiumSwapInstructions(
