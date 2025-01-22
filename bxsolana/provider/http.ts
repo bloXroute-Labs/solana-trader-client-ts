@@ -521,7 +521,7 @@ export class HttpProvider extends BaseProvider {
     }
 
     getLeaderSchedule(request: GetLeaderScheduleRequest): Promise<GetLeaderScheduleResponse> {
-        let path = `${this.baseUrlV2}/system/leader-schedule?maxSlots=${request.maxSlots}`
+        const path = `${this.baseUrlV2}/system/leader-schedule?maxSlots=${request.maxSlots}`
         return this.get<GetLeaderScheduleResponse>(path)
     }
 
