@@ -26,7 +26,6 @@ export declare namespace $.api {
     computeLimit: number;
     computePrice: string;
     tip?: string;
-    fastMode?: boolean;
   }
 }
 export type Type = $.api.PostJupiterSwapRequest;
@@ -41,7 +40,6 @@ export function getDefaultValue(): $.api.PostJupiterSwapRequest {
     computeLimit: 0,
     computePrice: "0",
     tip: "0",
-    fastMode: false,
   };
 }
 
@@ -62,7 +60,6 @@ export function encodeJson(value: $.api.PostJupiterSwapRequest): unknown {
   if (value.computeLimit !== undefined) result.computeLimit = tsValueToJsonValueFns.uint32(value.computeLimit);
   if (value.computePrice !== undefined) result.computePrice = tsValueToJsonValueFns.uint64(value.computePrice);
   if (value.tip !== undefined) result.tip = tsValueToJsonValueFns.uint64(value.tip);
-  if (value.fastMode !== undefined) result.fastMode = tsValueToJsonValueFns.bool(value.fastMode);
   return result;
 }
 
@@ -76,7 +73,6 @@ export function decodeJson(value: any): $.api.PostJupiterSwapRequest {
   if (value.computeLimit !== undefined) result.computeLimit = jsonValueToTsValueFns.uint32(value.computeLimit);
   if (value.computePrice !== undefined) result.computePrice = jsonValueToTsValueFns.uint64(value.computePrice);
   if (value.tip !== undefined) result.tip = jsonValueToTsValueFns.uint64(value.tip);
-  if (value.fastMode !== undefined) result.fastMode = jsonValueToTsValueFns.bool(value.fastMode);
   return result;
 }
 
@@ -128,12 +124,6 @@ export function encodeBinary(value: $.api.PostJupiterSwapRequest): Uint8Array {
     const tsValue = value.tip;
     result.push(
       [8, tsValueToWireValueFns.uint64(tsValue)],
-    );
-  }
-  if (value.fastMode !== undefined) {
-    const tsValue = value.fastMode;
-    result.push(
-      [9, tsValueToWireValueFns.bool(tsValue)],
     );
   }
   return serialize(result);
@@ -198,13 +188,6 @@ export function decodeBinary(binary: Uint8Array): $.api.PostJupiterSwapRequest {
     const value = wireValueToTsValueFns.uint64(wireValue);
     if (value === undefined) break field;
     result.tip = value;
-  }
-  field: {
-    const wireValue = wireFields.get(9);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.bool(wireValue);
-    if (value === undefined) break field;
-    result.fastMode = value;
   }
   return result;
 }
