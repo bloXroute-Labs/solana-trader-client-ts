@@ -922,7 +922,6 @@ async function callGetJupiterQuotes(provider: BaseProvider) {
         outToken: tokenAddress,
         inAmount: 1,
         slippage: 5,
-        fastMode: true,
     })
     console.info(resp)
 }
@@ -1478,7 +1477,6 @@ async function callPostJupiterSwap(provider: BaseProvider) {
         slippage: 0.1,
         computeLimit: testOrder.computeLimit,
         computePrice: testOrder.computePrice,
-        fastMode: true,
     })
     console.info(response)
 }
@@ -1492,7 +1490,6 @@ async function callPostJupiterSwapInstructions(provider: BaseProvider) {
         inAmount: 0.01,
         slippage: 0.1,
         computePrice: testOrder.computePrice,
-        fastMode: true,
     })
     console.info(response)
 }
