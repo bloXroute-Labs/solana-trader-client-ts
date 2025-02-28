@@ -993,7 +993,6 @@ export interface Service<TReqArgs extends any[] = [], TResArgs extends any[] = [
   getOrderByID(request: GetOrderByIDRequest, ...args: TReqArgs): RpcReturnType<Promise<GetOrderByIDResponse>, TResArgs>;
   getUnsettled(request: GetUnsettledRequest, ...args: TReqArgs): RpcReturnType<Promise<GetUnsettledResponse>, TResArgs>;
   postRouteTradeSwap(request: RouteTradeSwapRequest, ...args: TReqArgs): RpcReturnType<Promise<TradeSwapResponse>, TResArgs>;
-  postSubmitMineOre(request: PostSubmitRequest, ...args: TReqArgs): RpcReturnType<Promise<PostSubmitResponse>, TResArgs>;
   getOrderbooksStream(request: GetOrderbooksRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetOrderbooksStreamResponse>, TResArgs>;
   getMarketDepthsStream(request: GetMarketDepthsRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetMarketDepthsStreamResponse>, TResArgs>;
   getTickersStream(request: GetTickersStreamRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetTickersStreamResponse>, TResArgs>;
@@ -2106,22 +2105,6 @@ export const methodDescriptors = {
       serializeBinary: encodeBinary_107,
       deserializeBinary: decodeBinary_107,
       serializeJson: (value: TradeSwapResponse) => JSON.stringify(encodeJson_107(value)),
-    },
-  },
-  postSubmitMineOre: {
-    methodName: "PostSubmitMineOre",
-    service: { serviceName: "api.Api" },
-    requestStream: false,
-    responseStream: false,
-    requestType: {
-      serializeBinary: encodeBinary_4,
-      deserializeBinary: decodeBinary_4,
-      serializeJson: (value: PostSubmitRequest) => JSON.stringify(encodeJson_4(value)),
-    },
-    responseType: {
-      serializeBinary: encodeBinary_5,
-      deserializeBinary: decodeBinary_5,
-      serializeJson: (value: PostSubmitResponse) => JSON.stringify(encodeJson_5(value)),
     },
   },
   getOrderbooksStream: {

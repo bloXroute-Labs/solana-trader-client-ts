@@ -35,7 +35,6 @@ export declare namespace $.api {
     allowBackRun?: boolean;
     revenueAddress?: string;
     sniping?: boolean;
-    allowRevert?: boolean;
   }
 }
 export type Type = $.api.PostSubmitRequest;
@@ -51,7 +50,6 @@ export function getDefaultValue(): $.api.PostSubmitRequest {
     allowBackRun: false,
     revenueAddress: "",
     sniping: false,
-    allowRevert: false,
   };
 }
 
@@ -73,7 +71,6 @@ export function encodeJson(value: $.api.PostSubmitRequest): unknown {
   if (value.allowBackRun !== undefined) result.allowBackRun = tsValueToJsonValueFns.bool(value.allowBackRun);
   if (value.revenueAddress !== undefined) result.revenueAddress = tsValueToJsonValueFns.string(value.revenueAddress);
   if (value.sniping !== undefined) result.sniping = tsValueToJsonValueFns.bool(value.sniping);
-  if (value.allowRevert !== undefined) result.allowRevert = tsValueToJsonValueFns.bool(value.allowRevert);
   return result;
 }
 
@@ -88,7 +85,6 @@ export function decodeJson(value: any): $.api.PostSubmitRequest {
   if (value.allowBackRun !== undefined) result.allowBackRun = jsonValueToTsValueFns.bool(value.allowBackRun);
   if (value.revenueAddress !== undefined) result.revenueAddress = jsonValueToTsValueFns.string(value.revenueAddress);
   if (value.sniping !== undefined) result.sniping = jsonValueToTsValueFns.bool(value.sniping);
-  if (value.allowRevert !== undefined) result.allowRevert = jsonValueToTsValueFns.bool(value.allowRevert);
   return result;
 }
 
@@ -146,12 +142,6 @@ export function encodeBinary(value: $.api.PostSubmitRequest): Uint8Array {
     const tsValue = value.sniping;
     result.push(
       [10, tsValueToWireValueFns.bool(tsValue)],
-    );
-  }
-  if (value.allowRevert !== undefined) {
-    const tsValue = value.allowRevert;
-    result.push(
-      [11, tsValueToWireValueFns.bool(tsValue)],
     );
   }
   return serialize(result);
@@ -223,13 +213,6 @@ export function decodeBinary(binary: Uint8Array): $.api.PostSubmitRequest {
     const value = wireValueToTsValueFns.bool(wireValue);
     if (value === undefined) break field;
     result.sniping = value;
-  }
-  field: {
-    const wireValue = wireFields.get(11);
-    if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.bool(wireValue);
-    if (value === undefined) break field;
-    result.allowRevert = value;
   }
   return result;
 }
