@@ -1,5 +1,10 @@
-import {loadFromEnv, LOCAL_API_WS, MAINNET_API_NY_WS, TESTNET_API_WS, WsProvider,} from "../bxsolana"
-
+import {
+    loadFromEnv,
+    LOCAL_API_WS,
+    MAINNET_API_NY_WS,
+    TESTNET_API_WS,
+    WsProvider,
+} from "../bxsolana"
 
 // require('dotenv').config();
 
@@ -37,7 +42,6 @@ async function main() {
     })
     console.info(priorityFeeResponse)
 
-
     const req = await provider.getNewRaydiumPoolsStream({})
 
     for await (const tr of req) {
@@ -45,14 +49,13 @@ async function main() {
 
         // make a trade based on a new pool update
         console.info("submitting a raydium trade swap based on new pool update")
-        const poolAddress: string = tr?.pool?.poolAddress ?? "";
-        const inToken: string = tr?.pool?.token1MintAddress ?? "";
-        const outToken: string = tr?.pool?.token2MintAddress ?? "";
-
+        const poolAddress: string = tr?.pool?.poolAddress ?? ""
+        const inToken: string = tr?.pool?.token1MintAddress ?? ""
+        const outToken: string = tr?.pool?.token2MintAddress ?? ""
 
         if (poolAddress === "") {
-            console.warn("No pool address found for this trade. Skipping.");
-            continue; // Skip to the next iteration of the loop
+            console.warn("No pool address found for this trade. Skipping.")
+            continue // Skip to the next iteration of the loop
         }
 
         const responses = await provider.submitTradeSwap(
@@ -73,10 +76,7 @@ async function main() {
         for (const transaction of responses.transactions) {
             console.info(transaction.signature)
         }
-
     }
-
-
 
     console.info(req)
 }
@@ -89,4 +89,3 @@ run().then(() => {
     console.log("done!")
     process.exit(0)
 })
-
