@@ -463,7 +463,6 @@ async function callGetJupiterQuotes(provider: BaseProvider) {
         outToken: tokenAddress,
         inAmount: 1,
         slippage: 5,
-        fastMode: true,
     })
     console.info(resp)
 }
