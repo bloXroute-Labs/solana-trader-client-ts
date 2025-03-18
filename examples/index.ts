@@ -27,8 +27,10 @@ import {
     createTraderAPIMemoInstruction,
     GetOpenOrdersResponseV2,
     TransactionMessage,
+    TransactionMessageV2,
 } from "../bxsolana"
 import {
+    ComputeBudgetProgram,
     Keypair,
     LAMPORTS_PER_SOL,
     PublicKey,
@@ -92,12 +94,12 @@ function getRandom() {
 }
 
 async function run() {
-    console.info("---- STARTING HTTP TESTS ----")
-    await http()
+    // console.info("---- STARTING HTTP TESTS ----")
+    // await http()
     console.info("---- STARTING GRPC TESTS ----")
     await grpc()
-    console.info("---- STARTING WS TESTS ----")
-    await ws()
+    // console.info("---- STARTING WS TESTS ----")
+    // await ws()
 }
 
 async function http() {
@@ -218,6 +220,8 @@ async function grpc() {
         await doLifecycle(provider)
         console.info(" ")
     }
+
+    await callPlaceOrderBundle(provider)
 
     return
 }
@@ -1893,3 +1897,50 @@ async function callSubmitSnipe(provider: BaseProvider) {
         return true;
     }
 }
+
+async function callPlaceOrderBundle(
+    provider: BaseProvider,
+  ): Promise<boolean> {
+    console.info("Starting place order with bundle");
+  
+    try {
+      const response = await provider.getRecentBlockHash({});
+      const blockHash = response.blockHash;
+  
+      const config = loadFromEnv();
+      const keypair = Keypair.fromSecretKey(base58.decode(config.privateKey));
+  
+      const computeBudgetIx = ComputeBudgetProgram.setComputeUnitPrice({
+        microLamports: 200000000
+      });
+  
+      const transferIx = SystemProgram.transfer({
+        fromPubkey: keypair.publicKey,
+        toPubkey: new PublicKey("HWEoBxYs7ssKuudEjzjmpfJVX7Dvi7wescFsVx2L5yoY"),
+        lamports: 10000000
+      });
+  
+      const transaction = new Transaction({
+        recentBlockhash: blockHash,
+        feePayer: keypair.publicKey
+      }).add(computeBudgetIx).add(transferIx);
+  
+      const serializedTransaction = transaction.serialize({ verifySignatures: false });
+      const encodedTransaction = Buffer.from(serializedTransaction).toString('base64');
+  
+      const transactionMessage: TransactionMessageV2 = {
+        content: encodedTransaction,
+      };
+  
+      const resp = await provider.signAndSubmitPaladinTx(
+        transactionMessage,
+        true
+      );
+  
+      console.info("Submitted bundle order to trader api", resp);
+      return false;
+    } catch (error) {
+      console.error("Failed to sign and submit order", error);
+      return true;
+    }
+  }
