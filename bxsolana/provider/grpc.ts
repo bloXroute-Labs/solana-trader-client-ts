@@ -475,7 +475,7 @@ export class GrpcProvider extends BaseProvider {
         return this.client.postSubmitSnipeV2(request)
     }
 
-    postSubmitPaladin(request: PostSubmitPaladinRequest): Promise<PostSubmitResponse> {
+    postSubmitPaladinV2(request: PostSubmitPaladinRequest): Promise<PostSubmitResponse> {
         return this.client.postSubmitPaladinV2(request)
     }
 
