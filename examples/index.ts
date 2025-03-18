@@ -27,6 +27,7 @@ import {
     createTraderAPIMemoInstruction,
     GetOpenOrdersResponseV2,
     TransactionMessage,
+    TransactionMessageV2,
 } from "../bxsolana"
 import {
     ComputeBudgetProgram,
@@ -93,12 +94,12 @@ function getRandom() {
 }
 
 async function run() {
-    console.info("---- STARTING HTTP TESTS ----")
-    await http()
+    // console.info("---- STARTING HTTP TESTS ----")
+    // await http()
     console.info("---- STARTING GRPC TESTS ----")
     await grpc()
-    console.info("---- STARTING WS TESTS ----")
-    await ws()
+    // console.info("---- STARTING WS TESTS ----")
+    // await ws()
 }
 
 async function http() {
@@ -1927,9 +1928,8 @@ async function callPlaceOrderBundle(
       const serializedTransaction = transaction.serialize({ verifySignatures: false });
       const encodedTransaction = Buffer.from(serializedTransaction).toString('base64');
   
-      const transactionMessage: TransactionMessage = {
+      const transactionMessage: TransactionMessageV2 = {
         content: encodedTransaction,
-        isCleanup: false
       };
   
       const resp = await provider.signAndSubmitPaladinTx(

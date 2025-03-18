@@ -151,6 +151,7 @@ import {
     PostSubmitPaladinRequest,
     GetLeaderScheduleResponse,
     GetLeaderScheduleRequest,
+    TransactionMessageV2,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -818,7 +819,7 @@ export abstract class BaseProvider implements Api {
     }
 
     public async signAndSubmitPaladinTx(
-        transactionMessage: TransactionMessage | undefined,
+        transactionMessage: TransactionMessageV2 | undefined,
         skipPreFlight: boolean = false,
         isCleanup: boolean = false,
         frontRunningProtection: boolean = false
