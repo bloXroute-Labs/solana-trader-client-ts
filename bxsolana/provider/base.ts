@@ -820,6 +820,7 @@ export abstract class BaseProvider implements Api {
 
     public async signAndSubmitPaladinTx(
         transactionMessage: TransactionMessageV2 | undefined,
+        revertProtection: boolean = false,
         skipPreFlight: boolean = false,
         isCleanup: boolean = false,
         frontRunningProtection: boolean = false
@@ -835,7 +836,8 @@ export abstract class BaseProvider implements Api {
         const request: PostSubmitPaladinRequest = {
             transaction: {
                 content: txToBase64(signedTx),
-            }
+            },
+            revertProtection: revertProtection,
         }
     
         return this.postSubmitPaladinV2(request)

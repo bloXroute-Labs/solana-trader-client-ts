@@ -471,7 +471,7 @@ export class GrpcProvider extends BaseProvider {
         return this.client.postSubmit(request)
     }
 
-    postSubmitSnipe(request: PostSubmitSnipeRequest): Promise<PostSubmitSnipeResponse> {
+    postSubmitSnipeV2(request: PostSubmitSnipeRequest): Promise<PostSubmitSnipeResponse> {
         return this.client.postSubmitSnipeV2(request)
     }
 

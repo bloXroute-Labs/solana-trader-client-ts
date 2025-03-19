@@ -21,7 +21,9 @@ export declare namespace $.api {
     slot: string;
     leader: string;
     isJito: boolean;
-    isLowRisk: boolean;
+    isHighRisk: boolean;
+    jitoRegion: string;
+    isMalicious: boolean;
   }
 }
 export type Type = $.api.LeaderSchedule;
@@ -31,7 +33,9 @@ export function getDefaultValue(): $.api.LeaderSchedule {
     slot: "0",
     leader: "",
     isJito: false,
-    isLowRisk: false,
+    isHighRisk: false,
+    jitoRegion: "",
+    isMalicious: false,
   };
 }
 
@@ -47,7 +51,9 @@ export function encodeJson(value: $.api.LeaderSchedule): unknown {
   if (value.slot !== undefined) result.slot = tsValueToJsonValueFns.uint64(value.slot);
   if (value.leader !== undefined) result.leader = tsValueToJsonValueFns.string(value.leader);
   if (value.isJito !== undefined) result.isJito = tsValueToJsonValueFns.bool(value.isJito);
-  if (value.isLowRisk !== undefined) result.isLowRisk = tsValueToJsonValueFns.bool(value.isLowRisk);
+  if (value.isHighRisk !== undefined) result.isHighRisk = tsValueToJsonValueFns.bool(value.isHighRisk);
+  if (value.jitoRegion !== undefined) result.jitoRegion = tsValueToJsonValueFns.string(value.jitoRegion);
+  if (value.isMalicious !== undefined) result.isMalicious = tsValueToJsonValueFns.bool(value.isMalicious);
   return result;
 }
 
@@ -56,7 +62,9 @@ export function decodeJson(value: any): $.api.LeaderSchedule {
   if (value.slot !== undefined) result.slot = jsonValueToTsValueFns.uint64(value.slot);
   if (value.leader !== undefined) result.leader = jsonValueToTsValueFns.string(value.leader);
   if (value.isJito !== undefined) result.isJito = jsonValueToTsValueFns.bool(value.isJito);
-  if (value.isLowRisk !== undefined) result.isLowRisk = jsonValueToTsValueFns.bool(value.isLowRisk);
+  if (value.isHighRisk !== undefined) result.isHighRisk = jsonValueToTsValueFns.bool(value.isHighRisk);
+  if (value.jitoRegion !== undefined) result.jitoRegion = jsonValueToTsValueFns.string(value.jitoRegion);
+  if (value.isMalicious !== undefined) result.isMalicious = jsonValueToTsValueFns.bool(value.isMalicious);
   return result;
 }
 
@@ -80,10 +88,22 @@ export function encodeBinary(value: $.api.LeaderSchedule): Uint8Array {
       [3, tsValueToWireValueFns.bool(tsValue)],
     );
   }
-  if (value.isLowRisk !== undefined) {
-    const tsValue = value.isLowRisk;
+  if (value.isHighRisk !== undefined) {
+    const tsValue = value.isHighRisk;
     result.push(
       [4, tsValueToWireValueFns.bool(tsValue)],
+    );
+  }
+  if (value.jitoRegion !== undefined) {
+    const tsValue = value.jitoRegion;
+    result.push(
+      [5, tsValueToWireValueFns.string(tsValue)],
+    );
+  }
+  if (value.isMalicious !== undefined) {
+    const tsValue = value.isMalicious;
+    result.push(
+      [6, tsValueToWireValueFns.bool(tsValue)],
     );
   }
   return serialize(result);
@@ -119,7 +139,21 @@ export function decodeBinary(binary: Uint8Array): $.api.LeaderSchedule {
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.bool(wireValue);
     if (value === undefined) break field;
-    result.isLowRisk = value;
+    result.isHighRisk = value;
+  }
+  field: {
+    const wireValue = wireFields.get(5);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.jitoRegion = value;
+  }
+  field: {
+    const wireValue = wireFields.get(6);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.bool(wireValue);
+    if (value === undefined) break field;
+    result.isMalicious = value;
   }
   return result;
 }
