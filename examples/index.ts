@@ -94,12 +94,12 @@ function getRandom() {
 }
 
 async function run() {
-    // console.info("---- STARTING HTTP TESTS ----")
-    // await http()
+    console.info("---- STARTING HTTP TESTS ----")
+    await http()
     console.info("---- STARTING GRPC TESTS ----")
     await grpc()
-    // console.info("---- STARTING WS TESTS ----")
-    // await ws()
+    console.info("---- STARTING WS TESTS ----")
+    await ws()
 }
 
 async function http() {
