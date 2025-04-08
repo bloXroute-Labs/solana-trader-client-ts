@@ -152,6 +152,8 @@ import {
     GetLeaderScheduleResponse,
     GetLeaderScheduleRequest,
     TransactionMessageV2,
+    GetPumpFunNewAmmPoolStreamRequest,
+    GetPumpFunNewAmmPoolStreamResponse,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -882,6 +884,12 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
+    getPumpFunNewAmmPoolStream = (
+        request: GetPumpFunNewAmmPoolStreamRequest
+    ): Promise<AsyncGenerator<GetPumpFunNewAmmPoolStreamResponse>> => {
+        throw new Error("Not implemented")
+    }
+
     getPumpFunSwapsStream = (
         request: GetPumpFunSwapsStreamRequest
     ): Promise<AsyncGenerator<GetPumpFunSwapsStreamResponse>> => {
@@ -1067,6 +1075,10 @@ export abstract class BaseProvider implements Api {
     }
 
     cancelAllGetPoolReservesStream = async (): Promise<Awaited<boolean>[]> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelAllGetPumpFunNewAmmPoolStream = async (): Promise<Awaited<boolean>[]> => {
         throw new Error("Not implemented")
     }
 
