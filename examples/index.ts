@@ -18,6 +18,7 @@ import {
     TESTNET_API_WS,
     WsProvider,
     signTx,
+    PostOrderRequestV2,
     MAINNET_API_NY_HTTP,
     MAINNET_API_NY_GRPC,
     MAINNET_API_NY_WS,
@@ -48,18 +49,39 @@ const config = loadFromEnv()
 const runLongExamples = process.env.RUN_LIFECYCLE === "true"
 const runStreams = process.env.RUN_STREAMS === "true"
 
-const ownerAddress = config.publicKey
-const tokenAddress = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" // USDC
-
 const httpTimeout = 30_000
 
+const marketAddress = "8BnEgHoWFysVcuFFX7QztDmzuH8r5ZFvyP3sYwn1XTh6"
+const ownerAddress = config.publicKey
+const payerAddress = config.publicKey
+const openOrdersAddress = "DwoXdF8kjt9RS6yPfpzp1yHBKtFMDpHQPCRgy1JhKgFt"
+const baseTokenWallet = config.publicKey
+const quoteTokenWallet = "4raJjCwLLqw8TciQXYruDEF4YhDkGwoEnwnAdwJSjcgv"
+const tokenAddress = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" // USDC
+const side = "ask"
+const typeLimit = "limit"
+
+const testOrder: PostOrderRequestV2 = {
+    ownerAddress: ownerAddress,
+    payerAddress: payerAddress,
+    market: "SOLUSDC",
+    side: side,
+    type: typeLimit,
+    amount: 0.1,
+    price: 200,
+    openOrdersAddress: openOrdersAddress,
+    clientOrderID: "0",
+    computeLimit: 0,
+    computePrice: "0",
+}
+
 async function run() {
-    console.info("---- STARTING HTTP TESTS ----")
-    await http()
+    // console.info("---- STARTING HTTP TESTS ----")
+    // await http()
     console.info("---- STARTING GRPC TESTS ----")
     await grpc()
-    console.info("---- STARTING WS TESTS ----")
-    await ws()
+    // console.info("---- STARTING WS TESTS ----")
+    // await ws()
 }
 
 async function http() {
@@ -240,15 +262,7 @@ async function doAmmRequests(
     console.info(" ")
     console.info(" ")
 
-    await callGetPrices(provider)
-    console.info(" ")
-    console.info(" ")
-
     await callGetPools(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callGetQuotes(provider)
     console.info(" ")
     console.info(" ")
 
@@ -310,6 +324,11 @@ async function doAmmRequests(
 }
 
 async function doStreams(provider: BaseProvider, pump_provider: BaseProvider) {
+
+    await callGetPumpFunNewAmmPoolStream(pump_provider)
+    console.info(" ")
+    console.info(" ")
+
     await callGetPumpFunNewTokensStream(pump_provider)
     console.info(" ")
     console.info(" ")
@@ -365,12 +384,6 @@ async function callGetServerTime(provider: BaseProvider) {
     console.info("Retrieving server time")
     const req = await provider.getServerTime({})
     console.info(req)
-}
-
-async function callGetPrices(provider: BaseProvider) {
-    console.info("Retrieving price")
-    const resp = await provider.getPrice({ tokens: ["SOL"] })
-    console.info(resp)
 }
 
 async function callGetTransaction(provider: BaseProvider) {
@@ -441,19 +454,6 @@ async function callGetRecentBlockHashV2(
     console.info("Retrieving recent block hash V2")
     const resp = await provider.getRecentBlockHashV2({ offset })
     console.info(`response V2: ${resp.blockHash}`)
-}
-
-async function callGetQuotes(provider: BaseProvider) {
-    console.info("Retrieving quotes")
-    const resp = await provider.getQuotes({
-        inToken: "SOL",
-        outToken: tokenAddress,
-        inAmount: 1,
-        slippage: 5,
-        limit: 5,
-        projects: ["P_RAYDIUM", "P_JUPITER"],
-    })
-    console.info(resp)
 }
 
 async function callGetJupiterQuotes(provider: BaseProvider) {
@@ -530,6 +530,21 @@ async function callGetPumpFunNewTokensStream(provider: BaseProvider) {
 
     count = 0
     for await (const ob of reqq) {
+        console.info(ob)
+        count++
+        if (count == 1) {
+            break
+        }
+    }
+}
+
+async function callGetPumpFunNewAmmPoolStream(provider: BaseProvider) {
+    console.info("Subscribing for pump swap new amm pools")
+    const req = await provider.getPumpFunNewAmmPoolStream({})
+
+    let count = 0
+    for await (const ob of req) {
+        console.info("New pool recieved...")
         console.info(ob)
         count++
         if (count == 1) {
@@ -757,8 +772,8 @@ async function callPostJupiterSwap(provider: BaseProvider) {
         outToken: "SOL",
         inAmount: 0.01,
         slippage: 0.1,
-        computeLimit: 300000,
-        computePrice: "2000",
+        computeLimit: testOrder.computeLimit,
+        computePrice: testOrder.computePrice,
     })
     console.info(response)
 }
@@ -771,7 +786,7 @@ async function callPostJupiterSwapInstructions(provider: BaseProvider) {
         outToken: "SOL",
         inAmount: 0.01,
         slippage: 0.1,
-        computePrice: "2000",
+        computePrice: testOrder.computePrice,
     })
     console.info(response)
 }
@@ -850,8 +865,8 @@ async function submitTransferWithMemoAndTip(provider: BaseProvider) {
     transaction = transaction.add(memo)
 
     transaction.sign(keypair)
-    const serializedTransaztionBytes = transaction.serialize()
-    const buff = Buffer.from(serializedTransaztionBytes)
+    const serializedTransactionBytes = transaction.serialize()
+    const buff = Buffer.from(serializedTransactionBytes)
     const encodedTxn = buff.toString("base64")
     const response = await provider.postSubmit({
         transaction: { content: encodedTxn, isCleanup: false },
