@@ -452,6 +452,11 @@ async function doAmmRequests(
 }
 
 async function doStreams(provider: BaseProvider, pump_provider: BaseProvider) {
+
+    await callGetPumpFunNewAmmPoolStream(pump_provider)
+    console.info(" ")
+    console.info(" ")
+
     await callGetPumpFunNewTokensStream(pump_provider)
     console.info(" ")
     console.info(" ")
@@ -993,6 +998,21 @@ async function callGetPumpFunNewTokensStream(provider: BaseProvider) {
 
     count = 0
     for await (const ob of reqq) {
+        console.info(ob)
+        count++
+        if (count == 1) {
+            break
+        }
+    }
+}
+
+async function callGetPumpFunNewAmmPoolStream(provider: BaseProvider) {
+    console.info("Subscribing for pump swap new amm pools")
+    const req = await provider.getPumpFunNewAmmPoolStream({})
+
+    let count = 0
+    for await (const ob of req) {
+        console.info("New pool recieved...")
         console.info(ob)
         count++
         if (count == 1) {

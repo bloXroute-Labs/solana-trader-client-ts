@@ -886,34 +886,46 @@ import {
   encodeJson as encodeJson_146,
 } from "../../messages/api/GetPumpFunNewTokensStreamResponse";
 import {
-  Type as PostPumpFunSwapRequest,
+  Type as GetPumpFunNewAmmPoolStreamRequest,
   encodeBinary as encodeBinary_147,
   decodeBinary as decodeBinary_147,
   encodeJson as encodeJson_147,
-} from "../../messages/api/PostPumpFunSwapRequest";
+} from "../../messages/api/GetPumpFunNewAmmPoolStreamRequest";
 import {
-  Type as PostPumpFunSwapResponse,
+  Type as GetPumpFunNewAmmPoolStreamResponse,
   encodeBinary as encodeBinary_148,
   decodeBinary as decodeBinary_148,
   encodeJson as encodeJson_148,
-} from "../../messages/api/PostPumpFunSwapResponse";
+} from "../../messages/api/GetPumpFunNewAmmPoolStreamResponse";
 import {
-  Type as PostPumpFunSwapRequestSol,
+  Type as PostPumpFunSwapRequest,
   encodeBinary as encodeBinary_149,
   decodeBinary as decodeBinary_149,
   encodeJson as encodeJson_149,
-} from "../../messages/api/PostPumpFunSwapRequestSol";
+} from "../../messages/api/PostPumpFunSwapRequest";
 import {
-  Type as GetLeaderScheduleRequest,
+  Type as PostPumpFunSwapResponse,
   encodeBinary as encodeBinary_150,
   decodeBinary as decodeBinary_150,
   encodeJson as encodeJson_150,
-} from "../../messages/api/GetLeaderScheduleRequest";
+} from "../../messages/api/PostPumpFunSwapResponse";
 import {
-  Type as GetLeaderScheduleResponse,
+  Type as PostPumpFunSwapRequestSol,
   encodeBinary as encodeBinary_151,
   decodeBinary as decodeBinary_151,
   encodeJson as encodeJson_151,
+} from "../../messages/api/PostPumpFunSwapRequestSol";
+import {
+  Type as GetLeaderScheduleRequest,
+  encodeBinary as encodeBinary_152,
+  decodeBinary as decodeBinary_152,
+  encodeJson as encodeJson_152,
+} from "../../messages/api/GetLeaderScheduleRequest";
+import {
+  Type as GetLeaderScheduleResponse,
+  encodeBinary as encodeBinary_153,
+  decodeBinary as decodeBinary_153,
+  encodeJson as encodeJson_153,
 } from "../../messages/api/GetLeaderScheduleResponse";
 import {
   fromSingle,
@@ -1012,6 +1024,7 @@ export interface Service<TReqArgs extends any[] = [], TResArgs extends any[] = [
   getSwapsStream(request: GetSwapsStreamRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetSwapsStreamResponse>, TResArgs>;
   getPumpFunSwapsStream(request: GetPumpFunSwapsStreamRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetPumpFunSwapsStreamResponse>, TResArgs>;
   getPumpFunNewTokensStream(request: GetPumpFunNewTokensStreamRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetPumpFunNewTokensStreamResponse>, TResArgs>;
+  getPumpFunNewAmmPoolStream(request: GetPumpFunNewAmmPoolStreamRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetPumpFunNewAmmPoolStreamResponse>, TResArgs>;
   postPumpFunSwap(request: PostPumpFunSwapRequest, ...args: TReqArgs): RpcReturnType<Promise<PostPumpFunSwapResponse>, TResArgs>;
   postPumpFunSwapSol(request: PostPumpFunSwapRequestSol, ...args: TReqArgs): RpcReturnType<Promise<PostPumpFunSwapResponse>, TResArgs>;
   getLeaderSchedule(request: GetLeaderScheduleRequest, ...args: TReqArgs): RpcReturnType<Promise<GetLeaderScheduleResponse>, TResArgs>;
@@ -2411,20 +2424,36 @@ export const methodDescriptors = {
       serializeJson: (value: GetPumpFunNewTokensStreamResponse) => JSON.stringify(encodeJson_146(value)),
     },
   },
+  getPumpFunNewAmmPoolStream: {
+    methodName: "GetPumpFunNewAmmPoolStream",
+    service: { serviceName: "api.Api" },
+    requestStream: false,
+    responseStream: true,
+    requestType: {
+      serializeBinary: encodeBinary_147,
+      deserializeBinary: decodeBinary_147,
+      serializeJson: (value: GetPumpFunNewAmmPoolStreamRequest) => JSON.stringify(encodeJson_147(value)),
+    },
+    responseType: {
+      serializeBinary: encodeBinary_148,
+      deserializeBinary: decodeBinary_148,
+      serializeJson: (value: GetPumpFunNewAmmPoolStreamResponse) => JSON.stringify(encodeJson_148(value)),
+    },
+  },
   postPumpFunSwap: {
     methodName: "PostPumpFunSwap",
     service: { serviceName: "api.Api" },
     requestStream: false,
     responseStream: false,
     requestType: {
-      serializeBinary: encodeBinary_147,
-      deserializeBinary: decodeBinary_147,
-      serializeJson: (value: PostPumpFunSwapRequest) => JSON.stringify(encodeJson_147(value)),
+      serializeBinary: encodeBinary_149,
+      deserializeBinary: decodeBinary_149,
+      serializeJson: (value: PostPumpFunSwapRequest) => JSON.stringify(encodeJson_149(value)),
     },
     responseType: {
-      serializeBinary: encodeBinary_148,
-      deserializeBinary: decodeBinary_148,
-      serializeJson: (value: PostPumpFunSwapResponse) => JSON.stringify(encodeJson_148(value)),
+      serializeBinary: encodeBinary_150,
+      deserializeBinary: decodeBinary_150,
+      serializeJson: (value: PostPumpFunSwapResponse) => JSON.stringify(encodeJson_150(value)),
     },
   },
   postPumpFunSwapSol: {
@@ -2433,14 +2462,14 @@ export const methodDescriptors = {
     requestStream: false,
     responseStream: false,
     requestType: {
-      serializeBinary: encodeBinary_149,
-      deserializeBinary: decodeBinary_149,
-      serializeJson: (value: PostPumpFunSwapRequestSol) => JSON.stringify(encodeJson_149(value)),
+      serializeBinary: encodeBinary_151,
+      deserializeBinary: decodeBinary_151,
+      serializeJson: (value: PostPumpFunSwapRequestSol) => JSON.stringify(encodeJson_151(value)),
     },
     responseType: {
-      serializeBinary: encodeBinary_148,
-      deserializeBinary: decodeBinary_148,
-      serializeJson: (value: PostPumpFunSwapResponse) => JSON.stringify(encodeJson_148(value)),
+      serializeBinary: encodeBinary_150,
+      deserializeBinary: decodeBinary_150,
+      serializeJson: (value: PostPumpFunSwapResponse) => JSON.stringify(encodeJson_150(value)),
     },
   },
   getLeaderSchedule: {
@@ -2449,14 +2478,14 @@ export const methodDescriptors = {
     requestStream: false,
     responseStream: false,
     requestType: {
-      serializeBinary: encodeBinary_150,
-      deserializeBinary: decodeBinary_150,
-      serializeJson: (value: GetLeaderScheduleRequest) => JSON.stringify(encodeJson_150(value)),
+      serializeBinary: encodeBinary_152,
+      deserializeBinary: decodeBinary_152,
+      serializeJson: (value: GetLeaderScheduleRequest) => JSON.stringify(encodeJson_152(value)),
     },
     responseType: {
-      serializeBinary: encodeBinary_151,
-      deserializeBinary: decodeBinary_151,
-      serializeJson: (value: GetLeaderScheduleResponse) => JSON.stringify(encodeJson_151(value)),
+      serializeBinary: encodeBinary_153,
+      deserializeBinary: decodeBinary_153,
+      serializeJson: (value: GetLeaderScheduleResponse) => JSON.stringify(encodeJson_153(value)),
     },
   },
 } as const;
