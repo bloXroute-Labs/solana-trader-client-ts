@@ -18,19 +18,13 @@ import {
     TESTNET_API_WS,
     WsProvider,
     signTx,
-    GetOpenOrdersRequestV2,
-    PostCancelOrderRequestV2,
-    PostOrderRequestV2,
     MAINNET_API_NY_HTTP,
     MAINNET_API_NY_GRPC,
     MAINNET_API_NY_WS,
     createTraderAPIMemoInstruction,
-    GetOpenOrdersResponseV2,
     TransactionMessage,
-    TransactionMessageV2,
 } from "../bxsolana"
 import {
-    ComputeBudgetProgram,
     Keypair,
     LAMPORTS_PER_SOL,
     PublicKey,
@@ -54,44 +48,10 @@ const config = loadFromEnv()
 const runLongExamples = process.env.RUN_LIFECYCLE === "true"
 const runStreams = process.env.RUN_STREAMS === "true"
 
-const marketAddress = "8BnEgHoWFysVcuFFX7QztDmzuH8r5ZFvyP3sYwn1XTh6"
 const ownerAddress = config.publicKey
-const payerAddress = config.publicKey
-const openOrdersAddress = "DwoXdF8kjt9RS6yPfpzp1yHBKtFMDpHQPCRgy1JhKgFt"
-const baseTokenWallet = config.publicKey
-const quoteTokenWallet = "4raJjCwLLqw8TciQXYruDEF4YhDkGwoEnwnAdwJSjcgv"
 const tokenAddress = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" // USDC
-const side = "ask"
-const typeLimit = "limit"
 
-const testOrder: PostOrderRequestV2 = {
-    ownerAddress: ownerAddress,
-    payerAddress: payerAddress,
-    market: "SOLUSDC",
-    side: side,
-    type: typeLimit,
-    amount: 0.1,
-    price: 200,
-    openOrdersAddress: openOrdersAddress,
-    clientOrderID: "0",
-    computeLimit: 0,
-    computePrice: "0",
-}
-
-const transactionWaitTimeS = 60
 const httpTimeout = 30_000
-const httpLongTimeout = 60_000
-
-function delay(milliseconds: number) {
-    return new Promise((resolve) => setTimeout(resolve, milliseconds))
-}
-
-function getRandom() {
-    const min = 0
-    const max = Math.floor(1000000000000)
-
-    return Math.floor(Math.random() * (max - min + 1)) + min
-}
 
 async function run() {
     // console.info("---- STARTING HTTP TESTS ----")
@@ -141,20 +101,8 @@ async function http() {
     console.info(" ----  HTTP Amm Requests  ----")
     await doAmmRequests(provider, pump_provider)
 
-    console.info(" ----  HTTP Requests  ----")
-    await doOrderbookRequests(provider)
-
     console.info(" ----  HTTP Snipe  ----")
     await callSubmitSnipe(provider)
-
-    if (runLongExamples) {
-        console.info(" ----  HTTP Lifecycle  ----")
-        await doHttpLifecycle(provider)
-
-        console.info(" ----  HTTP Cancel All  ----")
-        await callCancelAll(provider)
-        console.info(" ")
-    }
 
     return
 }
@@ -200,9 +148,6 @@ async function grpc() {
     console.info(" ----  GRPC Amm Requests  ----")
     await doAmmRequests(provider, pump_provider)
 
-    console.info(" ----  GRPC Requests  ----")
-    await doOrderbookRequests(provider)
-
     console.info(" ----  GRPC Snipe  ----")
     await callSubmitSnipe(provider)
 
@@ -212,16 +157,6 @@ async function grpc() {
         console.info(" ----  GRPC Amm Streams  ----")
         await doAmmStreams(provider)
     }
-
-    if (runLongExamples) {
-        console.info(" ----  GRPC Cancel All  ----")
-        await callCancelAll(provider)
-        console.info(" ----  GRPC Lifecycle  ----")
-        await doLifecycle(provider)
-        console.info(" ")
-    }
-
-    await callPlaceOrderBundle(provider)
 
     return
 }
@@ -260,9 +195,6 @@ async function ws() {
     console.info(" ----  WS Amm Requests  ----")
     await doAmmRequests(provider, pump_provider)
 
-    console.info(" ----  WS Requests  ----")
-    await doOrderbookRequests(provider)
-
     console.info(" ----  WS Snipe  ----")
     await callSubmitSnipe(provider)
 
@@ -273,69 +205,7 @@ async function ws() {
         await doAmmStreams(provider)
     }
 
-    if (runLongExamples) {
-        console.info(" ----  WS Cancel All  ----")
-        await callCancelAll(provider)
-        console.info(" ----  WS Lifecycle  ----")
-        await doLifecycle(provider)
-        console.info(" ")
-    }
-
     return
-}
-
-async function doOrderbookRequests(provider: BaseProvider) {
-    await callGetOrderbook(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callGetMarketDepth(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callGetMarkets(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callGetOpenOrders(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callGetUnsettled(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callGetAccountBalance(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callGetTrades(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callGetTickers(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callGetServerTime(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callPostOrder(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callPostOrderWithPriorityFee(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callPostCancelByClientOrderID(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callPostSettleFunds(provider)
-    console.info(" ")
-    console.info(" ")
 }
 
 async function doAmmRequests(
@@ -370,15 +240,7 @@ async function doAmmRequests(
     console.info(" ")
     console.info(" ")
 
-    await callGetPrices(provider)
-    console.info(" ")
-    console.info(" ")
-
     await callGetPools(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callGetQuotes(provider)
     console.info(" ")
     console.info(" ")
 
@@ -387,18 +249,6 @@ async function doAmmRequests(
     console.info(" ")
 
     await callPostPumpFunSwapSol(pump_provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callPostTradeSwap(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callPostTradeSwapWithPriorityFee(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callPostRouteTradeSwap(provider)
     console.info(" ")
     console.info(" ")
 
@@ -453,31 +303,15 @@ async function doAmmRequests(
 
 async function doStreams(provider: BaseProvider, pump_provider: BaseProvider) {
 
-    await callGetPumpFunNewAmmPoolStream(pump_provider)
-    console.info(" ")
-    console.info(" ")
-
     await callGetPumpFunNewTokensStream(pump_provider)
     console.info(" ")
     console.info(" ")
 
-    await callGetOrderbookStream(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callGetMarketDepthStream(provider)
-    console.info(" ")
-    console.info(" ")
-
-    await callGetTickersStream(provider)
+    await callGetPumpFunNewAmmPoolStream(pump_provider)
     console.info(" ")
     console.info(" ")
 
     if (runLongExamples) {
-        await callGetTradesStream(provider)
-        console.info(" ")
-        console.info(" ")
-
         await callGetNewRaydiumPoolsStream(provider)
         console.info(" ")
         console.info(" ")
@@ -508,31 +342,6 @@ async function doStreams(provider: BaseProvider, pump_provider: BaseProvider) {
     console.info(" ")
 }
 
-async function cancelWsStreams(provider: BaseProvider) {
-    console.info("Cancelling swaps stream")
-    await provider.cancelAllGetSwapsStream()
-    console.info(" ")
-    console.info(" ")
-
-    console.info("Cancelling orderbooks stream")
-    await provider.cancelAllGetOrderbooksStream()
-    console.info(" ")
-    console.info(" ")
-
-    console.info("Cancelling get tickers stream")
-    await provider.cancelAllGetTickersStream()
-    console.info(" ")
-    console.info(" ")
-
-    console.info("Cancelling trades stream")
-    await provider.cancelAllGetTradesStream()
-    console.info(" ")
-    console.info(" ")
-
-    console.info("Cancelling raydium new pools stream")
-    await provider.cancelAllGetNewRaydiumPoolsStream()
-}
-
 async function doAmmStreams(provider: BaseProvider) {
     if (runLongExamples) {
         await callGetPricesStream(provider)
@@ -549,296 +358,10 @@ async function doAmmStreams(provider: BaseProvider) {
     }
 }
 
-async function doLifecycle(provider: BaseProvider) {
-    try {
-        const mktAddress = marketAddress
-
-        await Promise.all([
-            new Promise(async (resolve, reject) => {
-                const req = await provider.getOrderStatusStream({
-                    market: mktAddress,
-                    project: "P_OPENBOOK",
-                    ownerAddress: testOrder.ownerAddress,
-                })
-                for await (const ob of req) {
-                    if (
-                        ob.orderInfo &&
-                        ob.orderInfo.clientOrderID == testOrder.clientOrderID &&
-                        ob.orderInfo.orderStatus == "OS_OPEN"
-                    ) {
-                        console.info(
-                            `order went to orderbook ('${ob.orderInfo.orderStatus}') successfully`
-                        )
-                        return resolve(null)
-                    } else {
-                        console.error(`order failed to get into orderbook`)
-                        return reject(
-                            new Error("order failed to get into orderbook")
-                        )
-                    }
-                }
-            }),
-            new Promise(async (resolve, reject) => {
-                try {
-                    await delay(10000)
-                    await callSubmitOrder(provider)
-                    console.info(" ")
-                    console.info(" ")
-                    return resolve(null)
-                } catch (err) {
-                    return reject(err)
-                }
-            }),
-        ])
-
-        await Promise.all([
-            new Promise(async (resolve, reject) => {
-                const req = await provider.getOrderStatusStream({
-                    market: mktAddress,
-                    project: "P_OPENBOOK",
-                    ownerAddress: testOrder.ownerAddress,
-                })
-                const clientOrderID = testOrder.clientOrderID
-                let oldCanceled = false
-                let newOpened = false
-                for await (const ob of req) {
-                    if (
-                        ob.orderInfo &&
-                        ob.orderInfo.clientOrderID == clientOrderID &&
-                        ob.orderInfo.orderStatus == "OS_CANCELLED"
-                    ) {
-                        oldCanceled = true
-                        console.info(
-                            `order canceled ('${ob.orderInfo.orderStatus}') successfully`
-                        )
-                        if (oldCanceled && newOpened) {
-                            return resolve(null)
-                        }
-                    } else if (
-                        ob.orderInfo &&
-                        ob.orderInfo.clientOrderID == testOrder.clientOrderID &&
-                        ob.orderInfo.orderStatus == "OS_OPEN"
-                    ) {
-                        newOpened = true
-                        console.info(
-                            `order went to orderbook ('${ob.orderInfo.orderStatus}') successfully`
-                        )
-                        if (oldCanceled && newOpened) {
-                            return resolve(null)
-                        }
-                    } else {
-                        console.error(`order failed to cancel`)
-                        return reject(new Error("order failed to cancel"))
-                    }
-                }
-            }),
-            new Promise(async (resolve, reject) => {
-                try {
-                    await delay(5000)
-                    await callReplaceByClientOrderID(provider)
-                    console.info(" ")
-                    console.info(" ")
-                    return resolve(null)
-                } catch (err) {
-                    return reject(err)
-                }
-            }),
-        ])
-
-        await Promise.all([
-            new Promise(async (resolve, reject) => {
-                const req = await provider.getOrderStatusStream({
-                    market: mktAddress,
-                    project: "P_OPENBOOK",
-                    ownerAddress: testOrder.ownerAddress,
-                })
-                for await (const ob of req) {
-                    if (
-                        ob.orderInfo &&
-                        ob.orderInfo.clientOrderID == testOrder.clientOrderID &&
-                        ob.orderInfo.orderStatus == "OS_CANCELLED"
-                    ) {
-                        console.info(
-                            `order canceled ('${ob.orderInfo.orderStatus}') successfully`
-                        )
-                        return resolve(null)
-                    } else {
-                        console.error(`order failed to cancel`)
-                        return reject(new Error("order failed to cancel"))
-                    }
-                }
-            }),
-            new Promise(async (resolve, reject) => {
-                try {
-                    await delay(10000)
-                    await callSubmitCancelByClientOrderID(provider)
-                    console.info(" ")
-                    console.info(" ")
-                    return resolve(null)
-                } catch (err) {
-                    return reject(err)
-                }
-            }),
-        ])
-
-        await callSubmitSettleFunds(provider)
-        console.info(" ")
-        console.info(" ")
-    } finally {
-        provider.close()
-    }
-}
-
-async function doHttpLifecycle(provider: BaseProvider) {
-    try {
-        await callSubmitOrder(provider)
-        console.info(" ")
-        console.info(" ")
-
-        await delay(60000)
-
-        let orders = await callGetOpenOrders(provider)
-        if (!orders || orders.length == 0) {
-            console.error(`order failed to get into orderbook`)
-            return
-        }
-
-        await callSubmitCancelByClientOrderID(provider)
-        console.info(" ")
-        console.info(" ")
-
-        await delay(60000)
-
-        orders = await callGetOpenOrders(provider)
-        if (!orders || orders.length > 0) {
-            console.error(`order failed to cancel`)
-            return
-        }
-
-        await callSubmitSettleFunds(provider)
-        console.info(" ")
-        console.info(" ")
-
-        await submitTransferWithMemoAndTip(provider)
-        console.info(" ")
-        console.info(" ")
-
-        await submitTxWithMemo(provider)
-        console.info(" ")
-        console.info(" ")
-    } finally {
-        provider.close()
-    }
-}
-
-async function callGetOrderbook(provider: BaseProvider) {
-    console.info("Retrieving orderbook for SOLUSDC market")
-    let req = await provider.getOrderbookV2({
-        market: "SOLUSDC",
-        limit: 5,
-    })
-    console.info(req)
-
-    console.info("Retrieving orderbook for SOL-USDC market")
-    req = await provider.getOrderbookV2({
-        market: "SOL-USDC",
-        limit: 5,
-    })
-    console.info(req)
-}
-
-async function callGetMarketDepth(provider: BaseProvider) {
-    console.info("Retrieving market depth data for SOLUSDC market")
-    let req = await provider.getMarketDepthV2({
-        market: "SOLUSDC",
-        limit: 5,
-    })
-    console.info(req)
-
-    console.info("Retrieving market depth data for SOL-USDC market")
-    req = await provider.getMarketDepthV2({
-        market: "SOL-USDC",
-        limit: 5,
-    })
-    console.info(req)
-}
-
-async function callGetMarkets(provider: BaseProvider) {
-    console.info("Retrieving all supported markets")
-    const req = await provider.getMarketsV2({})
-    console.info(req)
-}
-
-async function callGetOpenOrders(provider: BaseProvider) {
-    console.info("Retrieving all open orders in SOLUSDC market")
-    const req = await provider.getOpenOrdersV2({
-        market: "SOLUSDC",
-        limit: 0,
-        address: ownerAddress,
-        openOrdersAddress: "",
-        orderID: "",
-        clientOrderID: "0",
-    })
-    console.info(req)
-    return req.orders
-}
-
-async function callGetUnsettled(provider: BaseProvider) {
-    console.info("Retrieving unsettled funds in SOLUSDC market")
-    const req = await provider.getUnsettledV2({
-        market: "SOLUSDC",
-        ownerAddress: ownerAddress,
-    })
-    console.info(req)
-}
-
-async function callGetAccountBalance(provider: BaseProvider) {
-    console.info("Retrieving token balances")
-
-    if (provider instanceof HttpProvider) {
-        // endpoint is slower, so allow some more timeout
-        provider.requestConfig.timeout = httpLongTimeout
-    }
-
-    const req = await provider.getAccountBalanceV2({
-        ownerAddress: ownerAddress,
-    })
-    console.info(req)
-
-    if (provider instanceof HttpProvider) {
-        // reset timeout
-        provider.requestConfig.timeout = httpTimeout
-    }
-}
-
-async function callGetTrades(provider: BaseProvider) {
-    console.info("Retrieving trades for SOL/USDC market ")
-    const req = await provider.getTrades({
-        market: "SOLUSDC",
-        project: "P_OPENBOOK",
-        limit: 5,
-    })
-    console.info(req)
-}
-
-async function callGetTickers(provider: BaseProvider) {
-    console.info("Retrieving tickers for SOL/USDC market ")
-    const req = await provider.getTickersV2({
-        market: "SOLUSDC",
-    })
-    console.info(req)
-}
-
 async function callGetServerTime(provider: BaseProvider) {
     console.info("Retrieving server time")
     const req = await provider.getServerTime({})
     console.info(req)
-}
-
-async function callGetPrices(provider: BaseProvider) {
-    console.info("Retrieving price")
-    const resp = await provider.getPrice({ tokens: ["SOL"] })
-    console.info(resp)
 }
 
 async function callGetTransaction(provider: BaseProvider) {
@@ -909,19 +432,6 @@ async function callGetRecentBlockHashV2(
     console.info("Retrieving recent block hash V2")
     const resp = await provider.getRecentBlockHashV2({ offset })
     console.info(`response V2: ${resp.blockHash}`)
-}
-
-async function callGetQuotes(provider: BaseProvider) {
-    console.info("Retrieving quotes")
-    const resp = await provider.getQuotes({
-        inToken: "SOL",
-        outToken: tokenAddress,
-        inAmount: 1,
-        slippage: 5,
-        limit: 5,
-        projects: ["P_RAYDIUM", "P_JUPITER"],
-    })
-    console.info(resp)
 }
 
 async function callGetJupiterQuotes(provider: BaseProvider) {
@@ -1014,122 +524,6 @@ async function callGetPumpFunNewAmmPoolStream(provider: BaseProvider) {
     for await (const ob of req) {
         console.info("New pool recieved...")
         console.info(ob)
-        count++
-        if (count == 1) {
-            break
-        }
-    }
-}
-
-async function callGetOrderbookStream(provider: BaseProvider) {
-    console.info("Subscribing for orderbook updates of SOLUSDC market")
-    let req = await provider.getOrderbooksStream({
-        markets: ["SOLUSDC"],
-        project: "P_OPENBOOK",
-        limit: 5,
-    })
-
-    let count = 0
-    for await (const ob of req) {
-        console.info(ob)
-        count++
-        if (count == 5) {
-            break
-        }
-    }
-    console.info(" ")
-    console.info(" ")
-
-    console.info("Subscribing for orderbook updates of SOLUSDC market")
-    req = await provider.getOrderbooksStream({
-        markets: ["SOL-USDC"],
-        project: "P_OPENBOOK",
-        limit: 5,
-    })
-
-    count = 0
-    for await (const ob of req) {
-        console.info(ob)
-        count++
-        if (count == 5) {
-            break
-        }
-    }
-}
-
-async function callGetMarketDepthStream(provider: BaseProvider) {
-    console.info("Subscribing for market depth data updates of SOLUSDC market")
-    let req = await provider.getMarketDepthsStream({
-        markets: ["SOLUSDC"],
-        project: "P_OPENBOOK",
-        limit: 5,
-    })
-
-    let count = 0
-    for await (const ob of req) {
-        console.info(ob)
-        count++
-        if (count == 5) {
-            break
-        }
-    }
-    console.info(" ")
-    console.info(" ")
-
-    console.info("Subscribing for market depth data updates of SOLUSDC market")
-    req = await provider.getMarketDepthsStream({
-        markets: ["SOL-USDC"],
-        project: "P_OPENBOOK",
-        limit: 5,
-    })
-
-    count = 0
-    for await (const ob of req) {
-        console.info(ob)
-        count++
-        if (count == 5) {
-            break
-        }
-    }
-}
-
-async function callGetTickersStream(provider: BaseProvider) {
-    console.info("Subscribing for ticker updates of SOLUSDC market")
-    const req = await provider.getTickersStream({
-        markets: [
-            "BONK/SOL",
-            "wSOL/RAY",
-            "BONK/RAY",
-            "RAY/USDC",
-            "SOL/USDC",
-            "SOL/USDC",
-            "RAY/USDC",
-            "USDT/USDC",
-        ],
-        project: "P_OPENBOOK",
-    })
-
-    let count = 0
-    for await (const tick of req) {
-        console.info(tick)
-        count++
-        if (count == 5) {
-            break
-        }
-    }
-}
-
-async function callGetTradesStream(provider: BaseProvider) {
-    console.info("Subscribing for trade updates of SOLUSDC market")
-    const req = await provider.getTradesStream({
-        market: "SOLUSDC",
-        limit: 5,
-        project: "P_OPENBOOK",
-    })
-
-    let count = 0
-    for await (const tr of req) {
-        console.info(tr)
         count++
         if (count == 1) {
             break
@@ -1302,134 +696,6 @@ async function callGetBundleTipStream(provider: BaseProvider) {
 }
 
 // POST requests
-async function callPostOrder(provider: BaseProvider) {
-    console.info("generating New Order transaction")
-    const clientOrderID = getRandom()
-    testOrder.clientOrderID = clientOrderID.toLocaleString("fullwide", {
-        useGrouping: false,
-    })
-    testOrder.openOrdersAddress = openOrdersAddress
-    const req = await provider.postOrderV2(testOrder)
-    console.info(req)
-}
-
-async function callPostOrderWithPriorityFee(provider: BaseProvider) {
-    console.info("generating New Order transaction with priority fee")
-    const clientOrderID = getRandom()
-    testOrder.clientOrderID = clientOrderID.toLocaleString("fullwide", {
-        useGrouping: false,
-    })
-    testOrder.openOrdersAddress = openOrdersAddress
-    const req = await provider.postOrderV2({
-        ...testOrder,
-        computeLimit: 10000,
-        computePrice: "2000",
-    })
-    console.info(req)
-}
-
-async function callSubmitOrder(provider: BaseProvider) {
-    console.info("Generating and submitting a New Order transaction")
-    const clientOrderID = getRandom()
-    testOrder.clientOrderID = clientOrderID.toLocaleString("fullwide", {
-        useGrouping: false,
-    })
-    const req = await provider.submitOrderV2(testOrder)
-    console.info(req)
-}
-
-async function callPostCancelByClientOrderID(provider: BaseProvider) {
-    console.info("Generating and Cancel by Client Order ID transaction")
-    const req = await provider.postCancelOrderV2({
-        marketAddress: marketAddress,
-        ownerAddress: ownerAddress,
-        openOrdersAddress: openOrdersAddress,
-        clientOrderID: testOrder.clientOrderID,
-        orderID: "",
-        side: "S_ASK",
-        computeLimit: testOrder.computeLimit,
-        computePrice: testOrder.computePrice,
-    })
-    console.info(req)
-}
-
-async function callSubmitCancelByClientOrderID(provider: BaseProvider) {
-    console.info(
-        "Generating and submitting a Cancel by Client Order ID transaction"
-    )
-    const req = await provider.submitCancelOrderV2(
-        {
-            marketAddress: marketAddress,
-            ownerAddress: ownerAddress,
-            openOrdersAddress: openOrdersAddress,
-            clientOrderID: testOrder.clientOrderID,
-            orderID: "",
-            side: "S_ASK",
-            computeLimit: testOrder.computeLimit,
-            computePrice: testOrder.computePrice,
-        },
-        true
-    )
-    console.info(req)
-}
-
-async function callPostSettleFunds(provider: BaseProvider) {
-    console.info("Generating a Settle transaction")
-    const req = await provider.postSettleV2({
-        market: marketAddress,
-        openOrdersAddress: openOrdersAddress,
-        baseTokenWallet: baseTokenWallet,
-        quoteTokenWallet: quoteTokenWallet,
-        ownerAddress: ownerAddress,
-        computeLimit: testOrder.computeLimit,
-        computePrice: testOrder.computePrice,
-    })
-    console.info(req)
-}
-
-async function callSubmitSettleFunds(provider: BaseProvider) {
-    console.info("Generating and submitting a Settle transaction")
-    const req = await provider.submitSettleV2({
-        market: marketAddress,
-        openOrdersAddress: openOrdersAddress,
-        baseTokenWallet: baseTokenWallet,
-        quoteTokenWallet: quoteTokenWallet,
-        ownerAddress: ownerAddress,
-        computeLimit: testOrder.computeLimit,
-        computePrice: testOrder.computePrice,
-    })
-    console.info(req)
-}
-
-async function callReplaceByClientOrderID(provider: BaseProvider) {
-    console.info(
-        "Generating and submitting a Cancel and Replace by Client Order ID transaction"
-    )
-
-    testOrder.price -= 1
-
-    const req = await provider.submitReplaceOrderV2({
-        ...testOrder,
-        orderID: "",
-    })
-    console.info(req)
-}
-
-async function callPostTradeSwap(provider: BaseProvider) {
-    console.info("Generating a trade swap")
-    const response = await provider.postTradeSwap({
-        ownerAddress: ownerAddress,
-        inToken: tokenAddress,
-        outToken: "SOL",
-        inAmount: 0.01,
-        slippage: 0.1,
-        project: "P_RAYDIUM",
-        computeLimit: testOrder.computeLimit,
-        computePrice: testOrder.computePrice,
-    })
-    console.info(response)
-}
-
 async function callPostPumpFunSwap(provider: BaseProvider) {
     console.info("Generating a PumpFun swap")
     const response = await provider.postPumpFunSwap({
@@ -1441,8 +707,8 @@ async function callPostPumpFunSwap(provider: BaseProvider) {
         isBuy: false,
         tip: "0",
         slippage: 10,
-        computeLimit: testOrder.computeLimit,
-        computePrice: testOrder.computePrice,
+        computeLimit: 300000,
+        computePrice: "2000",
     })
     console.info(response)
 }
@@ -1462,21 +728,6 @@ async function callPostPumpFunSwapSol(provider: BaseProvider) {
     console.info(response)
 }
 
-async function callPostTradeSwapWithPriorityFee(provider: BaseProvider) {
-    console.info("Generating a trade swap")
-    const response = await provider.postTradeSwap({
-        ownerAddress: ownerAddress,
-        inToken: tokenAddress,
-        outToken: "SOL",
-        inAmount: 0.01,
-        slippage: 0.1,
-        project: "P_RAYDIUM",
-        computeLimit: 10000,
-        computePrice: "2000",
-    })
-    console.info(response)
-}
-
 async function callPostRaydiumSwap(provider: BaseProvider) {
     console.info("Generating a Raydium swap")
     const response = await provider.postRaydiumSwap({
@@ -1485,8 +736,8 @@ async function callPostRaydiumSwap(provider: BaseProvider) {
         outToken: "SOL",
         inAmount: 0.01,
         slippage: 0.1,
-        computeLimit: testOrder.computeLimit,
-        computePrice: testOrder.computePrice,
+        computeLimit: 300000,
+        computePrice: "2000",
     })
     console.info(response)
 }
@@ -1499,8 +750,8 @@ async function callPostJupiterSwap(provider: BaseProvider) {
         outToken: "SOL",
         inAmount: 0.01,
         slippage: 0.1,
-        computeLimit: testOrder.computeLimit,
-        computePrice: testOrder.computePrice,
+        computeLimit: 300000,
+        computePrice: "2000",
     })
     console.info(response)
 }
@@ -1513,7 +764,7 @@ async function callPostJupiterSwapInstructions(provider: BaseProvider) {
         outToken: "SOL",
         inAmount: 0.01,
         slippage: 0.1,
-        computePrice: testOrder.computePrice,
+        computePrice: "2000",
     })
     console.info(response)
 }
@@ -1526,58 +777,8 @@ async function callPostRaydiumSwapInstructions(provider: BaseProvider) {
         outToken: "SOL",
         inAmount: 0.01,
         slippage: 0.1,
-        computePrice: testOrder.computePrice,
-        computeLimit: testOrder.computeLimit,
-    })
-    console.info(response)
-}
-
-async function callSubmitTradeSwap(provider: BaseProvider) {
-    console.info("Submitting a trade swap")
-    const responses = await provider.submitTradeSwap(
-        {
-            ownerAddress: ownerAddress,
-            inToken: tokenAddress,
-            outToken: "SOL",
-            inAmount: 0.01,
-            slippage: 0.1,
-            project: "P_RAYDIUM",
-            computeLimit: testOrder.computeLimit,
-            computePrice: testOrder.computePrice,
-        },
-        "P_SUBMIT_ALL",
-        true
-    )
-
-    for (const transaction of responses.transactions) {
-        console.info(transaction.signature)
-    }
-}
-
-async function callPostRouteTradeSwap(provider: BaseProvider) {
-    console.info("Generating a route trade swap")
-    const response = await provider.postRouteTradeSwap({
-        ownerAddress: ownerAddress,
-        slippage: 10,
-        steps: [
-            {
-                project: {
-                    // pool ID can be empty if outToken is specified
-                    id: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
-                    label: "Raydium",
-                },
-                inToken: "So11111111111111111111111111111111111111112",
-                // RAY token address
-                // can be omitted if project.id is specified
-                outToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-                inAmount: 0.01,
-                outAmount: 0.007505,
-                outAmountMin: 0.074,
-            },
-        ],
-        project: "P_RAYDIUM",
-        computeLimit: testOrder.computeLimit,
-        computePrice: testOrder.computePrice,
+        computeLimit: 300000,
+        computePrice: "2000",
     })
     console.info(response)
 }
@@ -1604,165 +805,10 @@ async function callPostRaydiumRouteSwap(provider: BaseProvider) {
                 outAmountMin: 0.074,
             },
         ],
-        computeLimit: testOrder.computeLimit,
-        computePrice: testOrder.computePrice,
+        computeLimit: 0,
+        computePrice: "0",
     })
     console.info(response)
-}
-
-async function callSubmitRouteTradeSwap(provider: BaseProvider) {
-    console.info("Submitting a route trade swap")
-    const responses = await provider.submitRouteTradeSwap(
-        {
-            ownerAddress: ownerAddress,
-            slippage: 0.25,
-            steps: [
-                {
-                    project: {
-                        label: "Raydium",
-                        id: "61acRgpURKTU8LKPJKs6WQa18KzD9ogavXzjxfD84KLu",
-                    },
-                    inToken: tokenAddress,
-                    outToken: "SOL",
-                    inAmount: 0.01,
-                    outAmount: 0.000123425,
-                    outAmountMin: 0.000123117,
-
-                    // fee must be specified for each step if project is Jupiter
-                    fee: {
-                        amount: 0.000025,
-                        mint: tokenAddress,
-                        percent: 0.0025062656,
-                    },
-                },
-            ],
-            project: "P_JUPITER",
-            computeLimit: testOrder.computeLimit,
-            computePrice: testOrder.computePrice,
-        },
-        "P_SUBMIT_ALL",
-        true
-    )
-
-    for (const transaction of responses.transactions) {
-        console.info(transaction.signature)
-    }
-}
-
-async function callReplaceOrder(provider: BaseProvider) {
-    console.info(
-        "Generating and submitting a Cancel and Replace by Client Order ID transaction"
-    )
-    const clientOrderID = getRandom()
-    testOrder.clientOrderID = clientOrderID.toLocaleString("fullwide", {
-        useGrouping: false,
-    })
-    testOrder.price -= 1
-
-    const req = await provider.submitReplaceOrderV2({
-        orderID: "",
-        ...testOrder,
-    })
-    console.info(req)
-}
-
-async function callCancelAll(provider: BaseProvider) {
-    console.info("Generating and placing two orders")
-    const clientOrderID1 = getRandom().toLocaleString(`fullwide`, {
-        useGrouping: false,
-    })
-    const clientOrderID2 = getRandom().toLocaleString(`fullwide`, {
-        useGrouping: false,
-    })
-
-    // placing orders
-    testOrder.clientOrderID = clientOrderID1
-    const resp1 = await provider.submitOrderV2(testOrder)
-    console.info(`Order 1 placed ${resp1.signature}`)
-
-    testOrder.clientOrderID = clientOrderID2
-    const resp2 = await provider.submitOrderV2(testOrder)
-    console.info(`Order 2 placed ${resp2.signature}`)
-
-    console.info(
-        `\nWaiting ${transactionWaitTimeS}s for place orders to be cranked`
-    )
-
-    // checking orders placed
-    const openOrdersRequest: GetOpenOrdersRequestV2 = {
-        market: marketAddress,
-        limit: 0,
-        address: ownerAddress,
-        openOrdersAddress: "",
-        orderID: "",
-        clientOrderID: "0",
-    }
-
-    await delay(transactionWaitTimeS * 1000)
-    const openOrdersResponse1: GetOpenOrdersResponseV2 =
-        await provider.getOpenOrdersV2(openOrdersRequest)
-
-    let found1 = false
-    let found2 = false
-    for (const order of openOrdersResponse1.orders) {
-        if (order.clientOrderID === clientOrderID1) {
-            found1 = true
-        } else if (order.clientOrderID === clientOrderID2) {
-            found2 = true
-        }
-    }
-
-    if (!found1 || !found2) {
-        console.error("One/both orders not found in orderbook")
-        return ""
-    }
-    console.info("Both orders placed successfully\n")
-
-    // cancelling orders
-    const cancelAllRequest: PostCancelOrderRequestV2 = {
-        ownerAddress: ownerAddress,
-        openOrdersAddress: openOrdersAddress,
-        orderID: "",
-        side: "S_UNKNOWN",
-        marketAddress: marketAddress,
-        clientOrderID: "0",
-        computeLimit: testOrder.computeLimit,
-        computePrice: testOrder.computePrice,
-    }
-    const response = await provider.submitCancelOrderV2(cancelAllRequest)
-
-    const signatures: string[] = []
-    for (const transaction of response.transactions) {
-        signatures.push(transaction.signature)
-    }
-
-    console.info(
-        `Cancelling all orders, response signatures(s): ${signatures.join(
-            ", "
-        )}`
-    )
-    console.info(
-        `\nWaiting ${transactionWaitTimeS}s for cancel order(s) to be cranked`
-    )
-
-    // checking all orders cancelled
-    await delay(transactionWaitTimeS * 1000)
-    const openOrdersResponse2 = await provider.getOpenOrdersV2(
-        openOrdersRequest
-    )
-
-    if (openOrdersResponse2.orders.length !== 0) {
-        console.error(
-            `${openOrdersResponse2.orders.length} orders not cancelled`
-        )
-        return ""
-    }
-    console.info("Orders in orderbook cancelled")
-    console.info(" ")
-
-    await callSubmitSettleFunds(provider)
-    console.info(" ")
-    console.info(" ")
 }
 
 async function submitTransferWithMemoAndTip(provider: BaseProvider) {
@@ -1849,35 +895,41 @@ function buildUnsignedTxn(
 }
 
 async function callSubmitSnipe(provider: BaseProvider) {
-    console.info("Starting submit snipe test");
-    
-    const keypair = Keypair.fromSecretKey(base58.decode(config.privateKey));
-    
-    const response = await provider.getRecentBlockHash({});
-    const recentBlockhash = response.blockHash;
-    
-    const smallTip = 100_000;
-    const stakedTipThreshold = 1_000_000;
-    const tipWallet = new PublicKey("HWEoBxYs7ssKuudEjzjmpfJVX7Dvi7wescFsVx2L5yoY");
-    const jitoTipWallet = new PublicKey("96gYZGLnJYVFmbjzopPSU6QiEV5fGqZNyN9nmNhvrZU5");
-    
+    console.info("Starting submit snipe test")
+
+    const keypair = Keypair.fromSecretKey(base58.decode(config.privateKey))
+
+    const response = await provider.getRecentBlockHash({})
+    const recentBlockhash = response.blockHash
+
+    const smallTip = 100_000
+    const stakedTipThreshold = 1_000_000
+    const tipWallet = new PublicKey(
+        "HWEoBxYs7ssKuudEjzjmpfJVX7Dvi7wescFsVx2L5yoY"
+    )
+    const jitoTipWallet = new PublicKey(
+        "96gYZGLnJYVFmbjzopPSU6QiEV5fGqZNyN9nmNhvrZU5"
+    )
+
     // Create first transaction with two transfers
     const tx1 = new Transaction({
         recentBlockhash: recentBlockhash,
         feePayer: keypair.publicKey,
-    }).add(
-        SystemProgram.transfer({
-            fromPubkey: keypair.publicKey,
-            toPubkey: jitoTipWallet,
-            lamports: stakedTipThreshold,
-        })
-    ).add(
-        SystemProgram.transfer({
-            fromPubkey: keypair.publicKey,
-            toPubkey: tipWallet,
-            lamports: smallTip,
-        })
-    );
+    })
+        .add(
+            SystemProgram.transfer({
+                fromPubkey: keypair.publicKey,
+                toPubkey: jitoTipWallet,
+                lamports: stakedTipThreshold,
+            })
+        )
+        .add(
+            SystemProgram.transfer({
+                fromPubkey: keypair.publicKey,
+                toPubkey: tipWallet,
+                lamports: smallTip,
+            })
+        )
 
     const tx2 = new Transaction({
         recentBlockhash: recentBlockhash,
@@ -1888,79 +940,32 @@ async function callSubmitSnipe(provider: BaseProvider) {
             toPubkey: tipWallet,
             lamports: stakedTipThreshold,
         })
-    );
+    )
 
-    const serializedTx1 = tx1.serialize({ verifySignatures: false });
-    const serializedTx2 = tx2.serialize({ verifySignatures: false });
+    const serializedTx1 = tx1.serialize({ verifySignatures: false })
+    const serializedTx2 = tx2.serialize({ verifySignatures: false })
 
     const transactions: TransactionMessage[] = [
         {
-            content: Buffer.from(serializedTx1).toString('base64'),
+            content: Buffer.from(serializedTx1).toString("base64"),
             isCleanup: false,
         },
         {
-            content: Buffer.from(serializedTx2).toString('base64'),
+            content: Buffer.from(serializedTx2).toString("base64"),
             isCleanup: false,
-        }
-    ];
+        },
+    ]
 
     try {
         const signatures = await provider.signAndSubmitSnipeTx(
             transactions,
             false
-        );
-        
-        console.info("Snipe signatures:", signatures);
-        return false;
+        )
+
+        console.info("Snipe signatures:", signatures)
+        return false
     } catch (error) {
-        console.error("Failed to submit snipe request:", error);
-        return true;
+        console.error("Failed to submit snipe request:", error)
+        return true
     }
 }
-
-async function callPlaceOrderBundle(
-    provider: BaseProvider,
-  ): Promise<boolean> {
-    console.info("Starting place order with bundle");
-  
-    try {
-      const response = await provider.getRecentBlockHash({});
-      const blockHash = response.blockHash;
-  
-      const config = loadFromEnv();
-      const keypair = Keypair.fromSecretKey(base58.decode(config.privateKey));
-  
-      const computeBudgetIx = ComputeBudgetProgram.setComputeUnitPrice({
-        microLamports: 200000000
-      });
-  
-      const transferIx = SystemProgram.transfer({
-        fromPubkey: keypair.publicKey,
-        toPubkey: new PublicKey("HWEoBxYs7ssKuudEjzjmpfJVX7Dvi7wescFsVx2L5yoY"),
-        lamports: 10000000
-      });
-  
-      const transaction = new Transaction({
-        recentBlockhash: blockHash,
-        feePayer: keypair.publicKey
-      }).add(computeBudgetIx).add(transferIx);
-  
-      const serializedTransaction = transaction.serialize({ verifySignatures: false });
-      const encodedTransaction = Buffer.from(serializedTransaction).toString('base64');
-  
-      const transactionMessage: TransactionMessageV2 = {
-        content: encodedTransaction,
-      };
-  
-      const resp = await provider.signAndSubmitPaladinTx(
-        transactionMessage,
-        true
-      );
-  
-      console.info("Submitted bundle order to trader api", resp);
-      return false;
-    } catch (error) {
-      console.error("Failed to sign and submit order", error);
-      return true;
-    }
-  }

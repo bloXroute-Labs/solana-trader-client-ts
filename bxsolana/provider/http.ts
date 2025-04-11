@@ -1,63 +1,17 @@
 import { MAINNET_API_NY_HTTP } from "../utils/constants"
 import {
-    GetAccountBalanceRequest,
-    GetAccountBalanceResponse,
-    GetMarketsRequest,
-    GetMarketsResponse,
-    GetOpenOrdersRequest,
-    GetOpenOrdersResponse,
-    GetOrderbookRequest,
-    GetOrderbookResponse,
     GetPoolsRequest,
     GetPoolsResponse,
-    GetPriceRequest,
-    GetPriceResponse,
     GetQuotesRequest,
     GetQuotesResponse,
     GetRecentBlockHashRequest,
     GetRecentBlockHashResponse,
     GetServerTimeRequest,
     GetServerTimeResponse,
-    GetTickersRequest,
-    GetTickersResponse,
-    GetTradesRequest,
-    GetTradesResponse,
-    GetUnsettledRequest,
-    GetUnsettledResponse,
-    PostCancelAllRequest,
-    PostCancelAllResponse,
-    PostCancelByClientOrderIDRequest,
-    PostCancelOrderRequest,
-    PostCancelOrderResponse,
-    PostOrderRequest,
-    PostOrderResponse,
-    PostReplaceOrderRequest,
-    PostSettleRequest,
-    PostSettleResponse,
     PostSubmitBatchRequest,
     PostSubmitBatchResponse,
     PostSubmitRequest,
     PostSubmitResponse,
-    RouteTradeSwapRequest,
-    TradeSwapRequest,
-    TradeSwapResponse,
-    GetMarketDepthRequest,
-    GetMarketDepthResponse,
-    GetMarketDepthRequestV2,
-    GetMarketDepthResponseV2,
-    GetMarketsRequestV2,
-    GetMarketsResponseV2,
-    GetOpenOrdersRequestV2,
-    GetOrderbookRequestV2,
-    GetOrderbookResponseV2,
-    GetTickersRequestV2,
-    GetTickersResponseV2,
-    GetUnsettledRequestV2,
-    PostCancelOrderRequestV2,
-    PostCancelOrderResponseV2,
-    PostOrderRequestV2,
-    PostReplaceOrderRequestV2,
-    PostSettleRequestV2,
     GetJupiterPricesRequest,
     GetJupiterPricesResponse,
     GetJupiterQuotesRequest,
@@ -76,7 +30,6 @@ import {
     GetRaydiumPricesResponse,
     GetRaydiumQuotesRequest,
     GetRaydiumQuotesResponse,
-    GetOpenOrdersResponseV2,
     GetTransactionRequest,
     GetTransactionResponse,
     GetRateLimitRequest,
@@ -317,136 +270,11 @@ export class HttpProvider extends BaseProvider {
         return this.get<GetPumpFunQuotesResponse>(path)
     }
 
-    // Openbook V2
-    getOrderbookV2 = (
-        request: GetOrderbookRequestV2
-    ): Promise<GetOrderbookResponseV2> => {
-        const path = `${this.baseUrlV2}/openbook/orderbooks/${request.market}?limit=${request.limit}`
-        return this.get<GetOrderbookResponseV2>(path)
-    }
-
-    getMarketDepthV2(
-        request: GetMarketDepthRequestV2
-    ): Promise<GetMarketDepthResponseV2> {
-        const path = `${this.baseUrlV2}/openbook/depth/${request.market}?limit=${request.limit}`
-        return this.get<GetMarketDepthResponseV2>(path)
-    }
-
-    getMarketsV2(request: GetMarketsRequestV2): Promise<GetMarketsResponseV2> {
-        const path = `${this.baseUrlV2}/openbook/markets`
-        return this.get<GetMarketsResponseV2>(path)
-    }
-
-    getTickersV2(request: GetTickersRequestV2): Promise<GetTickersResponseV2> {
-        const path = `${this.baseUrlV2}/openbook/tickers/${request.market}`
-        return this.get<GetTickersResponseV2>(path)
-    }
-
-    getOpenOrdersV2(
-        request: GetOpenOrdersRequestV2
-    ): Promise<GetOpenOrdersResponseV2> {
-        const path = `${this.baseUrlV2}/openbook/open-orders/${request.market}?address=${request.address}&limit=${request.limit}&openOrdersAddress=${request.openOrdersAddress}&orderID=${request.orderID}&clientOrderID=${request.clientOrderID}`
-        return this.get<GetOpenOrdersResponseV2>(path)
-    }
-
-    getUnsettledV2(
-        request: GetUnsettledRequestV2
-    ): Promise<GetUnsettledResponse> {
-        const path = `${this.baseUrlV2}/openbook/unsettled/${request.market}?ownerAddress=${request.ownerAddress}`
-        return this.get<GetUnsettledResponse>(path)
-    }
-
-    postOrderV2(request: PostOrderRequestV2): Promise<PostOrderResponse> {
-        const path = `${this.baseUrlV2}/openbook/place`
-        return this.post<PostOrderRequestV2, PostOrderResponse>(path, request)
-    }
-
-    postCancelOrderV2(
-        request: PostCancelOrderRequestV2
-    ): Promise<PostCancelOrderResponseV2> {
-        const path = `${this.baseUrlV2}/openbook/cancel`
-        return this.post<PostCancelOrderRequestV2, PostCancelOrderResponseV2>(
-            path,
-            request
-        )
-    }
-
-    postSettleV2(request: PostSettleRequestV2): Promise<PostSettleResponse> {
-        const path = `${this.baseUrlV2}/openbook/settle`
-        return this.post<PostSettleRequestV2, PostSettleResponse>(path, request)
-    }
-
-    postReplaceOrderV2(
-        request: PostReplaceOrderRequestV2
-    ): Promise<PostOrderResponse> {
-        const path = `${this.baseUrlV2}/openbook/replace`
-        return this.post<PostReplaceOrderRequestV2, PostOrderResponse>(
-            path,
-            request
-        )
-    }
-    // End of Openbook V2
-
-    getOrderbook = (
-        request: GetOrderbookRequest
-    ): Promise<GetOrderbookResponse> => {
-        const path = `${this.baseUrl}/market/orderbooks/${request.market}?limit=${request.limit}&project=${request.project}`
-        return this.get<GetOrderbookResponse>(path)
-    }
-
-    getMarketDepth(
-        request: GetMarketDepthRequest
-    ): Promise<GetMarketDepthResponse> {
-        const path = `${this.baseUrl}/market/depth/${request.market}?limit=${request.limit}&project=${request.project}`
-        return this.get<GetMarketDepthResponse>(path)
-    }
-
-    getMarkets(request: GetMarketsRequest): Promise<GetMarketsResponse> {
-        const path = `${this.baseUrl}/market/markets`
-        return this.get<GetMarketsResponse>(path)
-    }
-
-    getTickers(request: GetTickersRequest): Promise<GetTickersResponse> {
-        const path = `${this.baseUrl}/market/tickers/${request.market}?project=${request.project}`
-        return this.get<GetTickersResponse>(path)
-    }
-
-    getTrades(request: GetTradesRequest): Promise<GetTradesResponse> {
-        const path = `${this.baseUrl}/market/trades/${request.market}?limit=${request.limit}&project=${request.project}`
-        return this.get<GetTradesResponse>(path)
-    }
-
     getServerTime(
         request: GetServerTimeRequest
     ): Promise<GetServerTimeResponse> {
         const path = `${this.baseUrl}/system/time`
         return this.get<GetServerTimeResponse>(path)
-    }
-
-    getOpenOrders(
-        request: GetOpenOrdersRequest
-    ): Promise<GetOpenOrdersResponse> {
-        const path = `${this.baseUrl}/trade/openorders/${request.market}?address=${request.address}&limit=${request.limit}&openOrdersAddress=${request.openOrdersAddress}&project=${request.project}`
-        return this.get<GetOpenOrdersResponse>(path)
-    }
-
-    getUnsettled(request: GetUnsettledRequest): Promise<GetUnsettledResponse> {
-        const path = `${this.baseUrl}/trade/unsettled/${request.market}?ownerAddress=${request.ownerAddress}&project=${request.project}`
-        return this.get<GetUnsettledResponse>(path)
-    }
-
-    getAccountBalance(
-        request: GetAccountBalanceRequest
-    ): Promise<GetAccountBalanceResponse> {
-        const path = `${this.baseUrl}/account/balance?ownerAddress=${request.ownerAddress}`
-        return this.get<GetAccountBalanceResponse>(path)
-    }
-
-    getAccountBalanceV2(
-        request: GetAccountBalanceRequest
-    ): Promise<GetAccountBalanceResponse> {
-        const path = `${this.baseUrlV2}/balance?ownerAddress=${request.ownerAddress}`
-        return this.get<GetAccountBalanceResponse>(path)
     }
 
     getPools(request: GetPoolsRequest): Promise<GetPoolsResponse> {
@@ -463,15 +291,6 @@ export class HttpProvider extends BaseProvider {
     ): Promise<GetRaydiumCLMMPoolsResponse> {
         const path = `${this.baseUrl}/market/clmm-pools/pairOrAddress=${request.pairOrAddress}`
         return this.get<GetRaydiumCLMMPoolsResponse>(path)
-    }
-
-    getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
-        let path = `${this.baseUrl}/market/price`
-        const args = request.tokens.map((v) => `tokens=${v}`).join("&")
-        if (args != "") {
-            path += `?${args}`
-        }
-        return this.get<GetPriceResponse>(path)
     }
 
     getRecentBlockHash(
@@ -517,7 +336,9 @@ export class HttpProvider extends BaseProvider {
         return this.get<GetPriorityFeeByProgramResponse>(path)
     }
 
-    getLeaderSchedule(request: GetLeaderScheduleRequest): Promise<GetLeaderScheduleResponse> {
+    getLeaderSchedule(
+        request: GetLeaderScheduleRequest
+    ): Promise<GetLeaderScheduleResponse> {
         const path = `${this.baseUrlV2}/system/leader-schedule?maxSlots=${request.maxSlots}`
         return this.get<GetLeaderScheduleResponse>(path)
     }
@@ -530,16 +351,6 @@ export class HttpProvider extends BaseProvider {
             PostRaydiumSwapInstructionsRequest,
             PostRaydiumSwapInstructionsResponse
         >(path, request)
-    }
-
-    postOrder(request: PostOrderRequest): Promise<PostOrderResponse> {
-        const path = `${this.baseUrl}/trade/place`
-        return this.post<PostOrderRequest, PostOrderResponse>(path, request)
-    }
-
-    postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
-        const path = `${this.baseUrl}/trade/swap`
-        return this.post<TradeSwapRequest, TradeSwapResponse>(path, request)
     }
 
     postPumpFunSwap(
@@ -562,29 +373,29 @@ export class HttpProvider extends BaseProvider {
         )
     }
 
-    postRouteTradeSwap(
-        request: RouteTradeSwapRequest
-    ): Promise<TradeSwapResponse> {
-        const path = `${this.baseUrl}/trade/route-swap`
-        return this.post<RouteTradeSwapRequest, TradeSwapResponse>(
-            path,
-            request
-        )
-    }
-
     postSubmit(request: PostSubmitRequest): Promise<PostSubmitResponse> {
         const path = `${this.baseUrl}/trade/submit`
         return this.post<PostSubmitRequest, PostSubmitResponse>(path, request)
     }
 
-    postSubmitSnipeV2(request: PostSubmitSnipeRequest): Promise<PostSubmitSnipeResponse> {
+    postSubmitSnipeV2(
+        request: PostSubmitSnipeRequest
+    ): Promise<PostSubmitSnipeResponse> {
         const path = `${this.baseUrlV2}/submit-snipe`
-        return this.post<PostSubmitSnipeRequest, PostSubmitSnipeResponse>(path, request)
+        return this.post<PostSubmitSnipeRequest, PostSubmitSnipeResponse>(
+            path,
+            request
+        )
     }
 
-    postSubmitPaladinV2(request: PostSubmitPaladinRequest): Promise<PostSubmitResponse> {
+    postSubmitPaladinV2(
+        request: PostSubmitPaladinRequest
+    ): Promise<PostSubmitResponse> {
         const path = `${this.baseUrlV2}/submit-paladin`
-        return this.post<PostSubmitPaladinRequest, PostSubmitResponse>(path, request)
+        return this.post<PostSubmitPaladinRequest, PostSubmitResponse>(
+            path,
+            request
+        )
     }
 
     postSubmitBatch(
@@ -607,58 +418,6 @@ export class HttpProvider extends BaseProvider {
     ): Promise<PostSubmitBatchResponse> {
         const path = `${this.baseUrlV2}/submit-batch`
         return this.post<PostSubmitBatchRequest, PostSubmitBatchResponse>(
-            path,
-            request
-        )
-    }
-
-    postCancelOrder(
-        request: PostCancelOrderRequest
-    ): Promise<PostCancelOrderResponse> {
-        const path = `${this.baseUrl}/trade/cancel`
-        return this.post<PostCancelOrderRequest, PostCancelOrderResponse>(
-            path,
-            request
-        )
-    }
-
-    postCancelByClientOrderID(
-        request: PostCancelByClientOrderIDRequest
-    ): Promise<PostCancelOrderResponse> {
-        const path = `${this.baseUrl}/trade/cancelbyid`
-        return this.post<
-            PostCancelByClientOrderIDRequest,
-            PostCancelOrderResponse
-        >(path, request)
-    }
-
-    postCancelAll(
-        request: PostCancelAllRequest
-    ): Promise<PostCancelAllResponse> {
-        const path = `${this.baseUrl}/trade/cancelall`
-        return this.post<PostCancelAllRequest, PostCancelAllResponse>(
-            path,
-            request
-        )
-    }
-
-    postSettle(request: PostSettleRequest): Promise<PostSettleResponse> {
-        const path = `${this.baseUrl}/trade/settle`
-        return this.post<PostSettleRequest, PostSettleResponse>(path, request)
-    }
-
-    postReplaceByClientOrderID(
-        request: PostOrderRequest
-    ): Promise<PostOrderResponse> {
-        const path = `${this.baseUrl}/trade/replacebyclientid`
-        return this.post<PostOrderRequest, PostOrderResponse>(path, request)
-    }
-
-    postReplaceOrder(
-        request: PostReplaceOrderRequest
-    ): Promise<PostOrderResponse> {
-        const path = `${this.baseUrl}/trade/replace`
-        return this.post<PostReplaceOrderRequest, PostOrderResponse>(
             path,
             request
         )

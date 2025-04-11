@@ -28,8 +28,22 @@ import { HttpProvider } from "../bxsolana/provider/http.js"
 
 const provider = new HttpProvider()
 
-let req = await provider.getOrderbook({ market: "SOLUSDC", limit: 5 })
+// Get Raydium pools
+let req = await provider.getRaydiumPools({})
 console.info(req)
+
+// Get prices from Jupiter
+let prices = await provider.getJupiterPrices({ tokens: ["SOL", "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"] })
+console.info(prices)
+
+// Get quotes for swapping SOL to USDC on Raydium
+let quotes = await provider.getRaydiumQuotes({
+    inToken: "SOL",
+    outToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", // USDC
+    inAmount: 0.01,
+    slippage: 0.5
+})
+console.info(quotes)
 ```
 
 Refer to the `examples/` for more info. As mentioned above, you'll need an `.env` file for exported variables to execute

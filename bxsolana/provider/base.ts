@@ -1,33 +1,10 @@
 import {
-    GetAccountBalanceRequest,
-    GetAccountBalanceResponse,
     GetBlockStreamRequest,
     GetBlockStreamResponse,
-    GetKlineRequest,
-    GetKlineResponse,
-    GetMarketDepthRequest,
-    GetMarketDepthResponse,
-    GetMarketDepthsStreamResponse,
-    GetMarketsRequest,
-    GetMarketsResponse,
-    GetOpenOrdersRequest,
-    GetOpenOrdersResponse,
-    GetOrderbookRequest,
-    GetOrderbookResponse,
-    GetOrderbooksRequest,
-    GetOrderbooksStreamResponse,
-    GetOrderByIDRequest,
-    GetOrderByIDResponse,
-    GetOrdersRequest,
-    GetOrdersResponse,
-    GetOrderStatusStreamRequest,
-    GetOrderStatusStreamResponse,
     GetPoolReservesStreamRequest,
     GetPoolReservesStreamResponse,
     GetPoolsRequest,
     GetPoolsResponse,
-    GetPriceRequest,
-    GetPriceResponse,
     GetPricesStreamRequest,
     GetPricesStreamResponse,
     GetQuotesRequest,
@@ -40,32 +17,12 @@ import {
     GetServerTimeResponse,
     GetSwapsStreamRequest,
     GetSwapsStreamResponse,
-    GetTickersRequest,
-    GetTickersResponse,
-    GetTickersStreamResponse,
-    GetTradesRequest,
-    GetTradesResponse,
-    GetTradesStreamResponse,
-    GetUnsettledRequest,
-    GetUnsettledResponse,
-    PostCancelAllRequest,
-    PostCancelAllResponse,
-    PostCancelByClientOrderIDRequest,
-    PostCancelOrderRequest,
-    PostCancelOrderResponse,
-    PostOrderRequest,
-    PostOrderResponse,
-    PostReplaceOrderRequest,
-    PostSettleRequest,
-    PostSettleResponse,
     PostSubmitBatchRequest,
     PostSubmitBatchResponse,
     PostSubmitRequest,
     PostSubmitRequestEntry,
     PostSubmitResponse,
-    RouteTradeSwapRequest,
     SubmitStrategy,
-    TradeSwapRequest,
     TradeSwapResponse,
     TransactionMessage,
     GetTokenAccountsResponse,
@@ -82,28 +39,12 @@ import {
     GetRaydiumQuotesResponse,
     GetRaydiumPricesRequest,
     GetRaydiumPricesResponse,
-    GetMarketDepthRequestV2,
-    GetMarketDepthResponseV2,
-    GetMarketsRequestV2,
-    GetMarketsResponseV2,
-    GetOpenOrdersRequestV2,
-    GetOrderbookRequestV2,
-    GetOrderbookResponseV2,
-    PostReplaceOrderRequestV2,
-    PostSettleRequestV2,
     GetRaydiumPoolsRequest,
     GetRaydiumPoolsResponse,
     GetJupiterQuotesRequest,
     GetJupiterQuotesResponse,
     GetJupiterPricesRequest,
     GetJupiterPricesResponse,
-    GetTickersRequestV2,
-    GetTickersResponseV2,
-    GetUnsettledRequestV2,
-    PostCancelOrderRequestV2,
-    PostCancelOrderResponseV2,
-    PostOrderRequestV2,
-    GetOpenOrdersResponseV2,
     GetNewRaydiumPoolsRequest,
     GetNewRaydiumPoolsResponse,
     GetTransactionRequest,
@@ -114,7 +55,6 @@ import {
     GetPriorityFeeResponse,
     PostJupiterSwapInstructionsRequest,
     PostJupiterSwapInstructionsResponse,
-    GetTickersStreamRequest,
     GetRaydiumPoolReserveRequest,
     GetRaydiumPoolReserveResponse,
     GetBundleTipRequest,
@@ -125,9 +65,6 @@ import {
     GetPumpFunNewTokensStreamResponse,
     GetPumpFunSwapsStreamRequest,
     GetPumpFunSwapsStreamResponse,
-    PostZetaCrossMarginAccountRequest,
-    PostZetaCrossMarginAccountResponse,
-    GetZetaTransactionStreamResponse,
     PostPumpFunSwapRequest,
     PostPumpFunSwapResponse,
     GetPumpFunQuotesRequest,
@@ -180,13 +117,6 @@ export abstract class BaseProvider implements Api {
         }
     }
 
-    // Openbook V2
-    getMarketsV2(
-        request: GetMarketsRequestV2
-    ): RpcReturnType<Promise<GetMarketsResponseV2>, []> {
-        throw new Error("Method not implemented.")
-    }
-
     getRateLimit(
         request: GetRateLimitRequest
     ): RpcReturnType<Promise<GetRateLimitResponse>, []> {
@@ -208,24 +138,6 @@ export abstract class BaseProvider implements Api {
     getJupiterQuotes(
         request: GetJupiterQuotesRequest
     ): RpcReturnType<Promise<GetJupiterQuotesResponse>, []> {
-        throw new Error("Method not implemented.")
-    }
-
-    getMarketDepthV2(
-        request: GetMarketDepthRequestV2
-    ): RpcReturnType<Promise<GetMarketDepthResponseV2>, []> {
-        throw new Error("Method not implemented.")
-    }
-
-    getOpenOrdersV2(
-        request: GetOpenOrdersRequestV2
-    ): RpcReturnType<Promise<GetOpenOrdersResponseV2>, []> {
-        throw new Error("Method not implemented.")
-    }
-
-    getOrderbookV2(
-        request: GetOrderbookRequestV2
-    ): RpcReturnType<Promise<GetOrderbookResponseV2>, []> {
         throw new Error("Method not implemented.")
     }
 
@@ -277,24 +189,6 @@ export abstract class BaseProvider implements Api {
         throw new Error("Method not implemented.")
     }
 
-    getTickersV2(
-        request: GetTickersRequestV2
-    ): RpcReturnType<Promise<GetTickersResponseV2>, []> {
-        throw new Error("Method not implemented.")
-    }
-
-    getUnsettledV2(
-        request: GetUnsettledRequestV2
-    ): RpcReturnType<Promise<GetUnsettledResponse>, []> {
-        throw new Error("Method not implemented.")
-    }
-
-    postCancelOrderV2(
-        request: PostCancelOrderRequestV2
-    ): RpcReturnType<Promise<PostCancelOrderResponseV2>, []> {
-        throw new Error("Method not implemented.")
-    }
-
     postJupiterRouteSwap(
         request: PostJupiterRouteSwapRequest
     ): RpcReturnType<Promise<PostJupiterRouteSwapResponse>, []> {
@@ -310,12 +204,6 @@ export abstract class BaseProvider implements Api {
     postJupiterSwapInstructions(
         request: PostJupiterSwapInstructionsRequest
     ): RpcReturnType<Promise<PostJupiterSwapInstructionsResponse>, []> {
-        throw new Error("Method not implemented.")
-    }
-
-    postOrderV2(
-        request: PostOrderRequestV2
-    ): RpcReturnType<Promise<PostOrderResponse>, []> {
         throw new Error("Method not implemented.")
     }
 
@@ -367,18 +255,6 @@ export abstract class BaseProvider implements Api {
         throw new Error("Method not implemented.")
     }
 
-    postReplaceOrderV2(
-        request: PostReplaceOrderRequestV2
-    ): RpcReturnType<Promise<PostOrderResponse>, []> {
-        throw new Error("Method not implemented.")
-    }
-
-    postSettleV2(
-        request: PostSettleRequestV2
-    ): RpcReturnType<Promise<PostSettleResponse>, []> {
-        throw new Error("Method not implemented.")
-    }
-
     getTokenAccounts(
         request: GetTokenAccountsRequest
     ): RpcReturnType<Promise<GetTokenAccountsResponse>, []> {
@@ -386,32 +262,6 @@ export abstract class BaseProvider implements Api {
     }
 
     abstract close(): void
-
-    getMarkets(request: GetMarketsRequest): Promise<GetMarketsResponse> {
-        throw new Error("Not implemented")
-    }
-
-    getTickers(request: GetTickersRequest): Promise<GetTickersResponse> {
-        throw new Error("Not implemented")
-    }
-
-    getKline(request: GetKlineRequest): Promise<GetKlineResponse> {
-        throw new Error("Not implemented")
-    }
-
-    getOrderbook(request: GetOrderbookRequest): Promise<GetOrderbookResponse> {
-        throw new Error("Not implemented")
-    }
-
-    getMarketDepth(
-        request: GetMarketDepthRequest
-    ): Promise<GetMarketDepthResponse> {
-        throw new Error("Not implemented")
-    }
-
-    getTrades(request: GetTradesRequest): Promise<GetTradesResponse> {
-        throw new Error("Not implemented")
-    }
 
     getPools(request: GetPoolsRequest): Promise<GetPoolsResponse> {
         throw new Error("Not implemented")
@@ -423,72 +273,19 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    getOrders(request: GetOrdersRequest): Promise<GetOrdersResponse> {
-        throw new Error("Not implemented")
-    }
-
-    getOpenOrders(
-        request: GetOpenOrdersRequest
-    ): Promise<GetOpenOrdersResponse> {
-        throw new Error("Not implemented")
-    }
-
-    getOrderByID(request: GetOrderByIDRequest): Promise<GetOrderByIDResponse> {
-        throw new Error("Not implemented")
-    }
-
-    getUnsettled(request: GetUnsettledRequest): Promise<GetUnsettledResponse> {
-        throw new Error("Not implemented")
-    }
-
-    postOrder(request: PostOrderRequest): Promise<PostOrderResponse> {
-        throw new Error("Not implemented")
-    }
-
-    postCancelOrder(
-        request: PostCancelOrderRequest
-    ): Promise<PostCancelOrderResponse> {
-        throw new Error("Not implemented")
-    }
-
-    postCancelByClientOrderID(
-        request: PostCancelByClientOrderIDRequest
-    ): Promise<PostCancelOrderResponse> {
-        throw new Error("Not implemented")
-    }
-
-    postCancelAll(
-        request: PostCancelAllRequest
-    ): Promise<PostCancelAllResponse> {
-        throw new Error("Not implemented")
-    }
-
-    postSettle(request: PostSettleRequest): Promise<PostSettleResponse> {
-        throw new Error("Not implemented")
-    }
-
-    postReplaceByClientOrderID(
-        request: PostOrderRequest
-    ): Promise<PostOrderResponse> {
-        throw new Error("Not implemented")
-    }
-
-    postReplaceOrder(
-        request: PostReplaceOrderRequest
-    ): Promise<PostOrderResponse> {
-        throw new Error("Not implemented")
-    }
-
     postSubmit(request: PostSubmitRequest): Promise<PostSubmitResponse> {
         throw new Error("Not implemented")
     }
 
-
-    postSubmitSnipeV2(request: PostSubmitSnipeRequest): Promise<PostSubmitSnipeResponse> {
+    postSubmitSnipeV2(
+        request: PostSubmitSnipeRequest
+    ): Promise<PostSubmitSnipeResponse> {
         throw new Error("Not implemented")
     }
 
-    postSubmitPaladinV2(request: PostSubmitPaladinRequest): Promise<PostSubmitResponse> {
+    postSubmitPaladinV2(
+        request: PostSubmitPaladinRequest
+    ): Promise<PostSubmitResponse> {
         throw new Error("Not implemented")
     }
 
@@ -501,23 +298,7 @@ export abstract class BaseProvider implements Api {
     postSubmitV2(request: PostSubmitRequest): Promise<PostSubmitResponse> {
         throw new Error("Not implemented")
     }
-
-    getAccountBalance(
-        request: GetAccountBalanceRequest
-    ): Promise<GetAccountBalanceResponse> {
-        throw new Error("Not implemented")
-    }
-
-    getAccountBalanceV2(
-        request: GetAccountBalanceRequest
-    ): Promise<GetAccountBalanceResponse> {
-        throw new Error("Not implemented")
-    }
-
-    getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
-        throw new Error("Not implemented")
-    }
-
+    
     getPriorityFee(
         request: GetPriorityFeeRequest
     ): Promise<GetPriorityFeeResponse> {
@@ -528,10 +309,6 @@ export abstract class BaseProvider implements Api {
         request: GetPriorityFeeByProgramRequest
     ): RpcReturnType<Promise<GetPriorityFeeByProgramResponse>, []> {
         throw new Error("Method not implemented.")
-    }
-
-    getQuotes(request: GetQuotesRequest): Promise<GetQuotesResponse> {
-        throw new Error("Not implemented")
     }
 
     getRecentBlockHash(
@@ -546,17 +323,9 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    getLeaderSchedule(request: GetLeaderScheduleRequest): Promise<GetLeaderScheduleResponse> {
-        throw new Error("Not implemented")
-    }
-
-    postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
-        throw new Error("Not implemented")
-    }
-
-    postRouteTradeSwap(
-        request: RouteTradeSwapRequest
-    ): Promise<TradeSwapResponse> {
+    getLeaderSchedule(
+        request: GetLeaderScheduleRequest
+    ): Promise<GetLeaderScheduleResponse> {
         throw new Error("Not implemented")
     }
 
@@ -564,199 +333,6 @@ export abstract class BaseProvider implements Api {
         request: PostSubmitBatchRequest
     ): Promise<PostSubmitBatchResponse> {
         throw new Error("Not implemented")
-    }
-
-    // Openbook V2 util functions
-    async submitOrderV2(
-        request: PostOrderRequestV2,
-        skipPreFlight = true
-    ): Promise<SubmitTransactionResponse> {
-        const res = await this.postOrderV2(request)
-
-        const submitResponse = await this.signAndSubmitTx(
-            res.transaction,
-            skipPreFlight,
-            false,
-            false
-        )
-
-        return {
-            signature: submitResponse.signature,
-            openOrdersAccount: res.openOrdersAddress,
-        }
-    }
-
-    async submitCancelOrderV2(
-        request: PostCancelOrderRequestV2,
-        skipPreFlight = true
-    ): Promise<PostSubmitBatchResponse> {
-        const res = await this.postCancelOrderV2(request)
-
-        return this.signAndSubmitTxs(
-            res.transactions,
-            "P_SUBMIT_ALL",
-            skipPreFlight
-        )
-    }
-
-    async submitSettleV2(
-        request: PostSettleRequestV2,
-        skipPreFlight = true
-    ): Promise<PostSubmitResponse> {
-        const res = await this.postSettleV2(request)
-
-        return this.signAndSubmitTx(
-            res.transaction,
-            skipPreFlight,
-            false,
-            false
-        )
-    }
-
-    async submitReplaceOrderV2(
-        request: PostReplaceOrderRequestV2,
-        skipPreFlight = true
-    ): Promise<PostSubmitResponse> {
-        const res = await this.postReplaceOrderV2(request)
-
-        return this.signAndSubmitTx(
-            res.transaction,
-            skipPreFlight,
-            false,
-            false
-        )
-    }
-
-    // End of Openbook V2 util functions
-
-    async submitOrder(
-        request: PostOrderRequest,
-        skipPreFlight = true
-    ): Promise<SubmitTransactionResponse> {
-        const res = await this.postOrder(request)
-
-        const submitResponse = await this.signAndSubmitTx(
-            res.transaction,
-            skipPreFlight,
-            false,
-            false
-        )
-
-        return {
-            signature: submitResponse.signature,
-            openOrdersAccount: res.openOrdersAddress,
-        }
-    }
-
-    async submitCancelOrder(
-        request: PostCancelOrderRequest,
-        skipPreFlight = true
-    ): Promise<PostSubmitResponse> {
-        const res = await this.postCancelOrder(request)
-
-        return this.signAndSubmitTx(
-            res.transaction,
-            skipPreFlight,
-            false,
-            false
-        )
-    }
-
-    async submitCancelOrderByClientOrderID(
-        request: PostCancelByClientOrderIDRequest,
-        skipPreFlight = true
-    ): Promise<PostSubmitResponse> {
-        const res = await this.postCancelByClientOrderID(request)
-
-        return this.signAndSubmitTx(
-            res.transaction,
-            skipPreFlight,
-            false,
-            false
-        )
-    }
-
-    async submitCancelAll(
-        request: PostCancelAllRequest,
-        skipPreFlight = true
-    ): Promise<PostSubmitBatchResponse> {
-        const res = await this.postCancelAll(request)
-
-        return this.signAndSubmitTxs(
-            res.transactions,
-            "P_SUBMIT_ALL",
-            skipPreFlight
-        )
-    }
-
-    async submitSettle(
-        request: PostSettleRequest,
-        skipPreFlight = true
-    ): Promise<PostSubmitResponse> {
-        const res = await this.postSettle(request)
-
-        return this.signAndSubmitTx(
-            res.transaction,
-            skipPreFlight,
-            false,
-            false
-        )
-    }
-
-    async submitReplaceByClientOrderID(
-        request: PostOrderRequest,
-        skipPreFlight = true
-    ): Promise<PostSubmitResponse> {
-        const res = await this.postReplaceByClientOrderID(request)
-
-        return this.signAndSubmitTx(
-            res.transaction,
-            skipPreFlight,
-            false,
-            false
-        )
-    }
-
-    async submitReplaceOrder(
-        request: PostReplaceOrderRequest,
-        skipPreFlight = true
-    ): Promise<PostSubmitResponse> {
-        const res = await this.postReplaceOrder(request)
-
-        return this.signAndSubmitTx(
-            res.transaction,
-            skipPreFlight,
-            false,
-            false
-        )
-    }
-
-    async submitTradeSwap(
-        request: TradeSwapRequest,
-        submitStrategy: SubmitStrategy,
-        skipPreFlight = true
-    ): Promise<PostSubmitBatchResponse> {
-        const res = await this.postTradeSwap(request)
-
-        return this.signAndSubmitTxs(
-            res.transactions,
-            submitStrategy,
-            skipPreFlight
-        )
-    }
-
-    async submitRouteTradeSwap(
-        request: RouteTradeSwapRequest,
-        submitStrategy: SubmitStrategy,
-        skipPreFlight = true
-    ): Promise<PostSubmitBatchResponse> {
-        const res = await this.postRouteTradeSwap(request)
-
-        return this.signAndSubmitTxs(
-            res.transactions,
-            submitStrategy,
-            skipPreFlight
-        )
     }
 
     private requirePrivateKey() {
@@ -794,29 +370,31 @@ export abstract class BaseProvider implements Api {
         useStakedRPCs: boolean = false
     ): Promise<PostSubmitSnipeResponse> {
         this.requirePrivateKey()
-    
+
         if (!entries || entries.length === 0) {
             throw Error("entries array was empty or undefined")
         }
-    
-        const signedEntries = entries.map(entry => {
+
+        const signedEntries = entries.map((entry) => {
             if (!entry) {
                 throw Error("entry was undefined")
             }
             return {
                 transaction: {
-                    content: txToBase64(signTx(entry.content, this.privateKey!)),
+                    content: txToBase64(
+                        signTx(entry.content, this.privateKey!)
+                    ),
                     isCleanup: false,
                 },
                 skipPreFlight: true,
             }
         })
-    
+
         const request: PostSubmitSnipeRequest = {
             entries: signedEntries,
-            useStakedRPCs: useStakedRPCs
+            useStakedRPCs: useStakedRPCs,
         }
-    
+
         return this.postSubmitSnipeV2(request)
     }
 
@@ -827,19 +405,19 @@ export abstract class BaseProvider implements Api {
         frontRunningProtection: boolean = false
     ): Promise<PostSubmitResponse> {
         this.requirePrivateKey()
-    
+
         if (transactionMessage === undefined) {
             throw Error("transaction message was undefined")
         }
-    
+
         const signedTx = signTx(transactionMessage.content, this.privateKey!)
-        
+
         const request: PostSubmitPaladinRequest = {
             transaction: {
                 content: txToBase64(signedTx),
-            }
+            },
         }
-    
+
         return this.postSubmitPaladinV2(request)
     }
 
@@ -871,13 +449,6 @@ export abstract class BaseProvider implements Api {
         })
     }
 
-    // streams
-    getOrderbooksStream(
-        request: GetOrderbooksRequest
-    ): Promise<AsyncGenerator<GetOrderbooksStreamResponse>> {
-        throw new Error("Not implemented")
-    }
-
     getPumpFunNewTokensStream = (
         request: GetPumpFunNewTokensStreamRequest
     ): Promise<AsyncGenerator<GetPumpFunNewTokensStreamResponse>> => {
@@ -893,30 +464,6 @@ export abstract class BaseProvider implements Api {
     getPumpFunSwapsStream = (
         request: GetPumpFunSwapsStreamRequest
     ): Promise<AsyncGenerator<GetPumpFunSwapsStreamResponse>> => {
-        throw new Error("Not implemented")
-    }
-
-    getTickersStream(
-        request: GetTickersStreamRequest
-    ): Promise<AsyncGenerator<GetTickersStreamResponse>> {
-        throw new Error("Not implemented")
-    }
-
-    getMarketDepthsStream(
-        request: GetMarketsRequest
-    ): Promise<AsyncGenerator<GetMarketDepthsStreamResponse>> {
-        throw new Error("Not implemented")
-    }
-
-    getTradesStream(
-        request: GetTradesRequest
-    ): Promise<AsyncGenerator<GetTradesStreamResponse>> {
-        throw new Error("Not implemented")
-    }
-
-    getOrderStatusStream(
-        request: GetOrderStatusStreamRequest
-    ): Promise<AsyncGenerator<GetOrderStatusStreamResponse>> {
         throw new Error("Not implemented")
     }
 
@@ -1110,19 +657,7 @@ export abstract class BaseProvider implements Api {
         throw new Error("Not implemented")
     }
 
-    getZetaTransactionStream(
-        request: GetZetaTransactionStreamRequest
-    ): Promise<AsyncGenerator<GetZetaTransactionStreamResponse>> {
-        throw new Error("Not implemented")
-    }
-
     postSubmitMineOre(request: PostSubmitRequest): Promise<PostSubmitResponse> {
-        throw new Error("Not implemented")
-    }
-
-    postZetaCrossMarginAccount(
-        request: PostZetaCrossMarginAccountRequest
-    ): Promise<PostZetaCrossMarginAccountResponse> {
         throw new Error("Not implemented")
     }
 }
