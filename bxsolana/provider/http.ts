@@ -111,6 +111,8 @@ import {
     PostSubmitPaladinRequest,
     GetLeaderScheduleRequest,
     GetLeaderScheduleResponse,
+    GetTokenAccountsRequest,
+    GetTokenAccountsResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -161,6 +163,13 @@ export class HttpProvider extends BaseProvider {
     ): RpcReturnType<Promise<GetTransactionResponse>, []> {
         const path = `${this.baseUrlV2}/transaction?signature=${request.signature}`
         return this.get<GetTransactionResponse>(path)
+    }
+
+    getTokenAccounts(
+        request: GetTokenAccountsRequest
+    ): RpcReturnType<Promise<GetTokenAccountsResponse>, []> {
+        let path = `${this.baseUrl}/account/token-accounts?ownerAddress=${request.ownerAddress}`
+        return this.get<GetTokenAccountsResponse>(path)
     }
 
     getJupiterPrices(
@@ -218,6 +227,16 @@ export class HttpProvider extends BaseProvider {
         return this.post<
             PostRaydiumRouteSwapRequest,
             PostRaydiumRouteSwapResponse
+        >(path, request)
+    }
+
+    postRaydiumRouteSwapInstructions(
+        request: PostRaydiumSwapInstructionsRequest
+    ): RpcReturnType<Promise<PostRaydiumSwapInstructionsResponse>, []> {
+        const path = `${this.baseUrlV2}/raydium/swap-instructions`
+        return this.post<
+            PostRaydiumSwapInstructionsRequest,
+            PostRaydiumSwapInstructionsResponse
         >(path, request)
     }
 
