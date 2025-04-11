@@ -91,6 +91,8 @@ import {
     PostSubmitPaladinRequest,
     GetLeaderScheduleRequest,
     GetLeaderScheduleResponse,
+    GetPumpFunNewAmmPoolStreamResponse,
+    GetPumpFunNewAmmPoolStreamRequest,
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
@@ -316,9 +318,7 @@ export class GrpcProvider extends BaseProvider {
         return this.client.postSubmitSnipeV2(request)
     }
 
-    postSubmitPaladin(
-        request: PostSubmitPaladinRequest
-    ): Promise<PostSubmitResponse> {
+    postSubmitPaladinV2(request: PostSubmitPaladinRequest): Promise<PostSubmitResponse> {
         return this.client.postSubmitPaladinV2(request)
     }
 
@@ -405,6 +405,12 @@ export class GrpcProvider extends BaseProvider {
         request: GetPumpFunNewTokensStreamRequest
     ): Promise<AsyncGenerator<GetPumpFunNewTokensStreamResponse>> => {
         return this.client.getPumpFunNewTokensStream(request)
+    }
+
+    getPumpFunNewAmmPoolStream = (
+        request: GetPumpFunNewAmmPoolStreamRequest
+    ): Promise<AsyncGenerator<GetPumpFunNewAmmPoolStreamResponse>> => {
+        return this.client.getPumpFunNewAmmPoolStream(request)
     }
 
     getPumpFunSwapsStream = (

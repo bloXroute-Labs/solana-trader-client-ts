@@ -23,8 +23,10 @@ import {
     MAINNET_API_NY_WS,
     createTraderAPIMemoInstruction,
     TransactionMessage,
+    TransactionMessageV2,
 } from "../bxsolana"
 import {
+    ComputeBudgetProgram,
     Keypair,
     LAMPORTS_PER_SOL,
     PublicKey,
@@ -54,12 +56,12 @@ const tokenAddress = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" // USDC
 const httpTimeout = 30_000
 
 async function run() {
-    console.info("---- STARTING HTTP TESTS ----")
-    await http()
+    // console.info("---- STARTING HTTP TESTS ----")
+    // await http()
     console.info("---- STARTING GRPC TESTS ----")
     await grpc()
-    console.info("---- STARTING WS TESTS ----")
-    await ws()
+    // console.info("---- STARTING WS TESTS ----")
+    // await ws()
 }
 
 async function http() {
@@ -310,7 +312,12 @@ async function doAmmRequests(
 }
 
 async function doStreams(provider: BaseProvider, pump_provider: BaseProvider) {
+
     await callGetPumpFunNewTokensStream(pump_provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetPumpFunNewAmmPoolStream(pump_provider)
     console.info(" ")
     console.info(" ")
 
@@ -531,6 +538,137 @@ async function callGetPumpFunNewTokensStream(provider: BaseProvider) {
     count = 0
     for await (const ob of reqq) {
         console.info(ob)
+        count++
+        if (count == 1) {
+            break
+        }
+    }
+}
+
+async function callGetPumpFunNewAmmPoolStream(provider: BaseProvider) {
+    console.info("Subscribing for pump swap new amm pools")
+    const req = await provider.getPumpFunNewAmmPoolStream({})
+
+    let count = 0
+    for await (const ob of req) {
+        console.info("New pool recieved...")
+        console.info(ob)
+        count++
+        if (count == 1) {
+            break
+        }
+    }
+}
+
+async function callGetOrderbookStream(provider: BaseProvider) {
+    console.info("Subscribing for orderbook updates of SOLUSDC market")
+    let req = await provider.getOrderbooksStream({
+        markets: ["SOLUSDC"],
+        project: "P_OPENBOOK",
+        limit: 5,
+    })
+
+    let count = 0
+    for await (const ob of req) {
+        console.info(ob)
+        count++
+        if (count == 5) {
+            break
+        }
+    }
+    console.info(" ")
+    console.info(" ")
+
+    console.info("Subscribing for orderbook updates of SOLUSDC market")
+    req = await provider.getOrderbooksStream({
+        markets: ["SOL-USDC"],
+        project: "P_OPENBOOK",
+        limit: 5,
+    })
+
+    count = 0
+    for await (const ob of req) {
+        console.info(ob)
+        count++
+        if (count == 5) {
+            break
+        }
+    }
+}
+
+async function callGetMarketDepthStream(provider: BaseProvider) {
+    console.info("Subscribing for market depth data updates of SOLUSDC market")
+    let req = await provider.getMarketDepthsStream({
+        markets: ["SOLUSDC"],
+        project: "P_OPENBOOK",
+        limit: 5,
+    })
+
+    let count = 0
+    for await (const ob of req) {
+        console.info(ob)
+        count++
+        if (count == 5) {
+            break
+        }
+    }
+    console.info(" ")
+    console.info(" ")
+
+    console.info("Subscribing for market depth data updates of SOLUSDC market")
+    req = await provider.getMarketDepthsStream({
+        markets: ["SOL-USDC"],
+        project: "P_OPENBOOK",
+        limit: 5,
+    })
+
+    count = 0
+    for await (const ob of req) {
+        console.info(ob)
+        count++
+        if (count == 5) {
+            break
+        }
+    }
+}
+
+async function callGetTickersStream(provider: BaseProvider) {
+    console.info("Subscribing for ticker updates of SOLUSDC market")
+    const req = await provider.getTickersStream({
+        markets: [
+            "BONK/SOL",
+            "wSOL/RAY",
+            "BONK/RAY",
+            "RAY/USDC",
+            "SOL/USDC",
+            "SOL/USDC",
+            "RAY/USDC",
+            "USDT/USDC",
+        ],
+        project: "P_OPENBOOK",
+    })
+
+    let count = 0
+    for await (const tick of req) {
+        console.info(tick)
+        count++
+        if (count == 5) {
+            break
+        }
+    }
+}
+
+async function callGetTradesStream(provider: BaseProvider) {
+    console.info("Subscribing for trade updates of SOLUSDC market")
+    const req = await provider.getTradesStream({
+        market: "SOLUSDC",
+        limit: 5,
+        project: "P_OPENBOOK",
+    })
+
+    let count = 0
+    for await (const tr of req) {
+        console.info(tr)
         count++
         if (count == 1) {
             break

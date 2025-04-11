@@ -86,6 +86,8 @@ import {
     PostSubmitPaladinRequest,
     GetLeaderScheduleRequest,
     GetLeaderScheduleResponse,
+    GetPumpFunNewAmmPoolStreamRequest,
+    GetPumpFunNewAmmPoolStreamResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -262,6 +264,19 @@ export class WsProvider extends BaseProvider {
         )
 
         this.manageGetStreamMaps("GetPumpFunNewTokensStream", subscriptionId)
+
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
+    }
+
+    getPumpFunNewAmmPoolStream = async (
+        request: GetPumpFunNewAmmPoolStreamRequest
+    ): Promise<AsyncGenerator<GetPumpFunNewAmmPoolStreamResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetPumpFunNewAmmPoolStream",
+            request
+        )
+
+        this.manageGetStreamMaps("GetPumpFunNewAmmPoolStream", subscriptionId)
 
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
@@ -631,6 +646,12 @@ export class WsProvider extends BaseProvider {
     cancelAllGetBundleTipStream = async (): Promise<Awaited<boolean>[]> => {
         return this.cancelAllStreams("GetBundleTipStream")
     }
+
+    cancelAllGetPumpFunNewAmmPoolStream = async (): Promise<Awaited<boolean>[]> => {
+        return this.cancelAllStreams("GetPumpFunNewAmmPoolStream")
+    }
+
+
 
     private manageGetStreamMaps = (
         streamName: string,

@@ -90,6 +90,9 @@ import {
     PostSubmitPaladinRequest,
     GetLeaderScheduleResponse,
     GetLeaderScheduleRequest,
+    TransactionMessageV2,
+    GetPumpFunNewAmmPoolStreamRequest,
+    GetPumpFunNewAmmPoolStreamResponse,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -406,7 +409,7 @@ export abstract class BaseProvider implements Api {
     }
 
     public async signAndSubmitPaladinTx(
-        transactionMessage: TransactionMessage | undefined,
+        transactionMessage: TransactionMessageV2 | undefined,
         skipPreFlight: boolean = false,
         isCleanup: boolean = false,
         frontRunningProtection: boolean = false
@@ -459,6 +462,12 @@ export abstract class BaseProvider implements Api {
     getPumpFunNewTokensStream = (
         request: GetPumpFunNewTokensStreamRequest
     ): Promise<AsyncGenerator<GetPumpFunNewTokensStreamResponse>> => {
+        throw new Error("Not implemented")
+    }
+
+    getPumpFunNewAmmPoolStream = (
+        request: GetPumpFunNewAmmPoolStreamRequest
+    ): Promise<AsyncGenerator<GetPumpFunNewAmmPoolStreamResponse>> => {
         throw new Error("Not implemented")
     }
 
@@ -623,6 +632,10 @@ export abstract class BaseProvider implements Api {
     }
 
     cancelAllGetPoolReservesStream = async (): Promise<Awaited<boolean>[]> => {
+        throw new Error("Not implemented")
+    }
+
+    cancelAllGetPumpFunNewAmmPoolStream = async (): Promise<Awaited<boolean>[]> => {
         throw new Error("Not implemented")
     }
 
