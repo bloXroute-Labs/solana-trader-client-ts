@@ -5,8 +5,6 @@ import {
     GetPoolReservesStreamResponse,
     GetPoolsRequest,
     GetPoolsResponse,
-    GetPriceRequest,
-    GetPriceResponse,
     GetPricesStreamRequest,
     GetPricesStreamResponse,
     GetQuotesRequest,
@@ -300,11 +298,7 @@ export abstract class BaseProvider implements Api {
     postSubmitV2(request: PostSubmitRequest): Promise<PostSubmitResponse> {
         throw new Error("Not implemented")
     }
-
-    getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
-        throw new Error("Not implemented")
-    }
-
+    
     getPriorityFee(
         request: GetPriorityFeeRequest
     ): Promise<GetPriorityFeeResponse> {
@@ -315,10 +309,6 @@ export abstract class BaseProvider implements Api {
         request: GetPriorityFeeByProgramRequest
     ): RpcReturnType<Promise<GetPriorityFeeByProgramResponse>, []> {
         throw new Error("Method not implemented.")
-    }
-
-    getQuotes(request: GetQuotesRequest): Promise<GetQuotesResponse> {
-        throw new Error("Not implemented")
     }
 
     getRecentBlockHash(

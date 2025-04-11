@@ -2,8 +2,6 @@ import { MAINNET_API_NY_HTTP } from "../utils/constants"
 import {
     GetPoolsRequest,
     GetPoolsResponse,
-    GetPriceRequest,
-    GetPriceResponse,
     GetQuotesRequest,
     GetQuotesResponse,
     GetRecentBlockHashRequest,
@@ -293,15 +291,6 @@ export class HttpProvider extends BaseProvider {
     ): Promise<GetRaydiumCLMMPoolsResponse> {
         const path = `${this.baseUrl}/market/clmm-pools/pairOrAddress=${request.pairOrAddress}`
         return this.get<GetRaydiumCLMMPoolsResponse>(path)
-    }
-
-    getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
-        let path = `${this.baseUrl}/market/price`
-        const args = request.tokens.map((v) => `tokens=${v}`).join("&")
-        if (args != "") {
-            path += `?${args}`
-        }
-        return this.get<GetPriceResponse>(path)
     }
 
     getRecentBlockHash(

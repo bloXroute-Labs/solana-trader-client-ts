@@ -7,8 +7,6 @@ import {
     GetPoolReservesStreamResponse,
     GetPoolsRequest,
     GetPoolsResponse,
-    GetPriceRequest,
-    GetPriceResponse,
     GetPricesStreamRequest,
     GetPricesStreamResponse,
     GetQuotesRequest,
@@ -488,10 +486,6 @@ export class WsProvider extends BaseProvider {
 
     async getQuotes(request: GetQuotesRequest): Promise<GetQuotesResponse> {
         return this.wsConnection.call("GetQuotes", request)
-    }
-
-    async getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
-        return this.wsConnection.call("GetPrice", request)
     }
 
     async getRecentBlockHash(

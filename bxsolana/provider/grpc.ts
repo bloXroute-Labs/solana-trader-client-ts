@@ -12,12 +12,8 @@ import {
     GetPoolReservesStreamResponse,
     GetPoolsRequest,
     GetPoolsResponse,
-    GetPriceRequest,
-    GetPriceResponse,
     GetPricesStreamRequest,
     GetPricesStreamResponse,
-    GetQuotesRequest,
-    GetQuotesResponse,
     GetQuotesStreamRequest,
     GetQuotesStreamResponse,
     GetRecentBlockHashRequest,
@@ -30,7 +26,6 @@ import {
     PostSubmitBatchResponse,
     PostSubmitRequest,
     PostSubmitResponse,
-    TradeSwapResponse,
     GetJupiterPricesRequest,
     GetJupiterPricesResponse,
     GetJupiterQuotesRequest,
@@ -336,10 +331,6 @@ export class GrpcProvider extends BaseProvider {
         request: PostSubmitBatchRequest
     ): Promise<PostSubmitBatchResponse> {
         return this.client.postSubmitBatchV2(request)
-    }
-
-    getPrice(request: GetPriceRequest): Promise<GetPriceResponse> {
-        return this.client.getPrice(request)
     }
 
     getPricesStream(
