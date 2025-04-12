@@ -168,7 +168,7 @@ export class HttpProvider extends BaseProvider {
     getTokenAccounts(
         request: GetTokenAccountsRequest
     ): RpcReturnType<Promise<GetTokenAccountsResponse>, []> {
-        let path = `${this.baseUrl}/account/token-accounts?ownerAddress=${request.ownerAddress}`
+        const path = `${this.baseUrl}/account/token-accounts?ownerAddress=${request.ownerAddress}`
         return this.get<GetTokenAccountsResponse>(path)
     }
 
