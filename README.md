@@ -21,16 +21,161 @@ In `node.js` environments, you can specify both of these values in a `.env` file
 the browser, you'll want to define them during run-time from user input, and probably use some wallet provider to handle
 the transaction signing.
 
-A simple example:
+## Examples
+
+<!-- GrpcClient Example -->
+<details open>
+<summary>GrpcClient</summary>
 
 ```typescript
-import { HttpProvider } from "../bxsolana/provider/http.js"
+import {
+    MAINNET_API_GRPC_PORT,
+    MAINNET_API_NY_GRPC,
+    GrpcProvider,
+    GetRecentBlockHashRequest,
+    loadFromEnv
+} from "@bloxroute/solana-trader-client-ts";
 
-const provider = new HttpProvider()
+// Calls to provider must be made inside async function
+async function main(): Promise<void> {
+    try {
+        // Load configuration from environment variables
+        const config = loadFromEnv();
 
-let req = await provider.getOrderbook({ market: "SOLUSDC", limit: 5 })
-console.info(req)
+        // Initialize the GrpcProvider with necessary credentials and endpoint
+        const provider = new GrpcProvider(
+            config.authHeader,
+            config.privateKey,
+            `${MAINNET_API_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
+            true
+        );
+
+        // Prepare the request for fetching the recent block hash
+        const request: GetRecentBlockHashRequest = {};
+
+        // Fetch the recent block hash from the provider
+        const response = await provider.getRecentBlockHash(request);
+
+        // Log the response
+        console.info("Recent Block Hash Response: ");
+        console.info(JSON.stringify(response, null, 2));
+    } catch (error) {
+        console.error("Error fetching recent block hash:", error);
+    }
+}
+
+// Execute the main function
+main();
 ```
+</details>
+
+---
+
+<!-- HttpClient Example -->
+<details>
+<summary>HttpClient</summary>
+
+```typescript
+import {
+  MAINNET_API_NY_HTTP,
+  HttpProvider,
+  GetRecentBlockHashRequest,
+  loadFromEnv
+} from "@bloxroute/solana-trader-client-ts";
+import { AxiosRequestConfig } from "axios"
+
+// Calls to provider must be made inside async function
+async function main(): Promise<void> {
+  try {
+    // Load configuration from environment variables
+    const config = loadFromEnv();
+    
+    const requestConfig: AxiosRequestConfig = {
+      timeout: 30_000,
+    }
+    
+    // Initialize the HttpProvider with necessary credentials and endpoint
+    let provider = new HttpProvider(
+      config.authHeader,
+      config.privateKey,
+      MAINNET_API_NY_HTTP,
+      requestConfig
+    )
+    
+    // Prepare the request for fetching the recent block hash
+    const request: GetRecentBlockHashRequest = {};
+    
+    // Fetch the recent block hash from the provider
+    const response = await provider.getRecentBlockHash(request);
+    
+    // Log the response
+    console.info("Recent Block Hash Response: ");
+    console.info(JSON.stringify(response, null, 2));
+  } catch (error) {
+    console.error("Error fetching recent block hash:", error);
+  }
+}
+
+// Execute the main function
+main();
+```
+
+</details>
+
+---
+
+<!-- WsClient Example Example -->
+<details>
+<summary>WsClient</summary>
+
+```typescript
+import {
+  MAINNET_API_NY_WS,
+  WsProvider,
+  GetRecentBlockHashRequest,
+  loadFromEnv
+} from "@bloxroute/solana-trader-client-ts";
+
+// Calls to provider must be made inside async function
+async function main(): Promise<void> {
+  try {
+    // Load configuration from environment variables
+    const config = loadFromEnv();
+    
+    // Initialize the WsProvider with necessary credentials and endpoint
+    const provider = new WsProvider(
+      config.authHeader,
+      config.privateKey,
+      MAINNET_API_NY_WS
+    )
+    
+    // Prepare the request for fetching the recent block hash
+    const request: GetRecentBlockHashRequest = {};
+    
+    // Connect to the WebSocket server
+    await provider.connect()
+    
+    // Fetch the recent block hash from the provider
+    const response = await provider.getRecentBlockHash(request);
+    
+    // Close the connection
+    provider.close()
+    
+    // Log the response
+    console.info("Recent Block Hash Response: ");
+    console.info(JSON.stringify(response, null, 2));
+  } catch (error) {
+    console.error("Error fetching recent block hash:", error);
+  }
+}
+
+// Execute the main function
+main();
+```
+
+</details>
+
+---
 
 Refer to the `examples/` for more info. As mentioned above, you'll need an `.env` file for exported variables to execute
 the full suite. A proper `.env` file looks like something like this.
