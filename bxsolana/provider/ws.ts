@@ -141,6 +141,10 @@ import {
     GetLeaderScheduleResponse,
     GetPumpFunNewAmmPoolStreamRequest,
     GetPumpFunNewAmmPoolStreamResponse,
+    GetTokenAccountsRequest,
+    GetTokenAccountsResponse,
+    PostRaydiumSwapInstructionsRequest,
+    PostRaydiumSwapInstructionsResponse
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -182,6 +186,12 @@ export class WsProvider extends BaseProvider {
     async getRateLimit(
         request: GetRateLimitRequest
     ): RpcReturnType<Promise<GetRateLimitResponse>, []> {
+        return await this.wsConnection.call("GetRateLimit", request)
+    }
+
+    async getTokenAccounts(
+        request: GetTokenAccountsRequest
+    ): RpcReturnType<Promise<GetTokenAccountsResponse>, []> {
         return await this.wsConnection.call("GetRateLimit", request)
     }
 
@@ -240,6 +250,15 @@ export class WsProvider extends BaseProvider {
         request: PostRaydiumSwapRequest
     ): RpcReturnType<Promise<PostRaydiumSwapResponse>, []> {
         return await this.wsConnection.call("PostRaydiumSwap", request)
+    }
+
+    async postRaydiumSwapInstructions(
+        request: PostRaydiumSwapInstructionsRequest
+    ): RpcReturnType<Promise<PostRaydiumSwapInstructionsResponse>, []> {
+        return await this.wsConnection.call(
+            "PostRaydiumSwapInstructions",
+            request
+        )
     }
 
     async postRaydiumCPMMSwap(
