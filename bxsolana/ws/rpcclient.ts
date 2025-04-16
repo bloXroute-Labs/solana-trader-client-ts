@@ -1,5 +1,18 @@
 import WebSocket from "isomorphic-ws"
 import { AsyncBlockingQueue } from "../utils/blockingqueue"
+import { timestampRfc3339 } from "../utils/timestamp"
+
+// Methods which implement timestamp field on request messages
+const TIMESTAMPED_REQUESTS = [
+    "PostSubmit",
+    "PostSubmitV2",
+    "PostSubmitBatch",
+    "PostSubmitBatchV2",
+    "PostSubmitSnipe",
+    "PostSubmitSnipeV2",
+    "PostSubmitPaladin",
+    "PostSubmitPaladinV2"
+    ]
 
 // eslint-disable-next-line
 type Resolver = (result: any) => void
@@ -122,18 +135,27 @@ export class RpcWsConnection {
     _formWSRequest<T>(
         methodName: string,
         methodParams: T
-    ): { id: number; req: string } {
-        const id = ++this.requestId // iterating the request id by 1 makes it so that we have a unique request ID for each request
-        return {
-            req: JSON.stringify({
-                jsonrpc: "2.0",
-                id: id,
-                method: methodName,
-                params: methodParams,
-            }),
-            id,
+      ): { id: number; req: string } {
+        const id = ++this.requestId
+        
+        // Logic to include JSON serialized timestamps for methods which contain a timestamp field
+        let params: any;
+        if (TIMESTAMPED_REQUESTS.includes(methodName)) {
+            params = { ...methodParams as any, timestamp: timestampRfc3339() };
+        } else {
+            params = methodParams;
         }
-    }
+        
+        return {
+          req: JSON.stringify({
+            jsonrpc: "2.0",
+            id: id,
+            method: methodName,
+            params: params,
+          }),
+          id,
+        }
+      }
 
     async subscribe<T>(streamName: string, streamParams: T): Promise<string> {
         const subscriptionId = (await this.call("subscribe", [
