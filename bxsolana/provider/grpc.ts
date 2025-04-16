@@ -148,6 +148,10 @@ import {
     GetLeaderScheduleResponse,
     GetPumpFunNewAmmPoolStreamResponse,
     GetPumpFunNewAmmPoolStreamRequest,
+    GetTokenAccountsRequest,
+    GetTokenAccountsResponse,
+    PostRaydiumSwapInstructionsRequest,
+    PostRaydiumSwapInstructionsResponse
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
@@ -243,6 +247,12 @@ export class GrpcProvider extends BaseProvider {
         return this.client.getRateLimit(request)
     }
 
+    getTokenAccounts(
+        request: GetTokenAccountsRequest
+    ): RpcReturnType<Promise<GetTokenAccountsResponse>, []> {
+        return this.client.getTokenAccounts(request)
+    }
+
     getTransaction(
         request: GetTransactionRequest
     ): RpcReturnType<Promise<GetTransactionResponse>, []> {
@@ -295,6 +305,12 @@ export class GrpcProvider extends BaseProvider {
         request: PostRaydiumSwapRequest
     ): RpcReturnType<Promise<PostRaydiumSwapResponse>, []> {
         return this.client.postRaydiumSwap(request)
+    }
+
+    postRaydiumSwapInstructions(
+        request: PostRaydiumSwapInstructionsRequest
+    ): RpcReturnType<Promise<PostRaydiumSwapInstructionsResponse>, []> {
+        return this.client.postRaydiumSwapInstructions(request)
     }
 
     postRaydiumCPMMSwap(
