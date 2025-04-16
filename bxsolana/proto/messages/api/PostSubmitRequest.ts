@@ -6,6 +6,18 @@ import {
   decodeBinary as decodeBinary_1,
 } from "./TransactionMessage";
 import {
+  Type as Timestamp,
+  encodeJson as encodeJson_2,
+  decodeJson as decodeJson_2,
+  encodeBinary as encodeBinary_2,
+  decodeBinary as decodeBinary_2,
+} from "../google/protobuf/Timestamp";
+import {
+  Type as SubmitProtection,
+  name2num,
+  num2name,
+} from "./SubmitProtection";
+import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar";
@@ -21,6 +33,9 @@ import {
   wireValueToTsValueFns,
 } from "../../runtime/wire/scalar";
 import {
+  default as Long,
+} from "../../runtime/Long";
+import {
   default as deserialize,
 } from "../../runtime/wire/deserialize";
 
@@ -35,6 +50,8 @@ export declare namespace $.api {
     allowBackRun?: boolean;
     revenueAddress?: string;
     sniping?: boolean;
+    timestamp?: Timestamp;
+    submitProtection?: SubmitProtection;
   }
 }
 export type Type = $.api.PostSubmitRequest;
@@ -50,6 +67,8 @@ export function getDefaultValue(): $.api.PostSubmitRequest {
     allowBackRun: false,
     revenueAddress: "",
     sniping: false,
+    timestamp: undefined,
+    submitProtection: "SP_LOW",
   };
 }
 
@@ -71,6 +90,8 @@ export function encodeJson(value: $.api.PostSubmitRequest): unknown {
   if (value.allowBackRun !== undefined) result.allowBackRun = tsValueToJsonValueFns.bool(value.allowBackRun);
   if (value.revenueAddress !== undefined) result.revenueAddress = tsValueToJsonValueFns.string(value.revenueAddress);
   if (value.sniping !== undefined) result.sniping = tsValueToJsonValueFns.bool(value.sniping);
+  if (value.timestamp !== undefined) result.timestamp = encodeJson_2(value.timestamp);
+  if (value.submitProtection !== undefined) result.submitProtection = tsValueToJsonValueFns.enum(value.submitProtection);
   return result;
 }
 
@@ -85,6 +106,8 @@ export function decodeJson(value: any): $.api.PostSubmitRequest {
   if (value.allowBackRun !== undefined) result.allowBackRun = jsonValueToTsValueFns.bool(value.allowBackRun);
   if (value.revenueAddress !== undefined) result.revenueAddress = jsonValueToTsValueFns.string(value.revenueAddress);
   if (value.sniping !== undefined) result.sniping = jsonValueToTsValueFns.bool(value.sniping);
+  if (value.timestamp !== undefined) result.timestamp = decodeJson_2(value.timestamp);
+  if (value.submitProtection !== undefined) result.submitProtection = jsonValueToTsValueFns.enum(value.submitProtection) as SubmitProtection;
   return result;
 }
 
@@ -142,6 +165,18 @@ export function encodeBinary(value: $.api.PostSubmitRequest): Uint8Array {
     const tsValue = value.sniping;
     result.push(
       [10, tsValueToWireValueFns.bool(tsValue)],
+    );
+  }
+  if (value.timestamp !== undefined) {
+    const tsValue = value.timestamp;
+    result.push(
+      [11, { type: WireType.LengthDelimited as const, value: encodeBinary_2(tsValue) }],
+    );
+  }
+  if (value.submitProtection !== undefined) {
+    const tsValue = value.submitProtection;
+    result.push(
+      [12, { type: WireType.Varint as const, value: new Long(name2num[tsValue as keyof typeof name2num]) }],
     );
   }
   return serialize(result);
@@ -213,6 +248,20 @@ export function decodeBinary(binary: Uint8Array): $.api.PostSubmitRequest {
     const value = wireValueToTsValueFns.bool(wireValue);
     if (value === undefined) break field;
     result.sniping = value;
+  }
+  field: {
+    const wireValue = wireFields.get(11);
+    if (wireValue === undefined) break field;
+    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_2(wireValue.value) : undefined;
+    if (value === undefined) break field;
+    result.timestamp = value;
+  }
+  field: {
+    const wireValue = wireFields.get(12);
+    if (wireValue === undefined) break field;
+    const value = wireValue.type === WireType.Varint ? num2name[wireValue.value[0] as keyof typeof num2name] : undefined;
+    if (value === undefined) break field;
+    result.submitProtection = value;
   }
   return result;
 }

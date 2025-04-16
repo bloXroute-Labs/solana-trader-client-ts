@@ -53,6 +53,7 @@ export type { Type as PostSubmitRequest } from "./PostSubmitRequest";
 export type { Type as PostSubmitPaladinRequest } from "./PostSubmitPaladinRequest";
 export type { Type as PostSubmitRequestEntry } from "./PostSubmitRequestEntry";
 export type { Type as SubmitStrategy } from "./SubmitStrategy";
+export type { Type as SubmitProtection } from "./SubmitProtection";
 export type { Type as PostSubmitBatchRequest } from "./PostSubmitBatchRequest";
 export type { Type as PostSubmitBatchResponseEntry } from "./PostSubmitBatchResponseEntry";
 export type { Type as PostSubmitBatchResponse } from "./PostSubmitBatchResponse";

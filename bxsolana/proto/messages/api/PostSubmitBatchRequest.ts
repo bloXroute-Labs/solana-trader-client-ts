@@ -11,6 +11,18 @@ import {
   num2name,
 } from "./SubmitStrategy";
 import {
+  Type as Timestamp,
+  encodeJson as encodeJson_2,
+  decodeJson as decodeJson_2,
+  encodeBinary as encodeBinary_2,
+  decodeBinary as decodeBinary_2,
+} from "../google/protobuf/Timestamp";
+import {
+  Type as SubmitProtection,
+  name2num as name2num_1,
+  num2name as num2name_1,
+} from "./SubmitProtection";
+import {
   tsValueToJsonValueFns,
   jsonValueToTsValueFns,
 } from "../../runtime/json/scalar";
@@ -38,6 +50,8 @@ export declare namespace $.api {
     submitStrategy: SubmitStrategy;
     useBundle?: boolean;
     frontRunningProtection?: boolean;
+    timestamp?: Timestamp;
+    submitProtection?: SubmitProtection;
   }
 }
 export type Type = $.api.PostSubmitBatchRequest;
@@ -48,6 +62,8 @@ export function getDefaultValue(): $.api.PostSubmitBatchRequest {
     submitStrategy: "P_UKNOWN",
     useBundle: false,
     frontRunningProtection: false,
+    timestamp: undefined,
+    submitProtection: "SP_LOW",
   };
 }
 
@@ -64,6 +80,8 @@ export function encodeJson(value: $.api.PostSubmitBatchRequest): unknown {
   if (value.submitStrategy !== undefined) result.submitStrategy = tsValueToJsonValueFns.enum(value.submitStrategy);
   if (value.useBundle !== undefined) result.useBundle = tsValueToJsonValueFns.bool(value.useBundle);
   if (value.frontRunningProtection !== undefined) result.frontRunningProtection = tsValueToJsonValueFns.bool(value.frontRunningProtection);
+  if (value.timestamp !== undefined) result.timestamp = encodeJson_2(value.timestamp);
+  if (value.submitProtection !== undefined) result.submitProtection = tsValueToJsonValueFns.enum(value.submitProtection);
   return result;
 }
 
@@ -73,6 +91,8 @@ export function decodeJson(value: any): $.api.PostSubmitBatchRequest {
   if (value.submitStrategy !== undefined) result.submitStrategy = jsonValueToTsValueFns.enum(value.submitStrategy) as SubmitStrategy;
   if (value.useBundle !== undefined) result.useBundle = jsonValueToTsValueFns.bool(value.useBundle);
   if (value.frontRunningProtection !== undefined) result.frontRunningProtection = jsonValueToTsValueFns.bool(value.frontRunningProtection);
+  if (value.timestamp !== undefined) result.timestamp = decodeJson_2(value.timestamp);
+  if (value.submitProtection !== undefined) result.submitProtection = jsonValueToTsValueFns.enum(value.submitProtection) as SubmitProtection;
   return result;
 }
 
@@ -99,6 +119,18 @@ export function encodeBinary(value: $.api.PostSubmitBatchRequest): Uint8Array {
     const tsValue = value.frontRunningProtection;
     result.push(
       [4, tsValueToWireValueFns.bool(tsValue)],
+    );
+  }
+  if (value.timestamp !== undefined) {
+    const tsValue = value.timestamp;
+    result.push(
+      [5, { type: WireType.LengthDelimited as const, value: encodeBinary_2(tsValue) }],
+    );
+  }
+  if (value.submitProtection !== undefined) {
+    const tsValue = value.submitProtection;
+    result.push(
+      [6, { type: WireType.Varint as const, value: new Long(name2num_1[tsValue as keyof typeof name2num_1]) }],
     );
   }
   return serialize(result);
@@ -134,6 +166,20 @@ export function decodeBinary(binary: Uint8Array): $.api.PostSubmitBatchRequest {
     const value = wireValueToTsValueFns.bool(wireValue);
     if (value === undefined) break field;
     result.frontRunningProtection = value;
+  }
+  field: {
+    const wireValue = wireFields.get(5);
+    if (wireValue === undefined) break field;
+    const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_2(wireValue.value) : undefined;
+    if (value === undefined) break field;
+    result.timestamp = value;
+  }
+  field: {
+    const wireValue = wireFields.get(6);
+    if (wireValue === undefined) break field;
+    const value = wireValue.type === WireType.Varint ? num2name_1[wireValue.value[0] as keyof typeof num2name_1] : undefined;
+    if (value === undefined) break field;
+    result.submitProtection = value;
   }
   return result;
 }
