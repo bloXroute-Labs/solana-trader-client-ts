@@ -29,7 +29,7 @@ jobs:
           at: .
       - checkout
       - run:
-          command: npm run test
+          command: npm run test:ci
           name: run tests
 
   format:

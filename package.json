@@ -30,8 +30,8 @@
     ],
     "scripts": {
         "start": "node --experimental-specifier-resolution=node --loader ts-node/esm ./examples/index.ts",
+        "test:ci": "echo \"Circle CI not yet configured to run tests.\"",
         "test": "jest",
-        "test:watch": "jest --watch",
         "build": "npm run esbuild && npm run types",
         "clean": "rm -rf dist",
         "esbuild": "node build.mjs",
