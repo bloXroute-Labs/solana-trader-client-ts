@@ -139,8 +139,10 @@ export class RpcWsConnection {
         const id = ++this.requestId
         
         // Logic to include JSON serialized timestamps for methods which contain a timestamp field
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let params: any;
         if (TIMESTAMPED_REQUESTS.includes(methodName)) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             params = { ...methodParams as any, timestamp: timestampRfc3339() };
         } else {
             params = methodParams;

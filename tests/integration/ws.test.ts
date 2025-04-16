@@ -165,7 +165,7 @@ describe('Transaction Submissions', () => {
         const postSubmitRequest = createPostSubmitRequest(transaction);
 
         // Submit transaction
-        let postSubmitResponse = await provider.postSubmit(postSubmitRequest);
+        const postSubmitResponse = await provider.postSubmit(postSubmitRequest);
         console.info(JSON.stringify(postSubmitResponse, null, 2));
 
         expect(postSubmitResponse.signature);
@@ -177,7 +177,7 @@ describe('Transaction Submissions', () => {
         const postSubmitRequest = createPostSubmitRequest(transaction);
 
         // Submit transaction using V2
-        let postSubmitResponse = await provider.postSubmitV2(postSubmitRequest);
+        const postSubmitResponse = await provider.postSubmitV2(postSubmitRequest);
         console.info(JSON.stringify(postSubmitResponse, null, 2));
 
         expect(postSubmitResponse.signature);
@@ -189,7 +189,7 @@ describe('Transaction Submissions', () => {
         const postSubmitRequest = createPostSubmitPaladinRequest(transaction);
 
         // Submit transaction using V2
-        let postSubmitResponse = await provider.postSubmitPaladinV2(postSubmitRequest);
+        const postSubmitResponse = await provider.postSubmitPaladinV2(postSubmitRequest);
         console.info(JSON.stringify(postSubmitResponse, null, 2));
 
         expect(postSubmitResponse.signature);
@@ -203,7 +203,7 @@ describe('Transaction Submissions', () => {
         const snipeRequest = createPostSubmitSnipeRequest(transactions);
         
         // Submit snipe request
-        let snipeResponse = await provider.postSubmitSnipeV2(snipeRequest);
+        const snipeResponse = await provider.postSubmitSnipeV2(snipeRequest);
         console.info(JSON.stringify(snipeResponse, null, 2));
         
         // Expect at least one signature in the response

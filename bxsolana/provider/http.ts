@@ -708,11 +708,13 @@ export class HttpProvider extends BaseProvider {
             }
             headers["Content-Type"] = "application/json"
 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             let requestData: any;
             if (this.timestampedRequests.some(submitPath => path.includes(submitPath))) {
-            requestData = { ...data as any, timestamp: timestampRfc3339() };
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                requestData = { ...data as any, timestamp: timestampRfc3339() };
             } else {
-            requestData = data;
+                requestData = data;
             }
 
             const response = await axios({

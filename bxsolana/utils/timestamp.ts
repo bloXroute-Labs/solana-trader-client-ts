@@ -13,8 +13,8 @@ import {
  */
 export function timestamp(): Timestamp {
     const now = new Date();
-    let seconds = Math.floor(now.getTime() / 1000);
-    let nanos = now.getMilliseconds() * 1000000;
+    const seconds = Math.floor(now.getTime() / 1000);
+    const nanos = now.getMilliseconds() * 1000000;
     return {
         seconds: seconds.toString(),
         nanos: nanos
