@@ -1,4 +1,5 @@
 import { MAINNET_API_GRPC_PORT, MAINNET_API_NY_GRPC } from "../utils/constants"
+import { timestamp } from "../utils/timestamp"
 import * as grpc from "@grpc/grpc-js"
 import { Client } from "@grpc/grpc-js"
 import {
@@ -486,30 +487,41 @@ export class GrpcProvider extends BaseProvider {
     }
 
     postSubmit(request: PostSubmitRequest): Promise<PostSubmitResponse> {
+        request.timestamp = timestamp()
         return this.client.postSubmit(request)
     }
 
     postSubmitSnipe(request: PostSubmitSnipeRequest): Promise<PostSubmitSnipeResponse> {
+        request.timestamp = timestamp()
+        return this.client.postSubmitSnipeV2(request)
+    }
+
+    postSubmitSnipeV2(request: PostSubmitSnipeRequest): Promise<PostSubmitSnipeResponse> {
+        request.timestamp = timestamp()
         return this.client.postSubmitSnipeV2(request)
     }
 
     postSubmitPaladinV2(request: PostSubmitPaladinRequest): Promise<PostSubmitResponse> {
+        request.timestamp = timestamp()
         return this.client.postSubmitPaladinV2(request)
     }
 
     postSubmitBatch(
         request: PostSubmitBatchRequest
     ): Promise<PostSubmitBatchResponse> {
+        request.timestamp = timestamp()
         return this.client.postSubmitBatch(request)
     }
 
     postSubmitV2(request: PostSubmitRequest): Promise<PostSubmitResponse> {
+        request.timestamp = timestamp()
         return this.client.postSubmitV2(request)
     }
 
     postSubmitBatchV2(
         request: PostSubmitBatchRequest
     ): Promise<PostSubmitBatchResponse> {
+        request.timestamp = timestamp()
         return this.client.postSubmitBatchV2(request)
     }
 

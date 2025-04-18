@@ -1,4 +1,5 @@
 import { MAINNET_API_NY_HTTP } from "../utils/constants"
+import { timestampRfc3339 } from "../utils/timestamp"
 import {
     GetAccountBalanceRequest,
     GetAccountBalanceResponse,
@@ -127,6 +128,8 @@ export class HttpProvider extends BaseProvider {
     private readonly baseUrl: string
     private readonly baseUrlV2: string
     requestConfig: AxiosRequestConfig
+    private readonly timestampedRequests: Array<string>;
+    
 
     constructor(
         authHeader: string,
@@ -145,6 +148,12 @@ export class HttpProvider extends BaseProvider {
                 "x-sdk-version": process.env.PACKAGE_VERSION ?? "",
             },
         }
+        this.timestampedRequests = [
+            "/submit",
+            "/submit-batch",
+            "/submit-snipe",
+            "/submit-paladin"
+        ]
     }
 
     close = () => {
@@ -698,6 +707,15 @@ export class HttpProvider extends BaseProvider {
                 ...this.requestConfig.headers,
             }
             headers["Content-Type"] = "application/json"
+
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            let requestData: any;
+            if (this.timestampedRequests.some(submitPath => path.includes(submitPath))) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                requestData = { ...data as any, timestamp: timestampRfc3339() };
+            } else {
+                requestData = data;
+            }
 
             const response = await axios({
                 ...this.requestConfig,
