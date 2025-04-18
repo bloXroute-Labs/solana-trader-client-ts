@@ -1,5 +1,4 @@
 import { MAINNET_API_NY_WS } from "../utils/constants"
-
 import {
     GetAccountBalanceRequest,
     GetAccountBalanceResponse,
