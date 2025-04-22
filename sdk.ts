@@ -134,7 +134,7 @@ class AppConfig {
 class SdkFunctions {
   private static appConfig = AppConfig.getInstance();
 
-  public static getProvider(connectionType: string, isPump: boolean = false): any {
+  public static getProvider(connectionType: string, isPump = false): any {
     switch (connectionType.toLowerCase()) {
       case 'grpc':
         return isPump ? SdkFunctions.appConfig.grpcProviderPump : SdkFunctions.appConfig.grpcProvider;
@@ -483,7 +483,7 @@ public static async postPumpFunSwapSol(protocol: string, network: string): Promi
   /**
    * Get recent block hash stream
    */
-  public static async getRecentBlockHashStream(protocol: string, network: string, times: number = 5): Promise<SdkFunctionResult> {
+  public static async getRecentBlockHashStream(protocol: string, network: string, times = 5): Promise<SdkFunctionResult> {
       try {
           const request = {} as GetRecentBlockHashRequest;
           const provider = SdkFunctions.getProvider(protocol);
@@ -514,7 +514,7 @@ public static async postPumpFunSwapSol(protocol: string, network: string): Promi
   /**
    * Get priority fee stream
    */
-  public static async getPriorityFeeStream(protocol: string, network: string, times: number = 5): Promise<SdkFunctionResult> {
+  public static async getPriorityFeeStream(protocol: string, network: string, times = 5): Promise<SdkFunctionResult> {
       try {
           const request = {} as GetPriorityFeeRequest;
           const provider = SdkFunctions.getProvider(protocol);
@@ -545,7 +545,7 @@ public static async postPumpFunSwapSol(protocol: string, network: string): Promi
   /**
    * Get bundle tip stream
    */
-  public static async getBundleTipStream(protocol: string, network: string, times: number = 1): Promise<SdkFunctionResult> {
+  public static async getBundleTipStream(protocol: string, network: string, times = 1): Promise<SdkFunctionResult> {
       try {
           const request = {} as GetBundleTipRequest;
           const provider = SdkFunctions.getProvider(protocol);
@@ -576,7 +576,7 @@ public static async postPumpFunSwapSol(protocol: string, network: string): Promi
   /**
    * Get new PumpSwap AMM pool stream
    */
-  public static async getPumpFunNewAmmPoolStream(protocol: string, network: string, times: number = 5): Promise<SdkFunctionResult> {
+  public static async getPumpFunNewAmmPoolStream(protocol: string, network: string, times = 5): Promise<SdkFunctionResult> {
       try {
           const request = {} as GetPumpFunNewAmmPoolStreamRequest;
           const provider = SdkFunctions.getProvider(protocol, true);
@@ -607,7 +607,7 @@ public static async postPumpFunSwapSol(protocol: string, network: string): Promi
   /**
    * Get new PumpFun tokens stream
    */
-  public static async getPumpFunNewTokensStream(protocol: string, network: string, times: number = 1): Promise<SdkFunctionResult> {
+  public static async getPumpFunNewTokensStream(protocol: string, network: string, times = 1): Promise<SdkFunctionResult> {
       try {
           const request = {} as GetPumpFunNewTokensStreamRequest;
           const provider = SdkFunctions.getProvider(protocol, true);
@@ -638,7 +638,7 @@ public static async postPumpFunSwapSol(protocol: string, network: string): Promi
   /**
    * Get new Pump Fun swaps stream
    */
-  public static async getPumpFunSwapsStream(protocol: string, network: string, times: number = 1): Promise<SdkFunctionResult> {
+  public static async getPumpFunSwapsStream(protocol: string, network: string, times = 1): Promise<SdkFunctionResult> {
       try {          
           // Get a new token to monitor
           const newTokens = await SdkFunctions.getPumpFunNewTokensStream(protocol, network, 1);
@@ -676,7 +676,7 @@ public static async postPumpFunSwapSol(protocol: string, network: string): Promi
   /**
    * Get new Raydium pools stream
    */
-  public static async getNewRaydiumPoolsStream(protocol: string, network: string, times: number = 1): Promise<SdkFunctionResult> {
+  public static async getNewRaydiumPoolsStream(protocol: string, network: string, times = 1): Promise<SdkFunctionResult> {
       try {
           const request = {} as GetPumpFunNewAmmPoolStreamRequest;
           const provider = SdkFunctions.getProvider(protocol);
@@ -707,7 +707,7 @@ public static async postPumpFunSwapSol(protocol: string, network: string): Promi
   /**
    * Get new Raydium pools by transaction stream
    */
-  public static async getNewRaydiumPoolsByTransactionStream(protocol: string, network: string, times: number = 5): Promise<SdkFunctionResult> {
+  public static async getNewRaydiumPoolsByTransactionStream(protocol: string, network: string, times = 5): Promise<SdkFunctionResult> {
       try {
           const request = {} as GetNewRaydiumPoolsByTransactionRequest;
           const provider = SdkFunctions.getProvider(protocol);
