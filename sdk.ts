@@ -10,10 +10,9 @@ import figlet from 'figlet';
 import chalk from 'chalk';
 import {
   // General
-  MAINNET_API_GRPC_PORT,
-  MAINNET_API_NY_GRPC,
-  MAINNET_API_PUMP_NY_GRPC
   GrpcProvider,
+  HttpProvider,
+  WsProvider,
   loadFromEnv,
   Config,
   // Request types
@@ -25,7 +24,6 @@ import {
   GetPriorityFeeRequest,
   GetBundleTipRequest,
   GetTokenAccountsRequest,
-  GetLeaderScheduleRequest,
   // Response types
   GetRecentBlockHashResponse,
   GetPriorityFeeResponse,
@@ -36,20 +34,27 @@ import {
   GetPumpFunSwapsStreamResponse,
   GetNewRaydiumPoolsResponse
 } from "@bloxroute/solana-trader-client-ts";
+import bs58 from 'bs58'
+import {
+    PublicKey,
+    Keypair,
+    SystemProgram,
+    Transaction,
+    ComputeBudgetProgram,
+  } from '@solana/web3.js';
 
 // Types
 interface SdkFunctionBase {
 }
 
 interface StreamingFunction extends SdkFunctionBase {
-  (protocol?: string, network?: string, times?: number): Promise<SdkFunctionResult>;
+  (protocol: string, network: string, times?: number): Promise<SdkFunctionResult>;
 }
 
 interface RequestFunction extends SdkFunctionBase {
-  (protocol?: string, network?: string): Promise<SdkFunctionResult>;
+  (protocol: string, network: string): Promise<SdkFunctionResult>;
 }
 
-// Then you can use a union type
 type SdkFunction = StreamingFunction | RequestFunction;
 
 interface SdkFunctionResult {
@@ -67,23 +72,54 @@ interface UserAction {
 class AppConfig {
   private static instance: AppConfig;
   public config: Config;
-  public provider: GrpcProvider;
-  public providerPump: GrpcProvider;
+  public grpcProvider: GrpcProvider;
+  public grpcProviderPump: GrpcProvider;
+  public httpProvider: HttpProvider;
+  public httpProviderPump: HttpProvider;
+  public wsProvider: WsProvider;
+  public wsProviderPump: WsProvider;
+  public signer: InstanceType<typeof Keypair>; 
+
 
   private constructor() {
     this.config = loadFromEnv();
-    this.provider = new GrpcProvider(
+    this.grpcProvider = new GrpcProvider(
       this.config.authHeader,
       this.config.privateKey,
-      `${MAINNET_API_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
+      "ny.solana.dex.blxrbdn.com:443",
       true
     );
-    this.providerPump = new GrpcProvider(
+    this.grpcProviderPump = new GrpcProvider(
       this.config.authHeader,
       this.config.privateKey,
-      `${MAINNET_API_PUMP_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
+      "pump-ny.solana.dex.blxrbdn.com:443",
       true
     );
+    this.httpProvider = new HttpProvider(
+      this.config.authHeader,
+      this.config.privateKey,
+      "https://ny.solana.dex.blxrbdn.com:443",
+    );
+    this.httpProviderPump = new HttpProvider(
+      this.config.authHeader,
+      this.config.privateKey,
+      "https://pump-ny.solana.dex.blxrbdn.com:443",
+    );
+    this.wsProvider = new WsProvider(
+      this.config.authHeader,
+      this.config.privateKey,
+      "wss://ny.solana.dex.blxrbdn.com/ws",
+    );
+    this.wsProviderPump = new WsProvider(
+      this.config.authHeader,
+      this.config.privateKey,
+      "wss://pump-ny.solana.dex.blxrbdn.com/ws",
+    );
+    this.wsProvider.connect()
+    this.wsProviderPump.connect()
+    this.signer = Keypair.fromSecretKey(
+      bs58.decode(this.config.privateKey)
+    )
   }
 
   public static getInstance(): AppConfig {
@@ -94,20 +130,364 @@ class AppConfig {
   }
 }
 
+// SDK Supported Functions
 class SdkFunctions {
   private static appConfig = AppConfig.getInstance();
 
+  public static getProvider(connectionType: string, isPump: boolean = false): any {
+    switch (connectionType.toLowerCase()) {
+      case 'grpc':
+        return isPump ? SdkFunctions.appConfig.grpcProviderPump : SdkFunctions.appConfig.grpcProvider;
+      case 'http':
+        return isPump ? SdkFunctions.appConfig.httpProviderPump : SdkFunctions.appConfig.httpProvider;
+        case 'websocket':
+          const wsProvider = isPump ? SdkFunctions.appConfig.wsProviderPump : SdkFunctions.appConfig.wsProvider;
+          wsProvider.connect();          
+          return wsProvider;
+      default:
+        throw new Error(`Unsupported connection type: ${connectionType}`);
+    }
+  }
+
   // ======== Transaction Functions =========
+
+  /**
+ * Submit a transaction using postSubmit
+ */
+public static async postSubmit(protocol: string, network: string): Promise<SdkFunctionResult> {
+  try {
+    const signer = SdkFunctions.appConfig.signer;
+    const bloxrouteTipWallet = new PublicKey("HWEoBxYs7ssKuudEjzjmpfJVX7Dvi7wescFsVx2L5yoY");
+    
+    // Create signed transaction
+    const provider = SdkFunctions.getProvider(protocol);
+    const blockhashResponse = await provider.getRecentBlockHash({});
+    
+    // Create transaction with BloXroute tip
+    const transaction = new Transaction({
+      recentBlockhash: blockhashResponse.blockHash,
+      feePayer: signer.publicKey
+    });
+    
+    // Add BloXroute tip
+    transaction.add(
+      SystemProgram.transfer({
+        fromPubkey: signer.publicKey,
+        toPubkey: bloxrouteTipWallet,
+        lamports: 1_000_000
+      })
+    );
+    
+    // Add compute budget instructions and self-transfer
+    transaction.add(
+      ComputeBudgetProgram.setComputeUnitLimit({ units: 500_000 }),
+      ComputeBudgetProgram.setComputeUnitPrice({ microLamports: 1_000 }),
+      SystemProgram.transfer({
+        fromPubkey: signer.publicKey,
+        toPubkey: signer.publicKey,
+        lamports: 1
+      })
+    );
+    
+    // Sign the transaction
+    transaction.sign(signer);
+    
+    // Create request
+    const request = {
+      transaction: {
+        content: transaction.serialize().toString(`base64`),
+        isCleanup: false
+      },
+      skipPreFlight: true
+    };
+    
+    // Submit transaction
+    const response = await provider.postSubmit(request);
+    console.info(JSON.stringify(response, null, 2));
+    
+    return {
+      success: true,
+      data: response
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error : new Error(String(error))
+    };
+  }
+}
+
+/**
+ * Submit a transaction using postSubmitV2
+ */
+public static async postSubmitV2(protocol: string, network: string): Promise<SdkFunctionResult> {
+  try {
+    const signer = SdkFunctions.appConfig.signer;
+    const bloxrouteTipWallet = new PublicKey("HWEoBxYs7ssKuudEjzjmpfJVX7Dvi7wescFsVx2L5yoY");
+    
+    // Create signed transaction
+    const provider = SdkFunctions.getProvider(protocol);
+    const blockhashResponse = await provider.getRecentBlockHash({});
+    
+    // Create transaction with BloXroute tip
+    const transaction = new Transaction({
+      recentBlockhash: blockhashResponse.blockHash,
+      feePayer: signer.publicKey
+    });
+    
+    // Add BloXroute tip
+    transaction.add(
+      SystemProgram.transfer({
+        fromPubkey: signer.publicKey,
+        toPubkey: bloxrouteTipWallet,
+        lamports: 1_000_000
+      })
+    );
+    
+    // Add compute budget instructions and self-transfer
+    transaction.add(
+      ComputeBudgetProgram.setComputeUnitLimit({ units: 500_000 }),
+      ComputeBudgetProgram.setComputeUnitPrice({ microLamports: 1_000 }),
+      SystemProgram.transfer({
+        fromPubkey: signer.publicKey,
+        toPubkey: signer.publicKey,
+        lamports: 1
+      })
+    );
+    
+    // Sign the transaction
+    transaction.sign(signer);
+    
+    // Create request
+    const request = {
+      transaction: {
+        content: transaction.serialize().toString(`base64`),
+        isCleanup: false
+      },
+      skipPreFlight: true
+    };
+    
+    // Submit transaction using V2
+    const response = await provider.postSubmitV2(request);
+    console.info(JSON.stringify(response, null, 2));
+    
+    return {
+      success: true,
+      data: response
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error : new Error(String(error))
+    };
+  }
+}
+
+/**
+ * Submit a transaction using postSubmitPaladinV2
+ */
+public static async postSubmitPaladinV2(protocol: string, network: string): Promise<SdkFunctionResult> {
+  try {
+    const signer = SdkFunctions.appConfig.signer;
+    const bloxrouteTipWallet = new PublicKey("HWEoBxYs7ssKuudEjzjmpfJVX7Dvi7wescFsVx2L5yoY");
+    
+    // Create signed transaction
+    const provider = SdkFunctions.getProvider(protocol);
+    const blockhashResponse = await provider.getRecentBlockHash({});
+    
+    // Create transaction with BloXroute tip
+    const transaction = new Transaction({
+      recentBlockhash: blockhashResponse.blockHash,
+      feePayer: signer.publicKey
+    });
+    
+    // Add BloXroute tip
+    transaction.add(
+      SystemProgram.transfer({
+        fromPubkey: signer.publicKey,
+        toPubkey: bloxrouteTipWallet,
+        lamports: 10_000_000
+      })
+    );
+    
+    // Add compute budget instructions and self-transfer
+    transaction.add(
+      ComputeBudgetProgram.setComputeUnitLimit({ units: 1_000_000 }),
+      ComputeBudgetProgram.setComputeUnitPrice({ microLamports: 40_000_000 }),
+      SystemProgram.transfer({
+        fromPubkey: signer.publicKey,
+        toPubkey: signer.publicKey,
+        lamports: 1
+      })
+    );
+    
+    // Sign the transaction
+    transaction.sign(signer);
+    
+    // Create request
+    const request = {
+      transaction: {
+        content: transaction.serialize().toString(`base64`),
+      },
+      revertProtection: true
+    };
+    
+    // Submit transaction using paladin V2
+    const response = await provider.postSubmitPaladinV2(request);
+    console.info(JSON.stringify(response, null, 2));
+    
+    return {
+      success: true,
+      data: response
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error : new Error(String(error))
+    };
+  }
+}
+
+/**
+ * Submit snipe transactions using postSubmitSnipeV2
+ */
+public static async postSubmitSnipeV2(protocol: string, network: string): Promise<SdkFunctionResult> {
+  try {
+    const signer = SdkFunctions.appConfig.signer;
+    const bloxrouteTipWallet = new PublicKey("HWEoBxYs7ssKuudEjzjmpfJVX7Dvi7wescFsVx2L5yoY");
+    const jitoTipWallet = new PublicKey("96gYZGLnJYVFmbjzopPSU6QiEV5fGqZNyN9nmNhvrZU5");
+    
+    // Create signed transactions
+    const provider = SdkFunctions.getProvider(protocol);
+    const blockhashResponse = await provider.getRecentBlockHash({});
+    const blockHash = blockhashResponse.blockHash;
+    
+    // First transaction: transfer to both jito and bloxroute
+    const transaction1 = new Transaction({
+      recentBlockhash: blockHash,
+      feePayer: signer.publicKey
+    });
+    
+    transaction1.add(
+      ComputeBudgetProgram.setComputeUnitLimit({ units: 500_000 }),
+      ComputeBudgetProgram.setComputeUnitPrice({ microLamports: 1_000 }),
+      SystemProgram.transfer({
+        fromPubkey: signer.publicKey,
+        toPubkey: jitoTipWallet,
+        lamports: 100_000
+      }),
+      SystemProgram.transfer({
+        fromPubkey: signer.publicKey,
+        toPubkey: bloxrouteTipWallet,
+        lamports: 1_000_000
+      })
+    );
+    
+    transaction1.sign(signer);
+    
+    // Second transaction with BloXroute tip
+    const transaction2 = new Transaction({
+      recentBlockhash: blockHash,
+      feePayer: signer.publicKey
+    });
+    
+    transaction2.add(
+      SystemProgram.transfer({
+        fromPubkey: signer.publicKey,
+        toPubkey: bloxrouteTipWallet,
+        lamports: 1_000_000
+      })
+    );
+    
+    transaction2.add(
+      ComputeBudgetProgram.setComputeUnitLimit({ units: 500_000 }),
+      ComputeBudgetProgram.setComputeUnitPrice({ microLamports: 1_000 }),
+      SystemProgram.transfer({
+        fromPubkey: signer.publicKey,
+        toPubkey: signer.publicKey,
+        lamports: 1
+      })
+    );
+    
+    transaction2.sign(signer);
+    
+    // Create snipe request
+    const request = {
+      entries: [transaction1, transaction2].map(tx => ({
+        transaction: {
+          content: tx.serialize().toString('base64'),
+          isCleanup: false
+        }
+      })),
+      useStakedRPCs: true
+    };
+    
+    // Submit snipe request
+    const response = await provider.postSubmitSnipeV2(request);
+    console.info(JSON.stringify(response, null, 2));
+    
+    return {
+      success: true,
+      data: response
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error : new Error(String(error))
+    };
+  }
+}
+
+/**
+ * Post a SOL Swap for PumpFun
+ */
+public static async postPumpFunSwapSol(protocol: string, network: string): Promise<SdkFunctionResult> {
+  try {
+    const provider = SdkFunctions.getProvider(protocol, true); // Use pump provider
+    
+    // Get new PumpFun token
+    const newTokens = await SdkFunctions.getPumpFunNewTokensStream(protocol, network, 1);
+    const token = newTokens.data[0]
+    console.info(JSON.stringify(token, null, 2));
+    
+    // Create swap request
+    const request = {
+      userAddress: token.creator,
+      bondingCurveAddress: token.bondingCurve,
+      tokenAddress: token.mint,
+      solAmount: 0.0001,
+      slippage: 20,
+      computeLimit: 250_000,
+      computePrice: "100000",
+      tip: "1000000"
+    };
+    
+    // Post swap for transaction
+    const response = await provider.postPumpFunSwapSol(request);
+    console.info(JSON.stringify(response, null, 2));
+    
+    return {
+      success: true,
+      data: response
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error : new Error(String(error))
+    };
+  }
+}
 
   // ======== Streaming Functions =========
 
   /**
    * Get recent block hash stream
    */
-  public static async getRecentBlockHashStream(protocol?: string, network?: string, times: number = 5): Promise<SdkFunctionResult> {
+  public static async getRecentBlockHashStream(protocol: string, network: string, times: number = 5): Promise<SdkFunctionResult> {
       try {
           const request = {} as GetRecentBlockHashRequest;
-          const stream = await SdkFunctions.appConfig.provider.getRecentBlockHashStream(request);
+          const provider = SdkFunctions.getProvider(protocol);
+          const stream = await provider.getRecentBlockHashStream(request);
           
           const responses: GetRecentBlockHashResponse[] = [];
           for await (const response of stream) {
@@ -134,10 +514,11 @@ class SdkFunctions {
   /**
    * Get priority fee stream
    */
-  public static async getPriorityFeeStream(protocol?: string, network?: string, times: number = 5): Promise<SdkFunctionResult> {
+  public static async getPriorityFeeStream(protocol: string, network: string, times: number = 5): Promise<SdkFunctionResult> {
       try {
           const request = {} as GetPriorityFeeRequest;
-          const stream = await SdkFunctions.appConfig.provider.getPriorityFeeStream(request);
+          const provider = SdkFunctions.getProvider(protocol);
+          const stream = await provider.getPriorityFeeStream(request);
           
           const responses: GetPriorityFeeResponse[] = [];
           for await (const response of stream) {
@@ -164,10 +545,11 @@ class SdkFunctions {
   /**
    * Get bundle tip stream
    */
-  public static async getBundleTipStream(protocol?: string, network?: string, times: number = 1): Promise<SdkFunctionResult> {
+  public static async getBundleTipStream(protocol: string, network: string, times: number = 1): Promise<SdkFunctionResult> {
       try {
           const request = {} as GetBundleTipRequest;
-          const stream = await SdkFunctions.appConfig.provider.getBundleTipStream(request);
+          const provider = SdkFunctions.getProvider(protocol);
+          const stream = await provider.getBundleTipStream(request);
           
           const responses: GetBundleTipResponse[] = []
           for await (const response of stream) {
@@ -194,10 +576,11 @@ class SdkFunctions {
   /**
    * Get new PumpSwap AMM pool stream
    */
-  public static async getPumpFunNewAmmPoolStream(protocol?: string, network?: string, times: number = 5): Promise<SdkFunctionResult> {
+  public static async getPumpFunNewAmmPoolStream(protocol: string, network: string, times: number = 5): Promise<SdkFunctionResult> {
       try {
           const request = {} as GetPumpFunNewAmmPoolStreamRequest;
-          const stream = await SdkFunctions.appConfig.providerPump.getPumpFunNewAmmPoolStream(request);
+          const provider = SdkFunctions.getProvider(protocol, true);
+          const stream = await provider.getPumpFunNewAmmPoolStream(request);
           
           const responses: GetPumpFunNewAmmPoolStreamResponse[] = [];
           for await (const response of stream) {
@@ -224,10 +607,11 @@ class SdkFunctions {
   /**
    * Get new PumpFun tokens stream
    */
-  public static async getPumpFunNewTokensStream(protocol?: string, network?: string, times: number = 1): Promise<SdkFunctionResult> {
+  public static async getPumpFunNewTokensStream(protocol: string, network: string, times: number = 1): Promise<SdkFunctionResult> {
       try {
           const request = {} as GetPumpFunNewTokensStreamRequest;
-          const stream = await SdkFunctions.appConfig.providerPump.getPumpFunNewTokensStream(request);
+          const provider = SdkFunctions.getProvider(protocol, true);
+          const stream = await provider.getPumpFunNewTokensStream(request);
           
           const responses: GetPumpFunNewTokensStreamResponse[] = [];
           for await (const response of stream) {
@@ -254,16 +638,18 @@ class SdkFunctions {
   /**
    * Get new Pump Fun swaps stream
    */
-  public static async getPumpFunSwapsStream(protocol?: string, network?: string, times: number = 5): Promise<SdkFunctionResult> {
+  public static async getPumpFunSwapsStream(protocol: string, network: string, times: number = 1): Promise<SdkFunctionResult> {
       try {          
           // Get a new token to monitor
-          const newTokens = await this.getPumpFunNewTokensStream(undefined, undefined, 1);
+          const newTokens = await SdkFunctions.getPumpFunNewTokensStream(protocol, network, 1);
 
           const request = {
-              tokens: [newTokens[0].mint]
+              tokens: [newTokens.data[0].mint]
           } as GetPumpFunSwapsStreamRequest;
+
+          const provider = SdkFunctions.getProvider(protocol, true);
           
-          const stream = await SdkFunctions.appConfig.providerPump.getPumpFunSwapsStream(request);
+          const stream = await provider.getPumpFunSwapsStream(request);
           
           const responses: GetPumpFunSwapsStreamResponse[] = [];
           for await (const response of stream) {
@@ -290,10 +676,11 @@ class SdkFunctions {
   /**
    * Get new Raydium pools stream
    */
-  public static async getNewRaydiumPoolsStream(protocol?: string, network?: string, times: number = 1): Promise<SdkFunctionResult> {
+  public static async getNewRaydiumPoolsStream(protocol: string, network: string, times: number = 1): Promise<SdkFunctionResult> {
       try {
           const request = {} as GetPumpFunNewAmmPoolStreamRequest;
-          const stream = await SdkFunctions.appConfig.provider.getNewRaydiumPoolsStream(request);
+          const provider = SdkFunctions.getProvider(protocol);
+          const stream = await provider.getNewRaydiumPoolsStream(request);
           
           const responses: GetNewRaydiumPoolsResponse[] = [];
           for await (const response of stream) {
@@ -320,10 +707,11 @@ class SdkFunctions {
   /**
    * Get new Raydium pools by transaction stream
    */
-  public static async getNewRaydiumPoolsByTransactionStream(protocol?: string, network?: string, times: number = 5): Promise<SdkFunctionResult> {
+  public static async getNewRaydiumPoolsByTransactionStream(protocol: string, network: string, times: number = 5): Promise<SdkFunctionResult> {
       try {
           const request = {} as GetNewRaydiumPoolsByTransactionRequest;
-          const stream = await SdkFunctions.appConfig.provider.getNewRaydiumPoolsByTransactionStream(request);
+          const provider = SdkFunctions.getProvider(protocol);
+          const stream = await provider.getNewRaydiumPoolsByTransactionStream(request);
           
           const responses: GetNewRaydiumPoolsByTransactionResponse[] = [];
           for await (const response of stream) {
@@ -352,14 +740,14 @@ class SdkFunctions {
   /**
    * Get token accounts
    */
-  public static async getTokenAccounts(): Promise<SdkFunctionResult> {
+  public static async getTokenAccounts(protocol: string, network: string): Promise<SdkFunctionResult> {
       try {
           
           const request = {
               ownerAddress: "AfU4AhJhqSsMji1oij1ZGfskQGGmmUW1vsdS3j7eeEwj"
           } as GetTokenAccountsRequest;
-          
-          const response = await SdkFunctions.appConfig.provider.getTokenAccounts(request);
+          const provider = SdkFunctions.getProvider(protocol);
+          const response = await provider.getTokenAccounts(request);
           console.info(JSON.stringify(response, null, 2));
           
           return { 
@@ -377,7 +765,7 @@ class SdkFunctions {
   /**
    * Get priority fee
    */
-  public static async getPriorityFee(): Promise<SdkFunctionResult> {
+  public static async getPriorityFee(protocol: string, network: string): Promise<SdkFunctionResult> {
       try {
 
           const request = {
@@ -385,7 +773,8 @@ class SdkFunctions {
               percentile: 50
           } as GetPriorityFeeRequest;
           
-          const response = await SdkFunctions.appConfig.provider.getPriorityFee(request);
+          const provider = SdkFunctions.getProvider(protocol);
+          const response = await provider.getPriorityFee(request);
           console.info(JSON.stringify(response, null, 2));
           
           return { 
@@ -401,53 +790,44 @@ class SdkFunctions {
   }
 
   /**
-   * Get leader schedule
+   * Get all available SDK functions based on connection type
+   * @param connectionType - The selected connection type
+   * @returns Record of available functions for the selected connection type
    */
-  public static async getLeaderSchedule(protocol?: string, network?: string): Promise<SdkFunctionResult> {
-      try {
-          
-          const request = {} as GetLeaderScheduleRequest;
-          
-          const response = await SdkFunctions.appConfig.provider.getLeaderSchedule(request);
-          console.info(JSON.stringify(response, null, 2));
-          
-          return { 
-              success: true,
-              data: response 
-          };
-      } catch (error) {
-          return {
-              success: false,
-              error: error instanceof Error ? error : new Error(String(error))
-          };
-      }
-  }
-
-  /**
-   * Get all available SDK functions
-   */
-  public static getAvailableFunctions(): Record<string, SdkFunction> {
-      return {
-          
-          // Streaming functions
-          GetRecentBlockHashStream: SdkFunctions.getRecentBlockHashStream,
-          GetPriorityFeeStream: SdkFunctions.getPriorityFeeStream,
-          GetBundleTipStream: SdkFunctions.getBundleTipStream,
-          GetPumpFunNewAmmPoolStream: SdkFunctions.getPumpFunNewAmmPoolStream,
-          GetPumpFunNewTokensStream: SdkFunctions.getPumpFunNewTokensStream,
-          GetPumpFunSwapsStream: SdkFunctions.getPumpFunSwapsStream,
-          GetNewRaydiumPoolsStream: SdkFunctions.getNewRaydiumPoolsStream,
-          GetNewRaydiumPoolsByTransactionStream: SdkFunctions.getNewRaydiumPoolsByTransactionStream,
-          
-          // Request functions
-          GetTokenAccounts: SdkFunctions.getTokenAccounts,
-          GetPriorityFee: SdkFunctions.getPriorityFee,
-          GetLeaderSchedule: SdkFunctions.getLeaderSchedule
-      };
+  public static getAvailableFunctions(connectionType: string): Record<string, SdkFunction> {
+    // Base non-streaming functions available for all connection types
+    const baseFunctions: Record<string, SdkFunction> = {
+      // Request functions
+      GetTokenAccounts: SdkFunctions.getTokenAccounts,
+      GetPriorityFee: SdkFunctions.getPriorityFee,
+      PostSubmit: SdkFunctions.postSubmit,
+      PostSubmitV2: SdkFunctions.postSubmitV2,
+      PostSubmitSnipeV2: SdkFunctions.postSubmitSnipeV2,
+      PostSubmitPaladinV2: SdkFunctions.postSubmitPaladinV2,
+      PostPumpFunSwapSol: SdkFunctions.postPumpFunSwapSol,
+    };
+    
+    // For HTTP, we only provide non-streaming functions
+    if (connectionType.toLowerCase() === 'http') {
+      return baseFunctions;
+    }
+    
+    // For gRPC and WebSocket, include streaming functions
+    return {
+      ...baseFunctions,
+      // Streaming functions
+      GetRecentBlockHashStream: SdkFunctions.getRecentBlockHashStream,
+      GetPriorityFeeStream: SdkFunctions.getPriorityFeeStream,
+      GetBundleTipStream: SdkFunctions.getBundleTipStream,
+      GetPumpFunNewAmmPoolStream: SdkFunctions.getPumpFunNewAmmPoolStream,
+      GetPumpFunNewTokensStream: SdkFunctions.getPumpFunNewTokensStream,
+      GetPumpFunSwapsStream: SdkFunctions.getPumpFunSwapsStream,
+      GetNewRaydiumPoolsStream: SdkFunctions.getNewRaydiumPoolsStream,
+      GetNewRaydiumPoolsByTransactionStream: SdkFunctions.getNewRaydiumPoolsByTransactionStream,
+    };
   }
 }
 
-// Export the class
 export default SdkFunctions;
 
 // UI Components
@@ -474,22 +854,22 @@ class UserInterface {
     console.log(chalk.dim(' Use your arrow keys to navigate through the menus') + '\n');
   }
 
-  /**
-   * Show protocol selection menu
-   * @returns Selected protocol
-   */
-  public static async selectProtocol(): Promise<string> {
-    const { protocol } = await inquirer.prompt([
-      {
-        type: 'list',
-        name: 'protocol',
-        message: 'Select connection protocol:',
-        choices: ['gRPC'],
-      }
-    ]);
-    
-    return protocol;
-  }
+/**
+ * Show connection type selection menu
+ * @returns Selected connection type
+ */
+public static async selectConnectionType(): Promise<string> {
+  const { connectionType } = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'connectionType',
+      message: 'Select connection type:',
+      choices: ['gRPC', 'HTTP', 'WebSocket'],
+    }
+  ]);
+  
+  return connectionType;
+}
 
   /**
    * Show network selection menu
@@ -565,27 +945,47 @@ class UserInterface {
   }
 }
 
-// Main application class
+// Track whether cleanup has already been performed
+let cleanupPerformed = false;
+
+function cleanup(): void {
+  // If cleanup has already been performed, do nothing
+  if (cleanupPerformed) {
+    return;
+  }
+  
+  console.log(chalk.yellow('\nCleaning up connections...'));
+  
+  const appConfig = AppConfig.getInstance();
+  appConfig.wsProvider.close();
+  appConfig.wsProviderPump.close();
+  
+  console.log(chalk.green('Connections closed successfully.'));
+  
+  // Mark cleanup as performed
+  cleanupPerformed = true;
+}
+
 class BloxRouteCliApp {
-  private protocol = '';
+  private connectionType = '';
   private network = '';
   private sdkFunctions: Record<string, SdkFunction>;
 
   constructor() {
     // Initialize AppConfig singleton to set up providers
     AppConfig.getInstance();
-    this.sdkFunctions = SdkFunctions.getAvailableFunctions();
+    this.sdkFunctions = {};
   }
 
   /**
-   * Execute the selected function with the given protocol and network
+   * Execute the selected function with the given connection type and network
    * @param functionName - Name of the function to execute
    */
   private async executeFunction(functionName: string): Promise<void> {
     console.log(chalk.yellow('\nExecuting function, please wait...\n'));
     
     try {
-      const result = await this.sdkFunctions[functionName](this.protocol, this.network);
+      const result = await this.sdkFunctions[functionName](this.connectionType, this.network);
       
       if (result.success) {
         console.log(chalk.green('\nSuccess!'));
@@ -601,12 +1001,15 @@ class BloxRouteCliApp {
   }
 
   /**
-   * Configure protocol and network settings
+   * Configure connection type and network settings
    */
   private async configureSettings(): Promise<void> {
-    // Select protocol
-    this.protocol = await UserInterface.selectProtocol();
-    console.log(chalk.green(`Selected protocol: ${this.protocol}`));
+    // Select connection type
+    this.connectionType = await UserInterface.selectConnectionType();
+    console.log(chalk.green(`Selected connection type: ${this.connectionType}`));
+    
+    // Update available functions based on selected connection type
+    this.sdkFunctions = SdkFunctions.getAvailableFunctions(this.connectionType);
     
     // Select network
     this.network = await UserInterface.selectNetwork();
@@ -631,7 +1034,7 @@ class BloxRouteCliApp {
       // Execute the selected function
       await this.executeFunction(selectedFunction);
       
-      // Ask what the user wants to do next - ONLY ONCE
+      // Ask what the user wants to do next
       const action = await UserInterface.getNextAction();
       continueRunning = action.continue;
       
@@ -639,12 +1042,40 @@ class BloxRouteCliApp {
         return this.run(); // Restart from the beginning
       }
     }
+
+    // Call cleanup when user selects exit
+    cleanup();
     
     console.log(chalk.blue('\nThank you for using the BloxRoute SDK CLI!'));
   }
 }
 
+function setupSignalHandlers(): void {
+  process.on('SIGINT', () => {
+    console.log('\nReceived SIGINT. Shutting down gracefully...');
+    cleanup();
+    
+    // Allow some time for cleanup before exiting
+    setTimeout(() => {
+      console.log('Exiting application');
+      process.exit(0);
+    }, 500);
+  });
+  
+  // Handle other termination signals too
+  process.on('SIGTERM', () => {
+    console.log('\nReceived SIGTERM. Shutting down gracefully...');
+    cleanup();
+    
+    setTimeout(() => {
+      console.log('Exiting application');
+      process.exit(0);
+    }, 500);
+  });
+}
+
 // Start the application
+setupSignalHandlers();
 const app = new BloxRouteCliApp();
 app.run().catch((error) => {
   console.error('Application error:', error);

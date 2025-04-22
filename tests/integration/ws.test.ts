@@ -8,7 +8,15 @@ import {
     TransactionMessageV2,
     PostSubmitPaladinRequest,
     PostSubmitRequestEntry,
-    PostSubmitSnipeRequest
+    PostSubmitSnipeRequest,
+    GetPumpFunNewAmmPoolStreamRequest,
+    GetPumpFunNewTokensStreamRequest,
+    GetPumpFunSwapsStreamRequest,
+    GetNewRaydiumPoolsByTransactionRequest,
+    GetPriorityFeeRequest,
+    GetBundleTipRequest,
+    GetTokenAccountsRequest,
+    GetPumpFunNewTokensStreamResponse,
 } from "../../bxsolana";
 import bs58 from 'bs58'
 import {
@@ -18,6 +26,37 @@ import {
     Transaction,
     ComputeBudgetProgram,
   } from '@solana/web3.js';
+import { MAINNET_API_PUMP_NY_WS } from "../../bxsolana/utils/constants";
+
+jest.setTimeout(60500);
+
+function expectNoNulls(response: any) {
+    const { timestamp, ...responseWithoutTimestamp } = response;
+    
+    expect(
+      Object.values(responseWithoutTimestamp).every(v =>
+        v !== null &&
+        v !== undefined &&
+        v !== '' &&
+        !(Array.isArray(v) && v.length === 0) &&
+        !(typeof v === 'object' && !Array.isArray(v) && Object.keys(v).length === 0)
+      )
+    ).toBe(true);
+  }
+
+async function getNewPumpFunToken(p: WsProvider): Promise<GetPumpFunNewTokensStreamResponse> {
+    const request = {} as GetPumpFunNewTokensStreamRequest;
+    try {
+        const stream = await p.getPumpFunNewTokensStream(request);
+        for await (const response of stream) {
+            return response;
+        }
+        throw new Error("No response received from token stream");
+    } catch (error) {
+        console.error("Error getting new pump fun token:", error);
+        throw error;
+    }
+}
 
 describe('Transaction Submissions', () => {
     let config: ReturnType<typeof loadFromEnv>;
@@ -212,5 +251,174 @@ describe('Transaction Submissions', () => {
             expect(tx.error).toBe("");
         }
     });
-    
 });
+
+describe('Streaming', () => {
+    let config: ReturnType<typeof loadFromEnv>;
+    let provider: InstanceType<typeof WsProvider>; 
+    let pump_provider: InstanceType<typeof WsProvider>; 
+
+    // Run before each test
+    beforeEach(async () => {
+        config = loadFromEnv();
+        provider = new WsProvider(
+            config.authHeader,
+            config.privateKey,
+            `${MAINNET_API_NY_WS}`,
+        );
+        pump_provider = new WsProvider(
+            config.authHeader,
+            config.privateKey,
+            `${MAINNET_API_PUMP_NY_WS}`,
+        )
+        await provider.connect();
+        await pump_provider.connect();
+    });
+
+    /*
+    General Streams
+    */
+    test('Stream Recent Blockhash', async () => {
+        const request = {} as GetRecentBlockHashRequest
+        const stream = await provider.getRecentBlockHashStream(request)
+
+        for await (const response of stream) {
+            console.info(JSON.stringify(response, null, 2))
+            expectNoNulls(response)
+            break
+        }
+    });
+
+    test('Stream Priority Fee', async () => {
+        const request = {} as GetPriorityFeeRequest
+        const stream = await provider.getPriorityFeeStream(request)
+
+        for await (const response of stream) {
+            console.info(JSON.stringify(response, null, 2))
+            expectNoNulls(response)
+            break
+        }
+    });
+
+    test('Stream Bundle Tip', async () => {
+        const request = {} as GetBundleTipRequest
+        const stream = await provider.getBundleTipStream(request)
+
+        for await (const response of stream) {
+            console.info(JSON.stringify(response, null, 2))
+            expectNoNulls(response)
+            break
+        }
+    });
+
+    /*
+    PumpFun Streams
+    */
+
+    test('Stream New PumpSwap AMM Pools', async () => {
+        const request = {} as GetPumpFunNewAmmPoolStreamRequest
+        const stream = await pump_provider.getPumpFunNewAmmPoolStream(request)
+
+        for await (const response of stream) {
+            console.info(JSON.stringify(response, null, 2))
+            expectNoNulls(response)
+            break
+        }
+    });
+
+    test('Stream New PumpFun Tokens', async () => {
+        const request = {} as GetPumpFunNewTokensStreamRequest
+        const stream = await pump_provider.getPumpFunNewTokensStream(request)
+
+        for await (const response of stream) {
+            console.info(JSON.stringify(response, null, 2))
+            expectNoNulls(response)
+            break
+        }
+    });
+
+    test('Stream New Pump Fun Swaps', async () => {
+        const newToken = await getNewPumpFunToken(pump_provider)
+        const request = {
+            tokens: [newToken.mint]
+        } as GetPumpFunSwapsStreamRequest
+        const stream = await pump_provider.getPumpFunSwapsStream(request)
+
+        for await (const response of stream) {
+            console.info(JSON.stringify(response, null, 2))
+            expectNoNulls(response)
+            break
+        }
+    });
+
+    /*
+    Raydium Streams
+    */
+
+    test('Stream New Raydium Pools', async () => {
+        const request = {} as GetPumpFunNewAmmPoolStreamRequest
+        const stream = await provider.getNewRaydiumPoolsStream(request)
+
+        for await (const response of stream) {
+            console.info(JSON.stringify(response, null, 2))
+            expectNoNulls(response)
+            break
+        }
+    });
+
+    test('Stream New Raydium Pools By Transaction', async () => {
+        const request = {} as GetNewRaydiumPoolsByTransactionRequest
+        const stream = await provider.getNewRaydiumPoolsByTransactionStream(request)
+
+        for await (const response of stream) {
+            console.info(JSON.stringify(response, null, 2))
+            expectNoNulls(response)
+            break
+        }
+    });
+
+});
+
+describe("Requests", () => {
+    let config: ReturnType<typeof loadFromEnv>;
+    let provider: InstanceType<typeof WsProvider>; 
+    let pump_provider: InstanceType<typeof WsProvider>; 
+
+    // Run before each test
+    beforeEach(async () => {
+        config = loadFromEnv();
+        provider = new WsProvider(
+            config.authHeader,
+            config.privateKey,
+            `${MAINNET_API_NY_WS}`,
+        );
+        pump_provider = new WsProvider(
+            config.authHeader,
+            config.privateKey,
+            `${MAINNET_API_PUMP_NY_WS}`,
+        )
+        await provider.connect();
+        await pump_provider.connect();
+    });
+
+    test("Get Account", async () => {
+        const response = await provider.getTokenAccounts(
+            {
+                ownerAddress: "AfU4AhJhqSsMji1oij1ZGfskQGGmmUW1vsdS3j7eeEwj"
+            } as GetTokenAccountsRequest
+        )
+        console.info(JSON.stringify(response, null, 2))
+        expectNoNulls(response)
+    });
+
+    test("Get Priority Fee", async () => {
+        const response = await provider.getPriorityFee(
+            {
+                project: "P_RAYDIUM",
+                percentile: 50
+            } as GetPriorityFeeRequest
+        )
+        console.info(JSON.stringify(response, null, 2))
+        expectNoNulls(response)
+    });
+})

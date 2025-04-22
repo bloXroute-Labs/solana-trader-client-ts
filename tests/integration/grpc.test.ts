@@ -18,9 +18,6 @@ import {
     GetBundleTipRequest,
     GetTokenAccountsRequest,
     GetPumpFunNewTokensStreamResponse,
-    GetPoolReservesStreamRequest,
-    Project,
-    GetLeaderScheduleRequest,
     PostPumpFunSwapRequestSol
 } from "../../bxsolana";
 import bs58 from 'bs58'
@@ -83,7 +80,7 @@ describe('Transaction Submissions', () => {
         pump_provider = new GrpcProvider(
             config.authHeader,
             config.privateKey,
-            `${MAINNET_API_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
+            `${MAINNET_API_PUMP_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
             true
         )
         signer = Keypair.fromSecretKey(
