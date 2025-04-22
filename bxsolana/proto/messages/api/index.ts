@@ -213,6 +213,8 @@ export type { Type as GetPumpFunNewTokensStreamRequest } from "./GetPumpFunNewTo
 export type { Type as GetPumpFunNewTokensStreamResponse } from "./GetPumpFunNewTokensStreamResponse";
 export type { Type as GetPumpFunNewAmmPoolStreamRequest } from "./GetPumpFunNewAmmPoolStreamRequest";
 export type { Type as GetPumpFunNewAmmPoolStreamResponse } from "./GetPumpFunNewAmmPoolStreamResponse";
+export type { Type as GetPumpFunAMMSwapStreamRequest } from "./GetPumpFunAMMSwapStreamRequest";
+export type { Type as GetPumpFunAMMSwapStreamResponse } from "./GetPumpFunAMMSwapStreamResponse";
 export type { Type as PostPumpFunSwapRequest } from "./PostPumpFunSwapRequest";
 export type { Type as PostPumpFunSwapRequestSol } from "./PostPumpFunSwapRequestSol";
 export type { Type as PostPumpFunSwapResponse } from "./PostPumpFunSwapResponse";

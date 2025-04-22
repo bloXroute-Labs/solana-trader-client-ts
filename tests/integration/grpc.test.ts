@@ -1,6 +1,4 @@
 import {
-    MAINNET_API_GRPC_PORT,
-    MAINNET_API_NY_GRPC,
     GrpcProvider,
     GetRecentBlockHashRequest,
     loadFromEnv,
@@ -9,8 +7,20 @@ import {
     TransactionMessageV2,
     PostSubmitPaladinRequest,
     PostSubmitRequestEntry,
-    PostSubmitSnipeRequest
+    PostSubmitSnipeRequest,
+    GetPumpFunAMMSwapStreamRequest,
+    GetPumpFunNewAmmPoolStreamRequest,
+    GetPumpFunNewTokensStreamRequest,
+    GetSwapsStreamRequest,
+    Project
 } from "../../bxsolana";
+import {
+    MAINNET_API_GRPC_PORT,
+    MAINNET_API_NY_GRPC,
+    MAINNET_API_PUMP_NY_GRPC,
+    LOCAL_API_GRPC_HOST,
+    LOCAL_API_GRPC_PORT
+} from "../../bxsolana/utils/constants"
 import bs58 from 'bs58'
 import {
     PublicKey,
@@ -210,4 +220,82 @@ describe('Transaction Submissions', () => {
         }
     });
     
+});
+
+describe('Streaming', () => {
+    let config: ReturnType<typeof loadFromEnv>;
+    let provider: InstanceType<typeof GrpcProvider>; 
+    let pump_provider: InstanceType<typeof GrpcProvider>; 
+
+    // Run before each test
+    beforeEach(() => {
+        config = loadFromEnv();
+        provider = new GrpcProvider(
+            config.authHeader,
+            config.privateKey,
+            `${MAINNET_API_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
+            true
+        );
+        pump_provider = new GrpcProvider(
+            config.authHeader,
+            config.privateKey,
+            `${LOCAL_API_GRPC_HOST}:${LOCAL_API_GRPC_PORT}`,
+            false
+        )
+    });
+
+    test('Stream New PumpSwap AMM Transactions', async () => {
+        const request = { 
+          pools: ["4w2cysotX6czaUGmmWg13hDpY4QEMG2CzeKYEQyK9Ama", "BQ1AtdH3LAHbdf2NBr4u7n6uwYQrdyAinxS65JgYEXqy"] // Explicitly set empty array to ensure proper handling
+        } as GetPumpFunAMMSwapStreamRequest;
+        
+        console.time('stream_connection');
+        const startTime = Date.now();
+        const stream = await pump_provider.getPumpFunAMMSwapStream(request);
+        const connectionTime = Date.now() - startTime;
+        console.log(`Connection established in ${connectionTime}ms`);
+        
+        let count = 0;
+        console.time('receive_100_messages');
+        
+        for await (const ob of stream) {
+          //console.info(JSON.stringify(ob, null, 2));
+          count += 1;
+          
+          if (count % 10 === 0) {
+            console.log(`Received ${count} messages in ${Date.now() - startTime}ms`);
+          }
+          
+          if (count == 100) {
+            const totalTime = Date.now() - startTime;
+            console.log(`Received all 100 messages in ${totalTime}ms`);
+            console.log(`Average time per message: ${totalTime / 100}ms`);
+            break;
+          }
+        }
+        
+        console.timeEnd('receive_100_messages');
+        console.timeEnd('stream_connection');
+      }, 60000);
+
+    test('Stream New PumpSwap AMM Pools', async () => {
+        const request = {} as {} as GetPumpFunNewAmmPoolStreamRequest
+        const stream = await pump_provider.getPumpFunNewAmmPoolStream(request)
+
+        for await (const ob of stream) {
+            console.info(JSON.stringify(ob, null, 2))
+            break
+        }
+    }, 60000); // Set timeout to 60 seconds (60000ms)
+
+    test('Stream New PumpFun Tokens', async () => {
+        const request = {} as {} as GetPumpFunNewTokensStreamRequest
+        const stream = await pump_provider.getPumpFunNewTokensStream(request)
+
+        for await (const ob of stream) {
+            console.info(JSON.stringify(ob, null, 2))
+            break
+        }
+    }, 60000); // Set timeout to 30 seconds (30000ms)
+
 });

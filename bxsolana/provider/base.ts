@@ -154,6 +154,8 @@ import {
     TransactionMessageV2,
     GetPumpFunNewAmmPoolStreamRequest,
     GetPumpFunNewAmmPoolStreamResponse,
+    GetPumpFunAMMSwapStreamRequest,
+    GetPumpFunAMMSwapStreamResponse,
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -881,6 +883,12 @@ export abstract class BaseProvider implements Api {
     getPumpFunNewTokensStream = (
         request: GetPumpFunNewTokensStreamRequest
     ): Promise<AsyncGenerator<GetPumpFunNewTokensStreamResponse>> => {
+        throw new Error("Not implemented")
+    }
+
+    getPumpFunAMMSwapStream = (
+        request: GetPumpFunAMMSwapStreamRequest
+    ): Promise<AsyncGenerator<GetPumpFunAMMSwapStreamResponse>> => {
         throw new Error("Not implemented")
     }
 
