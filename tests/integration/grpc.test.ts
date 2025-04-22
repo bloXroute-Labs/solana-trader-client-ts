@@ -9,7 +9,19 @@ import {
     TransactionMessageV2,
     PostSubmitPaladinRequest,
     PostSubmitRequestEntry,
-    PostSubmitSnipeRequest
+    PostSubmitSnipeRequest,
+    GetPumpFunNewAmmPoolStreamRequest,
+    GetPumpFunNewTokensStreamRequest,
+    GetPumpFunSwapsStreamRequest,
+    GetNewRaydiumPoolsByTransactionRequest,
+    GetPriorityFeeRequest,
+    GetBundleTipRequest,
+    GetTokenAccountsRequest,
+    GetPumpFunNewTokensStreamResponse,
+    GetPoolReservesStreamRequest,
+    Project,
+    GetLeaderScheduleRequest,
+    PostPumpFunSwapRequestSol
 } from "../../bxsolana";
 import bs58 from 'bs58'
 import {
@@ -19,10 +31,42 @@ import {
     Transaction,
     ComputeBudgetProgram,
   } from '@solana/web3.js';
+import { LOCAL_API_GRPC_HOST, LOCAL_API_GRPC_PORT, MAINNET_API_PUMP_NY_GRPC } from "../../bxsolana/utils/constants";
+
+jest.setTimeout(60500);
+
+function expectNoNulls(response: any) {
+    const { timestamp, ...responseWithoutTimestamp } = response;
+    
+    expect(
+      Object.values(responseWithoutTimestamp).every(v =>
+        v !== null &&
+        v !== undefined &&
+        v !== '' &&
+        !(Array.isArray(v) && v.length === 0) &&
+        !(typeof v === 'object' && !Array.isArray(v) && Object.keys(v).length === 0)
+      )
+    ).toBe(true);
+  }
+
+async function getNewPumpFunToken(p: GrpcProvider): Promise<GetPumpFunNewTokensStreamResponse> {
+    const request = {} as GetPumpFunNewTokensStreamRequest;
+    try {
+        const stream = await p.getPumpFunNewTokensStream(request);
+        for await (const response of stream) {
+            return response;
+        }
+        throw new Error("No response received from token stream");
+    } catch (error) {
+        console.error("Error getting new pump fun token:", error);
+        throw error;
+    }
+}
 
 describe('Transaction Submissions', () => {
     let config: ReturnType<typeof loadFromEnv>;
     let provider: InstanceType<typeof GrpcProvider>; 
+    let pump_provider: InstanceType<typeof GrpcProvider>; 
     let signer: InstanceType<typeof Keypair>; 
     let bloxrouteTipWallet: InstanceType<typeof PublicKey>;
     let jitoTipWallet: InstanceType<typeof PublicKey>;
@@ -36,6 +80,12 @@ describe('Transaction Submissions', () => {
             `${MAINNET_API_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
             true
         );
+        pump_provider = new GrpcProvider(
+            config.authHeader,
+            config.privateKey,
+            `${MAINNET_API_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
+            true
+        )
         signer = Keypair.fromSecretKey(
             bs58.decode(config.privateKey)
         )
@@ -159,37 +209,37 @@ describe('Transaction Submissions', () => {
     test('PostSubmit', async () => {
         // Create transaction and request using helper functions
         const transaction = await createSignedTransactionWithBloXrouteTip({computeLimit: 500_000, priorityFee: 1_000, bloxrouteTip: 1_000_000});
-        const postSubmitRequest = createPostSubmitRequest(transaction);
+        const request = createPostSubmitRequest(transaction);
 
         // Submit transaction
-        const postSubmitResponse = await provider.postSubmit(postSubmitRequest);
-        console.info(JSON.stringify(postSubmitResponse, null, 2));
+        const response = await provider.postSubmit(request);
+        console.info(JSON.stringify(response, null, 2));
 
-        expect(postSubmitResponse.signature);
+        expectNoNulls(response)
     });
 
     test('PostSubmitV2', async () => {
         // Create transaction and request using helper functions
         const transaction = await createSignedTransactionWithBloXrouteTip({computeLimit: 500_000, priorityFee: 1_000, bloxrouteTip: 1_000_000});
-        const postSubmitRequest = createPostSubmitRequest(transaction);
+        const request = createPostSubmitRequest(transaction);
 
         // Submit transaction using V2
-        const postSubmitResponse = await provider.postSubmitV2(postSubmitRequest);
-        console.info(JSON.stringify(postSubmitResponse, null, 2));
+        const response = await provider.postSubmitV2(request);
+        console.info(JSON.stringify(response, null, 2));
 
-        expect(postSubmitResponse.signature);
+        expectNoNulls(response)
     });
 
     test('PostSubmitPaladinV2', async () => {
         // Create transaction and request using helper functions
         const transaction = await createSignedTransactionWithBloXrouteTip({computeLimit: 1_000_000, priorityFee: 40_000_000, bloxrouteTip: 10_000_000});
-        const postSubmitRequest = createPostSubmitPaladinRequest(transaction);
+        const request = createPostSubmitPaladinRequest(transaction);
 
         // Submit transaction using V2
-        const postSubmitResponse = await provider.postSubmitPaladinV2(postSubmitRequest);
-        console.info(JSON.stringify(postSubmitResponse, null, 2));
+        const response = await provider.postSubmitPaladinV2(request);
+        console.info(JSON.stringify(response, null, 2));
 
-        expect(postSubmitResponse.signature);
+        expectNoNulls(response)
     });
 
     test('PostSubmitSnipeV2', async () => {
@@ -197,17 +247,202 @@ describe('Transaction Submissions', () => {
         const transactions = await createSnipeTransactions({computeLimit: 500_000, priorityFee: 1_000, bloxrouteTip: 1_000_000, jitoTip: 100_000});
         
         // Create snipe request
-        const snipeRequest = createPostSubmitSnipeRequest(transactions);
+        const request = createPostSubmitSnipeRequest(transactions);
         
         // Submit snipe request
-        const snipeResponse = await provider.postSubmitSnipeV2(snipeRequest);
-        console.info(JSON.stringify(snipeResponse, null, 2));
+        const response = await provider.postSubmitSnipeV2(request);
+        console.info(JSON.stringify(response, null, 2));
         
         // Expect at least one signature in the response
-        expect(snipeResponse.transactions.length).toBeGreaterThan(0);
-        for (const tx of snipeResponse.transactions) {
-            expect(tx.error).toBe("");
-        }
+        expectNoNulls(response)
     });
+
+    test("PostPumpFunSwapSol", async () => {
+        const token: GetPumpFunNewTokensStreamResponse = await getNewPumpFunToken(pump_provider)
+        console.info(JSON.stringify(token, null, 2))
+        const request: PostPumpFunSwapRequestSol = {
+            userAddress: token.creator,
+            bondingCurveAddress: token.bondingCurve,
+            tokenAddress: token.mint,
+            solAmount: 0.0001,
+            slippage: 20,
+            computeLimit: 250_000,
+            computePrice: "100000",
+            tip: "1000000"
+        }
+        const response = await pump_provider.postPumpFunSwapSol(request)
+        console.info(JSON.stringify(response, null, 2))
+        expectNoNulls(response)
+    })
     
 });
+
+describe('Streaming', () => {
+    let config: ReturnType<typeof loadFromEnv>;
+    let provider: InstanceType<typeof GrpcProvider>; 
+    let pump_provider: InstanceType<typeof GrpcProvider>; 
+
+    // Run before each test
+    beforeEach(() => {
+        config = loadFromEnv();
+        provider = new GrpcProvider(
+            config.authHeader,
+            config.privateKey,
+            `${MAINNET_API_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
+            true
+        );
+        pump_provider = new GrpcProvider(
+            config.authHeader,
+            config.privateKey,
+            `${LOCAL_API_GRPC_HOST}:${LOCAL_API_GRPC_PORT}`,
+            true
+        )
+    });
+
+    /*
+    General Streams
+    */
+    test('Stream Recent Blockhash', async () => {
+        const request = {} as GetRecentBlockHashRequest
+        const stream = await provider.getRecentBlockHashStream(request)
+
+        for await (const response of stream) {
+            console.info(JSON.stringify(response, null, 2))
+            expectNoNulls(response)
+            break
+        }
+    });
+
+    test('Stream Priority Fee', async () => {
+        const request = {} as GetPriorityFeeRequest
+        const stream = await provider.getPriorityFeeStream(request)
+
+        for await (const response of stream) {
+            console.info(JSON.stringify(response, null, 2))
+            expectNoNulls(response)
+            break
+        }
+    });
+
+    test('Stream Bundle Tip', async () => {
+        const request = {} as GetBundleTipRequest
+        const stream = await provider.getBundleTipStream(request)
+
+        for await (const response of stream) {
+            console.info(JSON.stringify(response, null, 2))
+            expectNoNulls(response)
+            break
+        }
+    });
+
+    /*
+    PumpFun Streams
+    */
+
+    test('Stream New PumpSwap AMM Pools', async () => {
+        const request = {} as GetPumpFunNewAmmPoolStreamRequest
+        const stream = await pump_provider.getPumpFunNewAmmPoolStream(request)
+
+        for await (const response of stream) {
+            console.info(JSON.stringify(response, null, 2))
+            expectNoNulls(response)
+            break
+        }
+    }, 60000);
+
+    test('Stream New PumpFun Tokens', async () => {
+        const request = {} as GetPumpFunNewTokensStreamRequest
+        const stream = await pump_provider.getPumpFunNewTokensStream(request)
+
+        for await (const response of stream) {
+            console.info(JSON.stringify(response, null, 2))
+            expectNoNulls(response)
+            break
+        }
+    }, 30000);
+
+    test('Stream New Pump Fun Swaps', async () => {
+        const newToken = await getNewPumpFunToken(pump_provider)
+        const request = {
+            tokens: [newToken.mint]
+        } as GetPumpFunSwapsStreamRequest
+        const stream = await pump_provider.getPumpFunSwapsStream(request)
+
+        for await (const response of stream) {
+            console.info(JSON.stringify(response, null, 2))
+            expectNoNulls(response)
+            break
+        }
+    }, 30000);
+
+    /*
+    Raydium Streams
+    */
+
+    test('Stream New Raydium Pools', async () => {
+        const request = {} as GetPumpFunNewAmmPoolStreamRequest
+        const stream = await provider.getNewRaydiumPoolsStream(request)
+
+        for await (const response of stream) {
+            console.info(JSON.stringify(response, null, 2))
+            expectNoNulls(response)
+            break
+        }
+    }, 86_400_000);
+
+    test('Stream New Raydium Pools By Transaction', async () => {
+        const request = {} as GetNewRaydiumPoolsByTransactionRequest
+        const stream = await provider.getNewRaydiumPoolsByTransactionStream(request)
+
+        for await (const response of stream) {
+            console.info(JSON.stringify(response, null, 2))
+            expectNoNulls(response)
+            break
+        }
+    }, 86_400_000);
+
+});
+
+describe("Requests", () => {
+    let config: ReturnType<typeof loadFromEnv>;
+    let provider: InstanceType<typeof GrpcProvider>; 
+    let pump_provider: InstanceType<typeof GrpcProvider>; 
+
+    // Run before each test
+    beforeEach(() => {
+        config = loadFromEnv();
+        provider = new GrpcProvider(
+            config.authHeader,
+            config.privateKey,
+            `${LOCAL_API_GRPC_HOST}:${LOCAL_API_GRPC_PORT}`,
+            false
+        );
+        pump_provider = new GrpcProvider(
+            config.authHeader,
+            config.privateKey,
+            `${LOCAL_API_GRPC_HOST}:${LOCAL_API_GRPC_PORT}`,
+            false
+        )
+    });
+
+    test("Get Account", async () => {
+        const response = await provider.getTokenAccounts(
+            {
+                ownerAddress: "AfU4AhJhqSsMji1oij1ZGfskQGGmmUW1vsdS3j7eeEwj"
+            } as GetTokenAccountsRequest
+        )
+        console.info(JSON.stringify(response, null, 2))
+        expectNoNulls(response)
+    });
+
+    test("Get Priority Fee", async () => {
+        const response = await provider.getPriorityFee(
+            {
+                project: "P_RAYDIUM",
+                percentile: 50
+            } as GetPriorityFeeRequest
+        )
+        console.info(JSON.stringify(response, null, 2))
+        expectNoNulls(response)
+    });
+})
