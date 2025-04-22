@@ -26,6 +26,7 @@ import { MAINNET_API_PUMP_NY_HTTP } from "../../bxsolana/utils/constants";
 
 jest.setTimeout(60500);
 
+// eslint-disable-next-line
 function expectNoNulls(response: any) {
     const { timestamp, ...responseWithoutTimestamp } = response;
     

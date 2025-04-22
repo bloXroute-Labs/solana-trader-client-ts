@@ -44,14 +44,11 @@ import {
   } from '@solana/web3.js';
 
 // Types
-interface SdkFunctionBase {
-}
-
-interface StreamingFunction extends SdkFunctionBase {
+interface StreamingFunction {
   (protocol: string, network: string, times?: number): Promise<SdkFunctionResult>;
 }
 
-interface RequestFunction extends SdkFunctionBase {
+interface RequestFunction {
   (protocol: string, network: string): Promise<SdkFunctionResult>;
 }
 
@@ -59,7 +56,7 @@ type SdkFunction = StreamingFunction | RequestFunction;
 
 interface SdkFunctionResult {
   success: boolean;
-  data?: any;
+  data?: any; // eslint-disable-line
   error?: Error;
 }
 
@@ -134,6 +131,7 @@ class AppConfig {
 class SdkFunctions {
   private static appConfig = AppConfig.getInstance();
 
+  // eslint-disable-next-line
   public static getProvider(connectionType: string, isPump = false): any {
     switch (connectionType.toLowerCase()) {
       case 'grpc':

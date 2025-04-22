@@ -32,6 +32,7 @@ import { LOCAL_API_GRPC_HOST, LOCAL_API_GRPC_PORT, MAINNET_API_PUMP_NY_GRPC } fr
 
 jest.setTimeout(60500);
 
+// eslint-disable-next-line
 function expectNoNulls(response: any) {
     const { timestamp, ...responseWithoutTimestamp } = response;
     
