@@ -299,7 +299,7 @@ export class GrpcProvider extends BaseProvider {
     postRaydiumCLMMRouteSwap(
         request: PostRaydiumRouteSwapRequest
     ): RpcReturnType<Promise<PostRaydiumRouteSwapResponse>, []> {
-        return this.client.postRaydiumRouteSwap(request)
+        return this.client.postRaydiumCLMMRouteSwap(request)
     }
 
     postRaydiumSwap(
