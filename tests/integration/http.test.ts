@@ -9,6 +9,10 @@ import {
     PostSubmitPaladinRequest,
     PostSubmitRequestEntry,
     PostSubmitSnipeRequest,
+    GetPumpFunNewTokensStreamRequest,
+    GetPriorityFeeRequest,
+    GetTokenAccountsRequest,
+    GetPumpFunNewTokensStreamResponse,
 } from "../../bxsolana";
 import bs58 from 'bs58'
 import {
@@ -18,6 +22,38 @@ import {
     Transaction,
     ComputeBudgetProgram,
   } from '@solana/web3.js';
+import { MAINNET_API_PUMP_NY_HTTP } from "../../bxsolana/utils/constants";
+
+jest.setTimeout(60500);
+
+// eslint-disable-next-line
+function expectNoNulls(response: any) {
+    const { timestamp, ...responseWithoutTimestamp } = response;
+    
+    expect(
+      Object.values(responseWithoutTimestamp).every(v =>
+        v !== null &&
+        v !== undefined &&
+        v !== '' &&
+        !(Array.isArray(v) && v.length === 0) &&
+        !(typeof v === 'object' && !Array.isArray(v) && Object.keys(v).length === 0)
+      )
+    ).toBe(true);
+  }
+
+async function getNewPumpFunToken(p: HttpProvider): Promise<GetPumpFunNewTokensStreamResponse> {
+    const request = {} as GetPumpFunNewTokensStreamRequest;
+    try {
+        const stream = await p.getPumpFunNewTokensStream(request);
+        for await (const response of stream) {
+            return response;
+        }
+        throw new Error("No response received from token stream");
+    } catch (error) {
+        console.error("Error getting new pump fun token:", error);
+        throw error;
+    }
+}
 
 describe('Transaction Submissions', () => {
     let config: ReturnType<typeof loadFromEnv>;
@@ -209,3 +245,40 @@ describe('Transaction Submissions', () => {
     });
     
 });
+
+
+describe("Requests", () => {
+    let config: ReturnType<typeof loadFromEnv>;
+    let provider: InstanceType<typeof HttpProvider>; 
+
+    // Run before each test
+    beforeEach(() => {
+        config = loadFromEnv();
+        provider = new HttpProvider(
+            config.authHeader,
+            config.privateKey,
+            `${MAINNET_API_NY_HTTP}`
+        );
+    });
+
+    test("Get Account", async () => {
+        const response = await provider.getTokenAccounts(
+            {
+                ownerAddress: "AfU4AhJhqSsMji1oij1ZGfskQGGmmUW1vsdS3j7eeEwj"
+            } as GetTokenAccountsRequest
+        )
+        console.info(JSON.stringify(response, null, 2))
+        expectNoNulls(response)
+    });
+
+    test("Get Priority Fee", async () => {
+        const response = await provider.getPriorityFee(
+            {
+                project: "P_RAYDIUM",
+                percentile: 50
+            } as GetPriorityFeeRequest
+        )
+        console.info(JSON.stringify(response, null, 2))
+        expectNoNulls(response)
+    });
+})
