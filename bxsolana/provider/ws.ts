@@ -191,7 +191,7 @@ export class WsProvider extends BaseProvider {
     async getTokenAccounts(
         request: GetTokenAccountsRequest
     ): RpcReturnType<Promise<GetTokenAccountsResponse>, []> {
-        return await this.wsConnection.call("GetRateLimit", request)
+        return await this.wsConnection.call("GetTokenAccounts", request)
     }
 
     async getTransaction(
@@ -311,7 +311,7 @@ export class WsProvider extends BaseProvider {
     async getRaydiumCPMMQuotes(
         request: GetRaydiumCPMMQuotesRequest
     ): RpcReturnType<Promise<GetRaydiumCPMMQuotesResponse>, []> {
-        return await this.wsConnection.call("GetRaydiumQuotesCPMM", request)
+        return await this.wsConnection.call("GetRaydiumCPMMQuotes", request)
     }
 
     async getPumpFunQuotes(
@@ -738,13 +738,13 @@ export class WsProvider extends BaseProvider {
     async postReplaceByClientOrderID(
         request: PostOrderRequest
     ): Promise<PostOrderResponse> {
-        return this.wsConnection.call("postReplaceByClientOrderID", request)
+        return this.wsConnection.call("PostReplaceByClientOrderID", request)
     }
 
     async postReplaceOrder(
         request: PostReplaceOrderRequest
     ): Promise<PostOrderResponse> {
-        return this.wsConnection.call("postReplaceOrder", request)
+        return this.wsConnection.call("PostReplaceOrder", request)
     }
 
     async postTradeSwap(request: TradeSwapRequest): Promise<TradeSwapResponse> {
@@ -861,7 +861,7 @@ export class WsProvider extends BaseProvider {
         streamNumber: number
     ): Promise<boolean> => {
         return this.cancelStreamByCount(
-            "GetRecentBlockHashStream",
+            "GetQuotesStreamByCount",
             streamNumber
         )
     }
