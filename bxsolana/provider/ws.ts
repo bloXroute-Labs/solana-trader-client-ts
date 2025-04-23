@@ -191,7 +191,7 @@ export class WsProvider extends BaseProvider {
     async getTokenAccounts(
         request: GetTokenAccountsRequest
     ): RpcReturnType<Promise<GetTokenAccountsResponse>, []> {
-        return await this.wsConnection.call("GetRateLimit", request)
+        return await this.wsConnection.call("GetTokenAccounts", request)
     }
 
     async getTransaction(
