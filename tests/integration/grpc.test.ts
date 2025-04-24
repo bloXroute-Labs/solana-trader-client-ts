@@ -247,7 +247,7 @@ describe('TransactionSubmission', () => {
         const start = performance.now();
         const response = await provider.postSubmit(request);
         timings["PostSubmit"] = performance.now() - start;
-        console.info(JSON.stringify(response, null, 2));
+        // console.info(JSON.stringify(response, null, 2));
 
         expectNoNulls(response)
     });
@@ -261,7 +261,7 @@ describe('TransactionSubmission', () => {
         const start = performance.now();
         const response = await provider.postSubmitV2(request);
         timings["PostSubmitV2"] = performance.now() - start;
-        console.info(JSON.stringify(response, null, 2));
+        // console.info(JSON.stringify(response, null, 2));
 
         expectNoNulls(response)
     });
@@ -276,7 +276,7 @@ describe('TransactionSubmission', () => {
         const start = performance.now();
         const response = await provider.postSubmitBatch(request);
         timings["PostSubmitBatch"] = performance.now() - start;
-        console.info(JSON.stringify(response, null, 2));
+        // console.info(JSON.stringify(response, null, 2));
 
         expectNoNulls(response)
     });
@@ -290,7 +290,7 @@ describe('TransactionSubmission', () => {
         const start = performance.now();
         const response = await provider.postSubmitPaladinV2(request);
         timings["PostSubmitPaladinV2"] = performance.now() - start;
-        console.info(JSON.stringify(response, null, 2));
+        // console.info(JSON.stringify(response, null, 2));
 
         expectNoNulls(response)
     });
@@ -306,7 +306,7 @@ describe('TransactionSubmission', () => {
         const start = performance.now();
         const response = await provider.postSubmitSnipeV2(request);
         timings["PostSubmitSnipeV2"] = performance.now() - start;
-        console.info(JSON.stringify(response, null, 2));
+        // console.info(JSON.stringify(response, null, 2));
 
         // Expect at least one signature in the response
         expectNoNulls(response)
@@ -344,7 +344,7 @@ describe('Streaming', () => {
         const stream = await provider.getRecentBlockHashStream(request)
 
         for await (const response of stream) {
-            console.info(JSON.stringify(response, null, 2))
+            // console.info(JSON.stringify(response, null, 2));
             expectNoNulls(response)
             break
         }
@@ -355,7 +355,7 @@ describe('Streaming', () => {
         const stream = await provider.getPriorityFeeStream(request)
 
         for await (const response of stream) {
-            console.info(JSON.stringify(response, null, 2))
+            // console.info(JSON.stringify(response, null, 2));
             expectNoNulls(response)
             break
         }
@@ -366,7 +366,7 @@ describe('Streaming', () => {
         const stream = await provider.getBundleTipStream(request)
 
         for await (const response of stream) {
-            console.info(JSON.stringify(response, null, 2))
+            // console.info(JSON.stringify(response, null, 2));
             expectNoNulls(response)
             break
         }
@@ -381,7 +381,7 @@ describe('Streaming', () => {
         const stream = await pump_provider.getPumpFunNewAmmPoolStream(request)
 
         for await (const response of stream) {
-            console.info(JSON.stringify(response, null, 2))
+            // console.info(JSON.stringify(response, null, 2));
             expectNoNulls(response)
             break
         }
@@ -392,7 +392,7 @@ describe('Streaming', () => {
         const stream = await pump_provider.getPumpFunNewTokensStream(request)
 
         for await (const response of stream) {
-            console.info(JSON.stringify(response, null, 2))
+            // console.info(JSON.stringify(response, null, 2));
             expectNoNulls(response)
             break
         }
@@ -406,7 +406,7 @@ describe('Streaming', () => {
         const stream = await pump_provider.getPumpFunSwapsStream(request)
 
         for await (const response of stream) {
-            console.info(JSON.stringify(response, null, 2))
+            // console.info(JSON.stringify(response, null, 2));
             expectNoNulls(response)
             break
         }
@@ -421,7 +421,7 @@ describe('Streaming', () => {
         const stream = await provider.getNewRaydiumPoolsStream(request)
 
         for await (const response of stream) {
-            console.info(JSON.stringify(response, null, 2))
+            // console.info(JSON.stringify(response, null, 2));
             expectNoNulls(response)
             break
         }
@@ -432,7 +432,7 @@ describe('Streaming', () => {
         const stream = await provider.getNewRaydiumPoolsByTransactionStream(request)
 
         for await (const response of stream) {
-            console.info(JSON.stringify(response, null, 2))
+            // console.info(JSON.stringify(response, null, 2));
             expectNoNulls(response)
             break
         }
@@ -468,7 +468,7 @@ describe("Requests", () => {
                 ownerAddress: "AfU4AhJhqSsMji1oij1ZGfskQGGmmUW1vsdS3j7eeEwj"
             } as GetTokenAccountsRequest
         )
-        console.info(JSON.stringify(response, null, 2))
+        // console.info(JSON.stringify(response, null, 2));
         expectNoNulls(response)
     });
 
@@ -479,13 +479,13 @@ describe("Requests", () => {
                 percentile: 50
             } as GetPriorityFeeRequest
         )
-        console.info(JSON.stringify(response, null, 2))
+        // console.info(JSON.stringify(response, null, 2));
         expectNoNulls(response)
     });
 
     test("Get Rate Limit", async () => {
         const response = await provider.getRateLimit({} as GetRateLimitRequest)
-        console.info(JSON.stringify(response, null, 2))
+        // console.info(JSON.stringify(response, null, 2));
         expectNoNulls(response.limit)
     });
 
@@ -493,7 +493,7 @@ describe("Requests", () => {
         const response = await provider.getTransaction({
             signature: "63ZJvWVLvwhSkyrwoSwcgvzgK6mwCudtZaSGfnXdUQJEQ7Qh7f2zd7rLXQHuHort9sLwC4bEwC7bw67xsq2NPLcN"
         } as GetTransactionRequest)
-        console.info(JSON.stringify(response, null, 2))
+        // console.info(JSON.stringify(response, null, 2));
         expectNoNulls(response)
     });
 
@@ -501,7 +501,7 @@ describe("Requests", () => {
         const response = await provider.getJupiterPrices({
             tokens: ["SOL"]
         } as GetJupiterPricesRequest)
-        console.info(JSON.stringify(response, null, 2))
+        // console.info(JSON.stringify(response, null, 2));
         expectNoNulls(response)
     });
 
@@ -512,7 +512,7 @@ describe("Requests", () => {
             inAmount: 1,
             slippage: 5,
         } as GetJupiterQuotesRequest)
-        console.info(JSON.stringify(response, null, 2))
+        // console.info(JSON.stringify(response, null, 2));
         expectNoNulls(response)
     });
 
@@ -542,7 +542,7 @@ describe("Requests", () => {
             computePrice: "100000",
             tip: "1000000"
         } as PostJupiterRouteSwapRequest);
-        console.info(JSON.stringify(response, null, 2))
+        // console.info(JSON.stringify(response, null, 2));
         expect(response.transactions.length).toBeGreaterThan(0)
     });
 
@@ -554,7 +554,7 @@ describe("Requests", () => {
             inAmount: 1,
             slippage: 5,
         } as PostJupiterSwapRequest)
-        console.info(JSON.stringify(response, null, 2))
+        // console.info(JSON.stringify(response, null, 2));
         expectNoNulls(response)
     });
 
@@ -567,7 +567,7 @@ describe("Requests", () => {
             slippage: 0.1,
             computePrice: "10000",
         })
-        console.info(JSON.stringify(response, null, 2))
+        // console.info(JSON.stringify(response, null, 2));
         expect(response.instructions.length).toBeGreaterThan(0)
     });
 
@@ -592,7 +592,7 @@ describe("Requests", () => {
             computeLimit: 200000,
             computePrice: "10000",
         })
-        console.info(JSON.stringify(response, null, 2))
+        // console.info(JSON.stringify(response, null, 2));
         expect(response.transactions.length).toBeGreaterThan(0)
     });
 
@@ -617,7 +617,7 @@ describe("Requests", () => {
             computeLimit: 200000,
             computePrice: "10000",
         })
-        console.info(JSON.stringify(response, null, 2))
+        // console.info(JSON.stringify(response, null, 2));
         expect(response.transactions.length).toBeGreaterThan(0)
     });
 
@@ -629,7 +629,7 @@ describe("Requests", () => {
             inAmount: 1,
             slippage: 5,
         } as PostRaydiumSwapRequest)
-        console.info(JSON.stringify(response, null, 2))
+        // console.info(JSON.stringify(response, null, 2));
         expectNoNulls(response)
     });
 
@@ -643,7 +643,7 @@ describe("Requests", () => {
             computeLimit: 200000,
             computePrice: "10000",
         })
-        console.info(JSON.stringify(response, null, 2))
+        // console.info(JSON.stringify(response, null, 2));
         expect(response.instructions.length).toBeGreaterThan(0)
     });
 
@@ -657,7 +657,7 @@ describe("Requests", () => {
             computeLimit: 200000,
             computePrice: "10000",
         })
-        console.info(JSON.stringify(response, null, 2))
+        // console.info(JSON.stringify(response, null, 2));
         expect(response.transactions.length).toBeGreaterThan(0)
     });
 
@@ -673,7 +673,7 @@ describe("Requests", () => {
             computePrice: "1000",
             tip: "100000"
         })
-        console.info(JSON.stringify(response, null, 2))
+        // console.info(JSON.stringify(response, null, 2));
         expectNoNulls(response)
     });
 
@@ -683,13 +683,13 @@ describe("Requests", () => {
                 "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
             ],
         })
-        console.info(JSON.stringify(response, null, 2))
+        // console.info(JSON.stringify(response, null, 2));
         expectNoNulls(response)
     });
 
     test("Get Raydium Pools", async () => {
         const response = await provider.getRaydiumPools({})
-        console.info(JSON.stringify(response, null, 2))
+        // console.info(JSON.stringify(response, null, 2));
         expectNoNulls(response)
     });
 
@@ -697,13 +697,13 @@ describe("Requests", () => {
         const response = await provider.getRaydiumCLMMPools({
             pairOrAddress: "3ucNos4NbumPLZNWztqGHNFFgkHeRMBQAVemeeomsUxv"
         })
-        console.info(JSON.stringify(response, null, 2))
+        // console.info(JSON.stringify(response, null, 2));
         expectNoNulls(response)
     });
 
     test("Get Raydium Prices", async () => {
         const response = await provider.getRaydiumPrices({ tokens: ["SOL"] })
-        console.info(JSON.stringify(response, null, 2))
+        // console.info(JSON.stringify(response, null, 2));
         expectNoNulls(response)
     });
 
@@ -714,7 +714,7 @@ describe("Requests", () => {
             inAmount: 1,
             slippage: 5,
         })
-        console.info(JSON.stringify(response, null, 2))
+        // console.info(JSON.stringify(response, null, 2));
         expectNoNulls(response)
     });
 
@@ -725,7 +725,7 @@ describe("Requests", () => {
             inAmount: 1,
             slippage: 5,
         })
-        console.info(JSON.stringify(response, null, 2))
+        // console.info(JSON.stringify(response, null, 2));
         expectNoNulls(response)
     });
 
@@ -736,19 +736,18 @@ describe("Requests", () => {
             inAmount: 1,
             slippage: 5,
         })
-        console.info(JSON.stringify(response, null, 2))
+        // console.info(JSON.stringify(response, null, 2));
         expectNoNulls(response)
     });
 
     test("Get Recent BlockHash", async () => {
         const response = await provider.getRecentBlockHash({})
-        console.info(JSON.stringify(response, null, 2))
+        // console.info(JSON.stringify(response, null, 2));
         expectNoNulls(response)
     });
 
     test("PostPumpFunSwapSol", async () => {
         const token: GetPumpFunNewTokensStreamResponse = await getNewPumpFunToken(pump_provider)
-        console.info(JSON.stringify(token, null, 2))
         const request: PostPumpFunSwapRequestSol = {
             userAddress: token.creator,
             bondingCurveAddress: token.bondingCurve,
@@ -760,13 +759,12 @@ describe("Requests", () => {
             tip: "1000000"
         }
         const response = await pump_provider.postPumpFunSwapSol(request)
-        console.info(JSON.stringify(response, null, 2))
+        // console.info(JSON.stringify(response, null, 2));
         expectNoNulls(response)
     })
 
     test("PostPumpFunSwap", async () => {
         const token: GetPumpFunNewTokensStreamResponse = await getNewPumpFunToken(pump_provider)
-        console.info(JSON.stringify(token, null, 2))
         const request: PostPumpFunSwapRequest = {
             userAddress: token.creator,
             bondingCurveAddress: token.bondingCurve,
@@ -780,7 +778,7 @@ describe("Requests", () => {
             tip: "1000000"
         }
         const response = await pump_provider.postPumpFunSwap(request)
-        console.info(JSON.stringify(response, null, 2))
+        // console.info(JSON.stringify(response, null, 2));
         expectNoNulls(response)
     })
 

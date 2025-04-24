@@ -717,14 +717,6 @@ export class HttpProvider extends BaseProvider {
                 requestData = data;
             }
 
-            console.log({
-                ...this.requestConfig,
-                url: path,
-                method: "POST",
-                data,
-                headers,
-            });
-
             const response = await axios({
                 ...this.requestConfig,
                 url: path,
