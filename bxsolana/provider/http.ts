@@ -489,7 +489,7 @@ export class HttpProvider extends BaseProvider {
     getRaydiumCLMMPools(
         request: GetRaydiumCLMMPoolsRequest
     ): Promise<GetRaydiumCLMMPoolsResponse> {
-        const path = `${this.baseUrl}/market/clmm-pools?pairOrAddress=${request.pairOrAddress}`
+        const path = `${this.baseUrlV2}/raydium/clmm-pools?pairOrAddress=${request.pairOrAddress}`
         return this.get<GetRaydiumCLMMPoolsResponse>(path)
     }
 
