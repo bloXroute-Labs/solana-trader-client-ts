@@ -489,7 +489,7 @@ export class HttpProvider extends BaseProvider {
     getRaydiumCLMMPools(
         request: GetRaydiumCLMMPoolsRequest
     ): Promise<GetRaydiumCLMMPoolsResponse> {
-        const path = `${this.baseUrl}/market/clmm-pools?pairOrAddress=${request.pairOrAddress}`
+        const path = `${this.baseUrlV2}/raydium/clmm-pools?pairOrAddress=${request.pairOrAddress}`
         return this.get<GetRaydiumCLMMPoolsResponse>(path)
     }
 
@@ -716,6 +716,14 @@ export class HttpProvider extends BaseProvider {
             } else {
                 requestData = data;
             }
+
+            console.log({
+                ...this.requestConfig,
+                url: path,
+                method: "POST",
+                data,
+                headers,
+            });
 
             const response = await axios({
                 ...this.requestConfig,

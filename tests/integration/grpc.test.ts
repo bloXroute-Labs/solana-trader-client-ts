@@ -18,7 +18,16 @@ import {
     GetBundleTipRequest,
     GetTokenAccountsRequest,
     GetPumpFunNewTokensStreamResponse,
-    PostPumpFunSwapRequestSol
+    PostPumpFunSwapRequestSol,
+    GetRateLimitRequest,
+    GetTransactionRequest,
+    GetJupiterPricesRequest,
+    GetJupiterQuotesRequest,
+    PostJupiterRouteSwapRequest,
+    PostJupiterSwapRequest,
+    PostRaydiumSwapRequest,
+    PostSubmitBatchRequest,
+    PostPumpFunSwapRequest,
 } from "../../bxsolana";
 import bs58 from 'bs58'
 import {
@@ -28,9 +37,9 @@ import {
     Transaction,
     ComputeBudgetProgram,
   } from '@solana/web3.js';
-import { LOCAL_API_GRPC_HOST, LOCAL_API_GRPC_PORT, MAINNET_API_PUMP_NY_GRPC } from "../../bxsolana/utils/constants";
+import { MAINNET_API_PUMP_NY_GRPC } from "../../bxsolana/utils/constants";
 
-jest.setTimeout(60500);
+jest.setTimeout(1000 * 60 * 10); // Ten minute timeout
 
 // eslint-disable-next-line
 function expectNoNulls(response: any) {
@@ -181,6 +190,31 @@ describe('Transaction Submissions', () => {
         } as PostSubmitRequest;
     }
 
+    function createPostSubmitBatchRequest(transaction1: Transaction, transaction2: Transaction): PostSubmitBatchRequest {
+        return {
+            entries: [
+                {
+                    transaction: {
+                        content: transaction1.serialize().toString(`base64`),
+                        isCleanup: false
+                    } as TransactionMessage,
+                    skipPreFlight: false
+                } as PostSubmitRequestEntry,
+                {
+                    transaction: {
+                        content: transaction2.serialize().toString(`base64`),
+                        isCleanup: false
+                    } as TransactionMessage,
+                    skipPreFlight: false
+                } as PostSubmitRequestEntry
+            ],
+            submitStrategy: "P_UKNOWN",
+            useBundle: false,
+            frontRunningProtection: false,
+            submitProtection: "SP_LOW",
+        } as PostSubmitBatchRequest;
+    }
+
     // Helper function to create a post submit request
     function createPostSubmitPaladinRequest(transaction: Transaction): PostSubmitPaladinRequest {
         return {
@@ -228,6 +262,19 @@ describe('Transaction Submissions', () => {
         expectNoNulls(response)
     });
 
+    test('PostSubmitBatch', async () => {
+        // Create transaction and request using helper functions
+        const transaction1 = await createSignedTransactionWithBloXrouteTip({computeLimit: 500_000, priorityFee: 1_000, bloxrouteTip: 1_000_000});
+        const transaction2 = await createSignedTransactionWithBloXrouteTip({computeLimit: 500_000, priorityFee: 1_000, bloxrouteTip: 1_000_000});
+        const request = createPostSubmitBatchRequest(transaction1, transaction2);
+
+        // Submit transaction
+        const response = await provider.postSubmitBatch(request);
+        console.info(JSON.stringify(response, null, 2));
+
+        expectNoNulls(response)
+    });
+
     test('PostSubmitPaladinV2', async () => {
         // Create transaction and request using helper functions
         const transaction = await createSignedTransactionWithBloXrouteTip({computeLimit: 1_000_000, priorityFee: 40_000_000, bloxrouteTip: 10_000_000});
@@ -254,24 +301,6 @@ describe('Transaction Submissions', () => {
         // Expect at least one signature in the response
         expectNoNulls(response)
     });
-
-    test("PostPumpFunSwapSol", async () => {
-        const token: GetPumpFunNewTokensStreamResponse = await getNewPumpFunToken(pump_provider)
-        console.info(JSON.stringify(token, null, 2))
-        const request: PostPumpFunSwapRequestSol = {
-            userAddress: token.creator,
-            bondingCurveAddress: token.bondingCurve,
-            tokenAddress: token.mint,
-            solAmount: 0.0001,
-            slippage: 20,
-            computeLimit: 250_000,
-            computePrice: "100000",
-            tip: "1000000"
-        }
-        const response = await pump_provider.postPumpFunSwapSol(request)
-        console.info(JSON.stringify(response, null, 2))
-        expectNoNulls(response)
-    })
     
 });
 
@@ -292,7 +321,7 @@ describe('Streaming', () => {
         pump_provider = new GrpcProvider(
             config.authHeader,
             config.privateKey,
-            `${LOCAL_API_GRPC_HOST}:${LOCAL_API_GRPC_PORT}`,
+            `${MAINNET_API_PUMP_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
             true
         )
     });
@@ -346,7 +375,7 @@ describe('Streaming', () => {
             expectNoNulls(response)
             break
         }
-    }, 60000);
+    });
 
     test('Stream New PumpFun Tokens', async () => {
         const request = {} as GetPumpFunNewTokensStreamRequest
@@ -357,7 +386,7 @@ describe('Streaming', () => {
             expectNoNulls(response)
             break
         }
-    }, 30000);
+    });
 
     test('Stream New Pump Fun Swaps', async () => {
         const newToken = await getNewPumpFunToken(pump_provider)
@@ -386,7 +415,7 @@ describe('Streaming', () => {
             expectNoNulls(response)
             break
         }
-    }, 86_400_000);
+    });
 
     test('Stream New Raydium Pools By Transaction', async () => {
         const request = {} as GetNewRaydiumPoolsByTransactionRequest
@@ -397,7 +426,7 @@ describe('Streaming', () => {
             expectNoNulls(response)
             break
         }
-    }, 86_400_000);
+    });
 
 });
 
@@ -412,14 +441,14 @@ describe("Requests", () => {
         provider = new GrpcProvider(
             config.authHeader,
             config.privateKey,
-            `${LOCAL_API_GRPC_HOST}:${LOCAL_API_GRPC_PORT}`,
-            false
+            `${MAINNET_API_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
+            true
         );
         pump_provider = new GrpcProvider(
             config.authHeader,
             config.privateKey,
-            `${LOCAL_API_GRPC_HOST}:${LOCAL_API_GRPC_PORT}`,
-            false
+            `${MAINNET_API_PUMP_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
+            true
         )
     });
 
@@ -443,4 +472,306 @@ describe("Requests", () => {
         console.info(JSON.stringify(response, null, 2))
         expectNoNulls(response)
     });
+
+    test("Get Rate Limit", async () => {
+        const response = await provider.getRateLimit({} as GetRateLimitRequest)
+        console.info(JSON.stringify(response, null, 2))
+        expectNoNulls(response.limit)
+    });
+
+    test("Get Transaction", async () => {
+        const response = await provider.getTransaction({
+            signature: "63ZJvWVLvwhSkyrwoSwcgvzgK6mwCudtZaSGfnXdUQJEQ7Qh7f2zd7rLXQHuHort9sLwC4bEwC7bw67xsq2NPLcN"
+        } as GetTransactionRequest)
+        console.info(JSON.stringify(response, null, 2))
+        expectNoNulls(response)
+    });
+
+    test("Get Jupiter Prices", async () => {
+        const response = await provider.getJupiterPrices({
+            tokens: ["SOL"]
+        } as GetJupiterPricesRequest)
+        console.info(JSON.stringify(response, null, 2))
+        expectNoNulls(response)
+    });
+
+    test("Get Jupiter Quotes", async () => {
+        const response = await provider.getJupiterQuotes({
+            inToken: "SOL",
+            outToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            inAmount: 1,
+            slippage: 5,
+        } as GetJupiterQuotesRequest)
+        console.info(JSON.stringify(response, null, 2))
+        expectNoNulls(response)
+    });
+
+    test("Post Jupiter Route Swap", async () => {
+        const response = await provider.postJupiterRouteSwap({
+            ownerAddress: config.publicKey,
+            steps: [
+              {
+                project: {
+                  label: "Raydium",
+                  id: "6U4TBh3aJgiJ5EqCDEua4rP75HsqcfHapMKhhyuTqGuo"
+                },
+                inToken: "9BB6NFEcjBCtnNLFko2FqVQBq8HHM13kCyYcdQbgpump",
+                outToken: "So11111111111111111111111111111111111111112",
+                inAmount: 0.01,
+                outAmountMin: 0.000123117,
+                outAmount: 0.000123425,
+                fee: {
+                  amount: 0.000025,
+                  mint: "9BB6NFEcjBCtnNLFko2FqVQBq8HHM13kCyYcdQbgpump",
+                  percent: 0.0025062656
+                }
+              }
+            ],
+            slippage: 25,
+            computeLimit: 200_000,
+            computePrice: "100000",
+            tip: "1000000"
+          } as PostJupiterRouteSwapRequest);
+        console.info(JSON.stringify(response, null, 2))
+        expect(response.transactions.length).toBeGreaterThan(0)
+    });
+
+    test("Post Jupiter Swap", async () => {
+        const response = await provider.postJupiterSwap({
+            ownerAddress: config.publicKey,
+            inToken: "SOL",
+            outToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            inAmount: 1,
+            slippage: 5,
+        } as PostJupiterSwapRequest)
+        console.info(JSON.stringify(response, null, 2))
+        expectNoNulls(response)
+    });
+
+    test("Post Jupiter Swap Instructions", async () => {
+        const response = await provider.postJupiterSwapInstructions({
+            ownerAddress: config.publicKey,
+            inToken: "SOL",
+            outToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            inAmount: 0.01,
+            slippage: 0.1,
+            computePrice: "10000",
+        })
+        console.info(JSON.stringify(response, null, 2))
+        expect(response.instructions.length).toBeGreaterThan(0)
+    });
+
+    test("Post Raydium Route Swap", async () => {
+        const response = await provider.postRaydiumRouteSwap({
+            ownerAddress: config.publicKey,
+            slippage: 10,
+            steps: [
+                {
+                    poolAddress: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
+                    project: {
+                        id: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
+                        label: "Raydium",
+                    },
+                    inToken: "So11111111111111111111111111111111111111112",
+                    outToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+                    inAmount: 0.01,
+                    outAmount: 0.007505,
+                    outAmountMin: 0.074,
+                },
+            ],
+            computeLimit: 200000,
+            computePrice: "10000",
+        })
+        console.info(JSON.stringify(response, null, 2))
+        expect(response.transactions.length).toBeGreaterThan(0)
+    });
+
+    test("Post Raydium CLMM Route Swap", async () => {
+        const response = await provider.postRaydiumCLMMRouteSwap({
+            ownerAddress: config.publicKey,
+            slippage: 10,
+            steps: [
+                {
+                    poolAddress: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
+                    project: {
+                        id: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
+                        label: "Raydium",
+                    },
+                    inToken: "So11111111111111111111111111111111111111112",
+                    outToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+                    inAmount: 0.01,
+                    outAmount: 0.007505,
+                    outAmountMin: 0.074,
+                },
+            ],
+            computeLimit: 200000,
+            computePrice: "10000",
+        })
+        console.info(JSON.stringify(response, null, 2))
+        expect(response.transactions.length).toBeGreaterThan(0)
+    });
+
+    test("Post Raydium Swap", async () => {
+        const response = await provider.postRaydiumSwap({
+            ownerAddress: config.publicKey,
+            inToken: "SOL",
+            outToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            inAmount: 1,
+            slippage: 5,
+        } as PostRaydiumSwapRequest)
+        console.info(JSON.stringify(response, null, 2))
+        expectNoNulls(response)
+    });
+
+    test("Post Raydium Swap Instructions", async () => {
+        const response = await provider.postRaydiumSwapInstructions({
+            ownerAddress: config.publicKey,
+            inToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            outToken: "SOL",
+            inAmount: 0.01,
+            slippage: 0.1,
+            computeLimit: 200000,
+            computePrice: "10000",
+        })
+        console.info(JSON.stringify(response, null, 2))
+        expect(response.instructions.length).toBeGreaterThan(0)
+    });
+
+    test("Post Raydium CLMM Swap Instructions", async () => {
+        const response = await provider.postRaydiumCLMMSwap({
+            ownerAddress: config.publicKey,
+            inToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            outToken: "SOL",
+            inAmount: 0.01,
+            slippage: 0.1,
+            computeLimit: 200000,
+            computePrice: "10000",
+        })
+        console.info(JSON.stringify(response, null, 2))
+        expect(response.transactions.length).toBeGreaterThan(0)
+    });
+
+    test("Post Raydium CPMM Swap Instructions", async () => {
+        const response = await provider.postRaydiumCPMMSwap({
+            ownerAddress: config.publicKey,
+            inToken: "SOL",
+            outToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            inAmount: 1,
+            slippage: 25,
+            poolAddress: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
+            computeLimit: 10000,
+            computePrice: "1000",
+            tip: "100000"
+        })
+        console.info(JSON.stringify(response, null, 2))
+        expectNoNulls(response)
+    });
+
+    test("Get Raydium Pool Reserve", async () => {
+        const response = await provider.getRaydiumPoolReserve({
+            pairsOrAddresses: [
+                "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
+            ],
+        })
+        console.info(JSON.stringify(response, null, 2))
+        expectNoNulls(response)
+    });
+
+    test("Get Raydium Pools", async () => {
+        const response = await provider.getRaydiumPools({})
+        console.info(JSON.stringify(response, null, 2))
+        expectNoNulls(response)
+    });
+
+    test("Get Raydium CLMM Pools", async () => {
+        const response = await provider.getRaydiumCLMMPools({
+            pairOrAddress: "3ucNos4NbumPLZNWztqGHNFFgkHeRMBQAVemeeomsUxv"
+        })
+        console.info(JSON.stringify(response, null, 2))
+        expectNoNulls(response)
+    });
+
+    test("Get Raydium Prices", async () => {
+        const response = await provider.getRaydiumPrices({ tokens: ["SOL"] })
+        console.info(JSON.stringify(response, null, 2))
+        expectNoNulls(response)
+    });
+
+    test("Get Raydium Quotes", async () => {
+        const response = await provider.getRaydiumQuotes({
+            inToken: "SOL",
+            outToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            inAmount: 1,
+            slippage: 5,
+        })
+        console.info(JSON.stringify(response, null, 2))
+        expectNoNulls(response)
+    });
+
+    test("Get Raydium CPMM Quotes", async () => {
+        const response = await provider.getRaydiumCPMMQuotes({
+            inToken: "SOL",
+            outToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            inAmount: 1,
+            slippage: 5,
+        })
+        console.info(JSON.stringify(response, null, 2))
+        expectNoNulls(response)
+    });
+
+    test("Get Raydium CLMM Quotes", async () => {
+        const response = await provider.getRaydiumCLMMQuotes({
+            inToken: "SOL",
+            outToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            inAmount: 1,
+            slippage: 5,
+        })
+        console.info(JSON.stringify(response, null, 2))
+        expectNoNulls(response)
+    });
+
+    test("Get Recent BlockHash", async () => {
+        const response = await provider.getRecentBlockHash({})
+        console.info(JSON.stringify(response, null, 2))
+        expectNoNulls(response)
+    });
+
+    test("PostPumpFunSwapSol", async () => {
+        const token: GetPumpFunNewTokensStreamResponse = await getNewPumpFunToken(pump_provider)
+        console.info(JSON.stringify(token, null, 2))
+        const request: PostPumpFunSwapRequestSol = {
+            userAddress: token.creator,
+            bondingCurveAddress: token.bondingCurve,
+            tokenAddress: token.mint,
+            solAmount: 0.0001,
+            slippage: 20,
+            computeLimit: 250_000,
+            computePrice: "100000",
+            tip: "1000000"
+        }
+        const response = await pump_provider.postPumpFunSwapSol(request)
+        console.info(JSON.stringify(response, null, 2))
+        expectNoNulls(response)
+    })
+
+    test("PostPumpFunSwap", async () => {
+        const token: GetPumpFunNewTokensStreamResponse = await getNewPumpFunToken(pump_provider)
+        console.info(JSON.stringify(token, null, 2))
+        const request: PostPumpFunSwapRequest = {
+            userAddress: token.creator,
+            bondingCurveAddress: token.bondingCurve,
+            tokenAddress: token.mint,
+            tokenAmount: 1,
+            isBuy: true,
+            solThreshold: 1,
+            slippage: 20,
+            computeLimit: 250_000,
+            computePrice: "100000",
+            tip: "1000000"
+        }
+        const response = await pump_provider.postPumpFunSwap(request)
+        console.info(JSON.stringify(response, null, 2))
+        expectNoNulls(response)
+    })
+
 })
