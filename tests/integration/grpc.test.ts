@@ -84,8 +84,8 @@ describe('TransactionSubmission', () => {
         provider = new GrpcProvider(
             config.authHeader,
             config.privateKey,
-            `${MAINNET_API_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
-            true
+            "<IP>:80",
+            false
         );
         signer = Keypair.fromSecretKey(
             bs58.decode(config.privateKey)
@@ -325,14 +325,14 @@ describe('Streaming', () => {
         provider = new GrpcProvider(
             config.authHeader,
             config.privateKey,
-            `${MAINNET_API_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
-            true
+            "<IP>:80",
+            false
         );
         pump_provider = new GrpcProvider(
             config.authHeader,
             config.privateKey,
-            `${MAINNET_API_PUMP_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
-            true
+            "<IP>:80",
+            false
         )
     });
 
@@ -451,14 +451,14 @@ describe("Requests", () => {
         provider = new GrpcProvider(
             config.authHeader,
             config.privateKey,
-            `${MAINNET_API_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
-            true
+            "<IP>:80",
+            false
         );
         pump_provider = new GrpcProvider(
             config.authHeader,
             config.privateKey,
-            `${MAINNET_API_PUMP_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
-            true
+            "<IP>:80",
+            false
         )
     });
 

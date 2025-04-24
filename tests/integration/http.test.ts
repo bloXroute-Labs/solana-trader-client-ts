@@ -60,7 +60,7 @@ describe('TransactionSubmissions', () => {
         provider = new HttpProvider(
             config.authHeader,
             config.privateKey,
-            `${MAINNET_API_NY_HTTP}`
+            "http://<IP>:80"
         );
         signer = Keypair.fromSecretKey(
             bs58.decode(config.privateKey)
@@ -303,7 +303,7 @@ describe("Requests", () => {
         provider = new HttpProvider(
             config.authHeader,
             config.privateKey,
-            `${MAINNET_API_NY_HTTP}`
+            "http://<IP>:80"
         );
     });
 

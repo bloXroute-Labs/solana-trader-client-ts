@@ -83,7 +83,7 @@ describe('TransactionSubmissions', () => {
         provider = new WsProvider(
             config.authHeader,
             config.privateKey,
-            `${MAINNET_API_NY_WS}`
+            "ws://<IP>:80/ws"
         );
         await provider.connect();
         signer = Keypair.fromSecretKey(
@@ -330,12 +330,12 @@ describe('Streaming', () => {
         provider = new WsProvider(
             config.authHeader,
             config.privateKey,
-            `${MAINNET_API_NY_WS}`,
+            "ws://<IP>:80/ws"
         );
         pump_provider = new WsProvider(
             config.authHeader,
             config.privateKey,
-            `${MAINNET_API_PUMP_NY_WS}`,
+            "ws://<IP>:80/ws"
         )
         await provider.connect();
         await pump_provider.connect();
@@ -461,12 +461,12 @@ describe("Requests", () => {
         provider = new WsProvider(
             config.authHeader,
             config.privateKey,
-            `${MAINNET_API_NY_WS}`,
+            "ws://<IP>:80/ws"
         );
         pump_provider = new WsProvider(
             config.authHeader,
             config.privateKey,
-            `${MAINNET_API_PUMP_NY_WS}`,
+            "ws://<IP>:80/ws"
         )
         await provider.connect();
         await pump_provider.connect();
