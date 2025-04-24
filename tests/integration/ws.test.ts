@@ -26,6 +26,7 @@ import {
     PostJupiterRouteSwapRequest,
     GetJupiterQuotesRequest,
     GetJupiterPricesRequest,
+    PostSubmitBatchRequest,
 } from "../../bxsolana";
 import bs58 from 'bs58'
 import {
@@ -68,12 +69,13 @@ async function getNewPumpFunToken(p: WsProvider): Promise<GetPumpFunNewTokensStr
     }
 }
 
-describe('Transaction Submissions', () => {
+describe('TransactionSubmissions', () => {
     let config: ReturnType<typeof loadFromEnv>;
     let provider: InstanceType<typeof WsProvider>;
     let signer: InstanceType<typeof Keypair>;
     let bloxrouteTipWallet: InstanceType<typeof PublicKey>;
     let jitoTipWallet: InstanceType<typeof PublicKey>;
+    const timings: Record<string, number> = {};
 
     // Run before each test
     beforeEach(async () => {
@@ -93,6 +95,13 @@ describe('Transaction Submissions', () => {
 
     afterEach(() => {
         provider.close()
+    });
+
+    afterAll(() => {
+        console.info('\n---- API Timing Results ----');
+        Object.entries(timings).forEach(([name, duration]) => {
+            console.info(`${name}: ${duration}ms`);
+        });
     });
 
     // Helper function to create a signed transaction
@@ -185,6 +194,30 @@ describe('Transaction Submissions', () => {
         } as PostSubmitRequest;
     }
 
+    function createPostSubmitBatchRequest(transaction1: Transaction, transaction2: Transaction): PostSubmitBatchRequest {
+        return {
+            entries: [
+                {
+                    transaction: {
+                        content: transaction1.serialize().toString(`base64`),
+                        isCleanup: false
+                    } as TransactionMessage,
+                    skipPreFlight: false
+                } as PostSubmitRequestEntry,
+                {
+                    transaction: {
+                        content: transaction2.serialize().toString(`base64`),
+                        isCleanup: false
+                    } as TransactionMessage,
+                    skipPreFlight: false
+                } as PostSubmitRequestEntry
+            ],
+            submitStrategy: "P_UKNOWN",
+            useBundle: false,
+            frontRunningProtection: false
+        } as PostSubmitBatchRequest;
+    }
+
     // Helper function to create a post submit request
     function createPostSubmitPaladinRequest(transaction: Transaction): PostSubmitPaladinRequest {
         return {
@@ -214,7 +247,9 @@ describe('Transaction Submissions', () => {
         const postSubmitRequest = createPostSubmitRequest(transaction);
 
         // Submit transaction
+        const start = performance.now();
         const postSubmitResponse = await provider.postSubmit(postSubmitRequest);
+        timings["PostSubmit"] = performance.now() - start;
         console.info(JSON.stringify(postSubmitResponse, null, 2));
 
         expect(postSubmitResponse.signature);
@@ -226,10 +261,27 @@ describe('Transaction Submissions', () => {
         const postSubmitRequest = createPostSubmitRequest(transaction);
 
         // Submit transaction using V2
+        const start = performance.now();
         const postSubmitResponse = await provider.postSubmitV2(postSubmitRequest);
+        timings["PostSubmitV2"] = performance.now() - start;
         console.info(JSON.stringify(postSubmitResponse, null, 2));
 
         expect(postSubmitResponse.signature);
+    });
+
+    test('PostSubmitBatch', async () => {
+        // Create transaction and request using helper functions
+        const transaction1 = await createSignedTransactionWithBloXrouteTip({ computeLimit: 500_000, priorityFee: 1_000, bloxrouteTip: 1_000_000 });
+        const transaction2 = await createSignedTransactionWithBloXrouteTip({ computeLimit: 500_000, priorityFee: 1_000, bloxrouteTip: 1_000_000 });
+        const request = createPostSubmitBatchRequest(transaction1, transaction2);
+
+        // Submit transaction
+        const start = performance.now();
+        const response = await provider.postSubmitBatch(request);
+        timings["PostSubmitBatch"] = performance.now() - start;
+        console.info(JSON.stringify(response, null, 2));
+
+        expectNoNulls(response)
     });
 
     test('PostSubmitPaladinV2', async () => {
@@ -238,7 +290,9 @@ describe('Transaction Submissions', () => {
         const postSubmitRequest = createPostSubmitPaladinRequest(transaction);
 
         // Submit transaction using V2
+        const start = performance.now();
         const postSubmitResponse = await provider.postSubmitPaladinV2(postSubmitRequest);
+        timings["PostSubmitPaladinV2"] = performance.now() - start;
         console.info(JSON.stringify(postSubmitResponse, null, 2));
 
         expect(postSubmitResponse.signature);
@@ -252,7 +306,9 @@ describe('Transaction Submissions', () => {
         const snipeRequest = createPostSubmitSnipeRequest(transactions);
 
         // Submit snipe request
+        const start = performance.now();
         const snipeResponse = await provider.postSubmitSnipeV2(snipeRequest);
+        timings["PostSubmitSnipeV2"] = performance.now() - start;
         console.info(JSON.stringify(snipeResponse, null, 2));
 
         // Expect at least one signature in the response

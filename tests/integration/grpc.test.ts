@@ -36,7 +36,7 @@ import {
     SystemProgram,
     Transaction,
     ComputeBudgetProgram,
-  } from '@solana/web3.js';
+} from '@solana/web3.js';
 import { MAINNET_API_PUMP_NY_GRPC } from "../../bxsolana/utils/constants";
 
 jest.setTimeout(1000 * 60 * 10); // Ten minute timeout
@@ -44,17 +44,17 @@ jest.setTimeout(1000 * 60 * 10); // Ten minute timeout
 // eslint-disable-next-line
 function expectNoNulls(response: any) {
     const { timestamp, ...responseWithoutTimestamp } = response;
-    
+
     expect(
-      Object.values(responseWithoutTimestamp).every(v =>
-        v !== null &&
-        v !== undefined &&
-        v !== '' &&
-        !(Array.isArray(v) && v.length === 0) &&
-        !(typeof v === 'object' && !Array.isArray(v) && Object.keys(v).length === 0)
-      )
+        Object.values(responseWithoutTimestamp).every(v =>
+            v !== null &&
+            v !== undefined &&
+            v !== '' &&
+            !(Array.isArray(v) && v.length === 0) &&
+            !(typeof v === 'object' && !Array.isArray(v) && Object.keys(v).length === 0)
+        )
     ).toBe(true);
-  }
+}
 
 async function getNewPumpFunToken(p: GrpcProvider): Promise<GetPumpFunNewTokensStreamResponse> {
     const request = {} as GetPumpFunNewTokensStreamRequest;
@@ -70,13 +70,13 @@ async function getNewPumpFunToken(p: GrpcProvider): Promise<GetPumpFunNewTokensS
     }
 }
 
-describe('Transaction Submissions', () => {
+describe('TransactionSubmission', () => {
     let config: ReturnType<typeof loadFromEnv>;
-    let provider: InstanceType<typeof GrpcProvider>; 
-    let pump_provider: InstanceType<typeof GrpcProvider>; 
-    let signer: InstanceType<typeof Keypair>; 
+    let provider: InstanceType<typeof GrpcProvider>;
+    let signer: InstanceType<typeof Keypair>;
     let bloxrouteTipWallet: InstanceType<typeof PublicKey>;
     let jitoTipWallet: InstanceType<typeof PublicKey>;
+    const timings: Record<string, number> = {};
 
     // Run before each test
     beforeEach(() => {
@@ -87,12 +87,6 @@ describe('Transaction Submissions', () => {
             `${MAINNET_API_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
             true
         );
-        pump_provider = new GrpcProvider(
-            config.authHeader,
-            config.privateKey,
-            `${MAINNET_API_PUMP_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
-            true
-        )
         signer = Keypair.fromSecretKey(
             bs58.decode(config.privateKey)
         )
@@ -100,15 +94,22 @@ describe('Transaction Submissions', () => {
         jitoTipWallet = new PublicKey("96gYZGLnJYVFmbjzopPSU6QiEV5fGqZNyN9nmNhvrZU5");
     });
 
+    afterAll(() => {
+        console.info('\n---- API Timing Results ----');
+        Object.entries(timings).forEach(([name, duration]) => {
+            console.info(`${name}: ${duration}ms`);
+        });
+    });
+
     // Helper function to create a signed transaction
     async function createSignedTransactionWithBloXrouteTip({
         computeLimit,
         priorityFee,
         bloxrouteTip
-    }: { computeLimit: number; priorityFee: number, bloxrouteTip: number}): Promise<Transaction> {
+    }: { computeLimit: number; priorityFee: number, bloxrouteTip: number }): Promise<Transaction> {
         const blockhashRequest: GetRecentBlockHashRequest = {};
         const blockhashResponse = await provider.getRecentBlockHash(blockhashRequest);
-        
+
         const tx1 = [
             SystemProgram.transfer({
                 fromPubkey: signer.publicKey,
@@ -116,7 +117,7 @@ describe('Transaction Submissions', () => {
                 lamports: bloxrouteTip
             })
         ];
-        
+
         const tx2 = [
             ComputeBudgetProgram.setComputeUnitLimit({ units: computeLimit }),
             ComputeBudgetProgram.setComputeUnitPrice({ microLamports: priorityFee }),
@@ -126,16 +127,16 @@ describe('Transaction Submissions', () => {
                 lamports: 1
             })
         ];
-        
+
         const transaction = new Transaction({
             recentBlockhash: blockhashResponse.blockHash,
             feePayer: signer.publicKey
         });
-        
+
         transaction.add(...tx1);
         transaction.add(...tx2);
         transaction.sign(signer);
-        
+
         return transaction;
     }
 
@@ -145,17 +146,17 @@ describe('Transaction Submissions', () => {
         priorityFee,
         bloxrouteTip,
         jitoTip
-    }: { computeLimit: number; priorityFee: number, bloxrouteTip: number, jitoTip: number}): Promise<Transaction[]> {
+    }: { computeLimit: number; priorityFee: number, bloxrouteTip: number, jitoTip: number }): Promise<Transaction[]> {
         const blockhashRequest: GetRecentBlockHashRequest = {};
         const blockhashResponse = await provider.getRecentBlockHash(blockhashRequest);
         const blockHash = blockhashResponse.blockHash;
-        
+
         // First transaction: transfer to both jito and bloxroute
         const transaction1 = new Transaction({
             recentBlockhash: blockHash,
             feePayer: signer.publicKey
         });
-        
+
         transaction1.add(
             ComputeBudgetProgram.setComputeUnitLimit({ units: computeLimit }),
             ComputeBudgetProgram.setComputeUnitPrice({ microLamports: priorityFee }),
@@ -170,12 +171,12 @@ describe('Transaction Submissions', () => {
                 lamports: bloxrouteTip
             })
         );
-        
-        transaction1.sign(signer);
-        
-        const transaction2 = await createSignedTransactionWithBloXrouteTip({computeLimit: 500_000, priorityFee: 1_000, bloxrouteTip: 1_000_000});
 
-        
+        transaction1.sign(signer);
+
+        const transaction2 = await createSignedTransactionWithBloXrouteTip({ computeLimit: 500_000, priorityFee: 1_000, bloxrouteTip: 1_000_000 });
+
+
         return [transaction1, transaction2];
     }
 
@@ -211,7 +212,6 @@ describe('Transaction Submissions', () => {
             submitStrategy: "P_UKNOWN",
             useBundle: false,
             frontRunningProtection: false,
-            submitProtection: "SP_LOW",
         } as PostSubmitBatchRequest;
     }
 
@@ -240,11 +240,13 @@ describe('Transaction Submissions', () => {
 
     test('PostSubmit', async () => {
         // Create transaction and request using helper functions
-        const transaction = await createSignedTransactionWithBloXrouteTip({computeLimit: 500_000, priorityFee: 1_000, bloxrouteTip: 1_000_000});
+        const transaction = await createSignedTransactionWithBloXrouteTip({ computeLimit: 500_000, priorityFee: 1_000, bloxrouteTip: 1_000_000 });
         const request = createPostSubmitRequest(transaction);
 
         // Submit transaction
+        const start = performance.now();
         const response = await provider.postSubmit(request);
+        timings["PostSubmit"] = performance.now() - start;
         console.info(JSON.stringify(response, null, 2));
 
         expectNoNulls(response)
@@ -252,11 +254,13 @@ describe('Transaction Submissions', () => {
 
     test('PostSubmitV2', async () => {
         // Create transaction and request using helper functions
-        const transaction = await createSignedTransactionWithBloXrouteTip({computeLimit: 500_000, priorityFee: 1_000, bloxrouteTip: 1_000_000});
+        const transaction = await createSignedTransactionWithBloXrouteTip({ computeLimit: 500_000, priorityFee: 1_000, bloxrouteTip: 1_000_000 });
         const request = createPostSubmitRequest(transaction);
 
         // Submit transaction using V2
+        const start = performance.now();
         const response = await provider.postSubmitV2(request);
+        timings["PostSubmitV2"] = performance.now() - start;
         console.info(JSON.stringify(response, null, 2));
 
         expectNoNulls(response)
@@ -264,12 +268,14 @@ describe('Transaction Submissions', () => {
 
     test('PostSubmitBatch', async () => {
         // Create transaction and request using helper functions
-        const transaction1 = await createSignedTransactionWithBloXrouteTip({computeLimit: 500_000, priorityFee: 1_000, bloxrouteTip: 1_000_000});
-        const transaction2 = await createSignedTransactionWithBloXrouteTip({computeLimit: 500_000, priorityFee: 1_000, bloxrouteTip: 1_000_000});
+        const transaction1 = await createSignedTransactionWithBloXrouteTip({ computeLimit: 500_000, priorityFee: 1_000, bloxrouteTip: 1_000_000 });
+        const transaction2 = await createSignedTransactionWithBloXrouteTip({ computeLimit: 500_000, priorityFee: 1_000, bloxrouteTip: 1_000_000 });
         const request = createPostSubmitBatchRequest(transaction1, transaction2);
 
         // Submit transaction
+        const start = performance.now();
         const response = await provider.postSubmitBatch(request);
+        timings["PostSubmitBatch"] = performance.now() - start;
         console.info(JSON.stringify(response, null, 2));
 
         expectNoNulls(response)
@@ -277,11 +283,13 @@ describe('Transaction Submissions', () => {
 
     test('PostSubmitPaladinV2', async () => {
         // Create transaction and request using helper functions
-        const transaction = await createSignedTransactionWithBloXrouteTip({computeLimit: 1_000_000, priorityFee: 40_000_000, bloxrouteTip: 10_000_000});
+        const transaction = await createSignedTransactionWithBloXrouteTip({ computeLimit: 1_000_000, priorityFee: 40_000_000, bloxrouteTip: 10_000_000 });
         const request = createPostSubmitPaladinRequest(transaction);
 
         // Submit transaction using V2
+        const start = performance.now();
         const response = await provider.postSubmitPaladinV2(request);
+        timings["PostSubmitPaladinV2"] = performance.now() - start;
         console.info(JSON.stringify(response, null, 2));
 
         expectNoNulls(response)
@@ -289,25 +297,27 @@ describe('Transaction Submissions', () => {
 
     test('PostSubmitSnipeV2', async () => {
         // Create multiple transactions for snipe testing
-        const transactions = await createSnipeTransactions({computeLimit: 500_000, priorityFee: 1_000, bloxrouteTip: 1_000_000, jitoTip: 100_000});
-        
+        const transactions = await createSnipeTransactions({ computeLimit: 500_000, priorityFee: 1_000, bloxrouteTip: 1_000_000, jitoTip: 100_000 });
+
         // Create snipe request
         const request = createPostSubmitSnipeRequest(transactions);
-        
+
         // Submit snipe request
+        const start = performance.now();
         const response = await provider.postSubmitSnipeV2(request);
+        timings["PostSubmitSnipeV2"] = performance.now() - start;
         console.info(JSON.stringify(response, null, 2));
-        
+
         // Expect at least one signature in the response
         expectNoNulls(response)
     });
-    
+
 });
 
 describe('Streaming', () => {
     let config: ReturnType<typeof loadFromEnv>;
-    let provider: InstanceType<typeof GrpcProvider>; 
-    let pump_provider: InstanceType<typeof GrpcProvider>; 
+    let provider: InstanceType<typeof GrpcProvider>;
+    let pump_provider: InstanceType<typeof GrpcProvider>;
 
     // Run before each test
     beforeEach(() => {
@@ -432,8 +442,8 @@ describe('Streaming', () => {
 
 describe("Requests", () => {
     let config: ReturnType<typeof loadFromEnv>;
-    let provider: InstanceType<typeof GrpcProvider>; 
-    let pump_provider: InstanceType<typeof GrpcProvider>; 
+    let provider: InstanceType<typeof GrpcProvider>;
+    let pump_provider: InstanceType<typeof GrpcProvider>;
 
     // Run before each test
     beforeEach(() => {
@@ -510,28 +520,28 @@ describe("Requests", () => {
         const response = await provider.postJupiterRouteSwap({
             ownerAddress: config.publicKey,
             steps: [
-              {
-                project: {
-                  label: "Raydium",
-                  id: "6U4TBh3aJgiJ5EqCDEua4rP75HsqcfHapMKhhyuTqGuo"
-                },
-                inToken: "9BB6NFEcjBCtnNLFko2FqVQBq8HHM13kCyYcdQbgpump",
-                outToken: "So11111111111111111111111111111111111111112",
-                inAmount: 0.01,
-                outAmountMin: 0.000123117,
-                outAmount: 0.000123425,
-                fee: {
-                  amount: 0.000025,
-                  mint: "9BB6NFEcjBCtnNLFko2FqVQBq8HHM13kCyYcdQbgpump",
-                  percent: 0.0025062656
+                {
+                    project: {
+                        label: "Raydium",
+                        id: "6U4TBh3aJgiJ5EqCDEua4rP75HsqcfHapMKhhyuTqGuo"
+                    },
+                    inToken: "9BB6NFEcjBCtnNLFko2FqVQBq8HHM13kCyYcdQbgpump",
+                    outToken: "So11111111111111111111111111111111111111112",
+                    inAmount: 0.01,
+                    outAmountMin: 0.000123117,
+                    outAmount: 0.000123425,
+                    fee: {
+                        amount: 0.000025,
+                        mint: "9BB6NFEcjBCtnNLFko2FqVQBq8HHM13kCyYcdQbgpump",
+                        percent: 0.0025062656
+                    }
                 }
-              }
             ],
             slippage: 25,
             computeLimit: 200_000,
             computePrice: "100000",
             tip: "1000000"
-          } as PostJupiterRouteSwapRequest);
+        } as PostJupiterRouteSwapRequest);
         console.info(JSON.stringify(response, null, 2))
         expect(response.transactions.length).toBeGreaterThan(0)
     });
