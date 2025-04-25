@@ -135,6 +135,8 @@ import {
     GetRecentBlockHashRequestV2,
     GetRecentBlockHashResponseV2,
     GetRaydiumCPMMQuotesRequest,
+    GetPumpFunAMMSwapStreamRequest,
+    GetPumpFunAMMSwapStreamResponse,
     GetRaydiumCPMMQuotesResponse,
     GetRaydiumCLMMQuotesResponse,
     GetRaydiumCLMMQuotesRequest,
@@ -153,7 +155,7 @@ import {
     GetLeaderScheduleRequest,
     TransactionMessageV2,
     GetPumpFunNewAmmPoolStreamRequest,
-    GetPumpFunNewAmmPoolStreamResponse,
+    GetPumpFunNewAmmPoolStreamResponse
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -893,6 +895,11 @@ export abstract class BaseProvider implements Api {
     getPumpFunSwapsStream = (
         request: GetPumpFunSwapsStreamRequest
     ): Promise<AsyncGenerator<GetPumpFunSwapsStreamResponse>> => {
+        throw new Error("Not implemented")
+    }
+    getPumpFunAMMSwapStream = (
+        request: GetPumpFunAMMSwapStreamRequest
+    ): Promise<AsyncGenerator<GetPumpFunAMMSwapStreamResponse>> => {
         throw new Error("Not implemented")
     }
 

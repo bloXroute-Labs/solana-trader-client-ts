@@ -118,6 +118,8 @@ import {
     PostPumpFunSwapResponse,
     GetPumpFunQuotesRequest,
     GetPumpFunQuotesResponse,
+    GetPumpFunAMMSwapStreamRequest,
+    GetPumpFunAMMSwapStreamResponse,
     GetRecentBlockHashRequestV2,
     GetRecentBlockHashResponseV2,
     PostRaydiumCPMMSwapRequest,
@@ -484,6 +486,19 @@ export class WsProvider extends BaseProvider {
         )
 
         this.manageGetStreamMaps("GetPumpFunSwapsStream", subscriptionId)
+
+        return this.wsConnection.subscribeToNotifications(subscriptionId)
+    }
+
+    getPumpFunAMMSwapStream = async (
+        request: GetPumpFunAMMSwapStreamRequest
+    ): Promise<AsyncGenerator<GetPumpFunAMMSwapStreamResponse>> => {
+        const subscriptionId = await this.wsConnection.subscribe(
+            "GetPumpFunAMMSwapStream",
+            request
+        )
+
+        this.manageGetStreamMaps("GetPumpFunAMMSwapStream", subscriptionId)
 
         return this.wsConnection.subscribeToNotifications(subscriptionId)
     }
@@ -884,6 +899,12 @@ export class WsProvider extends BaseProvider {
         return this.cancelStreamByCount("GetBundleTipStream", streamNumber)
     }
 
+    cancelGetPumpFunAMMSwapStreamByCount = async (
+        streamNumber: number
+    ): Promise<boolean> => {
+        return this.cancelStreamByCount("GetPumpFunAMMSwapStream", streamNumber)
+    }
+
     cancelAllGetOrderbooksStream = async (): Promise<Awaited<boolean>[]> => {
         return this.cancelAllStreams("GetOrderbooksStream")
     }
@@ -934,6 +955,10 @@ export class WsProvider extends BaseProvider {
 
     cancelAllGetPumpFunNewAmmPoolStream = async (): Promise<Awaited<boolean>[]> => {
         return this.cancelAllStreams("GetPumpFunNewAmmPoolStream")
+    }
+
+    cancelAllGetPumpFunAMMSwapStream = async (): Promise<Awaited<boolean>[]> => {
+        return this.cancelAllStreams("GetPumpFunAmmSwapStream")
     }
 
 
