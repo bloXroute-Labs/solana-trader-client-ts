@@ -127,6 +127,8 @@ import {
     PostPumpFunSwapResponse,
     GetPumpFunQuotesRequest,
     GetPumpFunQuotesResponse,
+    GetPumpFunAMMSwapStreamRequest,
+    GetPumpFunAMMSwapStreamResponse,
     GetRecentBlockHashRequestV2,
     GetRecentBlockHashResponseV2,
     PostRaydiumCPMMSwapRequest,
@@ -660,6 +662,12 @@ export class GrpcProvider extends BaseProvider {
         request: GetPumpFunSwapsStreamRequest
     ): Promise<AsyncGenerator<GetPumpFunSwapsStreamResponse>> => {
         return this.client.getPumpFunSwapsStream(request)
+    }
+
+    getPumpFunAMMSwapStream = (
+        request: GetPumpFunAMMSwapStreamRequest
+    ): Promise<AsyncGenerator<GetPumpFunAMMSwapStreamResponse>> => {
+        return this.client.getPumpFunAMMSwapStream(request)
     }
 
     getMarketDepthsStream = (

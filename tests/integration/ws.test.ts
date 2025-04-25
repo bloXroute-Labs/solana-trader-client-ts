@@ -27,6 +27,7 @@ import {
     GetJupiterQuotesRequest,
     GetJupiterPricesRequest,
     PostSubmitBatchRequest,
+    GetPumpFunAMMSwapStreamRequest,
 } from "../../bxsolana";
 import bs58 from 'bs58'
 import {
@@ -389,6 +390,19 @@ describe('Streaming', () => {
     test('Stream New PumpSwap AMM Pools', async () => {
         const request = {} as GetPumpFunNewAmmPoolStreamRequest
         const stream = await pump_provider.getPumpFunNewAmmPoolStream(request)
+
+        for await (const response of stream) {
+            // console.info(JSON.stringify(response, null, 2));
+            expectNoNulls(response)
+            break
+        }
+    });
+
+    test('Stream New PumpSwap AMM Swaps', async () => {
+        const request = {
+            pools: ["GAwjTtkx6XoQaEHr9ERV97MqoMpErKnRhK5MArToqfhE"]
+        } as GetPumpFunAMMSwapStreamRequest
+        const stream = await pump_provider.getPumpFunAMMSwapStream(request)
 
         for await (const response of stream) {
             // console.info(JSON.stringify(response, null, 2));
