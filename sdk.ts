@@ -32,7 +32,9 @@ import {
   GetNewRaydiumPoolsByTransactionResponse,
   GetPumpFunNewTokensStreamResponse,
   GetPumpFunSwapsStreamResponse,
-  GetNewRaydiumPoolsResponse
+  GetNewRaydiumPoolsResponse,
+  GetPumpFunAMMSwapStreamRequest,
+  GetPumpFunAMMSwapStreamResponse
 } from "@bloxroute/solana-trader-client-ts";
 import bs58 from 'bs58'
 import {
@@ -672,6 +674,42 @@ public static async postPumpFunSwapSol(protocol: string, network: string): Promi
   }
 
   /**
+   * Get new Pump Swap swaps stream
+   */
+  public static async getPumpFunAmmSwapStream(protocol: string, network: string, times = 1): Promise<SdkFunctionResult> {
+      try {          
+
+          const request = {
+              pools: ["4w2cysotX6czaUGmmWg13hDpY4QEMG2CzeKYEQyK9Ama"]
+          } as GetPumpFunAMMSwapStreamRequest;
+
+          const provider = SdkFunctions.getProvider(protocol, true);
+          
+          const stream = await provider.getPumpFunAMMSwapStream(request);
+          
+          const responses: GetPumpFunAMMSwapStreamResponse[] = [];
+          for await (const response of stream) {
+              console.info(JSON.stringify(response, null, 2));
+              responses.push(response);
+              times--;
+              if (times === 0) {
+                  break;
+              }
+          }
+          
+          return { 
+              success: true,
+              data: responses 
+          };
+      } catch (error) {
+          return {
+              success: false,
+              error: error instanceof Error ? error : new Error(String(error))
+          };
+      }
+  }
+
+  /**
    * Get new Raydium pools stream
    */
   public static async getNewRaydiumPoolsStream(protocol: string, network: string, times = 1): Promise<SdkFunctionResult> {
@@ -820,6 +858,7 @@ public static async postPumpFunSwapSol(protocol: string, network: string): Promi
       GetPumpFunNewAmmPoolStream: SdkFunctions.getPumpFunNewAmmPoolStream,
       GetPumpFunNewTokensStream: SdkFunctions.getPumpFunNewTokensStream,
       GetPumpFunSwapsStream: SdkFunctions.getPumpFunSwapsStream,
+      GetPumpFunAmmSwapStream: SdkFunctions.getPumpFunAmmSwapStream,
       GetNewRaydiumPoolsStream: SdkFunctions.getNewRaydiumPoolsStream,
       GetNewRaydiumPoolsByTransactionStream: SdkFunctions.getNewRaydiumPoolsByTransactionStream,
     };
