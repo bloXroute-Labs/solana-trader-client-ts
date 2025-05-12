@@ -29,6 +29,7 @@ import {
     PostSubmitBatchRequest,
     PostPumpFunSwapRequest,
     GetPumpFunAMMSwapStreamRequest,
+    signTxMessage,
 } from "../../bxsolana";
 import bs58 from 'bs58'
 import {
@@ -38,7 +39,7 @@ import {
     Transaction,
     ComputeBudgetProgram,
 } from '@solana/web3.js';
-import { MAINNET_API_PUMP_NY_GRPC } from "../../bxsolana/utils/constants";
+import { LOCAL_API_GRPC_HOST, LOCAL_API_GRPC_PORT, MAINNET_API_PUMP_NY_GRPC } from "../../bxsolana/utils/constants";
 
 jest.setTimeout(1000 * 60 * 10); // Ten minute timeout
 
@@ -239,7 +240,7 @@ describe('TransactionSubmission', () => {
         } as PostSubmitSnipeRequest;
     }
 
-    test('PostSubmit', async () => {
+    test('regular', async () => {
         // Create transaction and request using helper functions
         const transaction = await createSignedTransactionWithBloXrouteTip({ computeLimit: 500_000, priorityFee: 1_000, bloxrouteTip: 1_000_000 });
         const request = createPostSubmitRequest(transaction);
@@ -466,13 +467,13 @@ describe("Requests", () => {
             config.authHeader,
             config.privateKey,
             `${MAINNET_API_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
-            true
+            false
         );
         pump_provider = new GrpcProvider(
             config.authHeader,
             config.privateKey,
-            `${MAINNET_API_PUMP_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
-            true
+            `${MAINNET_API_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
+            false
         )
     });
 
@@ -789,11 +790,125 @@ describe("Requests", () => {
             slippage: 20,
             computeLimit: 250_000,
             computePrice: "100000",
-            tip: "1000000"
+            tip: "1000000",
+            jitoDontFront: true
         }
         const response = await pump_provider.postPumpFunSwap(request)
-        // console.info(JSON.stringify(response, null, 2));
+        console.info(JSON.stringify(response, null, 2));
         expectNoNulls(response)
+    })
+
+})
+
+describe("Custom", () => {
+    let config: ReturnType<typeof loadFromEnv>;
+    let provider: InstanceType<typeof GrpcProvider>;
+    let pump_provider: InstanceType<typeof GrpcProvider>;
+    let signer: InstanceType<typeof Keypair>;
+    let bloxrouteTipWallet: InstanceType<typeof PublicKey>;
+    let jitoTipWallet: InstanceType<typeof PublicKey>;
+
+    // Run before each test
+    beforeEach(() => {
+        config = loadFromEnv();
+        provider = new GrpcProvider(
+            config.authHeader,
+            config.privateKey,
+            `${MAINNET_API_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
+            false
+        );
+        pump_provider = new GrpcProvider(
+            config.authHeader,
+            config.privateKey,
+            `${MAINNET_API_PUMP_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
+            false
+        )
+        signer = Keypair.fromSecretKey(
+            bs58.decode(config.privateKey)
+        )
+        bloxrouteTipWallet = new PublicKey("HWEoBxYs7ssKuudEjzjmpfJVX7Dvi7wescFsVx2L5yoY");
+        jitoTipWallet = new PublicKey("96gYZGLnJYVFmbjzopPSU6QiEV5fGqZNyN9nmNhvrZU5");
+    });
+
+    test("PumpFunSwapJitoDontFront", async () => {
+        const token: GetPumpFunNewTokensStreamResponse = await getNewPumpFunToken(pump_provider)
+        const postPumpFunSwapRequest: PostPumpFunSwapRequest = {
+            userAddress: config.publicKey,
+            bondingCurveAddress: token.bondingCurve,
+            tokenAddress: token.mint,
+            tokenAmount: 1,
+            isBuy: true,
+            solThreshold: 0.001,
+            slippage: 50,
+            computeLimit: 250_000,
+            computePrice: "100000",
+            tip: "1000000"
+        }
+        const postPumpFunSwapResponse = await pump_provider.postPumpFunSwap(postPumpFunSwapRequest)
+        console.info(JSON.stringify(postPumpFunSwapResponse, null, 2));
+        expectNoNulls(postPumpFunSwapResponse)
+
+        if (postPumpFunSwapResponse.transaction) {
+
+            const contents = postPumpFunSwapResponse.transaction.content
+
+            // Step 1: Decode the base58-encoded transaction content
+            const txBuffer = Buffer.from(contents, "base64");
+
+            // Step 2: Deserialize the transaction
+            const tx = Transaction.from(txBuffer);
+
+            // Step 3: Sign it with your signer
+            tx.sign(signer); // assumes you're the fee payer or an authorized signer
+            const transaction = {
+                content: tx.serialize().toString('base64'),
+                isCleanup: false
+            } as TransactionMessage
+            const postSubmitRequest = {
+                transaction: transaction,
+                skipPreFlight: true,
+                frontRunningProtection: true
+            } as PostSubmitRequest;
+            const postSubmitResponse = await provider.postSubmit(postSubmitRequest)
+            console.info(JSON.stringify(postSubmitResponse, null, 2));
+            expectNoNulls(postSubmitResponse)
+        }
+    })
+
+    test("PostRaydiumSwapJitoDontFront", async () => {
+        const postJupiterSwapResponse = await provider.postJupiterSwap({
+            ownerAddress: config.publicKey,
+            inToken: "SOL",
+            outToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            inAmount: 0.001,
+            slippage: 60,
+            computeLimit: 250_000,
+            computePrice: "100000",
+            tip: "1000000",
+            jitoDontFront: true
+        } as PostJupiterSwapRequest)
+        console.info(JSON.stringify(postJupiterSwapResponse, null, 2));
+        expectNoNulls(postJupiterSwapResponse)
+
+        if (postJupiterSwapResponse.transactions) {
+
+            const contents = postJupiterSwapResponse.transactions[0].content
+
+            let signedTx = signTxMessage({
+                content: contents,
+                isCleanup: false
+            }, signer)
+
+            const postSubmitRequest = {
+                transaction: signedTx,
+                skipPreFlight: true,
+                frontRunningProtection: true
+            } as PostSubmitRequest;
+            const postSubmitResponse = await provider.postSubmit(postSubmitRequest)
+            console.info(JSON.stringify(postSubmitResponse, null, 2));
+            expectNoNulls(postSubmitResponse)
+            
+        }
     })
 
 })

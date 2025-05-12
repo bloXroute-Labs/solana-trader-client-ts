@@ -25,8 +25,8 @@ export type SubmitTransactionResponse = {
 }
 
 function txFromBase64(base64EncodedTx: string): VersionedTransaction {
-    const buff = Buffer.from(base64EncodedTx, "base64")
-    const transaction = VersionedTransaction.deserialize(buff)
+    const decoded = Uint8Array.from(Buffer.from(base64EncodedTx, "base64"))
+    const transaction = VersionedTransaction.deserialize(decoded)
     return transaction
 }
 
