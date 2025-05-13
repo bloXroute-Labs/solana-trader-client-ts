@@ -35,6 +35,7 @@ export declare namespace $.api {
     outAmount: number;
     txHash: string;
     timestamp?: Timestamp;
+    slot: string;
   }
 }
 export type Type = $.api.GetPumpFunAMMSwapStreamResponse;
@@ -50,6 +51,7 @@ export function getDefaultValue(): $.api.GetPumpFunAMMSwapStreamResponse {
     outAmount: 0,
     txHash: "",
     timestamp: undefined,
+    slot: "0",
   };
 }
 
@@ -71,6 +73,7 @@ export function encodeJson(value: $.api.GetPumpFunAMMSwapStreamResponse): unknow
   if (value.outAmount !== undefined) result.outAmount = tsValueToJsonValueFns.double(value.outAmount);
   if (value.txHash !== undefined) result.txHash = tsValueToJsonValueFns.string(value.txHash);
   if (value.timestamp !== undefined) result.timestamp = encodeJson_1(value.timestamp);
+  if (value.slot !== undefined) result.slot = tsValueToJsonValueFns.uint64(value.slot);
   return result;
 }
 
@@ -85,6 +88,7 @@ export function decodeJson(value: any): $.api.GetPumpFunAMMSwapStreamResponse {
   if (value.outAmount !== undefined) result.outAmount = jsonValueToTsValueFns.double(value.outAmount);
   if (value.txHash !== undefined) result.txHash = jsonValueToTsValueFns.string(value.txHash);
   if (value.timestamp !== undefined) result.timestamp = decodeJson_1(value.timestamp);
+  if (value.slot !== undefined) result.slot = jsonValueToTsValueFns.uint64(value.slot);
   return result;
 }
 
@@ -142,6 +146,12 @@ export function encodeBinary(value: $.api.GetPumpFunAMMSwapStreamResponse): Uint
     const tsValue = value.timestamp;
     result.push(
       [9, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
+    );
+  }
+  if (value.slot !== undefined) {
+    const tsValue = value.slot;
+    result.push(
+      [10, tsValueToWireValueFns.uint64(tsValue)],
     );
   }
   return serialize(result);
@@ -213,6 +223,13 @@ export function decodeBinary(binary: Uint8Array): $.api.GetPumpFunAMMSwapStreamR
     const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined;
     if (value === undefined) break field;
     result.timestamp = value;
+  }
+  field: {
+    const wireValue = wireFields.get(10);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.uint64(wireValue);
+    if (value === undefined) break field;
+    result.slot = value;
   }
   return result;
 }

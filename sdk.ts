@@ -448,14 +448,14 @@ public static async postPumpFunSwapSol(protocol: string, network: string): Promi
     // Get new PumpFun token
     const newTokens = await SdkFunctions.getPumpFunNewTokensStream(protocol, network, 1);
     const token = newTokens.data[0]
-    console.info(JSON.stringify(token, null, 2));
     
     // Create swap request
     const request = {
-      userAddress: token.creator,
+      userAddress: SdkFunctions.appConfig.config.publicKey,
       bondingCurveAddress: token.bondingCurve,
       tokenAddress: token.mint,
       solAmount: 0.0001,
+      creator: token.creator,
       slippage: 20,
       computeLimit: 250_000,
       computePrice: "100000",
@@ -619,8 +619,8 @@ public static async postPumpFunSwapSol(protocol: string, network: string): Promi
               responses.push(response);
               times--;
               if (times === 0) {
-                  break;
-              }
+                    break;
+                }
           }
           
           return { 

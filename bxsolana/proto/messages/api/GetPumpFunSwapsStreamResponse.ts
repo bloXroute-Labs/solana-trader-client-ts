@@ -39,6 +39,7 @@ export declare namespace $.api {
     virtualSolReserves: string;
     virtualTokenReserves: string;
     timestamp?: Timestamp;
+    creator: string;
   }
 }
 export type Type = $.api.GetPumpFunSwapsStreamResponse;
@@ -58,6 +59,7 @@ export function getDefaultValue(): $.api.GetPumpFunSwapsStreamResponse {
     virtualSolReserves: "0",
     virtualTokenReserves: "0",
     timestamp: undefined,
+    creator: "",
   };
 }
 
@@ -83,6 +85,7 @@ export function encodeJson(value: $.api.GetPumpFunSwapsStreamResponse): unknown 
   if (value.virtualSolReserves !== undefined) result.virtualSolReserves = tsValueToJsonValueFns.uint64(value.virtualSolReserves);
   if (value.virtualTokenReserves !== undefined) result.virtualTokenReserves = tsValueToJsonValueFns.uint64(value.virtualTokenReserves);
   if (value.timestamp !== undefined) result.timestamp = encodeJson_1(value.timestamp);
+  if (value.creator !== undefined) result.creator = tsValueToJsonValueFns.string(value.creator);
   return result;
 }
 
@@ -101,6 +104,7 @@ export function decodeJson(value: any): $.api.GetPumpFunSwapsStreamResponse {
   if (value.virtualSolReserves !== undefined) result.virtualSolReserves = jsonValueToTsValueFns.uint64(value.virtualSolReserves);
   if (value.virtualTokenReserves !== undefined) result.virtualTokenReserves = jsonValueToTsValueFns.uint64(value.virtualTokenReserves);
   if (value.timestamp !== undefined) result.timestamp = decodeJson_1(value.timestamp);
+  if (value.creator !== undefined) result.creator = jsonValueToTsValueFns.string(value.creator);
   return result;
 }
 
@@ -182,6 +186,12 @@ export function encodeBinary(value: $.api.GetPumpFunSwapsStreamResponse): Uint8A
     const tsValue = value.timestamp;
     result.push(
       [13, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
+    );
+  }
+  if (value.creator !== undefined) {
+    const tsValue = value.creator;
+    result.push(
+      [14, tsValueToWireValueFns.string(tsValue)],
     );
   }
   return serialize(result);
@@ -281,6 +291,13 @@ export function decodeBinary(binary: Uint8Array): $.api.GetPumpFunSwapsStreamRes
     const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined;
     if (value === undefined) break field;
     result.timestamp = value;
+  }
+  field: {
+    const wireValue = wireFields.get(14);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.creator = value;
   }
   return result;
 }
