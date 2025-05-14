@@ -19,6 +19,8 @@ import {
     WsProvider,
     signTx,
     GetOpenOrdersRequestV2,
+    GetPumpFunNewTokensStreamResponse,
+    GetPumpFunNewTokensStreamRequest,
     PostCancelOrderRequestV2,
     PostOrderRequestV2,
     MAINNET_API_NY_HTTP,
@@ -91,6 +93,20 @@ function getRandom() {
     const max = Math.floor(1000000000000)
 
     return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+async function getNewPumpFunToken(p: BaseProvider): Promise<GetPumpFunNewTokensStreamResponse> {
+    const request = {} as GetPumpFunNewTokensStreamRequest;
+    try {
+        const stream = await p.getPumpFunNewTokensStream(request);
+        for await (const response of stream) {
+            return response;
+        }
+        throw new Error("No response received from token stream");
+    } catch (error) {
+        console.error("Error getting new pump fun token:", error);
+        throw error;
+    }
 }
 
 async function run() {
@@ -1432,11 +1448,13 @@ async function callPostTradeSwap(provider: BaseProvider) {
 
 async function callPostPumpFunSwap(provider: BaseProvider) {
     console.info("Generating a PumpFun swap")
+    const token = await getNewPumpFunToken(provider)
     const response = await provider.postPumpFunSwap({
         userAddress: ownerAddress,
-        bondingCurveAddress: "Fh8fnZUVEpPStJ2hKFNNjMAyuyvoJLMouENawg4DYCBc",
-        tokenAddress: "2DEsbYgW94AtZxgUfYXoL8DqJAorsLrEWZdSfriipump",
+        bondingCurveAddress: token.bondingCurve,
+        tokenAddress: token.mint,
         tokenAmount: 10,
+        creator: token.creator,
         solThreshold: 0.0001,
         isBuy: false,
         tip: "0",
@@ -1448,11 +1466,13 @@ async function callPostPumpFunSwap(provider: BaseProvider) {
 }
 
 async function callPostPumpFunSwapSol(provider: BaseProvider) {
+    const token = await getNewPumpFunToken(provider)
     console.info("Generating a PumpFun swap sol")
     const response = await provider.postPumpFunSwapSol({
         userAddress: ownerAddress,
-        bondingCurveAddress: "Fh8fnZUVEpPStJ2hKFNNjMAyuyvoJLMouENawg4DYCBc",
-        tokenAddress: "2DEsbYgW94AtZxgUfYXoL8DqJAorsLrEWZdSfriipump",
+        bondingCurveAddress: token.bondingCurve,
+        tokenAddress: token.mint,
+        creator: token.creator,
         solAmount: 0.0001,
         tip: "2000001",
         slippage: 1,
@@ -1797,8 +1817,7 @@ async function submitTransferWithMemoAndTip(provider: BaseProvider) {
     transaction = transaction.add(memo)
 
     transaction.sign(keypair)
-    const serializedTransaztionBytes = transaction.serialize()
-    const buff = Buffer.from(serializedTransaztionBytes)
+    const buff = transaction.serialize()
     const encodedTxn = buff.toString("base64")
     const response = await provider.postSubmit({
         transaction: { content: encodedTxn, isCleanup: false },
@@ -1843,7 +1862,7 @@ function buildUnsignedTxn(
         feePayer: owner,
     })
 
-    return Buffer.from(tx.serialize({ verifySignatures: false })).toString(
+    return tx.serialize({ verifySignatures: false }).toString(
         "base64"
     )
 }
@@ -1895,11 +1914,11 @@ async function callSubmitSnipe(provider: BaseProvider) {
 
     const transactions: TransactionMessage[] = [
         {
-            content: Buffer.from(serializedTx1).toString('base64'),
+            content: serializedTx1.toString('base64'),
             isCleanup: false,
         },
         {
-            content: Buffer.from(serializedTx2).toString('base64'),
+            content: serializedTx2.toString('base64'),
             isCleanup: false,
         }
     ];
@@ -1946,7 +1965,7 @@ async function callPlaceOrderBundle(
       }).add(computeBudgetIx).add(transferIx);
   
       const serializedTransaction = transaction.serialize({ verifySignatures: false });
-      const encodedTransaction = Buffer.from(serializedTransaction).toString('base64');
+      const encodedTransaction = serializedTransaction.toString('base64');
   
       const transactionMessage: TransactionMessageV2 = {
         content: encodedTransaction,

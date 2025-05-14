@@ -783,6 +783,7 @@ describe("Requests", () => {
             tokenAddress: token.mint,
             solAmount: 0.0001,
             slippage: 20,
+            creator: token.creator,
             computeLimit: 250_000,
             computePrice: "100000",
             tip: "1000000"
@@ -801,6 +802,7 @@ describe("Requests", () => {
             tokenAmount: 1,
             isBuy: true,
             solThreshold: 1,
+            creator: token.creator,
             slippage: 20,
             computeLimit: 250_000,
             computePrice: "100000",
