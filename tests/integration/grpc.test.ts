@@ -390,7 +390,7 @@ describe('Streaming', () => {
 
     test('Stream New PumpSwap AMM Swaps', async () => {
         const request = {
-            pools: ["GAwjTtkx6XoQaEHr9ERV97MqoMpErKnRhK5MArToqfhE"]
+            pools: ["8bdN4QZ5UHnknnCCK75cRLrGBRrEAnLzZi5vGs7aA2rj"]
         } as GetPumpFunAMMSwapStreamRequest
         const stream = await pump_provider.getPumpFunAMMSwapStream(request)
 
@@ -768,6 +768,7 @@ describe("Requests", () => {
             tokenAddress: token.mint,
             solAmount: 0.0001,
             slippage: 20,
+            creator: token.creator,
             computeLimit: 250_000,
             computePrice: "100000",
             tip: "1000000"
@@ -786,6 +787,7 @@ describe("Requests", () => {
             tokenAmount: 1,
             isBuy: true,
             solThreshold: 1,
+            creator: token.creator,
             slippage: 20,
             computeLimit: 250_000,
             computePrice: "100000",

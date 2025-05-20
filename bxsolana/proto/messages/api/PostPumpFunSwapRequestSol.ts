@@ -26,6 +26,7 @@ export declare namespace $.api {
     computeLimit: number;
     computePrice: string;
     tip?: string;
+    creator: string;
   }
 }
 export type Type = $.api.PostPumpFunSwapRequestSol;
@@ -40,6 +41,7 @@ export function getDefaultValue(): $.api.PostPumpFunSwapRequestSol {
     computeLimit: 0,
     computePrice: "0",
     tip: "0",
+    creator: "",
   };
 }
 
@@ -60,6 +62,7 @@ export function encodeJson(value: $.api.PostPumpFunSwapRequestSol): unknown {
   if (value.computeLimit !== undefined) result.computeLimit = tsValueToJsonValueFns.uint32(value.computeLimit);
   if (value.computePrice !== undefined) result.computePrice = tsValueToJsonValueFns.uint64(value.computePrice);
   if (value.tip !== undefined) result.tip = tsValueToJsonValueFns.uint64(value.tip);
+  if (value.creator !== undefined) result.creator = tsValueToJsonValueFns.string(value.creator);
   return result;
 }
 
@@ -73,6 +76,7 @@ export function decodeJson(value: any): $.api.PostPumpFunSwapRequestSol {
   if (value.computeLimit !== undefined) result.computeLimit = jsonValueToTsValueFns.uint32(value.computeLimit);
   if (value.computePrice !== undefined) result.computePrice = jsonValueToTsValueFns.uint64(value.computePrice);
   if (value.tip !== undefined) result.tip = jsonValueToTsValueFns.uint64(value.tip);
+  if (value.creator !== undefined) result.creator = jsonValueToTsValueFns.string(value.creator);
   return result;
 }
 
@@ -124,6 +128,12 @@ export function encodeBinary(value: $.api.PostPumpFunSwapRequestSol): Uint8Array
     const tsValue = value.tip;
     result.push(
       [8, tsValueToWireValueFns.uint64(tsValue)],
+    );
+  }
+  if (value.creator !== undefined) {
+    const tsValue = value.creator;
+    result.push(
+      [9, tsValueToWireValueFns.string(tsValue)],
     );
   }
   return serialize(result);
@@ -188,6 +198,13 @@ export function decodeBinary(binary: Uint8Array): $.api.PostPumpFunSwapRequestSo
     const value = wireValueToTsValueFns.uint64(wireValue);
     if (value === undefined) break field;
     result.tip = value;
+  }
+  field: {
+    const wireValue = wireFields.get(9);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.creator = value;
   }
   return result;
 }

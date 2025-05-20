@@ -1,6 +1,6 @@
 {
     "name": "@bloxroute/solana-trader-client-ts",
-    "version": "2.2.8",
+    "version": "2.2.9",
     "description": "Solana Trader API SDK",
     "type": "module",
     "exports": {
@@ -70,7 +70,7 @@
         "ws": "^8.8.0"
     },
     "devDependencies": {
-        "@bloxroute/solana-trader-client-ts": "2.2.8",
+        "@bloxroute/solana-trader-client-ts": "2.2.9",
         "@protobuf-ts/plugin": "^2.7.0",
         "@types/asciichart": "^1.5.8",
         "@types/google-protobuf": "^3.15.6",
