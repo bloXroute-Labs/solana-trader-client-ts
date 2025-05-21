@@ -217,7 +217,8 @@ export type { Type as GetPumpFunAMMSwapStreamRequest } from "./GetPumpFunAMMSwap
 export type { Type as GetPumpFunAMMSwapStreamResponse } from "./GetPumpFunAMMSwapStreamResponse";
 export type { Type as PostPumpFunSwapRequest } from "./PostPumpFunSwapRequest";
 export type { Type as PostPumpFunSwapRequestSol } from "./PostPumpFunSwapRequestSol";
+export type { Type as GetPumpFunAmmQuotesRequest } from "./GetPumpFunAmmQuotesRequest";
+export type { Type as GetPumpFunAmmQuotesResponse } from "./GetPumpFunAmmQuotesResponse";
+export type { Type as PostPumpFunAmmSwapRequest } from "./PostPumpFunAmmSwapRequest";
+export type { Type as PostPumpFunAmmSwapResponse } from "./PostPumpFunAmmSwapResponse";
 export type { Type as PostPumpFunSwapResponse } from "./PostPumpFunSwapResponse";
-export type { Type as GetLeaderScheduleRequest } from "./GetLeaderScheduleRequest";
-export type { Type as GetLeaderScheduleResponse } from "./GetLeaderScheduleResponse";
-export type { Type as LeaderSchedule } from "./LeaderSchedule";
