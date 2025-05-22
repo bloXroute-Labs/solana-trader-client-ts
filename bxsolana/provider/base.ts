@@ -151,11 +151,13 @@ import {
     PostSubmitSnipeRequest,
     PostSubmitSnipeResponse,
     PostSubmitPaladinRequest,
-    GetLeaderScheduleResponse,
-    GetLeaderScheduleRequest,
     TransactionMessageV2,
     GetPumpFunNewAmmPoolStreamRequest,
-    GetPumpFunNewAmmPoolStreamResponse
+    GetPumpFunNewAmmPoolStreamResponse,
+    GetPumpFunAmmQuotesRequest,
+    GetPumpFunAmmQuotesResponse,
+    PostPumpFunAmmSwapRequest,
+    PostPumpFunAmmSwapResponse
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -545,10 +547,6 @@ export abstract class BaseProvider implements Api {
     getRecentBlockHashV2(
         request: GetRecentBlockHashRequestV2
     ): Promise<GetRecentBlockHashResponseV2> {
-        throw new Error("Not implemented")
-    }
-
-    getLeaderSchedule(request: GetLeaderScheduleRequest): Promise<GetLeaderScheduleResponse> {
         throw new Error("Not implemented")
     }
 
@@ -1130,6 +1128,14 @@ export abstract class BaseProvider implements Api {
     postZetaCrossMarginAccount(
         request: PostZetaCrossMarginAccountRequest
     ): Promise<PostZetaCrossMarginAccountResponse> {
+        throw new Error("Not implemented")
+    }
+
+    getPumpFunAmmQuotes(request: GetPumpFunAmmQuotesRequest): Promise<GetPumpFunAmmQuotesResponse> {
+        throw new Error("Not implemented")
+    }
+
+    postPumpFunAmmSwap(request: PostPumpFunAmmSwapRequest): Promise<PostPumpFunAmmSwapResponse> {
         throw new Error("Not implemented")
     }
 }

@@ -928,17 +928,29 @@ import {
   encodeJson as encodeJson_153,
 } from "../../messages/api/PostPumpFunSwapRequestSol";
 import {
-  Type as GetLeaderScheduleRequest,
+  Type as GetPumpFunAmmQuotesRequest,
   encodeBinary as encodeBinary_154,
   decodeBinary as decodeBinary_154,
   encodeJson as encodeJson_154,
-} from "../../messages/api/GetLeaderScheduleRequest";
+} from "../../messages/api/GetPumpFunAmmQuotesRequest";
 import {
-  Type as GetLeaderScheduleResponse,
+  Type as GetPumpFunAmmQuotesResponse,
   encodeBinary as encodeBinary_155,
   decodeBinary as decodeBinary_155,
   encodeJson as encodeJson_155,
-} from "../../messages/api/GetLeaderScheduleResponse";
+} from "../../messages/api/GetPumpFunAmmQuotesResponse";
+import {
+  Type as PostPumpFunAmmSwapRequest,
+  encodeBinary as encodeBinary_156,
+  decodeBinary as decodeBinary_156,
+  encodeJson as encodeJson_156,
+} from "../../messages/api/PostPumpFunAmmSwapRequest";
+import {
+  Type as PostPumpFunAmmSwapResponse,
+  encodeBinary as encodeBinary_157,
+  decodeBinary as decodeBinary_157,
+  encodeJson as encodeJson_157,
+} from "../../messages/api/PostPumpFunAmmSwapResponse";
 import {
   fromSingle,
   first,
@@ -1040,7 +1052,8 @@ export interface Service<TReqArgs extends any[] = [], TResArgs extends any[] = [
   getPumpFunAMMSwapStream(request: GetPumpFunAMMSwapStreamRequest, ...args: TReqArgs): RpcReturnType<AsyncGenerator<GetPumpFunAMMSwapStreamResponse>, TResArgs>;
   postPumpFunSwap(request: PostPumpFunSwapRequest, ...args: TReqArgs): RpcReturnType<Promise<PostPumpFunSwapResponse>, TResArgs>;
   postPumpFunSwapSol(request: PostPumpFunSwapRequestSol, ...args: TReqArgs): RpcReturnType<Promise<PostPumpFunSwapResponse>, TResArgs>;
-  getLeaderSchedule(request: GetLeaderScheduleRequest, ...args: TReqArgs): RpcReturnType<Promise<GetLeaderScheduleResponse>, TResArgs>;
+  getPumpFunAmmQuotes(request: GetPumpFunAmmQuotesRequest, ...args: TReqArgs): RpcReturnType<Promise<GetPumpFunAmmQuotesResponse>, TResArgs>;
+  postPumpFunAmmSwap(request: PostPumpFunAmmSwapRequest, ...args: TReqArgs): RpcReturnType<Promise<PostPumpFunAmmSwapResponse>, TResArgs>;
 }
 
 export type MethodDescriptors = typeof methodDescriptors;
@@ -2501,20 +2514,36 @@ export const methodDescriptors = {
       serializeJson: (value: PostPumpFunSwapResponse) => JSON.stringify(encodeJson_152(value)),
     },
   },
-  getLeaderSchedule: {
-    methodName: "GetLeaderSchedule",
+  getPumpFunAmmQuotes: {
+    methodName: "GetPumpFunAmmQuotes",
     service: { serviceName: "api.Api" },
     requestStream: false,
     responseStream: false,
     requestType: {
       serializeBinary: encodeBinary_154,
       deserializeBinary: decodeBinary_154,
-      serializeJson: (value: GetLeaderScheduleRequest) => JSON.stringify(encodeJson_154(value)),
+      serializeJson: (value: GetPumpFunAmmQuotesRequest) => JSON.stringify(encodeJson_154(value)),
     },
     responseType: {
       serializeBinary: encodeBinary_155,
       deserializeBinary: decodeBinary_155,
-      serializeJson: (value: GetLeaderScheduleResponse) => JSON.stringify(encodeJson_155(value)),
+      serializeJson: (value: GetPumpFunAmmQuotesResponse) => JSON.stringify(encodeJson_155(value)),
+    },
+  },
+  postPumpFunAmmSwap: {
+    methodName: "PostPumpFunAmmSwap",
+    service: { serviceName: "api.Api" },
+    requestStream: false,
+    responseStream: false,
+    requestType: {
+      serializeBinary: encodeBinary_156,
+      deserializeBinary: decodeBinary_156,
+      serializeJson: (value: PostPumpFunAmmSwapRequest) => JSON.stringify(encodeJson_156(value)),
+    },
+    responseType: {
+      serializeBinary: encodeBinary_157,
+      deserializeBinary: decodeBinary_157,
+      serializeJson: (value: PostPumpFunAmmSwapResponse) => JSON.stringify(encodeJson_157(value)),
     },
   },
 } as const;

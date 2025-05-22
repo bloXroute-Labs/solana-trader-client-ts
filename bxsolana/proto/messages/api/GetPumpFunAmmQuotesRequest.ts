@@ -17,65 +17,65 @@ import {
 } from "../../runtime/wire/deserialize";
 
 export declare namespace $.api {
-  export interface PostLiquidateDriftPerpRequest {
-    ownerAddress: string;
-    settleeAccountAddress: string;
-    contract: string;
+  export interface GetPumpFunAmmQuotesRequest {
+    quoteType: string;
+    mintAddress: string;
+    poolAddress: string;
     amount: number;
   }
 }
-export type Type = $.api.PostLiquidateDriftPerpRequest;
+export type Type = $.api.GetPumpFunAmmQuotesRequest;
 
-export function getDefaultValue(): $.api.PostLiquidateDriftPerpRequest {
+export function getDefaultValue(): $.api.GetPumpFunAmmQuotesRequest {
   return {
-    ownerAddress: "",
-    settleeAccountAddress: "",
-    contract: "",
+    quoteType: "",
+    mintAddress: "",
+    poolAddress: "",
     amount: 0,
   };
 }
 
-export function createValue(partialValue: Partial<$.api.PostLiquidateDriftPerpRequest>): $.api.PostLiquidateDriftPerpRequest {
+export function createValue(partialValue: Partial<$.api.GetPumpFunAmmQuotesRequest>): $.api.GetPumpFunAmmQuotesRequest {
   return {
     ...getDefaultValue(),
     ...partialValue,
   };
 }
 
-export function encodeJson(value: $.api.PostLiquidateDriftPerpRequest): unknown {
+export function encodeJson(value: $.api.GetPumpFunAmmQuotesRequest): unknown {
   const result: any = {};
-  if (value.ownerAddress !== undefined) result.ownerAddress = tsValueToJsonValueFns.string(value.ownerAddress);
-  if (value.settleeAccountAddress !== undefined) result.settleeAccountAddress = tsValueToJsonValueFns.string(value.settleeAccountAddress);
-  if (value.contract !== undefined) result.contract = tsValueToJsonValueFns.string(value.contract);
+  if (value.quoteType !== undefined) result.quoteType = tsValueToJsonValueFns.string(value.quoteType);
+  if (value.mintAddress !== undefined) result.mintAddress = tsValueToJsonValueFns.string(value.mintAddress);
+  if (value.poolAddress !== undefined) result.poolAddress = tsValueToJsonValueFns.string(value.poolAddress);
   if (value.amount !== undefined) result.amount = tsValueToJsonValueFns.double(value.amount);
   return result;
 }
 
-export function decodeJson(value: any): $.api.PostLiquidateDriftPerpRequest {
+export function decodeJson(value: any): $.api.GetPumpFunAmmQuotesRequest {
   const result = getDefaultValue();
-  if (value.ownerAddress !== undefined) result.ownerAddress = jsonValueToTsValueFns.string(value.ownerAddress);
-  if (value.settleeAccountAddress !== undefined) result.settleeAccountAddress = jsonValueToTsValueFns.string(value.settleeAccountAddress);
-  if (value.contract !== undefined) result.contract = jsonValueToTsValueFns.string(value.contract);
+  if (value.quoteType !== undefined) result.quoteType = jsonValueToTsValueFns.string(value.quoteType);
+  if (value.mintAddress !== undefined) result.mintAddress = jsonValueToTsValueFns.string(value.mintAddress);
+  if (value.poolAddress !== undefined) result.poolAddress = jsonValueToTsValueFns.string(value.poolAddress);
   if (value.amount !== undefined) result.amount = jsonValueToTsValueFns.double(value.amount);
   return result;
 }
 
-export function encodeBinary(value: $.api.PostLiquidateDriftPerpRequest): Uint8Array {
+export function encodeBinary(value: $.api.GetPumpFunAmmQuotesRequest): Uint8Array {
   const result: WireMessage = [];
-  if (value.ownerAddress !== undefined) {
-    const tsValue = value.ownerAddress;
+  if (value.quoteType !== undefined) {
+    const tsValue = value.quoteType;
     result.push(
       [1, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.settleeAccountAddress !== undefined) {
-    const tsValue = value.settleeAccountAddress;
+  if (value.mintAddress !== undefined) {
+    const tsValue = value.mintAddress;
     result.push(
       [2, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.contract !== undefined) {
-    const tsValue = value.contract;
+  if (value.poolAddress !== undefined) {
+    const tsValue = value.poolAddress;
     result.push(
       [3, tsValueToWireValueFns.string(tsValue)],
     );
@@ -89,7 +89,7 @@ export function encodeBinary(value: $.api.PostLiquidateDriftPerpRequest): Uint8A
   return serialize(result);
 }
 
-export function decodeBinary(binary: Uint8Array): $.api.PostLiquidateDriftPerpRequest {
+export function decodeBinary(binary: Uint8Array): $.api.GetPumpFunAmmQuotesRequest {
   const result = getDefaultValue();
   const wireMessage = deserialize(binary);
   const wireFields = new Map(wireMessage);
@@ -98,21 +98,21 @@ export function decodeBinary(binary: Uint8Array): $.api.PostLiquidateDriftPerpRe
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
-    result.ownerAddress = value;
+    result.quoteType = value;
   }
   field: {
     const wireValue = wireFields.get(2);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
-    result.settleeAccountAddress = value;
+    result.mintAddress = value;
   }
   field: {
     const wireValue = wireFields.get(3);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
-    result.contract = value;
+    result.poolAddress = value;
   }
   field: {
     const wireValue = wireFields.get(4);

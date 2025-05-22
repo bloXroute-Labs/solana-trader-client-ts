@@ -110,8 +110,6 @@ import {
     PostSubmitSnipeRequest,
     PostSubmitSnipeResponse,
     PostSubmitPaladinRequest,
-    GetLeaderScheduleRequest,
-    GetLeaderScheduleResponse,
     GetTokenAccountsRequest,
     GetTokenAccountsResponse,
 } from "../proto/messages/api"
@@ -543,11 +541,6 @@ export class HttpProvider extends BaseProvider {
             "&programs="
         )}`
         return this.get<GetPriorityFeeByProgramResponse>(path)
-    }
-
-    getLeaderSchedule(request: GetLeaderScheduleRequest): Promise<GetLeaderScheduleResponse> {
-        const path = `${this.baseUrlV2}/system/leader-schedule?maxSlots=${request.maxSlots}`
-        return this.get<GetLeaderScheduleResponse>(path)
     }
 
     postRaydiumSwapInstructions(

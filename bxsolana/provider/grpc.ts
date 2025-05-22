@@ -147,8 +147,6 @@ import {
     PostSubmitSnipeResponse,
     PostSubmitSnipeRequest,
     PostSubmitPaladinRequest,
-    GetLeaderScheduleRequest,
-    GetLeaderScheduleResponse,
     GetPumpFunNewAmmPoolStreamResponse,
     GetPumpFunNewAmmPoolStreamRequest,
     GetTokenAccountsRequest,
@@ -627,10 +625,6 @@ export class GrpcProvider extends BaseProvider {
         request: GetPriorityFeeByProgramRequest
     ): Promise<GetPriorityFeeByProgramResponse> {
         return this.client.getPriorityFeeByProgram(request)
-    }
-
-    getLeaderSchedule(request: GetLeaderScheduleRequest): Promise<GetLeaderScheduleResponse> {
-        return this.client.getLeaderSchedule(request)
     }
 
     // streams

@@ -138,8 +138,6 @@ import {
     PostSubmitSnipeRequest,
     PostSubmitSnipeResponse,
     PostSubmitPaladinRequest,
-    GetLeaderScheduleRequest,
-    GetLeaderScheduleResponse,
     GetPumpFunNewAmmPoolStreamRequest,
     GetPumpFunNewAmmPoolStreamResponse,
     GetTokenAccountsRequest,
@@ -818,10 +816,6 @@ export class WsProvider extends BaseProvider {
         request: GetPriorityFeeByProgramRequest
     ): Promise<GetPriorityFeeByProgramResponse> {
         return this.wsConnection.call("GetPriorityFeeByProgram", request)
-    }
-
-    async getLeaderSchedule(request: GetLeaderScheduleRequest): Promise<GetLeaderScheduleResponse> {
-        return this.wsConnection.call("GetLeaderSchedule", request)
     }
 
     cancelGetOrderbooksStreamByCount = async (

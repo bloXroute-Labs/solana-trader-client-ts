@@ -33,6 +33,7 @@ export declare namespace $.api {
     quoteMint: string;
     lpMint: string;
     timestamp?: Timestamp;
+    coinCreator: string;
   }
 }
 export type Type = $.api.GetPumpFunNewAmmPoolStreamResponse;
@@ -46,6 +47,7 @@ export function getDefaultValue(): $.api.GetPumpFunNewAmmPoolStreamResponse {
     quoteMint: "",
     lpMint: "",
     timestamp: undefined,
+    coinCreator: "",
   };
 }
 
@@ -65,6 +67,7 @@ export function encodeJson(value: $.api.GetPumpFunNewAmmPoolStreamResponse): unk
   if (value.quoteMint !== undefined) result.quoteMint = tsValueToJsonValueFns.string(value.quoteMint);
   if (value.lpMint !== undefined) result.lpMint = tsValueToJsonValueFns.string(value.lpMint);
   if (value.timestamp !== undefined) result.timestamp = encodeJson_1(value.timestamp);
+  if (value.coinCreator !== undefined) result.coinCreator = tsValueToJsonValueFns.string(value.coinCreator);
   return result;
 }
 
@@ -77,6 +80,7 @@ export function decodeJson(value: any): $.api.GetPumpFunNewAmmPoolStreamResponse
   if (value.quoteMint !== undefined) result.quoteMint = jsonValueToTsValueFns.string(value.quoteMint);
   if (value.lpMint !== undefined) result.lpMint = jsonValueToTsValueFns.string(value.lpMint);
   if (value.timestamp !== undefined) result.timestamp = decodeJson_1(value.timestamp);
+  if (value.coinCreator !== undefined) result.coinCreator = jsonValueToTsValueFns.string(value.coinCreator);
   return result;
 }
 
@@ -122,6 +126,12 @@ export function encodeBinary(value: $.api.GetPumpFunNewAmmPoolStreamResponse): U
     const tsValue = value.timestamp;
     result.push(
       [9, { type: WireType.LengthDelimited as const, value: encodeBinary_1(tsValue) }],
+    );
+  }
+  if (value.coinCreator !== undefined) {
+    const tsValue = value.coinCreator;
+    result.push(
+      [10, tsValueToWireValueFns.string(tsValue)],
     );
   }
   return serialize(result);
@@ -179,6 +189,13 @@ export function decodeBinary(binary: Uint8Array): $.api.GetPumpFunNewAmmPoolStre
     const value = wireValue.type === WireType.LengthDelimited ? decodeBinary_1(wireValue.value) : undefined;
     if (value === undefined) break field;
     result.timestamp = value;
+  }
+  field: {
+    const wireValue = wireFields.get(10);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.coinCreator = value;
   }
   return result;
 }
