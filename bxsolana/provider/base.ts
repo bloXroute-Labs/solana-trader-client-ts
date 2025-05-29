@@ -365,6 +365,14 @@ export abstract class BaseProvider implements Api {
         throw new Error("Method not implemented.")
     }
 
+    getPumpFunAmmQuotes(request: GetPumpFunAmmQuotesRequest): Promise<GetPumpFunAmmQuotesResponse> {
+        throw new Error("Not implemented")
+    }
+
+    postPumpFunAmmSwap(request: PostPumpFunAmmSwapRequest): Promise<PostPumpFunAmmSwapResponse> {
+        throw new Error("Not implemented")
+    }
+
     postRaydiumSwapInstructions(
         request: PostRaydiumSwapInstructionsRequest
     ): RpcReturnType<Promise<PostRaydiumSwapInstructionsResponse>, []> {
@@ -794,7 +802,7 @@ export abstract class BaseProvider implements Api {
         useStakedRPCs: boolean = false
     ): Promise<PostSubmitSnipeResponse> {
         this.requirePrivateKey()
-    
+
         if (!entries || entries.length === 0) {
             throw Error("entries array was empty or undefined")
         }
@@ -827,13 +835,13 @@ export abstract class BaseProvider implements Api {
         frontRunningProtection: boolean = false
     ): Promise<PostSubmitResponse> {
         this.requirePrivateKey()
-    
+
         if (transactionMessage === undefined) {
             throw Error("transaction message was undefined")
         }
-    
+
         const signedTx = signTx(transactionMessage.content, this.privateKey!)
-        
+
         const request: PostSubmitPaladinRequest = {
             transaction: {
                 content: txToBase64(signedTx),
@@ -1128,14 +1136,6 @@ export abstract class BaseProvider implements Api {
     postZetaCrossMarginAccount(
         request: PostZetaCrossMarginAccountRequest
     ): Promise<PostZetaCrossMarginAccountResponse> {
-        throw new Error("Not implemented")
-    }
-
-    getPumpFunAmmQuotes(request: GetPumpFunAmmQuotesRequest): Promise<GetPumpFunAmmQuotesResponse> {
-        throw new Error("Not implemented")
-    }
-
-    postPumpFunAmmSwap(request: PostPumpFunAmmSwapRequest): Promise<PostPumpFunAmmSwapResponse> {
         throw new Error("Not implemented")
     }
 }

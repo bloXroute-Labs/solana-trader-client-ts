@@ -19,9 +19,9 @@ import {
 export declare namespace $.api {
   export interface GetPumpFunAmmQuotesResponse {
     quoteType: string;
-    inTokenAddress: string;
+    inToken: string;
     inAmount: number;
-    outTokenAddress: string;
+    outToken: string;
     outAmount: number;
   }
 }
@@ -30,9 +30,9 @@ export type Type = $.api.GetPumpFunAmmQuotesResponse;
 export function getDefaultValue(): $.api.GetPumpFunAmmQuotesResponse {
   return {
     quoteType: "",
-    inTokenAddress: "",
+    inToken: "",
     inAmount: 0,
-    outTokenAddress: "",
+    outToken: "",
     outAmount: 0,
   };
 }
@@ -47,9 +47,9 @@ export function createValue(partialValue: Partial<$.api.GetPumpFunAmmQuotesRespo
 export function encodeJson(value: $.api.GetPumpFunAmmQuotesResponse): unknown {
   const result: any = {};
   if (value.quoteType !== undefined) result.quoteType = tsValueToJsonValueFns.string(value.quoteType);
-  if (value.inTokenAddress !== undefined) result.inTokenAddress = tsValueToJsonValueFns.string(value.inTokenAddress);
+  if (value.inToken !== undefined) result.inToken = tsValueToJsonValueFns.string(value.inToken);
   if (value.inAmount !== undefined) result.inAmount = tsValueToJsonValueFns.double(value.inAmount);
-  if (value.outTokenAddress !== undefined) result.outTokenAddress = tsValueToJsonValueFns.string(value.outTokenAddress);
+  if (value.outToken !== undefined) result.outToken = tsValueToJsonValueFns.string(value.outToken);
   if (value.outAmount !== undefined) result.outAmount = tsValueToJsonValueFns.double(value.outAmount);
   return result;
 }
@@ -57,9 +57,9 @@ export function encodeJson(value: $.api.GetPumpFunAmmQuotesResponse): unknown {
 export function decodeJson(value: any): $.api.GetPumpFunAmmQuotesResponse {
   const result = getDefaultValue();
   if (value.quoteType !== undefined) result.quoteType = jsonValueToTsValueFns.string(value.quoteType);
-  if (value.inTokenAddress !== undefined) result.inTokenAddress = jsonValueToTsValueFns.string(value.inTokenAddress);
+  if (value.inToken !== undefined) result.inToken = jsonValueToTsValueFns.string(value.inToken);
   if (value.inAmount !== undefined) result.inAmount = jsonValueToTsValueFns.double(value.inAmount);
-  if (value.outTokenAddress !== undefined) result.outTokenAddress = jsonValueToTsValueFns.string(value.outTokenAddress);
+  if (value.outToken !== undefined) result.outToken = jsonValueToTsValueFns.string(value.outToken);
   if (value.outAmount !== undefined) result.outAmount = jsonValueToTsValueFns.double(value.outAmount);
   return result;
 }
@@ -72,8 +72,8 @@ export function encodeBinary(value: $.api.GetPumpFunAmmQuotesResponse): Uint8Arr
       [1, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.inTokenAddress !== undefined) {
-    const tsValue = value.inTokenAddress;
+  if (value.inToken !== undefined) {
+    const tsValue = value.inToken;
     result.push(
       [2, tsValueToWireValueFns.string(tsValue)],
     );
@@ -84,8 +84,8 @@ export function encodeBinary(value: $.api.GetPumpFunAmmQuotesResponse): Uint8Arr
       [3, tsValueToWireValueFns.double(tsValue)],
     );
   }
-  if (value.outTokenAddress !== undefined) {
-    const tsValue = value.outTokenAddress;
+  if (value.outToken !== undefined) {
+    const tsValue = value.outToken;
     result.push(
       [4, tsValueToWireValueFns.string(tsValue)],
     );
@@ -115,7 +115,7 @@ export function decodeBinary(binary: Uint8Array): $.api.GetPumpFunAmmQuotesRespo
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
-    result.inTokenAddress = value;
+    result.inToken = value;
   }
   field: {
     const wireValue = wireFields.get(3);
@@ -129,7 +129,7 @@ export function decodeBinary(binary: Uint8Array): $.api.GetPumpFunAmmQuotesRespo
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
-    result.outTokenAddress = value;
+    result.outToken = value;
   }
   field: {
     const wireValue = wireFields.get(5);
