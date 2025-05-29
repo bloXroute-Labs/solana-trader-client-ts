@@ -18,20 +18,22 @@ import {
 
 export declare namespace $.api {
   export interface GetPumpFunAmmQuotesRequest {
-    quoteType: string;
-    mintAddress: string;
-    poolAddress: string;
-    amount: number;
+    inToken: string;
+    inAmount: number;
+    outToken: string;
+    pool: string;
+    slippage: number;
   }
 }
 export type Type = $.api.GetPumpFunAmmQuotesRequest;
 
 export function getDefaultValue(): $.api.GetPumpFunAmmQuotesRequest {
   return {
-    quoteType: "",
-    mintAddress: "",
-    poolAddress: "",
-    amount: 0,
+    inToken: "",
+    inAmount: 0,
+    outToken: "",
+    pool: "",
+    slippage: 0,
   };
 }
 
@@ -44,46 +46,54 @@ export function createValue(partialValue: Partial<$.api.GetPumpFunAmmQuotesReque
 
 export function encodeJson(value: $.api.GetPumpFunAmmQuotesRequest): unknown {
   const result: any = {};
-  if (value.quoteType !== undefined) result.quoteType = tsValueToJsonValueFns.string(value.quoteType);
-  if (value.mintAddress !== undefined) result.mintAddress = tsValueToJsonValueFns.string(value.mintAddress);
-  if (value.poolAddress !== undefined) result.poolAddress = tsValueToJsonValueFns.string(value.poolAddress);
-  if (value.amount !== undefined) result.amount = tsValueToJsonValueFns.double(value.amount);
+  if (value.inToken !== undefined) result.inToken = tsValueToJsonValueFns.string(value.inToken);
+  if (value.inAmount !== undefined) result.inAmount = tsValueToJsonValueFns.double(value.inAmount);
+  if (value.outToken !== undefined) result.outToken = tsValueToJsonValueFns.string(value.outToken);
+  if (value.pool !== undefined) result.pool = tsValueToJsonValueFns.string(value.pool);
+  if (value.slippage !== undefined) result.slippage = tsValueToJsonValueFns.double(value.slippage);
   return result;
 }
 
 export function decodeJson(value: any): $.api.GetPumpFunAmmQuotesRequest {
   const result = getDefaultValue();
-  if (value.quoteType !== undefined) result.quoteType = jsonValueToTsValueFns.string(value.quoteType);
-  if (value.mintAddress !== undefined) result.mintAddress = jsonValueToTsValueFns.string(value.mintAddress);
-  if (value.poolAddress !== undefined) result.poolAddress = jsonValueToTsValueFns.string(value.poolAddress);
-  if (value.amount !== undefined) result.amount = jsonValueToTsValueFns.double(value.amount);
+  if (value.inToken !== undefined) result.inToken = jsonValueToTsValueFns.string(value.inToken);
+  if (value.inAmount !== undefined) result.inAmount = jsonValueToTsValueFns.double(value.inAmount);
+  if (value.outToken !== undefined) result.outToken = jsonValueToTsValueFns.string(value.outToken);
+  if (value.pool !== undefined) result.pool = jsonValueToTsValueFns.string(value.pool);
+  if (value.slippage !== undefined) result.slippage = jsonValueToTsValueFns.double(value.slippage);
   return result;
 }
 
 export function encodeBinary(value: $.api.GetPumpFunAmmQuotesRequest): Uint8Array {
   const result: WireMessage = [];
-  if (value.quoteType !== undefined) {
-    const tsValue = value.quoteType;
+  if (value.inToken !== undefined) {
+    const tsValue = value.inToken;
     result.push(
       [1, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.mintAddress !== undefined) {
-    const tsValue = value.mintAddress;
+  if (value.inAmount !== undefined) {
+    const tsValue = value.inAmount;
     result.push(
-      [2, tsValueToWireValueFns.string(tsValue)],
+      [2, tsValueToWireValueFns.double(tsValue)],
     );
   }
-  if (value.poolAddress !== undefined) {
-    const tsValue = value.poolAddress;
+  if (value.outToken !== undefined) {
+    const tsValue = value.outToken;
     result.push(
       [3, tsValueToWireValueFns.string(tsValue)],
     );
   }
-  if (value.amount !== undefined) {
-    const tsValue = value.amount;
+  if (value.pool !== undefined) {
+    const tsValue = value.pool;
     result.push(
-      [4, tsValueToWireValueFns.double(tsValue)],
+      [4, tsValueToWireValueFns.string(tsValue)],
+    );
+  }
+  if (value.slippage !== undefined) {
+    const tsValue = value.slippage;
+    result.push(
+      [5, tsValueToWireValueFns.double(tsValue)],
     );
   }
   return serialize(result);
@@ -98,28 +108,35 @@ export function decodeBinary(binary: Uint8Array): $.api.GetPumpFunAmmQuotesReque
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
-    result.quoteType = value;
+    result.inToken = value;
   }
   field: {
     const wireValue = wireFields.get(2);
     if (wireValue === undefined) break field;
-    const value = wireValueToTsValueFns.string(wireValue);
+    const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
-    result.mintAddress = value;
+    result.inAmount = value;
   }
   field: {
     const wireValue = wireFields.get(3);
     if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
-    result.poolAddress = value;
+    result.outToken = value;
   }
   field: {
     const wireValue = wireFields.get(4);
     if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.string(wireValue);
+    if (value === undefined) break field;
+    result.pool = value;
+  }
+  field: {
+    const wireValue = wireFields.get(5);
+    if (wireValue === undefined) break field;
     const value = wireValueToTsValueFns.double(wireValue);
     if (value === undefined) break field;
-    result.amount = value;
+    result.slippage = value;
   }
   return result;
 }

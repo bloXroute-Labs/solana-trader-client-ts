@@ -30,6 +30,8 @@ import {
     GetOpenOrdersResponseV2,
     TransactionMessage,
     TransactionMessageV2,
+    GetPumpFunAmmQuotesRequest,
+    PostPumpFunAmmSwapRequest,
 } from "../bxsolana"
 import {
     ComputeBudgetProgram,
@@ -83,6 +85,8 @@ const testOrder: PostOrderRequestV2 = {
 const transactionWaitTimeS = 60
 const httpTimeout = 30_000
 const httpLongTimeout = 60_000
+
+const smallTip = 100_000
 
 function delay(milliseconds: number) {
     return new Promise((resolve) => setTimeout(resolve, milliseconds))
@@ -175,7 +179,7 @@ async function http() {
     return
 }
 
-async function grpc() {
+export function getGrpcProviders() {
     let provider: GrpcProvider
 
     if (process.env.API_ENV === "testnet") {
@@ -207,12 +211,19 @@ async function grpc() {
             false
         )
     }
-    const pump_provider = new GrpcProvider(
+    const pumpProvider = new GrpcProvider(
         config.authHeader,
         config.privateKey,
         `${MAINNET_API_PUMP_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
         true
     )
+
+    return { provider, pumpProvider }
+}
+
+export async function grpc() {
+    const { provider, pumpProvider: pump_provider } = getGrpcProviders()
+
     console.info(" ----  GRPC Amm Requests  ----")
     await doAmmRequests(provider, pump_provider)
 
@@ -354,7 +365,7 @@ async function doOrderbookRequests(provider: BaseProvider) {
     console.info(" ")
 }
 
-async function doAmmRequests(
+export async function doAmmRequests(
     provider: BaseProvider,
     pump_provider: BaseProvider
 ) {
@@ -403,6 +414,14 @@ async function doAmmRequests(
     console.info(" ")
 
     await callPostPumpFunSwapSol(pump_provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callGetPumpFunAmmQuotes(pump_provider)
+    console.info(" ")
+    console.info(" ")
+
+    await callPostPumpFunAmmSwap(pump_provider)
     console.info(" ")
     console.info(" ")
 
@@ -468,7 +487,6 @@ async function doAmmRequests(
 }
 
 async function doStreams(provider: BaseProvider, pump_provider: BaseProvider) {
-
     await callGetPumpFunNewAmmPoolStream(pump_provider)
     console.info(" ")
     console.info(" ")
@@ -1482,6 +1500,36 @@ async function callPostPumpFunSwapSol(provider: BaseProvider) {
     console.info(response)
 }
 
+export async function callGetPumpFunAmmQuotes(provider: BaseProvider) {
+    const request: GetPumpFunAmmQuotesRequest = {
+        inToken: "So11111111111111111111111111111111111111112",
+        inAmount: 10,
+        outToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        pool: "Gf7sXMoP8iRw4iiXmJ1nq4vxcRycbGXy5RL8a8LnTd3v",
+        slippage: 0.9,
+    }
+    console.info("getPumpFunAmmQuotes request", request)
+    const response = await provider.getPumpFunAmmQuotes(request)
+    console.info("getPumpFunAmmQuotes response", response)
+}
+
+export async function callPostPumpFunAmmSwap(provider: BaseProvider) {
+    const request: PostPumpFunAmmSwapRequest = {
+        ownerAddress: ownerAddress,
+        inToken: "So11111111111111111111111111111111111111112",
+        inAmount: 10,
+        outToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", // USDC
+        pool: "Gf7sXMoP8iRw4iiXmJ1nq4vxcRycbGXy5RL8a8LnTd3v",
+        slippage: 0.9,
+        computeLimit: 130000,
+        computePrice: "100000",
+        tip: `${smallTip}`,
+    }
+    console.info("postPumpFunAmmSwap request", request)
+    const response = await provider.postPumpFunAmmSwap(request)
+    console.info("postPumpFunAmmSwap response", response)
+}
+
 async function callPostTradeSwapWithPriorityFee(provider: BaseProvider) {
     console.info("Generating a trade swap")
     const response = await provider.postTradeSwap({
@@ -1848,11 +1896,6 @@ async function submitTxWithMemo(provider: BaseProvider) {
     console.info(response.signature)
 }
 
-run().then(() => {
-    console.log("done!")
-    process.exit(0)
-})
-
 function buildUnsignedTxn(
     recentBlockHash: string | undefined,
     owner: PublicKey
@@ -1983,3 +2026,10 @@ async function callPlaceOrderBundle(
       return true;
     }
   }
+
+if (process.env.IS_UNIT_TEST !== "true")
+    run()
+        .then(() => {
+            console.log("done!")
+        })
+        .catch(console.error)

@@ -143,7 +143,11 @@ import {
     GetTokenAccountsRequest,
     GetTokenAccountsResponse,
     PostRaydiumSwapInstructionsRequest,
-    PostRaydiumSwapInstructionsResponse
+    PostRaydiumSwapInstructionsResponse,
+    GetPumpFunAmmQuotesRequest,
+    GetPumpFunAmmQuotesResponse,
+    PostPumpFunAmmSwapRequest,
+    PostPumpFunAmmSwapResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -774,6 +778,14 @@ export class WsProvider extends BaseProvider {
         request: PostPumpFunSwapRequestSol
     ): Promise<PostPumpFunSwapResponse> {
         return this.wsConnection.call("PostPumpFunSwapSol", request)
+    }
+
+    async getPumpFunAmmQuotes(request: GetPumpFunAmmQuotesRequest): Promise<GetPumpFunAmmQuotesResponse> {
+        return this.wsConnection.call("GetPumpFunAmmQuotes", request)
+    }
+
+    async postPumpFunAmmSwap(request: PostPumpFunAmmSwapRequest): Promise<PostPumpFunAmmSwapResponse> {
+        return this.wsConnection.call("PostPumpFunAmmSwap", request)
     }
 
     async getPools(request: GetPoolsRequest): Promise<GetPoolsResponse> {

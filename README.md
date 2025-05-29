@@ -2,9 +2,7 @@
 
 Provides a Typescript SDK for bloXroute's Solana Trader API.
 
-This library is exposes HTTP, websockets, and GRPC interfaces, and is compatible with both modern browser and node.js
-environments. Note that some methods and the GRPC interface is only available in node.js run-times, since some aspects
-of these functions are incompatible with browsers (e.g. http/2 requirement for GRPC, loading from environment, etc.)
+This library exposes HTTP, websockets, and GRPC interfaces, and is compatible with both modern browser and node.js environments. Note that some methods and the GRPC interface is only available in node.js run-times, since some aspects of these functions are incompatible with browsers (e.g. http/2 requirement for GRPC, loading from environment, etc.)
 
 ## Installation
 

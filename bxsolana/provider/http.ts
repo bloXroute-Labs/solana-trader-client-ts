@@ -112,6 +112,10 @@ import {
     PostSubmitPaladinRequest,
     GetTokenAccountsRequest,
     GetTokenAccountsResponse,
+    GetPumpFunAmmQuotesRequest,
+    GetPumpFunAmmQuotesResponse,
+    PostPumpFunAmmSwapRequest,
+    PostPumpFunAmmSwapResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { isRpcError, RpcError } from "../utils/error"
@@ -578,6 +582,22 @@ export class HttpProvider extends BaseProvider {
     ): Promise<PostPumpFunSwapResponse> {
         const path = `${this.baseUrlV2}/pumpfun/swap-sol`
         return this.post<PostPumpFunSwapRequestSol, PostPumpFunSwapResponse>(
+            path,
+            request
+        )
+    }
+
+    getPumpFunAmmQuotes(request: GetPumpFunAmmQuotesRequest): Promise<GetPumpFunAmmQuotesResponse> {
+        const path = `${this.baseUrlV2}/pumpfun/amm/quotes`
+        return this.post<
+            GetPumpFunAmmQuotesRequest,
+            GetPumpFunAmmQuotesResponse
+        >(path, request)
+    }
+
+    postPumpFunAmmSwap(request: PostPumpFunAmmSwapRequest): Promise<PostPumpFunAmmSwapResponse> {
+        const path = `${this.baseUrlV2}/pumpfun/amm/swap`
+        return this.post<PostPumpFunAmmSwapRequest, PostPumpFunAmmSwapResponse>(
             path,
             request
         )
