@@ -1,4 +1,4 @@
-import { MAINNET_API_GRPC_PORT, MAINNET_API_NY_GRPC } from "../utils/constants"
+import { MAINNET_API_GRPC_PORT, MAINNET_API_NY_GRPC, warningTlsSlowdown } from "../utils/constants"
 import { timestamp } from "../utils/timestamp"
 import * as grpc from "@grpc/grpc-js"
 import { Client } from "@grpc/grpc-js"
@@ -205,6 +205,10 @@ export class GrpcProvider extends BaseProvider {
         }
     ) {
         super(authHeader, privateKey)
+
+        if (useTls) {
+            console.warn(warningTlsSlowdown)
+        }
 
         const metaCallback = (
             options: CallMetadataOptions,

@@ -1,4 +1,4 @@
-import { MAINNET_API_NY_HTTP } from "../utils/constants"
+import { MAINNET_API_NY_HTTP, warningTlsSlowdown } from "../utils/constants"
 import { timestampRfc3339 } from "../utils/timestamp"
 import {
     GetAccountBalanceRequest,
@@ -140,6 +140,11 @@ export class HttpProvider extends BaseProvider {
         requestConfig: AxiosRequestConfig = {}
     ) {
         super(authHeader, privateKey)
+
+        if (address.startsWith("https://")) {
+            console.warn(warningTlsSlowdown)
+        }
+
         this.baseUrl = address + "/api/v1"
         this.baseUrlV2 = address + "/api/v2"
         this.requestConfig = {
