@@ -151,11 +151,13 @@ import {
     PostSubmitSnipeRequest,
     PostSubmitSnipeResponse,
     PostSubmitPaladinRequest,
-    GetLeaderScheduleResponse,
-    GetLeaderScheduleRequest,
     TransactionMessageV2,
     GetPumpFunNewAmmPoolStreamRequest,
-    GetPumpFunNewAmmPoolStreamResponse
+    GetPumpFunNewAmmPoolStreamResponse,
+    GetPumpFunAmmQuotesRequest,
+    GetPumpFunAmmQuotesResponse,
+    PostPumpFunAmmSwapRequest,
+    PostPumpFunAmmSwapResponse
 } from "../proto/messages/api/index"
 import { Api } from "../proto/services/api/index"
 import {
@@ -363,6 +365,14 @@ export abstract class BaseProvider implements Api {
         throw new Error("Method not implemented.")
     }
 
+    getPumpFunAmmQuotes(request: GetPumpFunAmmQuotesRequest): Promise<GetPumpFunAmmQuotesResponse> {
+        throw new Error("Not implemented")
+    }
+
+    postPumpFunAmmSwap(request: PostPumpFunAmmSwapRequest): Promise<PostPumpFunAmmSwapResponse> {
+        throw new Error("Not implemented")
+    }
+
     postRaydiumSwapInstructions(
         request: PostRaydiumSwapInstructionsRequest
     ): RpcReturnType<Promise<PostRaydiumSwapInstructionsResponse>, []> {
@@ -545,10 +555,6 @@ export abstract class BaseProvider implements Api {
     getRecentBlockHashV2(
         request: GetRecentBlockHashRequestV2
     ): Promise<GetRecentBlockHashResponseV2> {
-        throw new Error("Not implemented")
-    }
-
-    getLeaderSchedule(request: GetLeaderScheduleRequest): Promise<GetLeaderScheduleResponse> {
         throw new Error("Not implemented")
     }
 
@@ -796,7 +802,7 @@ export abstract class BaseProvider implements Api {
         useStakedRPCs: boolean = false
     ): Promise<PostSubmitSnipeResponse> {
         this.requirePrivateKey()
-    
+
         if (!entries || entries.length === 0) {
             throw Error("entries array was empty or undefined")
         }
@@ -829,13 +835,13 @@ export abstract class BaseProvider implements Api {
         frontRunningProtection: boolean = false
     ): Promise<PostSubmitResponse> {
         this.requirePrivateKey()
-    
+
         if (transactionMessage === undefined) {
             throw Error("transaction message was undefined")
         }
-    
+
         const signedTx = signTx(transactionMessage.content, this.privateKey!)
-        
+
         const request: PostSubmitPaladinRequest = {
             transaction: {
                 content: txToBase64(signedTx),

@@ -147,14 +147,16 @@ import {
     PostSubmitSnipeResponse,
     PostSubmitSnipeRequest,
     PostSubmitPaladinRequest,
-    GetLeaderScheduleRequest,
-    GetLeaderScheduleResponse,
     GetPumpFunNewAmmPoolStreamResponse,
     GetPumpFunNewAmmPoolStreamRequest,
     GetTokenAccountsRequest,
     GetTokenAccountsResponse,
     PostRaydiumSwapInstructionsRequest,
-    PostRaydiumSwapInstructionsResponse
+    PostRaydiumSwapInstructionsResponse,
+    GetPumpFunAmmQuotesRequest,
+    GetPumpFunAmmQuotesResponse,
+    PostPumpFunAmmSwapRequest,
+    PostPumpFunAmmSwapResponse,
 } from "../proto/messages/api"
 
 import { createServiceClient, Service } from "../proto/services/api/Api"
@@ -607,6 +609,14 @@ export class GrpcProvider extends BaseProvider {
         return this.client.postPumpFunSwapSol(request)
     }
 
+    getPumpFunAmmQuotes(request: GetPumpFunAmmQuotesRequest): Promise<GetPumpFunAmmQuotesResponse> {
+        return this.client.getPumpFunAmmQuotes(request)
+    }
+
+    postPumpFunAmmSwap(request: PostPumpFunAmmSwapRequest): Promise<PostPumpFunAmmSwapResponse> {
+        return this.client.postPumpFunAmmSwap(request)
+    }
+
     postRouteTradeSwap(
         request: RouteTradeSwapRequest
     ): Promise<TradeSwapResponse> {
@@ -629,17 +639,13 @@ export class GrpcProvider extends BaseProvider {
         return this.client.getPriorityFeeByProgram(request)
     }
 
-    getLeaderSchedule(request: GetLeaderScheduleRequest): Promise<GetLeaderScheduleResponse> {
-        return this.client.getLeaderSchedule(request)
-    }
-
     // streams
     getPriorityFeeByProgramStream(
         request: GetPriorityFeeByProgramRequest
     ): Promise<AsyncGenerator<GetPriorityFeeByProgramResponse>> {
         return this.client.getPriorityFeeByProgramStream(request)
     }
-    
+
     getOrderbooksStream = (
         request: GetOrderbooksRequest
     ): Promise<AsyncGenerator<GetOrderbooksStreamResponse>> => {

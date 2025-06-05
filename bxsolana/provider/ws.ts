@@ -138,14 +138,16 @@ import {
     PostSubmitSnipeRequest,
     PostSubmitSnipeResponse,
     PostSubmitPaladinRequest,
-    GetLeaderScheduleRequest,
-    GetLeaderScheduleResponse,
     GetPumpFunNewAmmPoolStreamRequest,
     GetPumpFunNewAmmPoolStreamResponse,
     GetTokenAccountsRequest,
     GetTokenAccountsResponse,
     PostRaydiumSwapInstructionsRequest,
-    PostRaydiumSwapInstructionsResponse
+    PostRaydiumSwapInstructionsResponse,
+    GetPumpFunAmmQuotesRequest,
+    GetPumpFunAmmQuotesResponse,
+    PostPumpFunAmmSwapRequest,
+    PostPumpFunAmmSwapResponse,
 } from "../proto/messages/api"
 import { BaseProvider } from "./base"
 import { RpcWsConnection } from "../ws/rpcclient"
@@ -778,6 +780,14 @@ export class WsProvider extends BaseProvider {
         return this.wsConnection.call("PostPumpFunSwapSol", request)
     }
 
+    async getPumpFunAmmQuotes(request: GetPumpFunAmmQuotesRequest): Promise<GetPumpFunAmmQuotesResponse> {
+        return this.wsConnection.call("GetPumpFunAmmQuotes", request)
+    }
+
+    async postPumpFunAmmSwap(request: PostPumpFunAmmSwapRequest): Promise<PostPumpFunAmmSwapResponse> {
+        return this.wsConnection.call("PostPumpFunAmmSwap", request)
+    }
+
     async getPools(request: GetPoolsRequest): Promise<GetPoolsResponse> {
         return this.wsConnection.call("GetPools", request)
     }
@@ -818,10 +828,6 @@ export class WsProvider extends BaseProvider {
         request: GetPriorityFeeByProgramRequest
     ): Promise<GetPriorityFeeByProgramResponse> {
         return this.wsConnection.call("GetPriorityFeeByProgram", request)
-    }
-
-    async getLeaderSchedule(request: GetLeaderScheduleRequest): Promise<GetLeaderScheduleResponse> {
-        return this.wsConnection.call("GetLeaderSchedule", request)
     }
 
     cancelGetOrderbooksStreamByCount = async (
