@@ -201,6 +201,7 @@ export class GrpcProvider extends BaseProvider {
             "grpc.keepalive_time_ms": 15000,
             "grpc.keepalive_timeout_ms": 5000,
             "grpc.max_receive_message_length": 1024 * 1024 * 16,
+            "grpc.keepalive_permit_without_calls": 1
         }
     ) {
         super(authHeader, privateKey)
