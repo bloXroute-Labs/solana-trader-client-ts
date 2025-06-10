@@ -1,4 +1,4 @@
-import { MAINNET_API_GRPC_PORT, MAINNET_API_NY_GRPC } from "../utils/constants"
+import { MAINNET_API_GRPC_PORT, MAINNET_API_NY_GRPC, warningTlsSlowdown } from "../utils/constants"
 import { timestamp } from "../utils/timestamp"
 import * as grpc from "@grpc/grpc-js"
 import { Client } from "@grpc/grpc-js"
@@ -198,13 +198,17 @@ export class GrpcProvider extends BaseProvider {
         address = `${MAINNET_API_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
         useTls: boolean,
         options: grpc.ClientOptions = {
-            "grpc.keepalive_time_ms": 10000,
-            // 10s keep alive so connection isn't closed from lack of activity
-            "grpc.keepalive_timeout_ms": 5000, // 5s allowance for keepalive to respond
+            "grpc.keepalive_time_ms": 15000,
+            "grpc.keepalive_timeout_ms": 5000,
             "grpc.max_receive_message_length": 1024 * 1024 * 16,
+            "grpc.keepalive_permit_without_calls": 1
         }
     ) {
         super(authHeader, privateKey)
+
+        if (useTls) {
+            console.warn(warningTlsSlowdown)
+        }
 
         const metaCallback = (
             options: CallMetadataOptions,
@@ -220,13 +224,11 @@ export class GrpcProvider extends BaseProvider {
         let credentials: grpc.ChannelCredentials
 
         if (!useTls) {
-            // testnet or local
             credentials = grpc.credentials.combineChannelCredentials(
                 new insecureChannel(),
                 grpc.credentials.createFromMetadataGenerator(metaCallback)
             )
         } else {
-            // mainnet
             credentials = grpc.credentials.combineChannelCredentials(
                 grpc.credentials.createSsl(),
                 grpc.credentials.createFromMetadataGenerator(metaCallback)

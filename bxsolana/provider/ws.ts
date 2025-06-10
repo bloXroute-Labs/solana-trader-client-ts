@@ -1,4 +1,4 @@
-import { MAINNET_API_NY_WS } from "../utils/constants"
+import { MAINNET_API_NY_WS, warningTlsSlowdown } from "../utils/constants"
 import {
     GetAccountBalanceRequest,
     GetAccountBalanceResponse,
@@ -172,6 +172,9 @@ export class WsProvider extends BaseProvider {
         address: string = MAINNET_API_NY_WS
     ) {
         super(authHeader, privateKey)
+        if (address.startsWith("wss://")) {
+            console.warn(warningTlsSlowdown)
+        }
         this.wsConnection = new RpcWsConnection(address, authHeader)
 
         this.address = address
