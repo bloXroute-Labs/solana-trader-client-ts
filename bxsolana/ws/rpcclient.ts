@@ -34,7 +34,7 @@ export class RpcWsConnection {
     private readonly address: string
     private readonly authHeader: string
     private pingInterval?: NodeJS.Timeout
-    private readonly PING_INTERVAL = 30000
+    private readonly PING_INTERVAL = 15000
 
     private requestId = 1
     private requestMap: Map<number, ResolveReject> = new Map()

@@ -86,7 +86,7 @@ describe('TransactionSubmission', () => {
             config.authHeader,
             config.privateKey,
             `${MAINNET_API_NY_GRPC}:${MAINNET_API_GRPC_PORT}`,
-            true
+            false
         );
         signer = Keypair.fromSecretKey(
             bs58.decode(config.privateKey)

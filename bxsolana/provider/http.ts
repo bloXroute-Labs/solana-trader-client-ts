@@ -1,4 +1,6 @@
-import { MAINNET_API_NY_HTTP } from "../utils/constants"
+import http from 'http'
+import https from 'https'
+import { MAINNET_API_NY_HTTP, warningTlsSlowdown } from "../utils/constants"
 import { timestampRfc3339 } from "../utils/timestamp"
 import {
     GetAccountBalanceRequest,
@@ -140,6 +142,27 @@ export class HttpProvider extends BaseProvider {
         requestConfig: AxiosRequestConfig = {}
     ) {
         super(authHeader, privateKey)
+
+        if (address.startsWith("https://")) {
+            console.warn(warningTlsSlowdown)
+        }
+
+        const httpAgent = new http.Agent({
+            keepAlive: true,
+            keepAliveMsecs: 15000,
+            maxSockets: 200,        // max total sockets per host (active + idle)
+            maxFreeSockets: 20,     // max idle connections per host
+            timeout: 0,             // socket inactivity timeout (keep idle sockets forever)
+        })
+
+        const httpsAgent = new https.Agent({
+            keepAlive: true,
+            keepAliveMsecs: 15000,
+            maxSockets: 200,
+            maxFreeSockets: 20,
+            timeout: 0,
+        })
+
         this.baseUrl = address + "/api/v1"
         this.baseUrlV2 = address + "/api/v2"
         this.requestConfig = {
@@ -149,6 +172,8 @@ export class HttpProvider extends BaseProvider {
                 "x-sdk": process.env.PACKAGE_NAME ?? "",
                 "x-sdk-version": process.env.PACKAGE_VERSION ?? "",
             },
+            httpAgent,
+            httpsAgent,
         }
         this.timestampedRequests = [
             "/submit",
