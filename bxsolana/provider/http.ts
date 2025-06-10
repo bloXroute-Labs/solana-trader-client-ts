@@ -1,5 +1,11 @@
-import http from 'http'
-import https from 'https'
+let http: any, https: any;
+
+try {
+    http = require('http');
+    https = require('https');
+} catch {
+    console.log("defaulting to browser http clients")
+}
 import { MAINNET_API_NY_HTTP, warningTlsSlowdown } from "../utils/constants"
 import { timestampRfc3339 } from "../utils/timestamp"
 import {
@@ -147,40 +153,56 @@ export class HttpProvider extends BaseProvider {
             console.warn(warningTlsSlowdown)
         }
 
-        const httpAgent = new http.Agent({
-            keepAlive: true,
-            keepAliveMsecs: 15000,
-            maxSockets: 200,        // max total sockets per host (active + idle)
-            maxFreeSockets: 20,     // max idle connections per host
-            timeout: 0,             // socket inactivity timeout (keep idle sockets forever)
-        })
+       const isNode = typeof window === "undefined";
 
-        const httpsAgent = new https.Agent({
-            keepAlive: true,
-            keepAliveMsecs: 15000,
-            maxSockets: 200,
-            maxFreeSockets: 20,
-            timeout: 0,
-        })
+        if (isNode) {
+            // Node.js-specific: use http.Agent and https.Agent
+            const httpAgent = new http.Agent({
+                keepAlive: true,
+                keepAliveMsecs: 15000,
+                maxSockets: 200,
+                maxFreeSockets: 20,
+                timeout: 0,
+            });
 
-        this.baseUrl = address + "/api/v1"
-        this.baseUrlV2 = address + "/api/v2"
-        this.requestConfig = {
-            ...requestConfig,
-            headers: {
+            const httpsAgent = new https.Agent({
+                keepAlive: true,
+                keepAliveMsecs: 15000,
+                maxSockets: 200,
+                maxFreeSockets: 20,
+                timeout: 0,
+            });
+
+            this.requestConfig = {
+                ...requestConfig,
+                headers: {
                 Authorization: this.authHeader,
                 "x-sdk": process.env.PACKAGE_NAME ?? "",
                 "x-sdk-version": process.env.PACKAGE_VERSION ?? "",
-            },
-            httpAgent,
-            httpsAgent,
+                },
+                httpAgent,
+                httpsAgent,
+            };
+        } else {
+            // Browser specific
+            this.requestConfig = {
+                ...requestConfig,
+                headers: {
+                Authorization: this.authHeader,
+                "x-sdk": process.env.PACKAGE_NAME ?? "",
+                "x-sdk-version": process.env.PACKAGE_VERSION ?? "",
+                },
+            };
         }
+
+        this.baseUrl = address + "/api/v1";
+        this.baseUrlV2 = address + "/api/v2";
         this.timestampedRequests = [
-            "/submit",
-            "/submit-batch",
-            "/submit-snipe",
-            "/submit-paladin"
-        ]
+        "/submit",
+        "/submit-batch",
+        "/submit-snipe",
+        "/submit-paladin",
+        ];
     }
 
     close = () => {
