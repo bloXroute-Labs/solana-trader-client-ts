@@ -40,6 +40,7 @@ export declare namespace $.api {
     destinationAccount: string;
     ownerAccount: string;
     signature: string;
+    cpmm: boolean;
   }
 }
 export type Type = $.api.GetSwapsStreamUpdate;
@@ -59,6 +60,7 @@ export function getDefaultValue(): $.api.GetSwapsStreamUpdate {
     destinationAccount: "",
     ownerAccount: "",
     signature: "",
+    cpmm: false,
   };
 }
 
@@ -84,6 +86,7 @@ export function encodeJson(value: $.api.GetSwapsStreamUpdate): unknown {
   if (value.destinationAccount !== undefined) result.destinationAccount = tsValueToJsonValueFns.string(value.destinationAccount);
   if (value.ownerAccount !== undefined) result.ownerAccount = tsValueToJsonValueFns.string(value.ownerAccount);
   if (value.signature !== undefined) result.signature = tsValueToJsonValueFns.string(value.signature);
+  if (value.cpmm !== undefined) result.cpmm = tsValueToJsonValueFns.bool(value.cpmm);
   return result;
 }
 
@@ -102,6 +105,7 @@ export function decodeJson(value: any): $.api.GetSwapsStreamUpdate {
   if (value.destinationAccount !== undefined) result.destinationAccount = jsonValueToTsValueFns.string(value.destinationAccount);
   if (value.ownerAccount !== undefined) result.ownerAccount = jsonValueToTsValueFns.string(value.ownerAccount);
   if (value.signature !== undefined) result.signature = jsonValueToTsValueFns.string(value.signature);
+  if (value.cpmm !== undefined) result.cpmm = jsonValueToTsValueFns.bool(value.cpmm);
   return result;
 }
 
@@ -183,6 +187,12 @@ export function encodeBinary(value: $.api.GetSwapsStreamUpdate): Uint8Array {
     const tsValue = value.signature;
     result.push(
       [13, tsValueToWireValueFns.string(tsValue)],
+    );
+  }
+  if (value.cpmm !== undefined) {
+    const tsValue = value.cpmm;
+    result.push(
+      [14, tsValueToWireValueFns.bool(tsValue)],
     );
   }
   return serialize(result);
@@ -282,6 +292,13 @@ export function decodeBinary(binary: Uint8Array): $.api.GetSwapsStreamUpdate {
     const value = wireValueToTsValueFns.string(wireValue);
     if (value === undefined) break field;
     result.signature = value;
+  }
+  field: {
+    const wireValue = wireFields.get(14);
+    if (wireValue === undefined) break field;
+    const value = wireValueToTsValueFns.bool(wireValue);
+    if (value === undefined) break field;
+    result.cpmm = value;
   }
   return result;
 }
