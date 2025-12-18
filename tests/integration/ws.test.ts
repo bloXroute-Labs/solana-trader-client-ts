@@ -12,8 +12,6 @@ import {
     GetPumpFunNewAmmPoolStreamRequest,
     GetPumpFunNewTokensStreamRequest,
     GetPumpFunSwapsStreamRequest,
-    GetNewRaydiumPoolsByTransactionRequest,
-    GetPriorityFeeRequest,
     GetBundleTipRequest,
     GetTokenAccountsRequest,
     GetRateLimitRequest,
@@ -21,11 +19,9 @@ import {
     GetPumpFunNewTokensStreamResponse,
     PostPumpFunSwapRequest,
     PostPumpFunSwapRequestSol,
-    PostRaydiumSwapRequest,
     PostJupiterSwapRequest,
     PostJupiterRouteSwapRequest,
     GetJupiterQuotesRequest,
-    GetJupiterPricesRequest,
     PostSubmitBatchRequest,
     GetPumpFunAMMSwapStreamRequest,
 } from "../../bxsolana";
@@ -361,17 +357,6 @@ describe('Streaming', () => {
         }
     });
 
-    test('Stream Priority Fee', async () => {
-        const request = {} as GetPriorityFeeRequest
-        const stream = await provider.getPriorityFeeStream(request)
-
-        for await (const response of stream) {
-            // console.info(JSON.stringify(response, null, 2));
-            expectNoNulls(response)
-            break
-        }
-    });
-
     test('Stream Bundle Tip', async () => {
         const request = {} as GetBundleTipRequest
         const stream = await provider.getBundleTipStream(request)
@@ -436,32 +421,6 @@ describe('Streaming', () => {
         }
     });
 
-    /*
-    Raydium Streams
-    */
-
-    test('Stream New Raydium Pools', async () => {
-        const request = {} as GetPumpFunNewAmmPoolStreamRequest
-        const stream = await provider.getNewRaydiumPoolsStream(request)
-
-        for await (const response of stream) {
-            // console.info(JSON.stringify(response, null, 2));
-            expectNoNulls(response)
-            break
-        }
-    });
-
-    test('Stream New Raydium Pools By Transaction', async () => {
-        const request = {} as GetNewRaydiumPoolsByTransactionRequest
-        const stream = await provider.getNewRaydiumPoolsByTransactionStream(request)
-
-        for await (const response of stream) {
-            // console.info(JSON.stringify(response, null, 2));
-            expectNoNulls(response)
-            break
-        }
-    });
-
 });
 
 describe("Requests", () => {
@@ -501,17 +460,6 @@ describe("Requests", () => {
         expectNoNulls(response)
     });
 
-    test("Get Priority Fee", async () => {
-        const response = await provider.getPriorityFee(
-            {
-                project: "P_RAYDIUM",
-                percentile: 50
-            } as GetPriorityFeeRequest
-        )
-        // console.info(JSON.stringify(response, null, 2));
-        expectNoNulls(response)
-    });
-
     test("Get Rate Limit", async () => {
         const response = await provider.getRateLimit({} as GetRateLimitRequest)
         // console.info(JSON.stringify(response, null, 2));
@@ -522,14 +470,6 @@ describe("Requests", () => {
         const response = await provider.getTransaction({
             signature: "63ZJvWVLvwhSkyrwoSwcgvzgK6mwCudtZaSGfnXdUQJEQ7Qh7f2zd7rLXQHuHort9sLwC4bEwC7bw67xsq2NPLcN"
         } as GetTransactionRequest)
-        // console.info(JSON.stringify(response, null, 2));
-        expectNoNulls(response)
-    });
-
-    test("Get Jupiter Prices", async () => {
-        const response = await provider.getJupiterPrices({
-            tokens: ["SOL"]
-        } as GetJupiterPricesRequest)
         // console.info(JSON.stringify(response, null, 2));
         expectNoNulls(response)
     });
@@ -598,175 +538,6 @@ describe("Requests", () => {
         })
         // console.info(JSON.stringify(response, null, 2));
         expect(response.instructions.length).toBeGreaterThan(0)
-    });
-
-    test("Post Raydium Route Swap", async () => {
-        const response = await provider.postRaydiumRouteSwap({
-            ownerAddress: config.publicKey,
-            slippage: 10,
-            steps: [
-                {
-                    poolAddress: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
-                    project: {
-                        id: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
-                        label: "Raydium",
-                    },
-                    inToken: "So11111111111111111111111111111111111111112",
-                    outToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-                    inAmount: 0.01,
-                    outAmount: 0.007505,
-                    outAmountMin: 0.074,
-                },
-            ],
-            computeLimit: 200000,
-            computePrice: "10000",
-        })
-        // console.info(JSON.stringify(response, null, 2));
-        expect(response.transactions.length).toBeGreaterThan(0)
-    });
-
-    test("Post Raydium CLMM Route Swap", async () => {
-        const response = await provider.postRaydiumCLMMRouteSwap({
-            ownerAddress: config.publicKey,
-            slippage: 10,
-            steps: [
-                {
-                    poolAddress: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
-                    project: {
-                        id: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
-                        label: "Raydium",
-                    },
-                    inToken: "So11111111111111111111111111111111111111112",
-                    outToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-                    inAmount: 0.01,
-                    outAmount: 0.007505,
-                    outAmountMin: 0.074,
-                },
-            ],
-            computeLimit: 200000,
-            computePrice: "10000",
-        })
-        // console.info(JSON.stringify(response, null, 2));
-        expect(response.transactions.length).toBeGreaterThan(0)
-    });
-
-    test("Post Raydium Swap", async () => {
-        const response = await provider.postRaydiumSwap({
-            ownerAddress: config.publicKey,
-            inToken: "SOL",
-            outToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-            inAmount: 1,
-            slippage: 5,
-        } as PostRaydiumSwapRequest)
-        // console.info(JSON.stringify(response, null, 2));
-        expectNoNulls(response)
-    });
-
-    test("Post Raydium Swap Instructions", async () => {
-        const response = await provider.postRaydiumSwapInstructions({
-            ownerAddress: config.publicKey,
-            inToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-            outToken: "SOL",
-            inAmount: 0.01,
-            slippage: 0.1,
-            computeLimit: 200000,
-            computePrice: "10000",
-        })
-        // console.info(JSON.stringify(response, null, 2));
-        expect(response.instructions.length).toBeGreaterThan(0)
-    });
-
-    test("Post Raydium CLMM Swap Instructions", async () => {
-        const response = await provider.postRaydiumCLMMSwap({
-            ownerAddress: config.publicKey,
-            inToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-            outToken: "SOL",
-            inAmount: 0.01,
-            slippage: 0.1,
-            computeLimit: 200000,
-            computePrice: "10000",
-        })
-        // console.info(JSON.stringify(response, null, 2));
-        expect(response.transactions.length).toBeGreaterThan(0)
-    });
-
-    test("Post Raydium CPMM Swap Instructions", async () => {
-        const response = await provider.postRaydiumCPMMSwap({
-            ownerAddress: config.publicKey,
-            inToken: "SOL",
-            outToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-            inAmount: 1,
-            slippage: 25,
-            poolAddress: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
-            computeLimit: 10000,
-            computePrice: "1000",
-            tip: "100000"
-        })
-        // console.info(JSON.stringify(response, null, 2));
-        expectNoNulls(response)
-    });
-
-    test("Get Raydium Pool Reserve", async () => {
-        const response = await provider.getRaydiumPoolReserve({
-            pairsOrAddresses: [
-                "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
-            ],
-        })
-        // console.info(JSON.stringify(response, null, 2));
-        expectNoNulls(response)
-    });
-
-    test("Get Raydium Pools", async () => {
-        const response = await provider.getRaydiumPools({})
-        // console.info(JSON.stringify(response, null, 2));
-        expectNoNulls(response)
-    });
-
-    test("Get Raydium CLMM Pools", async () => {
-        const response = await provider.getRaydiumCLMMPools({
-            pairOrAddress: "3ucNos4NbumPLZNWztqGHNFFgkHeRMBQAVemeeomsUxv"
-        })
-        // console.info(JSON.stringify(response, null, 2));
-        expectNoNulls(response)
-    });
-
-    test("Get Raydium Prices", async () => {
-        const response = await provider.getRaydiumPrices({ tokens: ["SOL"] })
-        // console.info(JSON.stringify(response, null, 2));
-        expectNoNulls(response)
-    });
-
-    test("Get Raydium Quotes", async () => {
-        const response = await provider.getRaydiumQuotes({
-            inToken: "SOL",
-            outToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-            inAmount: 1,
-            slippage: 5,
-        })
-        // console.info(JSON.stringify(response, null, 2));
-        expectNoNulls(response)
-    });
-
-    test("Get Raydium CPMM Quotes", async () => {
-        const response = await provider.getRaydiumCPMMQuotes({
-            inToken: "SOL",
-            outToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-            inAmount: 1,
-            slippage: 5,
-        })
-        // console.info(JSON.stringify(response, null, 2));
-        expectNoNulls(response)
-    });
-
-    test("Get Raydium CLMM Quotes", async () => {
-        const response = await provider.getRaydiumCLMMQuotes({
-            inToken: "SOL",
-            outToken: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-            inAmount: 1,
-            slippage: 5,
-        })
-        // console.info(JSON.stringify(response, null, 2));
-        expectNoNulls(response)
     });
 
     test("Get Recent BlockHash", async () => {
